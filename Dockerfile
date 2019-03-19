@@ -1,4 +1,4 @@
-FROM microsoft/dotnet:2.2-aspnetcore-runtime¡¡
+FROM microsoft/dotnet:2.2-sdk-jessie
 
 ADD ./src /usr/local/src
 WORKDIR /usr/local/src/haohaoplay.Web.Host
