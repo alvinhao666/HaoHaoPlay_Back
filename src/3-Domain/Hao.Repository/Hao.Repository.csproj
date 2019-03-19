@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="sqlSugarCore" Version="4.9.9.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\5-Common\Hao.Core\Hao.Core.csproj" />
+    <ProjectReference Include="..\..\5-Common\Hao.Utility\Hao.Utility.csproj" />
+    <ProjectReference Include="..\Hao.Model\Hao.Model.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="System\Dto\" />
+    <Folder Include="System\QueryModel\" />
+  </ItemGroup>
+
+</Project>
