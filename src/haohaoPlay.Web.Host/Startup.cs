@@ -39,6 +39,7 @@ using FluentValidation;
 using Hao.AppService.ViewModel;
 using Microsoft.Extensions.FileProviders;
 using Hao.FileHelper;
+using Newtonsoft.Json.Serialization;
 
 namespace haohaoplay.Web.Host
 {
@@ -239,8 +240,11 @@ namespace haohaoplay.Web.Host
             {
                 x.Filters.Add(typeof(GlobalResultFilter));
 
-            }).AddJsonOptions(op => op.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver())
-              .AddWebApiConventions();
+            }).AddJsonOptions(op => {
+                op.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss"; //时间序列化格式
+                op.SerializerSettings.ContractResolver = new DefaultContractResolver();
+            })
+              .AddWebApiConventions();//处理HttpResponseMessage类型返回值的问题
 
 
             /**********依赖注入*******/
