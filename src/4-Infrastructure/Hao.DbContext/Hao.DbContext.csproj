@@ -6,8 +6,8 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
-    <PackageReference Include="ServiceStack.Redis" Version="5.4.0" />
-    <PackageReference Include="sqlSugarCore" Version="4.9.9.2" />
+    <PackageReference Include="ServiceStack.Redis" Version="5.5.0" />
+    <PackageReference Include="sqlSugarCore" Version="4.9.9.8" />
   </ItemGroup>
 
 </Project>

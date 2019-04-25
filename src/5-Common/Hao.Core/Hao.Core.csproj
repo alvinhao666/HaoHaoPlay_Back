@@ -8,9 +8,9 @@
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.2" />
-    <PackageReference Include="NLog.Web.AspNetCore" Version="4.8.0" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="4.8.1" />
     <PackageReference Include="Snowflake.Core" Version="2.0.0" />
-    <PackageReference Include="sqlSugarCore" Version="4.9.9.2" />
+    <PackageReference Include="sqlSugarCore" Version="4.9.9.8" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="5.4.0" />
   </ItemGroup>
 
