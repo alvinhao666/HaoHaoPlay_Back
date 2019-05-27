@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="2.4.2" />
+    <PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="2.5.0" />
   </ItemGroup>
 
   <ItemGroup>
