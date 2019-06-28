@@ -6,6 +6,10 @@ using System.Text;
 
 namespace Hao.DbContext
 {
+    //ServiceStack.Redis是商业版，免费版有限制；
+
+    //StackExchange.Redis是免费版，早期有Timeout Bug，当前版本使用需要全部使用异步方法方可解决；
+
     public class HRedisCache : ICacheService
     {
         ServiceStackRedis service = null;
