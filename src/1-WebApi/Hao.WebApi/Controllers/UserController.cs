@@ -33,7 +33,7 @@ namespace Hao.WebApi
 
         private IHostingEnvironment _hostingEnvironment;
 
-        public UserController(IHostingEnvironment hostingEnvironment,IAutoMapper mapper,IUserAppService userService, IDistributedCache cache, IConfigurationRoot config, ICurrentUser currentUser) : base(cache, config, currentUser)
+        public UserController(IHostingEnvironment hostingEnvironment,IAutoMapper mapper,IUserAppService userService, IConfigurationRoot config, ICurrentUser currentUser) : base(config, currentUser)
         {
             _userAppService = userService;
             _currentUser = currentUser;

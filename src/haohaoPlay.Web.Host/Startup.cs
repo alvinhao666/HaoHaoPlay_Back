@@ -40,6 +40,8 @@ using Hao.AppService.ViewModel;
 using Microsoft.Extensions.FileProviders;
 using Hao.FileHelper;
 using Newtonsoft.Json.Serialization;
+using CSRedis;
+using Microsoft.Extensions.Caching.Redis;
 
 namespace haohaoplay.Web.Host
 {
@@ -198,11 +200,18 @@ namespace haohaoplay.Web.Host
             });
 
             #region Redis
-            services.AddDistributedRedisCache(c =>
-            {
-                c.Configuration = Configuration["Redis"];
-                c.InstanceName = "HaoHaoPlayInstance";
-            });
+            //services.AddDistributedRedisCache(c =>
+            //{
+            //    c.Configuration = Configuration["Redis"];
+            //    c.InstanceName = "HaoHaoPlayInstance";
+            //});
+
+            var csredis = new CSRedisClient("127.0.0.1:6379,abortConnect=false,connectRetry=3,connectTimeout=3000,defaultDatabase=1,syncTimeout=3000,version=3.2.1,responseTimeout=3000");
+
+            //初始化 RedisHelper
+            RedisHelper.Initialization(csredis);
+
+            services.AddSingleton(new CSRedisCache(RedisHelper.Instance));
             #endregion
 
             #region CAP
@@ -210,7 +219,7 @@ namespace haohaoplay.Web.Host
             services.AddCap(x =>
             {
 
-                x.UseMySql(cfg=> { cfg.ConnectionString = Configuration.GetConnectionString("MySqlConnection"); });
+                x.UseMySql(cfg => { cfg.ConnectionString = Configuration.GetConnectionString("MySqlConnection"); });
 
                 x.UseRabbitMQ(cfg =>
                 {

@@ -16,6 +16,9 @@ namespace Hao.AppService
         {
             cfg.CreateMap<SYSUser, LoginVMOut>();
 
+
+            cfg.CreateMap<PagedList<SYSUser>, PagedList<UserVMOut>>();
+
             cfg.CreateMap<SYSUser, UserVMOut>()
               .ForMember(x => x.GenderString, a => a.MapFrom(x => HDescription.GetDescription(typeof(Gender), (int)x.Gender.Value)))
               .ForMember(x => x.EnabledString, a => a.MapFrom(x => x.Enabled.Value ? "启用" : "注销"));

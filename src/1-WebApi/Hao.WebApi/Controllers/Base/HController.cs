@@ -25,15 +25,14 @@ namespace Hao.Core.AppController
     {
         protected static readonly ILogger _logger = LogManager.GetCurrentClassLogger();
 
-        protected IDistributedCache _cache;
+        //protected IDistributedCache _cache;
 
         protected IConfigurationRoot _config;
 
         protected ICurrentUser _currentUser;
 
-        public HController(IDistributedCache cache, IConfigurationRoot config, ICurrentUser currentUser)
+        public HController( IConfigurationRoot config, ICurrentUser currentUser)
         {
-            _cache = cache;
             _config = config;
             _currentUser = currentUser;
         }
@@ -77,7 +76,7 @@ namespace Hao.Core.AppController
             };
             _logger.Info(new LogInfo() { Method = path, Argument = request, Description = "获取jwt用户信息" });
 
-            var value = _cache.GetString(_config["LoginCachePrefix"] + userId.Value);
+            var value = RedisHelper.Get(_config["LoginCachePrefix"] + userId.Value);
             RedisCacheUser cacheUser = null;
             if (value == null)
                 throw new HException(ErrorCode.E100002, nameof(ErrorCode.E100002).GetCode());

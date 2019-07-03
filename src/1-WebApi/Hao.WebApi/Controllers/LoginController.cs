@@ -33,7 +33,7 @@ namespace Hao.WebApi
 
         protected JwtOptions _jwtOptions;
 
-        protected IDistributedCache _cache;
+        //protected IDistributedCache _cache;
 
         protected IConfigurationRoot _config;
 
@@ -43,11 +43,11 @@ namespace Hao.WebApi
         protected static readonly ILogger _logger = LogManager.GetCurrentClassLogger();
 
 
-        public LoginController(IAutoMapper mapper,IOptions<JwtOptions> jwtOptions, IUserAppService userService, IDistributedCache cache, IConfigurationRoot config)
+        public LoginController(IAutoMapper mapper,IOptions<JwtOptions> jwtOptions, IUserAppService userService,IConfigurationRoot config)
         {
             _jwtOptions = jwtOptions.Value;
             _userAppService = userService;
-            _cache = cache;
+            //_cache = cache;
             _config = config;
             _mapper = mapper;
         }
@@ -89,7 +89,7 @@ namespace Hao.WebApi
 
             user.JwtToken = encodedJwt;
 
-            var cacheValue = _cache.GetString(_config["LoginCachePrefix"] + user.ID.ToString());
+            var cacheValue = await RedisHelper.GetAsync(_config["LoginCachePrefix"] + user.ID.ToString());
             RedisCacheUser cacheUser = new RedisCacheUser();
             if (cacheValue != null)
             {
@@ -119,7 +119,7 @@ namespace Hao.WebApi
                 LoginName = user.LoginName,
                 PCValidFrom = validFrom
             };
-            await _cache.SetStringAsync(_config["LoginCachePrefix"] + user.ID.ToString(), JsonExtensions.SerializeToJson(userValue));
+            await RedisHelper.SetAsync(_config["LoginCachePrefix"] + user.ID.ToString(), JsonExtensions.SerializeToJson(userValue));
 
             _logger.Info(new LogInfo() { Method = "Login", Argument = query.LoginName, Description = "登录成功" });
 

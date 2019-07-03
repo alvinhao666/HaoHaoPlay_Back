@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\netcoreapp2.1\haohaoPlay.Web.Host.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\netcoreapp2.2\haohaoPlay.Web.Host.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,6 +23,8 @@
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.9.2" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.4.0" />
+    <PackageReference Include="Caching.CSRedis" Version="3.0.51" />
+    <PackageReference Include="CSRedisCore" Version="3.0.62" />
     <PackageReference Include="DotNetCore.CAP" Version="2.5.1" />
     <PackageReference Include="DotNetCore.CAP.MySql" Version="2.5.1" />
     <PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="2.5.1" />
@@ -33,7 +35,7 @@
     <PackageReference Include="Microsoft.Extensions.Caching.Redis" Version="2.2.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.7.10" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.8.3" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="3.0.0" />
   </ItemGroup>
 
   <ItemGroup>

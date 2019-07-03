@@ -10,7 +10,7 @@ namespace Hao.WebApi
 {
     public class AttachmentController : HController
     {
-        public AttachmentController(IDistributedCache cache, IConfigurationRoot config, ICurrentUser currentUser) : base(cache, config, currentUser)
+        public AttachmentController(IConfigurationRoot config, ICurrentUser currentUser) : base( config, currentUser)
         {
         }
     }

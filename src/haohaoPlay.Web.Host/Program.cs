@@ -15,7 +15,7 @@ namespace haohaoplay.Web.Host
         public static void Main(string[] args)
         {
             CreateWebHostBuilder(args)
-                .UseUrls("http://*:6000")
+                .UseUrls("http://*:8000")
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()
