@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="CSRedisCore" Version="3.0.62" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
     <PackageReference Include="ServiceStack.Redis" Version="5.5.0" />
     <PackageReference Include="sqlSugarCore" Version="5.0.0.8" />

@@ -42,6 +42,7 @@ using Hao.FileHelper;
 using Newtonsoft.Json.Serialization;
 using CSRedis;
 using Microsoft.Extensions.Caching.Redis;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace haohaoplay.Web.Host
 {
@@ -185,7 +186,7 @@ namespace haohaoplay.Web.Host
                 config.InitKeyType = InitKeyType.Attribute;//如果不是SA等高权限数据库的账号,需要从实体读取主键或者自增列 InitKeyType要设成Attribute
                 config.ConfigureExternalServices = new ConfigureExternalServices()
                 {
-                    DataInfoCacheService = new HRedisCache() //RedisCache是继承ICacheService自已实现的一个类
+                    DataInfoCacheService = new SqlSugarRedisCache() //RedisCache是继承ICacheService自已实现的一个类
                 };
 
                 //config.SlaveConnectionConfigs = new List<SlaveConnectionConfig>() { //= 如果配置了 SlaveConnectionConfigs那就是主从模式,所有的写入删除更新都走主库，查询走从库，事务内都走主库，HitRate表示权重 值越大执行的次数越高，如果想停掉哪个连接可以把HitRate设为0 
@@ -200,18 +201,20 @@ namespace haohaoplay.Web.Host
             });
 
             #region Redis
-            //services.AddDistributedRedisCache(c =>
-            //{
-            //    c.Configuration = Configuration["Redis"];
-            //    c.InstanceName = "HaoHaoPlayInstance";
-            //});
+            services.AddDistributedRedisCache(c =>
+            {
+                c.Configuration = Configuration["Redis"];
+                c.InstanceName = "HaoHaoPlayInstance";
+            });
 
             var csredis = new CSRedisClient("127.0.0.1:6379,abortConnect=false,connectRetry=3,connectTimeout=3000,defaultDatabase=1,syncTimeout=3000,version=3.2.1,responseTimeout=3000");
 
             //初始化 RedisHelper
             RedisHelper.Initialization(csredis);
 
-            services.AddSingleton(new CSRedisCache(RedisHelper.Instance));
+            services.AddSingleton<IDistributedCache>(new CSRedisCache(RedisHelper.Instance)); //利用分布式缓存
+            //现在,ASP.NET Core引入了IDistributedCache分布式缓存接口，它是一个相当基本的分布式缓存标准API，可以让您对它进行编程，然后无缝地插入第三方分布式缓存
+            //DistributedCache将拷贝缓存的文件到Slave节点
             #endregion
 
             #region CAP
