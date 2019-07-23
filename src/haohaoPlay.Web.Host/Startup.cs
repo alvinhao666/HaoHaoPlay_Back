@@ -299,7 +299,7 @@ namespace haohaoplay.Web.Host
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "haohaoplayApi");
-                c.InjectStylesheet("/css/swagger_ui.css");
+                //c.InjectStylesheet("/css/swagger_ui.css");
             });
 
             //使用跨域

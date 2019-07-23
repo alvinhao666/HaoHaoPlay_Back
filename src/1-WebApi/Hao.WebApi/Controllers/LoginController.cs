@@ -52,6 +52,11 @@ namespace Hao.WebApi
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// 登录接口
+        /// </summary>
+        /// <param name="queryInput"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<LoginVMOut> Login([FromBody]UserQueryInput queryInput)
         {
