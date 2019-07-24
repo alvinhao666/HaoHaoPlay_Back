@@ -294,10 +294,9 @@ namespace haohaoplay.Web.Host
 #if DEBUG
 
             //配置Swagger
-            // Enable middleware to serve generated Swagger as a JSON endpoint.
-            app.UseSwagger(c => { c.RouteTemplate = "swagger/{documentName}/swagger.json"; });
-            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), 
-            // specifying the Swagger JSON endpoint.
+
+            app.UseSwagger();
+
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("v1/swagger.json", "haohaoplayApi");
