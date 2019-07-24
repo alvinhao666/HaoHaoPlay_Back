@@ -295,12 +295,15 @@ namespace haohaoplay.Web.Host
 #if DEBUG
 
             //配置Swagger
-            app.UseSwagger();
+
+            app.UseSwagger(c => { c.RouteTemplate = "swagger/{documentName}/swagger.json"; });
+
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "haohaoplayApi");
+                c.SwaggerEndpoint("v1/swagger.json", "haohaoplayApi");
                 //c.InjectStylesheet("/css/swagger_ui.css");
             });
+
 
             //使用跨域
             app.UseCors("AllowAllOrigin");
