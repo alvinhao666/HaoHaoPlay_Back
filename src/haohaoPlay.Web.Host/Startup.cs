@@ -81,7 +81,6 @@ namespace haohaoplay.Web.Host
                     Version = "v1",
                     Title = "haohaoplay接口文档",
                     Description = "haohaoplay Restful Api 接口说明",
-                    TermsOfService = "None",
                     Contact = new Contact
                     {
                         Name = "rongguohao",
@@ -301,7 +300,7 @@ namespace haohaoplay.Web.Host
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("v1/swagger.json", "haohaoplayApi");
-                //c.InjectStylesheet("/css/swagger_ui.css");
+                c.InjectStylesheet("/css/swagger_ui.css");
             });
 
 
