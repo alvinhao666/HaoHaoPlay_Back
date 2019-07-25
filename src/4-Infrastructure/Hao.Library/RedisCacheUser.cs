@@ -14,10 +14,5 @@ namespace Hao.Library
         public string LoginName { get; set; }
 
         public string UserName { get; set; }
-
-        /// <summary>
-        /// PC访问时间
-        /// </summary>
-        public long PCValidFrom { get; set; }
     }
 }

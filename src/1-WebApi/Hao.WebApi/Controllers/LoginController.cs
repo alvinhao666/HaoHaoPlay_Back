@@ -121,8 +121,7 @@ namespace Hao.WebApi
             {
                 ID = user.ID,
                 UserName = user.UserName,
-                LoginName = user.LoginName,
-                PCValidFrom = validFrom
+                LoginName = user.LoginName
             };
             await RedisHelper.SetAsync(_config["LoginCachePrefix"] + user.ID.ToString(), JsonExtensions.SerializeToJson(userValue));
 
