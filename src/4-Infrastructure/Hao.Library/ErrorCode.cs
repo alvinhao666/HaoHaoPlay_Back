@@ -5,7 +5,7 @@ namespace Hao.Library
     public static class ErrorCode
     {
 
-        public const string E100001 = "没有访问权限";
+        public const string E100001 = "用户登录已过期,请重新登录";
         public const string E100002 = "用户未登录";
         public const string E100003 = "用户登录已过期,请重新登录";
         public const string E100004 = "用户在异地登录";

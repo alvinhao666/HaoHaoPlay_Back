@@ -15,6 +15,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -42,14 +43,22 @@ namespace Hao.Core.AppController
         /// <param name="context"></param>
         public override void OnActionExecuting(ActionExecutingContext context)
         {
+            var tokenHeader = HttpContext.Request.Headers["Authorization"];
+
+            var strToken = tokenHeader.ToString();
+            if (strToken.Contains("Bearer "))
+            {
+                var jwtHandler = new JwtSecurityTokenHandler();
+                JwtSecurityToken jwtToken = jwtHandler.ReadJwtToken(strToken.Remove(0, 7)); //去除"Bearer "
+                var identity = new ClaimsIdentity(jwtToken.Claims);
+                var principal = new ClaimsPrincipal(identity);
+                HttpContext.User = principal;
+            }
             //验证登录
             var claims = User.Claims;
-            var validTo = long.Parse(claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Exp)?.Value ?? "0");
-            if (validTo < DateTime.Now.Ticks)
-                throw new HException(ErrorCode.E100003, nameof(ErrorCode.E100003).GetCode()); //登录过期
 
             var userId = claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sid); //Security Identifiers安全标识符
-
+        
             var traceId = HttpContext.TraceIdentifier;
             var path = HttpContext.Request.Path.Value;
 
@@ -81,10 +90,6 @@ namespace Hao.Core.AppController
                 throw new HException(ErrorCode.E100002, nameof(ErrorCode.E100002).GetCode());
             else
                 cacheUser = JsonExtensions.DeserializeFromJson<RedisCacheUser>(value);
-
-            //var validFrom = long.Parse(claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Iat)?.Value ?? "0");
-            //if (validFrom != cacheUser.PCValidFrom)
-            //    throw new HException(ErrorCode.E100004, nameof(ErrorCode.E100004).GetCode());
 
             //当前用户信息
             _currentUser.UserID = cacheUser.ID;

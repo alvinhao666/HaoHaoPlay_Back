@@ -129,8 +129,6 @@ namespace haohaoplay.Web.Host
                 options.SigningKey = new SigningCredentials(_signingKey, SecurityAlgorithms.HmacSha256);
             });
 
-            //services.AddAuthorization();
-
             //jwt验证：
             services.AddAuthentication(x =>
             {
@@ -338,10 +336,7 @@ namespace haohaoplay.Web.Host
 
 
             //权限[Authorize]
-            //app.UseAuthentication();
-
-            //JWT
-            app.UseMiddleware<JwtAuthorizationFilter>();
+            app.UseAuthentication();
 
             loggerFactory.AddNLog();//添加NLog
             env.ConfigureNLog($"NLog.{env.EnvironmentName}.config");//读取Nlog配置文件
@@ -368,38 +363,39 @@ namespace haohaoplay.Web.Host
 	/// </summary>
 	public class JwtBearerOverrideEvents : JwtBearerEvents
     {
-        /// <summary>
-        /// 接收时
-        /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        public override Task MessageReceived(MessageReceivedContext context)
-        {
-            context.Token = context.Request.Headers["token"];
-            return Task.CompletedTask;
-        }
+        #region 暂不需要重新
+        ///// <summary>
+        ///// 接收时
+        ///// </summary>
+        ///// <param name="context"></param>
+        ///// <returns></returns>
+        //public override Task MessageReceived(MessageReceivedContext context)
+        //{
+        //    context.Token = context.Request.Headers["Authorization"];
+        //    return Task.CompletedTask;
+        //}
 
-        /// <summary>
-        /// TokenValidated：在Token验证通过后调用。
-        /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        public override Task TokenValidated(TokenValidatedContext context)
-        {
+        ///// <summary>
+        ///// TokenValidated：在Token验证通过后调用。
+        ///// </summary>
+        ///// <param name="context"></param>
+        ///// <returns></returns>
+        //public override Task TokenValidated(TokenValidatedContext context)
+        //{
 
-            return Task.CompletedTask;
-        }
+        //    return Task.CompletedTask;
+        //}
 
-        /// <summary>
-        /// AuthenticationFailed: 认证失败时调用。
-        /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>        
-        public override Task AuthenticationFailed(AuthenticationFailedContext context)
-        {
-            return Task.CompletedTask;
-        }
-
+        ///// <summary>
+        ///// AuthenticationFailed: 认证失败时调用。
+        ///// </summary>
+        ///// <param name="context"></param>
+        ///// <returns></returns>        
+        //public override Task AuthenticationFailed(AuthenticationFailedContext context)
+        //{
+        //    return Task.CompletedTask;
+        //}
+        #endregion
 
         /// <summary>
         /// Challenge: 未授权时调用。 需要在Controller上加[Authorize]
@@ -409,7 +405,7 @@ namespace haohaoplay.Web.Host
         public override Task Challenge(JwtBearerChallengeContext context)
         {
             context.Response.Clear();
-            context.Response.StatusCode = 200;
+            context.Response.StatusCode =StatusCodes.Status200OK;
             context.Response.ContentType = "application/json";
             BaseResponse response = new BaseResponse()
             {
@@ -419,7 +415,7 @@ namespace haohaoplay.Web.Host
             };
             context.Response.WriteAsync(JsonConvert.SerializeObject(response));
             context.HandleResponse();
-            return base.Challenge(context);
+            return Task.CompletedTask;
         }
     }
 }
