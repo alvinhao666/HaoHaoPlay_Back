@@ -177,6 +177,22 @@ namespace haohaoplay.Web.Host
 
             #endregion
 
+            #region Redis
+            services.AddDistributedRedisCache(c =>
+            {
+                c.Configuration = Configuration["Redis"];
+                c.InstanceName = "HaoHaoPlayInstance";
+            });
+
+            var csredis = new CSRedisClient("127.0.0.1:6379,abortConnect=false,connectRetry=3,connectTimeout=3000,defaultDatabase=1,syncTimeout=3000,version=3.2.1,responseTimeout=3000");
+
+            //初始化 RedisHelper
+            RedisHelper.Initialization(csredis);
+
+            services.AddSingleton<IDistributedCache>(new CSRedisCache(RedisHelper.Instance)); //利用分布式缓存
+            //现在,ASP.NET Core引入了IDistributedCache分布式缓存接口，它是一个相当基本的分布式缓存标准API，可以让您对它进行编程，然后无缝地插入第三方分布式缓存
+            //DistributedCache将拷贝缓存的文件到Slave节点
+            #endregion
 
             /**********数据ORM*******/
             services.AddSqlSugarClient(config =>
@@ -201,22 +217,6 @@ namespace haohaoplay.Web.Host
                 AutoMapperInitService.InitMap(cfg);
             });
 
-            #region Redis
-            services.AddDistributedRedisCache(c =>
-            {
-                c.Configuration = Configuration["Redis"];
-                c.InstanceName = "HaoHaoPlayInstance";
-            });
-
-            var csredis = new CSRedisClient("127.0.0.1:6379,abortConnect=false,connectRetry=3,connectTimeout=3000,defaultDatabase=1,syncTimeout=3000,version=3.2.1,responseTimeout=3000");
-
-            //初始化 RedisHelper
-            RedisHelper.Initialization(csredis);
-
-            services.AddSingleton<IDistributedCache>(new CSRedisCache(RedisHelper.Instance)); //利用分布式缓存
-            //现在,ASP.NET Core引入了IDistributedCache分布式缓存接口，它是一个相当基本的分布式缓存标准API，可以让您对它进行编程，然后无缝地插入第三方分布式缓存
-            //DistributedCache将拷贝缓存的文件到Slave节点
-            #endregion
 
             #region CAP
             services.AddTransient<IPersonEventHandler, PersonEventHandler>();
