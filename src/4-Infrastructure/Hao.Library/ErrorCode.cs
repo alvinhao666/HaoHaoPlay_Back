@@ -5,7 +5,7 @@ namespace Hao.Library
     public static class ErrorCode
     {
 
-        public const string E100001 = "授权过期,请重新登录";
+        public const string E100001 = "授权已过期,请重新登录";
         public const string E100002 = "用户未登录,请重新登录";
         public const string E100010 = "模型验证失败";
         //基础异常
