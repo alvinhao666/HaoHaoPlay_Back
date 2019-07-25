@@ -398,7 +398,7 @@ namespace haohaoplay.Web.Host
         #endregion
 
         /// <summary>
-        /// Challenge: 未授权时调用。 一定要在 Controller上加[Authorize]
+        /// token过期 或者 没有token会出发此方法。 使用时一定要在 Controller上加[Authorize]
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
