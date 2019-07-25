@@ -21,11 +21,10 @@ using System.Threading.Tasks;
 
 namespace Hao.Core.AppController
 {
+    [Authorize]
     public class HController : Controller
     {
         protected static readonly ILogger _logger = LogManager.GetCurrentClassLogger();
-
-        //protected IDistributedCache _cache;
 
         protected IConfigurationRoot _config;
 
@@ -43,21 +42,22 @@ namespace Hao.Core.AppController
         /// <param name="context"></param>
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            var tokenHeader = HttpContext.Request.Headers["Authorization"];
 
-            var strToken = tokenHeader.ToString();
-            if (strToken.Contains("Bearer "))
-            {
-                var jwtHandler = new JwtSecurityTokenHandler();
-                JwtSecurityToken jwtToken = jwtHandler.ReadJwtToken(strToken.Remove(0, 7)); //去除"Bearer "
-                var identity = new ClaimsIdentity(jwtToken.Claims);
-                var principal = new ClaimsPrincipal(identity);
-                HttpContext.User = principal;
-            }
-            //验证登录
-            var claims = User.Claims;
+            #region 若需要Claims里面其他信息，则取消注释
+            //var tokenHeader = HttpContext.Request.Headers["Authorization"];
 
-            var userId = claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sid); //Security Identifiers安全标识符
+            //var strToken = tokenHeader.ToString();
+            //if (strToken.Contains("Bearer "))
+            //{
+            //    var jwtHandler = new JwtSecurityTokenHandler();
+            //    JwtSecurityToken jwtToken = jwtHandler.ReadJwtToken(strToken.Remove(0, 7)); //去除"Bearer "
+            //    var identity = new ClaimsIdentity(jwtToken.Claims);
+            //    var principal = new ClaimsPrincipal(identity);
+            //    HttpContext.User = principal;
+            //}
+            #endregion
+
+            var userId = User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sid); //Security Identifiers安全标识符
         
             var traceId = HttpContext.TraceIdentifier;
             var path = HttpContext.Request.Path.Value;

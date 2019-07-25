@@ -21,7 +21,6 @@ using System.Text;
 
 namespace Hao.WebApi
 {
-    [Authorize]
     [Route("[controller]/[action]")]
     [ApiController]
     public class UserController: HController

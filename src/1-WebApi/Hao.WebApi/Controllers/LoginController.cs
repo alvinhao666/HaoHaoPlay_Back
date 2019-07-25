@@ -33,7 +33,6 @@ namespace Hao.WebApi
 
         protected JwtOptions _jwtOptions;
 
-        //protected IDistributedCache _cache;
 
         protected IConfigurationRoot _config;
 
@@ -47,7 +46,6 @@ namespace Hao.WebApi
         {
             _jwtOptions = jwtOptions.Value;
             _userAppService = userService;
-            //_cache = cache;
             _config = config;
             _mapper = mapper;
         }
@@ -89,7 +87,7 @@ namespace Hao.WebApi
                 audience: _jwtOptions.Audience,
                 claims: claims,
                 notBefore:timeNow, //生效时间
-                expires: timeNow.AddDays(15),//过期时间
+                expires: timeNow.AddSeconds(16),//过期时间
                 signingCredentials: _jwtOptions.SigningKey
             );
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
