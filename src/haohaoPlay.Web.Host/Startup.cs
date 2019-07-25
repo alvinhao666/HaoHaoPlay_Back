@@ -256,8 +256,7 @@ namespace haohaoplay.Web.Host
             }).AddJsonOptions(op => {
                 op.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss"; //时间序列化格式
                 op.SerializerSettings.ContractResolver = new DefaultContractResolver();
-            })
-              .AddWebApiConventions();//处理HttpResponseMessage类型返回值的问题
+            }).AddWebApiConventions();//处理HttpResponseMessage类型返回值的问题
 
 
             /**********依赖注入*******/
