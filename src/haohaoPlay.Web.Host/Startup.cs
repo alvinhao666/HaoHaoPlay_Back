@@ -97,7 +97,7 @@ namespace haohaoplay.Web.Host
             var corsUrls = Configuration["Cors"].Split(',');
             services.AddCors(options =>
             options.AddPolicy("AllowAllOrigin",
-            p => p.WithOrigins(corsUrls).AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin().AllowCredentials()));
+            p => p.WithOrigins(corsUrls).AllowAnyMethod().AllowAnyHeader().AllowCredentials())); //AllowAnyOrigin():允许所有来源
 #endif
 
             services.AddOptions();
@@ -305,14 +305,10 @@ namespace haohaoplay.Web.Host
 
 
             //使用跨域
-            app.UseCors("AllowAllOrigin");
-            //异常处理
-            app.UseGlobalExceptionHandler(LogManager.GetCurrentClassLogger(), true, Configuration["Cors"].Split(',')[0]);
-#else
-            //异常处理
-            app.UseGlobalExceptionHandler(LogManager.GetCurrentClassLogger());
+            app.UseCors("AllowAllOrigin");       
 #endif
-
+            //异常处理中间件
+            app.UseGlobalExceptionHandler(LogManager.GetCurrentClassLogger());
             //文件访问权限
             app.UseWhen(a => a.Request.Path.Value.Contains("ExportExcel") || a.Request.Path.Value.Contains("ExportWord"), b => b.UseMiddleware<AuthorizeStaticFilesMiddleware>());
 

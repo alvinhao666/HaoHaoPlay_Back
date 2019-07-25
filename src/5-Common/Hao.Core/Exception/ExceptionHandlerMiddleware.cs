@@ -25,9 +25,9 @@ namespace Hao.Core
 
         private static ILogger _log;
 
-        private static string _originUrl;
+        //private static string _originUrl;
 
-        private static bool _isAllow;
+        //private static bool _isAllow;
 
 
         public static IApplicationBuilder UseGlobalExceptionHandler(this IApplicationBuilder app, ILogger log)
@@ -44,31 +44,31 @@ namespace Hao.Core
             });
         }
 
-        public static IApplicationBuilder UseGlobalExceptionHandler(this IApplicationBuilder app, ILogger log, bool isAllow, string originUrl)
-        {
-            if (app == null)
-                throw new ArgumentNullException(nameof(app));
-            if (log == null)
-                throw new ArgumentNullException(nameof(log));
+        //public static IApplicationBuilder UseGlobalExceptionHandler(this IApplicationBuilder app, ILogger log, bool isAllow, string originUrl)
+        //{
+        //    if (app == null)
+        //        throw new ArgumentNullException(nameof(app));
+        //    if (log == null)
+        //        throw new ArgumentNullException(nameof(log));
 
-            _isAllow = isAllow;
-            _originUrl = originUrl;
-            _log = log;
-            return app.UseExceptionHandler(new ExceptionHandlerOptions
-            {
-                ExceptionHandler = Invoke
-            });
-        }
+        //    _isAllow = isAllow;
+        //    _originUrl = originUrl;
+        //    _log = log;
+        //    return app.UseExceptionHandler(new ExceptionHandlerOptions
+        //    {
+        //        ExceptionHandler = Invoke
+        //    });
+        //}
 
         public static async Task Invoke(HttpContext context)
         {
             context.Response.StatusCode = 200;
             context.Response.ContentType = "application/json";
-            if (_isAllow)
-            {
-                context.Response.Headers.Add("Access-Control-Allow-Origin", _originUrl);
-                context.Response.Headers.Add("Access-Control-Allow-Credentials", "true");
-            }
+            //if (_isAllow)
+            //{
+            //    context.Response.Headers.Add("Access-Control-Allow-Origin", _originUrl);
+            //    context.Response.Headers.Add("Access-Control-Allow-Credentials", "true");
+            //}
             BaseResponse response = new BaseResponse
             {
                 Success = false,
