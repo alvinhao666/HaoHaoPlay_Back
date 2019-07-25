@@ -20,7 +20,6 @@ using System.Threading.Tasks;
 
 namespace Hao.Core.AppController
 {
-
     public class HController : Controller
     {
         protected static readonly ILogger _logger = LogManager.GetCurrentClassLogger();

@@ -132,23 +132,27 @@ namespace haohaoplay.Web.Host
             //services.AddAuthorization();
 
             //jwt验证：
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+
+                options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,//是否验证Issuer
-                        ValidateAudience = true,//是否验证Audience
-                        ValidateIssuerSigningKey = true,//是否验证SecurityKey
-                        ValidAudience = jwtSection[nameof(JwtOptions.Audience)],//Audience
-                        ValidIssuer = jwtSection[nameof(JwtOptions.Issuer)],//Issuer，这两项和前面签发jwt的设置一致
-                        IssuerSigningKey = _signingKey,//拿到SecurityKey
-                        ValidateLifetime = true,//是否验证失效时间
-                        RequireExpirationTime = true,
-                        ClockSkew = TimeSpan.Zero,
-                    };
-                    options.Events = new JwtBearerOverrideEvents();
-                });
+                    ValidateIssuer = true,//是否验证Issuer
+                    ValidateAudience = true,//是否验证Audience
+                    ValidateIssuerSigningKey = true,//是否验证SecurityKey
+                    ValidAudience = jwtSection[nameof(JwtOptions.Audience)],//Audience
+                    ValidIssuer = jwtSection[nameof(JwtOptions.Issuer)],//Issuer，这两项和前面签发jwt的设置一致
+                    IssuerSigningKey = _signingKey,//拿到SecurityKey
+                    ValidateLifetime = true,//是否验证失效时间
+                    RequireExpirationTime = true,
+                    ClockSkew = TimeSpan.Zero,
+                };
+                options.Events = new JwtBearerOverrideEvents();
+            });
             #endregion
 
             #region 模型验证
@@ -333,9 +337,10 @@ namespace haohaoplay.Web.Host
             });
 
 
-            //JWT
-            app.UseAuthentication();
+            //权限[Authorize]
+            //app.UseAuthentication();
 
+            //JWT
             app.UseMiddleware<JwtAuthorizationFilter>();
 
             loggerFactory.AddNLog();//添加NLog
@@ -364,7 +369,40 @@ namespace haohaoplay.Web.Host
 	public class JwtBearerOverrideEvents : JwtBearerEvents
     {
         /// <summary>
-        /// 没有JwtToken时触发,
+        /// 接收时
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public override Task MessageReceived(MessageReceivedContext context)
+        {
+            context.Token = context.Request.Headers["token"];
+            return Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// TokenValidated：在Token验证通过后调用。
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public override Task TokenValidated(TokenValidatedContext context)
+        {
+
+            return Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// AuthenticationFailed: 认证失败时调用。
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>        
+        public override Task AuthenticationFailed(AuthenticationFailedContext context)
+        {
+            return Task.CompletedTask;
+        }
+
+
+        /// <summary>
+        /// Challenge: 未授权时调用。 需要在Controller上加[Authorize]
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
