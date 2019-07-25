@@ -145,9 +145,9 @@ namespace haohaoplay.Web.Host
                     ValidAudience = jwtSection[nameof(JwtOptions.Audience)],//Audience
                     ValidIssuer = jwtSection[nameof(JwtOptions.Issuer)],//Issuer，这两项和前面签发jwt的设置一致
                     IssuerSigningKey = _signingKey,//拿到SecurityKey
-                    ValidateLifetime = true,//是否验证失效时间
+                    ValidateLifetime = true,//是否验证失效时间  当设置exp和nbf时有效 同时启用ClockSkew 
                     RequireExpirationTime = true,
-                    ClockSkew = TimeSpan.Zero,
+                    ClockSkew = TimeSpan.Zero, // ClockSkew 属性，默认是5分钟缓冲。
                 };
                 options.Events = new JwtBearerOverrideEvents();
             });
