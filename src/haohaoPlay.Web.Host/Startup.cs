@@ -52,7 +52,7 @@ namespace haohaoplay.Web.Host
 
         private readonly SymmetricSecurityKey _signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(SecretKey));
 
-        public IConfigurationRoot Configuration { get; }
+        public IConfiguration Configuration { get; }
 
         public IContainer ApplicationContainer { get; private set; }
 
@@ -71,7 +71,7 @@ namespace haohaoplay.Web.Host
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-
+            #region DeBug
 #if DEBUG
             services.AddSwaggerGen(c =>
             {
@@ -96,29 +96,12 @@ namespace haohaoplay.Web.Host
             //跨域
             var corsUrls = Configuration["Cors"].Split(',');
             services.AddCors(options =>
-            options.AddPolicy("AllowAllOrigin",
+            options.AddPolicy("AllowOrigins",
             p => p.WithOrigins(corsUrls).AllowAnyMethod().AllowAnyHeader().AllowCredentials())); //AllowAnyOrigin():允许所有来源
 #endif
-
-            services.AddOptions();
-            services.AddSingleton(Configuration);
-
-
-            // Validators
-
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2).AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UserVMInValidator>());
-
-
-            #region Session 获取用户
-            services.AddSession();
-
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>(); //即使service使用了单例模式，但是在多线程的情况下，HttpContextAccessor不会出现线程同步问题。
-
-            services.AddScoped<ICurrentUser, CurrentUser>();
             #endregion
 
 
-            
             #region Jwt
             var jwtSection = Configuration.GetSection(nameof(JwtOptions));
 
@@ -153,30 +136,6 @@ namespace haohaoplay.Web.Host
             });
             #endregion
 
-            #region 模型验证
-            services.Configure<ApiBehaviorOptions>(options =>
-            {
-                options.InvalidModelStateResponseFactory = (context) =>
-                {
-                    var error = context.ModelState
-                        .Values
-                        .SelectMany(x => x.Errors
-                                    .Select(p => p.ErrorMessage))
-                        .FirstOrDefault();
-
-                    var result = new BaseResponse()
-                    {
-                        Success = false,
-                        ErrorCode = nameof(ErrorCode.E100010).GetCode(),
-                        ErrorMsg = error
-                    };
-
-                    return new ObjectResult(result);
-                };
-            });
-
-            #endregion
-
             #region Redis
             services.AddDistributedRedisCache(c =>
             {
@@ -190,11 +149,11 @@ namespace haohaoplay.Web.Host
             RedisHelper.Initialization(csredis);
 
             services.AddSingleton<IDistributedCache>(new CSRedisCache(RedisHelper.Instance)); //利用分布式缓存
-            //现在,ASP.NET Core引入了IDistributedCache分布式缓存接口，它是一个相当基本的分布式缓存标准API，可以让您对它进行编程，然后无缝地插入第三方分布式缓存
-            //DistributedCache将拷贝缓存的文件到Slave节点
+                                                                                              //现在,ASP.NET Core引入了IDistributedCache分布式缓存接口，它是一个相当基本的分布式缓存标准API，可以让您对它进行编程，然后无缝地插入第三方分布式缓存
+                                                                                              //DistributedCache将拷贝缓存的文件到Slave节点
             #endregion
 
-            /**********数据ORM*******/
+            #region Orm
             services.AddSqlSugarClient(config =>
             {
                 config.ConnectionString = Configuration.GetConnectionString("MySqlConnection");
@@ -210,13 +169,7 @@ namespace haohaoplay.Web.Host
                 //     new SlaveConnectionConfig() { HitRate=10, ConnectionString=Config.ConnectionString2 },
                 //     new SlaveConnectionConfig() { HitRate=30, ConnectionString=Config.ConnectionString3 }
             });
-
-            /**********AutoMapper*******/
-            services.AddAutoMapper(cfg => {
-                AutoMapperInitApi.InitMap(cfg);
-                AutoMapperInitService.InitMap(cfg);
-            });
-
+            #endregion
 
             #region CAP
             services.AddTransient<IPersonEventHandler, PersonEventHandler>();
@@ -241,6 +194,38 @@ namespace haohaoplay.Web.Host
             });
             #endregion
 
+            #region 模型验证
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.InvalidModelStateResponseFactory = (context) =>
+                {
+                    var error = context.ModelState
+                        .Values
+                        .SelectMany(x => x.Errors
+                                    .Select(p => p.ErrorMessage))
+                        .FirstOrDefault();
+
+                    var result = new BaseResponse()
+                    {
+                        Success = false,
+                        ErrorCode = nameof(ErrorCode.E100010).GetCode(),
+                        ErrorMsg = error
+                    };
+
+                    return new ObjectResult(result);
+                };
+            });
+
+            #endregion
+
+            #region Session 获取当前用户
+            services.AddSession();
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>(); //即使service使用了单例模式，但是在多线程的情况下，HttpContextAccessor不会出现线程同步问题。
+
+            services.AddScoped<ICurrentUser, CurrentUser>();
+            #endregion
+
             #region 性能 压缩
             services.AddResponseCompression();
             #endregion
@@ -248,23 +233,27 @@ namespace haohaoplay.Web.Host
 
             services.AddHttpClient();
 
-            //全局Filter json大小写
             services.AddMvc(x =>
             {
                 x.Filters.Add(typeof(GlobalResultFilter));
-
-            }).AddJsonOptions(op => {
+            })
+            .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+            .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UserVMInValidator>()) //模型验证
+            .AddJsonOptions(op => {
                 op.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss"; //时间序列化格式
-                op.SerializerSettings.ContractResolver = new DefaultContractResolver();
+                op.SerializerSettings.ContractResolver = new DefaultContractResolver(); //全局Filter json大小写
             }).AddWebApiConventions();//处理HttpResponseMessage类型返回值的问题
 
 
-            /**********依赖注入*******/
-            // .net core 注入
-            //services.AddScoped<IUserService, UserService>();
-            //services.AddScoped<IUserRepository, UserRepository>();
+            #region AutoMapper
+            services.AddAutoMapper(cfg => {
+                AutoMapperInitApi.InitMap(cfg);
+                AutoMapperInitService.InitMap(cfg);
+            });
+            #endregion
 
-            //注入 IOC AutoFac容器
+
+            #region Autofac
             var builder = new ContainerBuilder();//实例化 AutoFac  容器   
 
             builder.RegisterAssemblyTypes(
@@ -278,6 +267,8 @@ namespace haohaoplay.Web.Host
             ApplicationContainer = builder.Build();
 
             return new AutofacServiceProvider(ApplicationContainer);//第三方IOC接管 core内置DI容器
+            #endregion
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -295,24 +286,40 @@ namespace haohaoplay.Web.Host
 #if DEBUG
 
             //配置Swagger
-
             app.UseSwagger();
-
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("v1/swagger.json", "haohaoplayApi");
                 c.InjectStylesheet("/css/swagger_ui.css");
             });
 
-
             //使用跨域
-            app.UseCors("AllowAllOrigin");       
+            app.UseCors("AllowOrigins");
 #endif
-            //异常处理中间件
+            #region 权限
+            app.UseAuthentication();//[Authorize]
+            #endregion
+
+            #region 获取当前用户
+
+            app.UseSession();
+
+            #endregion
+
+            #region 异常处理
+
             app.UseGlobalExceptionHandler(LogManager.GetCurrentClassLogger());
+
+            #endregion
+
+            #region 日志
+            loggerFactory.AddNLog();//添加NLog
+            env.ConfigureNLog($"NLog.{env.EnvironmentName}.config");//读取Nlog配置文件
+            #endregion
+
+            #region 文件
             //文件访问权限
             app.UseWhen(a => a.Request.Path.Value.Contains("ExportExcel") || a.Request.Path.Value.Contains("ExportWord"), b => b.UseMiddleware<AuthorizeStaticFilesMiddleware>());
-
             app.UseStaticFiles();//使用默认文件夹wwwroot
             //导出excel路径
             var exportExcelPath = Path.Combine(new DirectoryInfo(Directory.GetCurrentDirectory()).Parent.FullName, "ExportFile/Excel");
@@ -332,28 +339,22 @@ namespace haohaoplay.Web.Host
                 FileProvider = new PhysicalFileProvider(exportWordPath),
                 RequestPath = "/ExportWord",
             });
+            #endregion
 
-
-            //权限[Authorize]
-            app.UseAuthentication();
-
-            loggerFactory.AddNLog();//添加NLog
-            env.ConfigureNLog($"NLog.{env.EnvironmentName}.config");//读取Nlog配置文件
-
-            app.UseSession();
-            //app.UseHttpsRedirection();
-            app.UseMvc();
-
+            #region 获取客户端ip
             //nginx 获取ip
             app.UseForwardedHeaders(new ForwardedHeadersOptions()
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
+            #endregion
 
-            //性能压缩
+            #region 性能压缩
             app.UseResponseCompression();
+            #endregion
 
 
+            app.UseMvc();
         }
     }
 

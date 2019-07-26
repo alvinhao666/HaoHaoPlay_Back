@@ -34,7 +34,7 @@ namespace Hao.WebApi
         protected JwtOptions _jwtOptions;
 
 
-        protected IConfigurationRoot _config;
+        protected IConfiguration _config;
 
         protected IAutoMapper _mapper;
 
@@ -42,7 +42,7 @@ namespace Hao.WebApi
         protected static readonly ILogger _logger = LogManager.GetCurrentClassLogger();
 
 
-        public LoginController(IAutoMapper mapper,IOptions<JwtOptions> jwtOptions, IUserAppService userService,IConfigurationRoot config)
+        public LoginController(IAutoMapper mapper,IOptions<JwtOptions> jwtOptions, IUserAppService userService, IConfiguration config)
         {
             _jwtOptions = jwtOptions.Value;
             _userAppService = userService;

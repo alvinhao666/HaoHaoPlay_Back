@@ -23,10 +23,10 @@ namespace Hao.Core.Repository
         // 定义一个标识确保线程同步
         private static readonly object padlock = new object();
 
-        private IConfigurationRoot _config;
+        private IConfiguration _config;
 
         private ICurrentUser _currentUser;
-        public Repository(SqlSugarClient db, ICurrentUser user, IConfigurationRoot config)
+        public Repository(SqlSugarClient db, ICurrentUser user, IConfiguration config)
         {
             _db = db;
             _currentUser = user;

@@ -7,6 +7,7 @@ namespace Hao.Library
 
         public const string E100001 = "用户未登录或令牌已过期，请重新登录";
         public const string E100002 = "用户未登录，请重新登录";
+        public const string E100003 = "用户未授权";
         public const string E100010 = "模型验证失败";
         //基础异常
         public const string E005001 = "用户不存在";

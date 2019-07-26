@@ -33,7 +33,7 @@ namespace Hao.WebApi
 
         private IHostingEnvironment _hostingEnvironment;
 
-        public UserController(IHostingEnvironment hostingEnvironment,IAutoMapper mapper,IUserAppService userService, IConfigurationRoot config, ICurrentUser currentUser) : base(config, currentUser)
+        public UserController(IHostingEnvironment hostingEnvironment,IAutoMapper mapper,IUserAppService userService, IConfiguration config, ICurrentUser currentUser) : base(config, currentUser)
         {
             _userAppService = userService;
             _currentUser = currentUser;
@@ -102,6 +102,7 @@ namespace Hao.WebApi
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
+        [Authorize(Roles ="admin")]
         public async Task<UserVMOut> GetCurrentUser() => await _userAppService.GetCurrentUser();
 
 
