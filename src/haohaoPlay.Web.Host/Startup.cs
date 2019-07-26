@@ -362,7 +362,7 @@ namespace haohaoplay.Web.Host
 	/// </summary>
 	public class JwtBearerOverrideEvents : JwtBearerEvents
     {
-        #region 暂不需要重新
+        #region 暂不需要重写
         ///// <summary>
         ///// 接收时
         ///// </summary>
