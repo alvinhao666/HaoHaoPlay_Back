@@ -21,7 +21,7 @@ namespace Hao.Core.Repository
         private static IdWorker _worker = null;
 
         // 定义一个标识确保线程同步
-        private static readonly object padlock = new object();
+        private static readonly object _padlock = new object();
 
         private IConfiguration _config;
 
@@ -36,7 +36,7 @@ namespace Hao.Core.Repository
             // lock语句运行完之后（即线程运行完之后）会对该对象"解锁"
             if (_worker == null)
             {
-                lock (padlock)
+                lock (_padlock)
                 {
                     // 如果类的实例不存在则创建，否则直接返回
                     if (_worker == null)
