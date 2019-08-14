@@ -57,7 +57,7 @@ namespace Hao.Core.AppController
             #endregion
 
             var userId = User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sid); //Security Identifiers安全标识符
-        
+
             var traceId = HttpContext.TraceIdentifier;
             var path = HttpContext.Request.Path.Value;
 
@@ -65,24 +65,32 @@ namespace Hao.Core.AppController
             if (userId == null)
             {
                 //输入日志
-                var preRequest = new
+                _logger.Info(new LogInfo()
                 {
-                    TraceIdentifier = traceId,
-                    Arguments = context.ActionArguments
-                };
-                _logger.Info(new LogInfo() { Method = path, Argument = preRequest, Description = "用户未登录" });
+                    Method = path,
+                    Argument = new
+                    {
+                        TraceIdentifier = traceId,
+                        Arguments = context.ActionArguments
+                    },
+                    Description = "用户未登录"
+                });
 
                 throw new HException(ErrorCode.E005006, nameof(ErrorCode.E005006).GetCode());
             }
 
-            var request = new
-            {
-                TraceIdentifier = traceId,
-                UserId = userId.Value,
-                Arguments = context.ActionArguments
-            };
 
-            _logger.Info(new LogInfo() { Method = path, Argument = request, Description = "获取jwt用户信息" });
+            _logger.Info(new LogInfo()
+            {
+                Method = path,
+                Argument = new
+                {
+                    TraceIdentifier = traceId,
+                    UserId = userId.Value,
+                    Arguments = context.ActionArguments
+                },
+                Description = "获取jwt用户信息"
+            });
 
             var value = RedisHelper.Get(_config["LoginCachePrefix"] + userId.Value);
 
@@ -90,7 +98,7 @@ namespace Hao.Core.AppController
             {
                 throw new HException(ErrorCode.E100002, nameof(ErrorCode.E100002).GetCode());
             }
-            
+
             RedisCacheUser cacheUser = JsonExtensions.DeserializeFromJson<RedisCacheUser>(value);
 
             //当前用户信息
