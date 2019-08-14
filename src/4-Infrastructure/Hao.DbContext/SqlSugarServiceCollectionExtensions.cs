@@ -15,11 +15,6 @@ namespace Hao.DbContext
 
         public static IServiceCollection AddSqlSugarClient(this IServiceCollection services, Action<ConnectionConfig> configAction, ServiceLifetime contextLifetime = ServiceLifetime.Scoped, ServiceLifetime configLifetime = ServiceLifetime.Scoped)
         {
-            if (contextLifetime == ServiceLifetime.Singleton)
-            {
-                configLifetime = ServiceLifetime.Singleton;
-            }
-
             services.TryAdd(new ServiceDescriptor(typeof(ConnectionConfig), p => ConnectionConfigFactory(configAction), configLifetime));
 
             services.TryAdd(new ServiceDescriptor(typeof(ISqlSugarClient), typeof(SqlSugarClient), contextLifetime));
