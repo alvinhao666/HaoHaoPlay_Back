@@ -15,8 +15,9 @@ using Hao.Utility;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using NLog;
+
 
 namespace Hao.WebApi
 {
@@ -39,15 +40,16 @@ namespace Hao.WebApi
         private IAutoMapper _mapper;
 
 
-        private static readonly ILogger _logger = LogManager.GetCurrentClassLogger();
+        private ILogger _logger;
 
 
-        public LoginController(IAutoMapper mapper,IOptions<JwtOptions> jwtOptions, IUserAppService userService, IConfiguration config)
+        public LoginController(IAutoMapper mapper,IOptions<JwtOptions> jwtOptions, IUserAppService userService, IConfiguration config,ILogger<LoginController> logger)
         {
             _jwtOptions = jwtOptions.Value;
             _userAppService = userService;
             _config = config;
             _mapper = mapper;
+            _logger = logger;
         }
 
         /// <summary>
@@ -104,7 +106,7 @@ namespace Hao.WebApi
                 }
                 catch (Exception ex)
                 {
-                    _logger.Info(new LogInfo() { Method = "Login", Argument = ex, Description = "登录异常" });
+                    _logger.LogInformation(new LogInfo() { Method = "Login", Argument = ex, Description = "登录异常" }.ToString());
                 }
             }
 
@@ -125,7 +127,7 @@ namespace Hao.WebApi
             };
             await RedisHelper.SetAsync(_config["LoginCachePrefix"] + user.ID.ToString(), JsonExtensions.SerializeToJson(userValue));
 
-            _logger.Info(new LogInfo() { Method = "Login", Argument = query.LoginName, Description = "登录成功" });
+            _logger.LogInformation(new LogInfo() { Method = "Login", Argument = query.LoginName, Description = "登录成功" }.ToString());
 
             return user;
         }
