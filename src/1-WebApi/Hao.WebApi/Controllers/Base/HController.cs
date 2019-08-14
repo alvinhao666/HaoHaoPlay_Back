@@ -23,7 +23,7 @@ namespace Hao.Core.AppController
 {
     public class HController : Controller
     {
-        protected static readonly ILogger _logger = LogManager.GetCurrentClassLogger();
+        private static readonly ILogger _logger = LogManager.GetCurrentClassLogger();
 
         protected IConfiguration _config;
 

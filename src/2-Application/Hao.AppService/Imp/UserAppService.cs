@@ -26,10 +26,10 @@ namespace Hao.AppService
     public class UserAppService : ApplicationService, IUserAppService
     {
 
-        protected IAutoMapper _mapper;
+        private IAutoMapper _mapper;
 
 
-        protected ISYSUserRepository _userRepository;
+        private ISYSUserRepository _userRepository;
 
         private readonly ICapPublisher _publisher;
 

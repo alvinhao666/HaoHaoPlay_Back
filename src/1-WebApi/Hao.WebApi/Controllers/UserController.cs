@@ -26,9 +26,9 @@ namespace Hao.WebApi
     [Route("[controller]/[action]")]
     public class UserController: HController
     {
-        protected IUserAppService _userAppService;
+        private IUserAppService _userAppService;
 
-        protected IAutoMapper _mapper;
+        private IAutoMapper _mapper;
 
 
         private IHostingEnvironment _hostingEnvironment;
