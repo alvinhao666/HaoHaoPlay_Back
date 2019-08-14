@@ -81,14 +81,17 @@ namespace Hao.Core.AppController
                 UserId = userId.Value,
                 Arguments = context.ActionArguments
             };
+
             _logger.Info(new LogInfo() { Method = path, Argument = request, Description = "获取jwt用户信息" });
 
             var value = RedisHelper.Get(_config["LoginCachePrefix"] + userId.Value);
-            RedisCacheUser cacheUser = null;
+
             if (value == null)
+            {
                 throw new HException(ErrorCode.E100002, nameof(ErrorCode.E100002).GetCode());
-            else
-                cacheUser = JsonExtensions.DeserializeFromJson<RedisCacheUser>(value);
+            }
+            
+            RedisCacheUser cacheUser = JsonExtensions.DeserializeFromJson<RedisCacheUser>(value);
 
             //当前用户信息
             _currentUser.UserID = cacheUser.ID;
