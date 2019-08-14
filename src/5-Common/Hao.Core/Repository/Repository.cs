@@ -16,7 +16,7 @@ namespace Hao.Core.Repository
 {
     public abstract class Repository<T, Key> : IRepository<T, Key>, ITransientDependency where T : Entity<Key>, new()
     {
-        private SqlSugarClient _db;
+        private ISqlSugarClient _db;
 
         private static IdWorker _worker = null;
 
@@ -26,7 +26,7 @@ namespace Hao.Core.Repository
         private IConfiguration _config;
 
         private ICurrentUser _currentUser;
-        public Repository(SqlSugarClient db, ICurrentUser user, IConfiguration config)
+        public Repository(ISqlSugarClient db, ICurrentUser user, IConfiguration config)
         {
             _db = db;
             _currentUser = user;
@@ -54,7 +54,7 @@ namespace Hao.Core.Repository
         /// <returns>泛型实体</returns>
         public async Task<T> GetAysnc(object pkValue)
         {
-            var entity = await Task.Factory.StartNew(() => _db.Context.Queryable<T>().Where(a => a.IsDeleted == false).InSingle(pkValue));
+            var entity = await Task.Factory.StartNew(() => _db.Queryable<T>().Where(a => a.IsDeleted == false).InSingle(pkValue));
             return entity;
         }
 
@@ -66,7 +66,7 @@ namespace Hao.Core.Repository
         public async Task<List<T>> GetListAysnc(List<object> pkValues)
         {
             //Type type = typeof(T); 类型判断，主要包括 is 和 typeof 两个操作符及对象实例上的 GetType 调用。这是最轻型的消耗，可以无需考虑优化问题。注意 typeof 运算符比对象实例上的 GetType 方法要快，只要可能则优先使用 typeof 运算符。 
-            return await _db.Context.Queryable<T>().In(pkValues)
+            return await _db.Queryable<T>().In(pkValues)
                             //.OrderByIF(typeof(IsCreateAudited).IsAssignableFrom(type), "CreateTime Desc")
                             .OrderBy(a => a.CreateTime, OrderByType.Desc)
                             .ToListAsync();
@@ -86,7 +86,7 @@ namespace Hao.Core.Repository
         /// <returns></returns>
         public async Task<List<T>> GetListAysnc()
         {
-            return await _db.Context.Queryable<T>()
+            return await _db.Queryable<T>()
                         .Where(a => a.IsDeleted == false)
                         .OrderBy(a => a.CreateTime, OrderByType.Desc)
                         .ToListAsync();
@@ -98,7 +98,7 @@ namespace Hao.Core.Repository
         /// <returns></returns>
         public async Task<List<T>> GetAllAysnc()
         {
-            return await _db.Context.Queryable<T>()
+            return await _db.Queryable<T>()
                         .OrderBy(a => a.CreateTime, OrderByType.Desc)
                         .ToListAsync();
         }
@@ -110,7 +110,7 @@ namespace Hao.Core.Repository
         /// <returns></returns>
         public async Task<List<T>> GetListAysnc(List<IConditionalModel> conditions, Expression<Func<T, object>> expression = null, OrderByType orderType = OrderByType.Asc)
         {
-            return await _db.Context.Queryable<T>().Where(conditions)
+            return await _db.Queryable<T>().Where(conditions)
                                     .Where(a => a.IsDeleted == false)
                                     .OrderByIF(expression == null, a => a.CreateTime, OrderByType.Desc)
                                     .OrderByIF(expression != null, expression, orderType)
@@ -124,7 +124,7 @@ namespace Hao.Core.Repository
         /// <returns></returns>
         public async Task<List<T>> GetAllAysnc(List<IConditionalModel> conditions, Expression<Func<T, object>> expression = null,OrderByType orderType = OrderByType.Asc)
         {
-            return await _db.Context.Queryable<T>().Where(conditions)
+            return await _db.Queryable<T>().Where(conditions)
                                     .OrderByIF(expression == null, a => a.CreateTime, OrderByType.Desc)
                                     .OrderByIF(expression != null, expression, orderType)
                                     .ToListAsync();
@@ -138,7 +138,7 @@ namespace Hao.Core.Repository
         public async Task<List<T>> GetListAysnc(Query<T> query)
         {
             bool flag = string.IsNullOrWhiteSpace(query.OrderFileds);
-            return await _db.Context.Queryable<T>().Where(query.Conditions)
+            return await _db.Queryable<T>().Where(query.Conditions)
                                     .Where(a => a.IsDeleted == false)
                                     .OrderByIF(flag, a => a.CreateTime, OrderByType.Desc)
                                     .OrderByIF(!flag, query.OrderFileds)
@@ -154,7 +154,7 @@ namespace Hao.Core.Repository
         {
             int totalNumber = 0;
             bool flag = string.IsNullOrWhiteSpace(query.OrderFileds);
-            List<T> items = await Task.Factory.StartNew(() => _db.Context.Queryable<T>().Where(query.Conditions)
+            List<T> items = await Task.Factory.StartNew(() => _db.Queryable<T>().Where(query.Conditions)
                                             .Where(a => a.IsDeleted == false)
                                             .OrderByIF(flag, a => a.CreateTime, OrderByType.Desc)
                                             .OrderByIF(!flag, query.OrderFileds)
@@ -191,7 +191,7 @@ namespace Hao.Core.Repository
             entity.CreateTime = DateTime.Now;
             entity.IsDeleted = false;
 
-            var obj = await _db.Context.Insertable(entity).ExecuteReturnEntityAsync();
+            var obj = await _db.Insertable(entity).ExecuteReturnEntityAsync();
             return obj.ID;
         }
 
@@ -216,7 +216,7 @@ namespace Hao.Core.Repository
                 item.CreateTime = timeNow;
                 item.IsDeleted = false;
             });
-            return await Task.Factory.StartNew(() => _db.Context.GetSimpleClient<T>().InsertRange(entities.ToArray()));
+            return await Task.Factory.StartNew(() => _db.GetSimpleClient<T>().InsertRange(entities.ToArray()));
         }
 
         /// <summary>
@@ -229,7 +229,7 @@ namespace Hao.Core.Repository
             entity.LastModifyUserID = _currentUser.UserID;
             entity.LastModifyTime = DateTime.Now;
             entity.IsDeleted = true;
-            return await _db.Context.Updateable(entity).ExecuteCommandAsync() > 0;
+            return await _db.Updateable(entity).ExecuteCommandAsync() > 0;
         }
 
         /// <summary>
@@ -239,7 +239,7 @@ namespace Hao.Core.Repository
         /// <returns></returns>
         public async Task<bool> DeleteAysnc(object pkValue)
         {
-            return await _db.Context.Updateable<T>(new { LastModifyTime = DateTime.Now, LastModifyUserID = _currentUser.UserID, IsDeleted = true })
+            return await _db.Updateable<T>(new { LastModifyTime = DateTime.Now, LastModifyUserID = _currentUser.UserID, IsDeleted = true })
                         .Where($"ID='{pkValue}'").ExecuteCommandAsync() > 0;
 
         }
@@ -251,7 +251,7 @@ namespace Hao.Core.Repository
         /// <returns></returns>
         public async Task<bool> DeleteAysnc(List<object> pkValues)
         {
-            return await _db.Context.Updateable<T>(new { LastModifyTime = DateTime.Now, LastModifyUserID = _currentUser.UserID, IsDeleted = true })
+            return await _db.Updateable<T>(new { LastModifyTime = DateTime.Now, LastModifyUserID = _currentUser.UserID, IsDeleted = true })
                     .Where(it => pkValues.Contains(it.ID)).ExecuteCommandAsync() > 0;
         }
 
@@ -269,7 +269,7 @@ namespace Hao.Core.Repository
                 item.LastModifyTime = timeNow;
                 item.IsDeleted = true;
             });
-            return await Task.Factory.StartNew(() => _db.Context.GetSimpleClient<T>().UpdateRange(entities.ToArray()));
+            return await Task.Factory.StartNew(() => _db.GetSimpleClient<T>().UpdateRange(entities.ToArray()));
         }
 
         /// <summary>
@@ -281,7 +281,7 @@ namespace Hao.Core.Repository
         {
             entity.LastModifyUserID = _currentUser.UserID;
             entity.LastModifyTime = DateTime.Now;
-            return await _db.Context.Updateable(entity).ExecuteCommandAsync() > 0;
+            return await _db.Updateable(entity).ExecuteCommandAsync() > 0;
         }
 
         /// <summary>
@@ -297,7 +297,7 @@ namespace Hao.Core.Repository
                 item.LastModifyUserID = _currentUser.UserID;
                 item.LastModifyTime = timeNow;
             });
-            return await Task.Factory.StartNew(() => _db.Context.GetSimpleClient<T>().UpdateRange(entities.ToArray()));
+            return await Task.Factory.StartNew(() => _db.GetSimpleClient<T>().UpdateRange(entities.ToArray()));
         }
     }
 }

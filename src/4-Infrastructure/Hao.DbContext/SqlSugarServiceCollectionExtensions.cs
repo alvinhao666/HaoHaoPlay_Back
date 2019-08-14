@@ -13,18 +13,19 @@ namespace Hao.DbContext
     public static class SqlSugarServiceCollectionExtensions
     {
 
-        public static IServiceCollection AddSqlSugarClient(this IServiceCollection serviceCollection, Action<ConnectionConfig> configAction, ServiceLifetime contextLifetime = ServiceLifetime.Scoped, ServiceLifetime configLifetime = ServiceLifetime.Scoped)
+        public static IServiceCollection AddSqlSugarClient(this IServiceCollection services, Action<ConnectionConfig> configAction, ServiceLifetime contextLifetime = ServiceLifetime.Scoped, ServiceLifetime configLifetime = ServiceLifetime.Scoped)
         {
             if (contextLifetime == ServiceLifetime.Singleton)
             {
                 configLifetime = ServiceLifetime.Singleton;
             }
 
-            serviceCollection.TryAdd(new ServiceDescriptor(typeof(ConnectionConfig), p => ConnectionConfigFactory(configAction), configLifetime));
+            services.TryAdd(new ServiceDescriptor(typeof(ConnectionConfig), p => ConnectionConfigFactory(configAction), configLifetime));
 
-            serviceCollection.TryAdd(new ServiceDescriptor(typeof(SqlSugarClient), typeof(SqlSugarClient), contextLifetime));
+            services.TryAdd(new ServiceDescriptor(typeof(ISqlSugarClient), typeof(SqlSugarClient), contextLifetime));
 
-            return serviceCollection;
+
+            return services;
         }
 
 
