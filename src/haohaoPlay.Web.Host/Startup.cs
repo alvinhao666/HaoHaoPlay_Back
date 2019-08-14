@@ -153,7 +153,7 @@ namespace haohaoplay.Web.Host
                                                                                               //DistributedCache将拷贝缓存的文件到Slave节点
             #endregion
 
-            #region Orm
+            #region ORM
             services.AddSqlSugarClient(config =>
             {
                 config.ConnectionString = Configuration.GetConnectionString("MySqlConnection");
