@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
@@ -41,7 +41,7 @@
   <ItemGroup>
     <ProjectReference Include="..\1-WebApi\Hao.WebApi\Hao.WebApi.csproj" />
     <ProjectReference Include="..\3-Domain\Hao.Event\Hao.Event.csproj" />
-    <ProjectReference Include="..\4-Infrastructure\Hao.DbContext\Hao.DbContext.csproj" />
+    <ProjectReference Include="..\4-Infrastructure\Hao.DbContext\Hao.SqlSugarExtensions.csproj" />
     <ProjectReference Include="..\4-Infrastructure\Hao.Library\Hao.Library.csproj" />
     <ProjectReference Include="..\5-Common\Hao.AutoMapper\Hao.AutoMapper.csproj" />
     <ProjectReference Include="..\5-Common\Hao.Core\Hao.Core.csproj" />
