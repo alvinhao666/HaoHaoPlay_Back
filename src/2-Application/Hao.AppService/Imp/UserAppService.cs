@@ -46,7 +46,7 @@ namespace Hao.AppService
 
         public async Task<UserVMOut> GetByID(long? id)
         {
-            var user = await _userRepository.GetAysnc(id);
+            var user = await _userRepository.GetAysnc(id.Value);
 
             return _mapper.Map<UserVMOut>(user);
         }

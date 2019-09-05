@@ -19,14 +19,14 @@ namespace Hao.Core.Repository
         /// </summary>
         /// <param name="pkValue">主键值</param>
         /// <returns>泛型实体</returns>
-        Task<T> GetAysnc(object pkValue);
+        Task<T> GetAysnc(Key pkValue);
 
         /// <summary>
         /// 根据主键值查询多条数据
         /// </summary>
         /// <param name="pkValue">主键值</param>
         /// <returns>泛型实体</returns>
-        Task<List<T>> GetListAysnc(List<object> pkValues);
+        Task<List<T>> GetListAysnc(List<Key> pkValues);
 
         /// <summary>
         /// 查询所有数据（未删除）
@@ -90,14 +90,14 @@ namespace Hao.Core.Repository
         /// </summary>
         /// <param name="pkValue">实体类</param>
         /// <returns></returns>
-        Task<bool> DeleteAysnc(object pkValue);
+        Task<bool> DeleteAysnc(Key pkValue);
 
         /// <summary>
         /// 异步删除数据
         /// </summary>
         /// <param name="pkValues">实体类</param>
         /// <returns></returns>
-        Task<bool> DeleteAysnc(List<object> pkValues);
+        Task<bool> DeleteAysnc(List<Key> pkValues);
 
         /// <summary>
         /// 异步删除数据(多条)

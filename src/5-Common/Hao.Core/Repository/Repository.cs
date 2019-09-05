@@ -52,7 +52,7 @@ namespace Hao.Core.Repository
         /// </summary>s
         /// <param name="pkValue">主键值</param>
         /// <returns>泛型实体</returns>
-        public async Task<T> GetAysnc(object pkValue)
+        public async Task<T> GetAysnc(Key pkValue)
         {
             var entity = await Task.Factory.StartNew(() => _db.Queryable<T>().Where(a => a.IsDeleted == false).InSingle(pkValue));
             return entity;
@@ -63,7 +63,7 @@ namespace Hao.Core.Repository
         /// </summary>s
         /// <param name="pkValues">主键值</param>
         /// <returns>泛型实体</returns>
-        public async Task<List<T>> GetListAysnc(List<object> pkValues)
+        public async Task<List<T>> GetListAysnc(List<Key> pkValues)
         {
             //Type type = typeof(T); 类型判断，主要包括 is 和 typeof 两个操作符及对象实例上的 GetType 调用。这是最轻型的消耗，可以无需考虑优化问题。注意 typeof 运算符比对象实例上的 GetType 方法要快，只要可能则优先使用 typeof 运算符。 
             return await _db.Queryable<T>().In(pkValues)
@@ -237,7 +237,7 @@ namespace Hao.Core.Repository
         /// </summary>
         /// <param name="pkValue">实体类</param>
         /// <returns></returns>
-        public async Task<bool> DeleteAysnc(object pkValue)
+        public async Task<bool> DeleteAysnc(Key pkValue)
         {
             return await _db.Updateable<T>(new { LastModifyTime = DateTime.Now, LastModifyUserID = _currentUser.UserID, IsDeleted = true })
                         .Where($"ID='{pkValue}'").ExecuteCommandAsync() > 0;
@@ -249,7 +249,7 @@ namespace Hao.Core.Repository
         /// </summary>
         /// <param name="pkValues">实体类</param>
         /// <returns></returns>
-        public async Task<bool> DeleteAysnc(List<object> pkValues)
+        public async Task<bool> DeleteAysnc(List<Key> pkValues)
         {
             return await _db.Updateable<T>(new { LastModifyTime = DateTime.Now, LastModifyUserID = _currentUser.UserID, IsDeleted = true })
                     .Where(it => pkValues.Contains(it.ID)).ExecuteCommandAsync() > 0;

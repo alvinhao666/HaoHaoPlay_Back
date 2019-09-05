@@ -33,7 +33,7 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Hao.WebApi;
 using Hao.AppService;
 using Hao.Event;
-using Hao.DbContext;
+using Hao.SqlSugarExtensions;
 using FluentValidation.AspNetCore;
 using FluentValidation;
 using Hao.AppService.ViewModel;
