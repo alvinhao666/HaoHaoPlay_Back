@@ -221,7 +221,7 @@ namespace haohaoplay.Web.Host
             #region Session 获取当前用户
             services.AddSession();
 
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>(); //即使service使用了单例模式，但是在多线程的情况下，HttpContextAccessor不会出现线程同步问题。
+            //services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>(); //即使service使用了单例模式，但是在多线程的情况下，HttpContextAccessor不会出现线程同步问题。// .net core 2.2不需要
 
             services.AddScoped<ICurrentUser, CurrentUser>();
             #endregion
