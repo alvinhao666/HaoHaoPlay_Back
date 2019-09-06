@@ -250,6 +250,11 @@ namespace haohaoplay.Web.Host
                 AutoMapperInitApi.InitMap(cfg);
                 AutoMapperInitService.InitMap(cfg);
             });
+
+            //services.AddSingleton<IMapper>(new Mapper(new MapperConfiguration(cfg =>
+            //{
+            //    AutoMapperInit.InitMap(cfg);
+            //})));
             #endregion
 
 
