@@ -1,14 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\3-Domain\Hao.Event\Hao.Event.csproj" />
     <ProjectReference Include="..\..\3-Domain\Hao.Repository\Hao.Repository.csproj" />
     <ProjectReference Include="..\..\4-Infrastructure\Hao.Library\Hao.Library.csproj" />
-    <ProjectReference Include="..\..\5-Common\Hao.AutoMapper\Hao.AutoMapper.csproj" />
     <ProjectReference Include="..\..\5-Common\Hao.Core\Hao.Core.csproj" />
     <ProjectReference Include="..\..\5-Common\Hao.Encrypt\Hao.Encrypt.csproj" />
     <ProjectReference Include="..\..\5-Common\Hao.File\Hao.File.csproj" />

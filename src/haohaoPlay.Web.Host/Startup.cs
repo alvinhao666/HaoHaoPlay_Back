@@ -43,6 +43,7 @@ using Newtonsoft.Json.Serialization;
 using CSRedis;
 using Microsoft.Extensions.Caching.Redis;
 using Microsoft.Extensions.Caching.Distributed;
+using AutoMapper;
 
 namespace haohaoplay.Web.Host
 {
@@ -246,15 +247,11 @@ namespace haohaoplay.Web.Host
 
 
             #region AutoMapper
-            services.AddAutoMapper(cfg => {
+            services.AddSingleton<IMapper>(new Mapper(new MapperConfiguration(cfg =>
+            {
                 AutoMapperInitApi.InitMap(cfg);
                 AutoMapperInitService.InitMap(cfg);
-            });
-
-            //services.AddSingleton<IMapper>(new Mapper(new MapperConfiguration(cfg =>
-            //{
-            //    AutoMapperInit.InitMap(cfg);
-            //})));
+            })));
             #endregion
 
 

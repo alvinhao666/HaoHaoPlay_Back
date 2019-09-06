@@ -4,9 +4,9 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using Hao.AppService;
 using Hao.AppService.ViewModel;
-using Hao.AutoMapper;
 using Hao.Core;
 using Hao.Encrypt;
 using Hao.Library;
@@ -33,12 +33,12 @@ namespace Hao.WebApi
 
         private IConfiguration _config;
 
-        private IAutoMapper _mapper;
+        private IMapper _mapper;
 
         private ILogger _logger;
 
 
-        public LoginController(IOptions<JwtOptions> jwtOptions,IAutoMapper mapper, IUserAppService userService, IConfiguration config,ILogger<LoginController> logger)
+        public LoginController(IOptions<JwtOptions> jwtOptions,IMapper mapper, IUserAppService userService, IConfiguration config,ILogger<LoginController> logger)
         {
             _jwtOptions = jwtOptions.Value;
             _userAppService = userService;

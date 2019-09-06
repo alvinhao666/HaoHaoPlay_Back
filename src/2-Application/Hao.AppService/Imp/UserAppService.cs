@@ -1,7 +1,7 @@
-﻿using DotNetCore.CAP;
+﻿using AutoMapper;
+using DotNetCore.CAP;
 using Hao.AppService;
 using Hao.AppService.ViewModel;
-using Hao.AutoMapper;
 using Hao.Core;
 using Hao.Core.Application;
 using Hao.Core.Model;
@@ -26,7 +26,7 @@ namespace Hao.AppService
     public class UserAppService : ApplicationService, IUserAppService
     {
 
-        private IAutoMapper _mapper;
+        private IMapper _mapper;
 
 
         private ISYSUserRepository _userRepository;
@@ -36,7 +36,7 @@ namespace Hao.AppService
         private IHostingEnvironment _hostingEnvironment;
 
 
-        public UserAppService(ISYSUserRepository userRepository, IAutoMapper mapper, ICapPublisher publisher, IHostingEnvironment hostingEnvironment)
+        public UserAppService(ISYSUserRepository userRepository, IMapper mapper, ICapPublisher publisher, IHostingEnvironment hostingEnvironment)
         {
             _userRepository = userRepository;
             _mapper = mapper;

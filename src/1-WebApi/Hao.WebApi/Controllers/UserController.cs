@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using Hao.Core.Model;
-using Hao.AutoMapper;
 using System.IO;
 using System.Net.Http;
 using System.Net;
@@ -18,6 +17,7 @@ using Hao.Utility;
 using Microsoft.AspNetCore.Hosting;
 using System.Web;
 using System.Text;
+using AutoMapper;
 
 namespace Hao.WebApi
 {
@@ -28,12 +28,12 @@ namespace Hao.WebApi
     {
         private IUserAppService _userAppService;
 
-        private IAutoMapper _mapper;
+        private IMapper _mapper;
 
 
         private IHostingEnvironment _hostingEnvironment;
 
-        public UserController(IHostingEnvironment hostingEnvironment,IAutoMapper mapper,IUserAppService userService, IConfiguration config, ICurrentUser currentUser) : base(config, currentUser)
+        public UserController(IHostingEnvironment hostingEnvironment,IMapper mapper,IUserAppService userService, IConfiguration config, ICurrentUser currentUser) : base(config, currentUser)
         {
             _userAppService = userService;
             _currentUser = currentUser;
