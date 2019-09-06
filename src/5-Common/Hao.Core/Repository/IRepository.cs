@@ -12,21 +12,21 @@ namespace Hao.Core.Repository
     /// 仓储通用接口类
     /// </summary>
     /// <typeparam name="T">泛型实体类</typeparam>
-    public interface IRepository<T,Key> where T : Entity<Key>, new()
+    public interface IRepository<T,TKey> where T : Entity<TKey>, new()
     {
         /// <summary>
         /// 根据主键值查询单条数据
         /// </summary>
         /// <param name="pkValue">主键值</param>
         /// <returns>泛型实体</returns>
-        Task<T> GetAysnc(Key pkValue);
+        Task<T> GetAysnc(TKey pkValue);
 
         /// <summary>
         /// 根据主键值查询多条数据
         /// </summary>
         /// <param name="pkValue">主键值</param>
         /// <returns>泛型实体</returns>
-        Task<List<T>> GetListAysnc(List<Key> pkValues);
+        Task<List<T>> GetListAysnc(List<TKey> pkValues);
 
         /// <summary>
         /// 查询所有数据（未删除）
@@ -69,7 +69,7 @@ namespace Hao.Core.Repository
         /// </summary>
         /// <param name="entity">实体类</param>
         /// <returns></returns>
-        Task<Key> InsertAysnc(T entity);
+        Task<TKey> InsertAysnc(T entity);
 
         /// <summary>
         /// 异步写入实体数据(多条)
@@ -90,14 +90,14 @@ namespace Hao.Core.Repository
         /// </summary>
         /// <param name="pkValue">实体类</param>
         /// <returns></returns>
-        Task<bool> DeleteAysnc(Key pkValue);
+        Task<bool> DeleteAysnc(TKey pkValue);
 
         /// <summary>
         /// 异步删除数据
         /// </summary>
         /// <param name="pkValues">实体类</param>
         /// <returns></returns>
-        Task<bool> DeleteAysnc(List<Key> pkValues);
+        Task<bool> DeleteAysnc(List<TKey> pkValues);
 
         /// <summary>
         /// 异步删除数据(多条)

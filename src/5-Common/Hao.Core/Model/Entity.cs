@@ -5,11 +5,11 @@ using System.Text;
 
 namespace Hao.Core.Model
 {
-    public abstract class Entity<Key> : IEntity<Key>, IsCreateAudited, IsModifyAudited, IsSoftDelete
+    public abstract class Entity<TKey> : IEntity<TKey>, IsCreateAudited, IsModifyAudited, IsSoftDelete
     {
 
         [SugarColumn(IsPrimaryKey = true)]
-        public Key ID { get; set; }
+        public TKey ID { get; set; }
 
         public long? CreaterID { get; set; }
         public DateTime? CreateTime { get; set; }
