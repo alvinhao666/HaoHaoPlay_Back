@@ -16,6 +16,8 @@ namespace Hao.Library
         public const string E005004 = "两次输入的密码不相同";
         public const string E005005 = "用户名或密码错误";
         public const string E005006 = "用户未登录";
+        public const string E005007 = "请选择要上传的Excel文件";
+        public const string E005008 = "只能上传Excel格式文件";
     }
 
     public static class StringExtensions

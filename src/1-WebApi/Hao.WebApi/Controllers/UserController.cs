@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Hao.AppService;
 using Hao.AppService.ViewModel;
@@ -10,6 +11,7 @@ using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using Hao.Core.Model;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Net;
 using System.Net.Http.Headers;
@@ -18,6 +20,11 @@ using Microsoft.AspNetCore.Hosting;
 using System.Web;
 using System.Text;
 using AutoMapper;
+using Hao.FileHelper;
+using Hao.Library;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Internal;
+using OfficeOpenXml;
 
 namespace Hao.WebApi
 {
@@ -102,7 +109,6 @@ namespace Hao.WebApi
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
-        [Authorize(Roles ="admin")]
         public async Task<UserVMOut> GetCurrentUser() => await _userAppService.GetCurrentUser();
 
 
@@ -122,6 +128,76 @@ namespace Hao.WebApi
             var response = await DownFile(filePath, fileName);
 
             return response;
+        }
+
+
+        [HttpPost]
+        public async Task ImportUsers([FromForm] IFormCollection formCollection)
+        {
+            if (formCollection?.Files == null)
+            {
+                throw new HException(ErrorCode.E005007,nameof(ErrorCode.E005007).GetCode());
+            }
+            //可能上传多个excel文件
+            FormFileCollection files = (FormFileCollection)formCollection.Files;
+            
+            //格式限制
+            var allowType = new string[] { "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"};
+            
+            if (files.Any(b => !allowType.Contains(b.ContentType)))
+            {
+                throw new HException(ErrorCode.E005008,nameof(ErrorCode.E005008).GetCode());
+            }
+            
+//            //大小限制
+//            if (files.Sum(b => b.Length) >= 1024 * 1024 * 4)
+//            {
+//                return Json(new { isSuccess = false, message = "上传文件的总大小只能在4M以下" }, "text/html");
+//            }
+
+            foreach (IFormFile file in files)
+            {
+                StreamReader reader = new StreamReader(file.OpenReadStream());
+                String content = reader.ReadToEnd();
+                String name = file.FileName;
+
+                string rootPath = new DirectoryInfo(_hostingEnvironment.WebRootPath).Parent.Parent.FullName + $"/ImportFile/Excel/";
+                
+                if (!HFile.IsExistDirectory(rootPath))
+                    HFile.CreateDirectory(rootPath);
+                string filePath = Path.Combine(rootPath, $"{name}");
+                
+                using (FileStream fs = System.IO.File.Create(filePath))
+                {
+                    // 复制文件
+                    file.CopyTo(fs);
+                    // 清空缓冲区数据
+                    fs.Flush();
+                }
+                
+                List<UserVMIn> users=new List<UserVMIn>();
+                
+                using (ExcelPackage ep = new ExcelPackage(new FileInfo(filePath)))
+                {
+                    foreach (var ws in ep.Workbook.Worksheets)
+                    {
+                        int colStart = ws.Dimension.Start.Column;  //工作区开始列,start=1
+                        int colEnd = ws.Dimension.End.Column;       //工作区结束列
+                        int rowStart = ws.Dimension.Start.Row;       //工作区开始行号,start=1
+                        int rowEnd = ws.Dimension.End.Row;       //工作区结束行号
+                    
+                        for (int i = rowStart + 1; i <= rowEnd; i++) //第1行是列名,跳过
+                        {
+                            var user=new UserVMIn();
+                            user.UserName = ws.Cells[i, colStart].Text;
+                            user.LoginName=ws.Cells[i, colStart+1].Text;
+                            user.Password = ws.Cells[i, colStart + 2].Text;
+                            users.Add(user);
+                        }
+                    }
+                }
+                await _userAppService.AddUsers(users);
+            }
         }
     }
 }
