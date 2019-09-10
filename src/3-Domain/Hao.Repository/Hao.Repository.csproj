@@ -10,7 +10,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\5-Common\Hao.Core\Hao.Core.csproj" />
-    <ProjectReference Include="..\..\5-Common\Hao.Utility\Hao.Utility.csproj" />
     <ProjectReference Include="..\Hao.Model\Hao.Model.csproj" />
   </ItemGroup>
 

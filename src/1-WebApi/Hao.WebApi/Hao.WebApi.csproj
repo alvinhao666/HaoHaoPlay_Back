@@ -17,8 +17,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\2-Application\Hao.AppService\Hao.AppService.csproj" />
-    <ProjectReference Include="..\..\4-Infrastructure\Hao.Library\Hao.Library.csproj" />
-    <ProjectReference Include="..\..\5-Common\Hao.Encrypt\Hao.Encrypt.csproj" />
   </ItemGroup>
 
 </Project>
