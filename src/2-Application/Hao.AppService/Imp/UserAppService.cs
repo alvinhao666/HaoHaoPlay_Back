@@ -78,6 +78,23 @@ namespace Hao.AppService
             user.Password = EncryptProvider.HMACSHA256(user.Password, "haohaoplay");
             return await _userRepository.InsertAysnc(user);
         }
+        
+        
+        /// <summary>
+        /// 添加用户
+        /// </summary>
+        /// <param name="vm"></param>
+        /// <returns></returns>
+        public async Task AddUsers(List<UserVMIn> vms)
+        {
+            var users = _mapper.Map<List<SYSUser>>(vms);
+            foreach (var user in users)
+            {
+                user.FirstNameSpell = HUtil.GetInitialSpell(user.UserName.ToCharArray()[0].ToString());
+                user.Password = EncryptProvider.HMACSHA256(user.Password, "haohaoplay");
+            }
+            await _userRepository.InsertAysnc(users);
+        }
 
         /// <summary>
         /// 获取用户列表
