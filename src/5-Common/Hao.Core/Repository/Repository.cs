@@ -52,7 +52,7 @@ namespace Hao.Core.Repository
         /// </summary>s
         /// <param name="pkValue">主键值</param>
         /// <returns>泛型实体</returns>
-        public async Task<T> GetAysnc(TKey pkValue)
+        public virtual async Task<T> GetAysnc(TKey pkValue)
         {
             var entity = await Task.Factory.StartNew(() => _db.Queryable<T>().Where(a => a.IsDeleted == false).InSingle(pkValue));
             return entity;
@@ -63,7 +63,7 @@ namespace Hao.Core.Repository
         /// </summary>s
         /// <param name="pkValues">主键值</param>
         /// <returns>泛型实体</returns>
-        public async Task<List<T>> GetListAysnc(List<TKey> pkValues)
+        public virtual async Task<List<T>> GetListAysnc(List<TKey> pkValues)
         {
             //Type type = typeof(T); 类型判断，主要包括 is 和 typeof 两个操作符及对象实例上的 GetType 调用。这是最轻型的消耗，可以无需考虑优化问题。注意 typeof 运算符比对象实例上的 GetType 方法要快，只要可能则优先使用 typeof 运算符。 
             return await _db.Queryable<T>().In(pkValues)
@@ -84,7 +84,7 @@ namespace Hao.Core.Repository
         /// 查询所有数据（未删除）
         /// </summary>
         /// <returns></returns>
-        public async Task<List<T>> GetListAysnc()
+        public virtual async Task<List<T>> GetListAysnc()
         {
             return await _db.Queryable<T>()
                         .Where(a => a.IsDeleted == false)
@@ -96,7 +96,7 @@ namespace Hao.Core.Repository
         /// 查询所有数据
         /// </summary>
         /// <returns></returns>
-        public async Task<List<T>> GetAllAysnc()
+        public virtual async Task<List<T>> GetAllAysnc()
         {
             return await _db.Queryable<T>()
                         .OrderBy(a => a.CreateTime, OrderByType.Desc)
@@ -108,7 +108,7 @@ namespace Hao.Core.Repository
         /// </summary>
         /// <param name="querys"></param>
         /// <returns></returns>
-        public async Task<List<T>> GetListAysnc(List<IConditionalModel> conditions, Expression<Func<T, object>> expression = null, OrderByType orderType = OrderByType.Asc)
+        public virtual async Task<List<T>> GetListAysnc(List<IConditionalModel> conditions, Expression<Func<T, object>> expression = null, OrderByType orderType = OrderByType.Asc)
         {
             return await _db.Queryable<T>().Where(conditions)
                                     .Where(a => a.IsDeleted == false)
@@ -122,7 +122,7 @@ namespace Hao.Core.Repository
         /// </summary>
         /// <param name="querys"></param>
         /// <returns></returns>
-        public async Task<List<T>> GetAllAysnc(List<IConditionalModel> conditions, Expression<Func<T, object>> expression = null,OrderByType orderType = OrderByType.Asc)
+        public virtual async Task<List<T>> GetAllAysnc(List<IConditionalModel> conditions, Expression<Func<T, object>> expression = null,OrderByType orderType = OrderByType.Asc)
         {
             return await _db.Queryable<T>().Where(conditions)
                                     .OrderByIF(expression == null, a => a.CreateTime, OrderByType.Desc)
@@ -135,7 +135,7 @@ namespace Hao.Core.Repository
         /// </summary>
         /// <param name="querys"></param>
         /// <returns></returns>
-        public async Task<List<T>> GetListAysnc(Query<T> query)
+        public virtual async Task<List<T>> GetListAysnc(Query<T> query)
         {
             bool flag = string.IsNullOrWhiteSpace(query.OrderFileds);
             return await _db.Queryable<T>().Where(query.Conditions)
@@ -150,7 +150,7 @@ namespace Hao.Core.Repository
         /// </summary>
         /// <param name="querys"></param>
         /// <returns></returns>
-        public async Task<PagedList<T>> GetPagedListAysnc(Query<T> query)
+        public virtual async Task<PagedList<T>> GetPagedListAysnc(Query<T> query)
         {
             int totalNumber = 0;
             bool flag = string.IsNullOrWhiteSpace(query.OrderFileds);
@@ -176,7 +176,7 @@ namespace Hao.Core.Repository
         /// </summary>
         /// <param name="entity">实体类</param>
         /// <returns></returns>
-        public async Task<TKey> InsertAysnc(T entity)
+        public virtual async Task<TKey> InsertAysnc(T entity)
         {
             Type type = typeof(T);
             bool isGuid = typeof(TKey) == typeof(Guid);
@@ -200,7 +200,7 @@ namespace Hao.Core.Repository
         /// </summary>
         /// <param name="entities">实体类</param>
         /// <returns></returns>
-        public async Task<bool> InsertAysnc(List<T> entities)
+        public virtual async Task<bool> InsertAysnc(List<T> entities)
         {
             bool isGuid = typeof(TKey) == typeof(Guid);
             Type type = typeof(T);
@@ -224,7 +224,7 @@ namespace Hao.Core.Repository
         /// </summary>
         /// <param name="entity">实体类</param>
         /// <returns></returns>
-        public async Task<bool> DeleteAysnc(T entity)
+        public virtual async Task<bool> DeleteAysnc(T entity)
         {
             entity.LastModifyUserID = _currentUser.UserID;
             entity.LastModifyTime = DateTime.Now;
@@ -237,7 +237,7 @@ namespace Hao.Core.Repository
         /// </summary>
         /// <param name="pkValue">实体类</param>
         /// <returns></returns>
-        public async Task<bool> DeleteAysnc(TKey pkValue)
+        public virtual async Task<bool> DeleteAysnc(TKey pkValue)
         {
             return await _db.Updateable<T>(new { LastModifyTime = DateTime.Now, LastModifyUserID = _currentUser.UserID, IsDeleted = true })
                         .Where($"ID='{pkValue}'").ExecuteCommandAsync() > 0;
@@ -249,7 +249,7 @@ namespace Hao.Core.Repository
         /// </summary>
         /// <param name="pkValues">实体类</param>
         /// <returns></returns>
-        public async Task<bool> DeleteAysnc(List<TKey> pkValues)
+        public virtual async Task<bool> DeleteAysnc(List<TKey> pkValues)
         {
             return await _db.Updateable<T>(new { LastModifyTime = DateTime.Now, LastModifyUserID = _currentUser.UserID, IsDeleted = true })
                     .Where(it => pkValues.Contains(it.ID)).ExecuteCommandAsync() > 0;
@@ -260,7 +260,7 @@ namespace Hao.Core.Repository
         /// </summary>
         /// <param name="entities">实体类</param>
         /// <returns></returns>
-        public async Task<bool> DeleteAysnc(List<T> entities)
+        public virtual async Task<bool> DeleteAysnc(List<T> entities)
         {
             DateTime timeNow = DateTime.Now;
             entities.ForEach(item =>
@@ -277,7 +277,7 @@ namespace Hao.Core.Repository
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public async Task<bool> UpdateAsync(T entity)
+        public virtual async Task<bool> UpdateAsync(T entity)
         {
             entity.LastModifyUserID = _currentUser.UserID;
             entity.LastModifyTime = DateTime.Now;
@@ -289,7 +289,7 @@ namespace Hao.Core.Repository
         /// </summary>
         /// <param name="entities">实体类</param>
         /// <returns></returns>
-        public async Task<bool> UpdateAsync(List<T> entities)
+        public virtual async Task<bool> UpdateAsync(List<T> entities)
         {
             DateTime timeNow = DateTime.Now;
             entities.ForEach(item =>
