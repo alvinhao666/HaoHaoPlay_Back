@@ -62,5 +62,33 @@ namespace Hao.AppService
 
             }
         }
+
+
+        //public override string QuerySql
+        //{
+        //    get
+        //    {
+        //        StringBuilder sb = new StringBuilder(" 1=1 ");
+
+
+        //        if (!string.IsNullOrWhiteSpace(Code))
+        //            sb.Append($" And st.Code like '%{Code}%'");
+
+        //        if (!string.IsNullOrWhiteSpace(Name))
+        //            sb.Append($" And st.Name like '%{Name}%'");
+
+        //        if (!string.IsNullOrWhiteSpace(Gender))
+        //            sb.Append($" And st.Gender like '%{Gender}%'");
+
+        //        if (!string.IsNullOrWhiteSpace(Mobile))
+        //            sb.Append($" And st.Mobile like'%{Mobile}%'");
+
+        //        if (Sta.HasValue)
+        //            sb.Append($" And st.Status={(int)Sta}");
+
+
+        //        return sb.ToString();
+        //    }
+        //}
     }
 }
