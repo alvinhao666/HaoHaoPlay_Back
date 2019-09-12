@@ -220,7 +220,10 @@ namespace haohaoplay.Web.Host
             #endregion
 
             #region Session 获取当前用户
-            services.AddSession();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromSeconds(10);//设置session的过期时间
+            });
 
             //services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>(); //即使service使用了单例模式，但是在多线程的情况下，HttpContextAccessor不会出现线程同步问题。// .net core 2.2不需要
 
