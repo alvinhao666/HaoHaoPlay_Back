@@ -48,12 +48,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Properties\PublishProfiles\" />
-  </ItemGroup>
-  <ItemGroup>
     <None Remove="Properties\PublishProfiles\FolderProfile 2.pubxml" />
     <None Remove="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Remove="Properties\PublishProfiles\FolderProfile 3.pubxml" />
     <None Remove="Properties\PublishProfiles\FolderProfile 1.pubxml" />
+    <None Remove="Properties\PublishProfiles\FolderProfile 4.pubxml" />
+    <None Remove="Properties\PublishProfiles\FolderProfile 6.pubxml" />
   </ItemGroup>
 </Project>

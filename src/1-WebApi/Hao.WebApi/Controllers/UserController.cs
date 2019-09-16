@@ -112,22 +112,39 @@ namespace Hao.WebApi
         public async Task<UserVMOut> GetCurrentUser() => await _userAppService.GetCurrentUser();
 
 
+//        /// <summary>
+//        /// 导出用户
+//        /// </summary>
+//        /// <param name="query"></param>
+//        /// <returns></returns>
+//        [HttpGet]
+//        [NoGlobalResult]
+//        public async Task<HttpResponseMessage> ExportUsers([FromQuery]UserQueryInput query)
+//        {
+//            string fileName = await _userAppService.ExportUsers(_mapper.Map<UserQuery>(query));
+//
+//            string filePath = Path.Combine(new DirectoryInfo(_hostingEnvironment.ContentRootPath).Parent.FullName + "/ExportFile/Excel/", $"{fileName}");
+//
+//            var response = await DownFile(filePath, fileName);
+//
+//            return response;
+//        }
+        
         /// <summary>
         /// 导出用户
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
         [HttpGet]
-        [NoGlobalResult]
-        public async Task<HttpResponseMessage> ExportUsers([FromQuery]UserQueryInput query)
+        public async Task<object> ExportUsers([FromQuery]UserQueryInput query)
         {
             string fileName = await _userAppService.ExportUsers(_mapper.Map<UserQuery>(query));
 
-            string filePath = Path.Combine(new DirectoryInfo(_hostingEnvironment.WebRootPath).Parent.Parent.FullName + "/ExportFile/Excel/", $"{fileName}");
+//            string filePath = Path.Combine(new DirectoryInfo(_hostingEnvironment.ContentRootPath).Parent.FullName + "/ExportFile/Excel/", $"{fileName}");
 
-            var response = await DownFile(filePath, fileName);
+//            var response = await DownFile(filePath, fileName);
 
-            return response;
+            return new {FileName = fileName};
         }
 
 
@@ -161,7 +178,7 @@ namespace Hao.WebApi
                 String content = reader.ReadToEnd();
                 String name = file.FileName;
 
-                string rootPath = new DirectoryInfo(_hostingEnvironment.WebRootPath).Parent.Parent.FullName + $"/ImportFile/Excel/";
+                string rootPath = new DirectoryInfo(_hostingEnvironment.ContentRootPath).Parent.FullName + $"/ImportFile/Excel/";
                 
                 if (!HFile.IsExistDirectory(rootPath))
                     HFile.CreateDirectory(rootPath);

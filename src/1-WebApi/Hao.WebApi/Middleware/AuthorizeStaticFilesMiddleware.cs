@@ -21,7 +21,7 @@ namespace Hao.WebApi
         public async Task Invoke(HttpContext context)
         {
 
-            if (!context.Request.Headers.ContainsKey("token"))
+            if (!context.Request.Query.ContainsKey("Authorization"))
             {
                 throw new HException(ErrorCode.E100001, nameof(ErrorCode.E100001).GetCode());
             }
