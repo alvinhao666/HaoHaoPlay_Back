@@ -30,7 +30,10 @@
     <PackageReference Include="DotNetCore.CAP.MySql" Version="2.6.0" />
     <PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="2.6.0" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="8.4.0" />
-    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.App">
+      <PrivateAssets Condition="'%(PackageReference.Version)' == ''">all</PrivateAssets>
+      <Publish Condition="'%(PackageReference.Version)' == ''">true</Publish>
+    </PackageReference>
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.WebApiCompatShim" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Caching.Redis" Version="2.2.0" />
@@ -44,4 +47,12 @@
     <ProjectReference Include="..\5-Common\Hao.SqlSugarExtensions\Hao.SqlSugarExtensions.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Properties\PublishProfiles\FolderProfile 2.pubxml" />
+    <None Remove="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <None Remove="Properties\PublishProfiles\FolderProfile 3.pubxml" />
+    <None Remove="Properties\PublishProfiles\FolderProfile 1.pubxml" />
+    <None Remove="Properties\PublishProfiles\FolderProfile 4.pubxml" />
+    <None Remove="Properties\PublishProfiles\FolderProfile 6.pubxml" />
+  </ItemGroup>
 </Project>
