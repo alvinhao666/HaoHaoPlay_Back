@@ -19,7 +19,7 @@ namespace Hao.Core
         private static int ErrorCode { get; set; } = -3;
 
         /// <summary>
-        /// 重写参数验证基类（不通过抛异常）
+        /// 重写参数验证基类
         /// </summary>
         public override ValidationResult Validate(ValidationContext<T> context)
         {
