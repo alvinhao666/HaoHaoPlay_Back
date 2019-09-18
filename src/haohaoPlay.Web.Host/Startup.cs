@@ -324,7 +324,7 @@ namespace haohaoplay.Web.Host
 
             #region 文件
             //文件访问权限
-            app.UseWhen(a => a.Request.Path.Value.Contains("ExportExcel") || a.Request.Path.Value.Contains("ExportWord"), b => b.UseMiddleware<AuthorizeStaticFilesMiddleware>());
+            app.UseWhen(a => a.Request.Path.Value.Contains("ExportExcel") || a.Request.Path.Value.Contains("ExportWord") || a.Request.Path.Value.Contains("template"), b => b.UseMiddleware<AuthorizeStaticFilesMiddleware>());
             app.UseStaticFiles();//使用默认文件夹wwwroot
             //导出excel路径
             var exportExcelPath = Path.Combine(new DirectoryInfo(Directory.GetCurrentDirectory()).Parent.FullName, "ExportFile/Excel");
