@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\netcoreapp2.2\haohaoPlay.Web.Host.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\netcoreapp2.2\HaoHaoPlay.WebHost.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

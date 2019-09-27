@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29215.179
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{094FBA78-1265-4B2A-A7C6-46B8AD420D1B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "haohaoplay.Web.Host", "src\haohaoPlay.Web.Host\haohaoplay.Web.Host.csproj", "{FBCDB9EF-8EB3-444F-BD0E-85F9DC81A900}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HaoHaoPlay.WebHost", "src\HaoHaoPlay.WebHost\HaoHaoPlay.WebHost.csproj", "{FBCDB9EF-8EB3-444F-BD0E-85F9DC81A900}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1-WebApi", "1-WebApi", "{68CCE9AA-0E76-4F43-9C77-1AC05A755176}"
 EndProject

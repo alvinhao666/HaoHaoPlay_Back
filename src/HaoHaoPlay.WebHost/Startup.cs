@@ -45,7 +45,7 @@ using Microsoft.Extensions.Caching.Redis;
 using Microsoft.Extensions.Caching.Distributed;
 using AutoMapper;
 
-namespace haohaoplay.Web.Host
+namespace HaoHaoPlay.WebHost
 {
     public class Startup
     {
@@ -80,15 +80,15 @@ namespace haohaoplay.Web.Host
                 c.SwaggerDoc("v1", new Info
                 {
                     Version = "v1",
-                    Title = "haohaoplay接口文档",
-                    Description = "haohaoplay Restful Api 接口说明",
+                    Title = "接口文档",
+                    Description = "接口说明",
                     Contact = new Contact
                     {
                         Name = "rongguohao",
                         Email = "843468011@qq.com"
                     }
                 });
-                //c.IncludeXmlComments(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "haohaoplay.Web.Host.xml"));
+                //c.IncludeXmlComments(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "HaoHaoPlay.WebHost.xml"));
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);

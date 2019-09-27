@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "haohaoplay.Web.Host": {
+    "HaoHaoPlay.WebHost": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",

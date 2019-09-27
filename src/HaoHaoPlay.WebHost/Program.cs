@@ -8,23 +8,19 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace haohaoplay.Web.Host
+namespace HaoHaoPlay.WebHost
 {
     public class Program
     {
         public static void Main(string[] args)
         {
-            CreateWebHostBuilder(args)
-                .UseUrls("http://*:8000")
-                .UseKestrel()
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseIISIntegration()
-                .UseStartup<Startup>()
-                .Build().Run();
+            CreateWebHostBuilder(args).Build().Run();
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)  //默认的builder 读取配置文件
-                .UseStartup<Startup>();
+            WebHost.CreateDefaultBuilder(args)
+            .UseUrls("http://*:8000")
+            .UseKestrel()
+            .UseStartup<Startup>();
     }
 }
