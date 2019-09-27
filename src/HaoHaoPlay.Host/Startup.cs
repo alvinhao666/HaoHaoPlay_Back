@@ -45,7 +45,7 @@ using Microsoft.Extensions.Caching.Redis;
 using Microsoft.Extensions.Caching.Distributed;
 using AutoMapper;
 
-namespace HaoHaoPlay.WebHost
+namespace HaoHaoPlay.Host
 {
     public class Startup
     {
