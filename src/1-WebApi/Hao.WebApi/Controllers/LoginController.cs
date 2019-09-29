@@ -67,17 +67,15 @@ namespace Hao.WebApi
 
 
             var timeNow = DateTime.Now;
-            //var validFrom = timeNow.Ticks;
-
+            var validFrom = timeNow.Ticks;
             var claims = new Claim[]
             {
                 new Claim(JwtRegisteredClaimNames.Sub,"hao"), //主题
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()), //针对当前 token 的唯一标识
                 new Claim(JwtRegisteredClaimNames.Sid, user.ID.ToString()),
-                // new Claim(JwtRegisteredClaimNames.Typ, body.Platform.ToString()),
-                //new Claim(JwtRegisteredClaimNames.Exp, timeNow.AddMinutes(5).Ticks.ToString(), ClaimValueTypes.Integer64),
-                //new Claim(JwtRegisteredClaimNames.Iat, validFrom.ToString(), ClaimValueTypes.Integer64), //token 创建时间
-                //new Claim(JwtRegisteredClaimNames.Nbf, validFrom.ToString(), ClaimValueTypes.Integer64)
+                new Claim(JwtRegisteredClaimNames.Exp, timeNow.AddDays(3).Ticks.ToString(), ClaimValueTypes.Integer64),
+                new Claim(JwtRegisteredClaimNames.Iat, validFrom.ToString(), ClaimValueTypes.Integer64), //token 创建时间
+                new Claim(JwtRegisteredClaimNames.Nbf, validFrom.ToString(), ClaimValueTypes.Integer64)
             };
             var jwt = new JwtSecurityToken(
                 issuer: _jwtOptions.Issuer,
