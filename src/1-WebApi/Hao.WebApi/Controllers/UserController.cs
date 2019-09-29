@@ -22,6 +22,7 @@ using System.Text;
 using AutoMapper;
 using Hao.FileHelper;
 using Hao.Library;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
 using OfficeOpenXml;
@@ -39,13 +40,17 @@ namespace Hao.WebApi
 
 
         private IHostingEnvironment _hostingEnvironment;
+        
+        private readonly ITimeLimitedDataProtector _protector;
 
-        public UserController(IHostingEnvironment hostingEnvironment,IMapper mapper,IUserAppService userService, IConfiguration config, ICurrentUser currentUser) : base(config, currentUser)
+        public UserController(IDataProtectionProvider provider,IHostingEnvironment hostingEnvironment,IMapper mapper,IUserAppService userService, IConfiguration config, ICurrentUser currentUser) : base(config, currentUser)
         {
             _userAppService = userService;
             _currentUser = currentUser;
             _mapper = mapper;
             _hostingEnvironment = hostingEnvironment;
+            _protector = provider.CreateProtector("fileName")
+                .ToTimeLimitedDataProtector();
         }
 
         /// <summary>
@@ -144,7 +149,8 @@ namespace Hao.WebApi
 
 //            var response = await DownFile(filePath, fileName);
 
-            return new {FileName = fileName};
+            return new {FileName = fileName,FileId= _protector.Protect(fileName.Split('.')[0], 
+                TimeSpan.FromMinutes(10))};
         }
 
 

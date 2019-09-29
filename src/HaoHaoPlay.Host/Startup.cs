@@ -258,6 +258,8 @@ namespace HaoHaoPlay.Host
             })));
             #endregion
 
+            services.AddDataProtection();
+
 
             #region Autofac
             var builder = new ContainerBuilder();//实例化 AutoFac  容器   
