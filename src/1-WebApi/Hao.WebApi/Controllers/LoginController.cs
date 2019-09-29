@@ -89,18 +89,13 @@ namespace Hao.WebApi
 
             user.JwtToken = encodedJwt;
 
-            var cacheValue = await RedisHelper.GetAsync(_config["LoginCachePrefix"] + user.ID.ToString());
+            var cacheString = await RedisHelper.GetAsync(_config["LoginCachePrefix"] + user.ID.ToString());
+
             RedisCacheUser cacheUser = new RedisCacheUser();
-            if (cacheValue != null)
+
+            if (cacheString != null)
             {
-                try
-                {
-                    cacheUser = JsonExtensions.DeserializeFromJson<RedisCacheUser>(cacheValue);
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogInformation(new LogInfo() { Method = "Login", Argument = ex, Description = "登录异常" }.ToString());
-                }
+                cacheUser = JsonExtensions.DeserializeFromJson<RedisCacheUser>(cacheString);
             }
 
             var ip = HttpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault();
