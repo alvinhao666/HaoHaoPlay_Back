@@ -84,7 +84,7 @@ namespace Hao.WebApi
                 audience: _jwtOptions.Audience,
                 claims: claims,
                 notBefore:timeNow, //生效时间
-                expires: timeNow.AddMinutes(1),//过期时间
+                expires: timeNow.AddDays(3),//过期时间
                 signingCredentials: _jwtOptions.SigningKey
             );
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
