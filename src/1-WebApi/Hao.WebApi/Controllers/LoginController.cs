@@ -106,11 +106,10 @@ namespace Hao.WebApi
             }
 
             var ip = HttpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault();
-            if (string.IsNullOrEmpty(ip))
+            if (string.IsNullOrWhiteSpace(ip))
             {
                 ip = HttpContext.Connection.RemoteIpAddress.ToString();
             }
-
             await _userAppService.UpdateLoginTimeAndIP(user.ID.Value, DateTime.Now, ip);
 
             //存入redis
