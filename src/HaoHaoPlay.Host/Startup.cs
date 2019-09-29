@@ -335,15 +335,6 @@ namespace HaoHaoPlay.Host
                 FileProvider = new PhysicalFileProvider(exportExcelPath),
                 RequestPath = "/ExportExcel",
             });
-            //导出word路径
-            var exportWordPath = Path.Combine(new DirectoryInfo(Directory.GetCurrentDirectory()).Parent.FullName, "ExportFile/Word");
-            if (!HFile.IsExistDirectory(exportWordPath))
-                HFile.CreateDirectory(exportWordPath);
-            app.UseStaticFiles(new StaticFileOptions()
-            {
-                FileProvider = new PhysicalFileProvider(exportWordPath),
-                RequestPath = "/ExportWord",
-            });
             #endregion
 
             #region 获取客户端ip
