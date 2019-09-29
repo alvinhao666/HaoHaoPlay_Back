@@ -44,6 +44,7 @@ using CSRedis;
 using Microsoft.Extensions.Caching.Redis;
 using Microsoft.Extensions.Caching.Distributed;
 using AutoMapper;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace HaoHaoPlay.Host
 {
@@ -334,6 +335,10 @@ namespace HaoHaoPlay.Host
             {
                 FileProvider = new PhysicalFileProvider(exportExcelPath),
                 RequestPath = "/ExportExcel",
+                ContentTypeProvider = new FileExtensionContentTypeProvider(new Dictionary<string, string>
+                {
+                    { ".xlsx","application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}
+                })
             });
             #endregion
 
