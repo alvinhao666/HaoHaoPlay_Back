@@ -224,6 +224,7 @@ namespace HaoHaoPlay.Host
 
             services.AddMvc(x =>
             {
+                x.Filters.Add(typeof(HValidationFilter));
                 x.Filters.Add(typeof(HResultFilter));
             })
             .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)

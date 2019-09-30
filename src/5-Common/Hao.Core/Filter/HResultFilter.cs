@@ -12,7 +12,7 @@ namespace Hao.Core.Filter
     /// <summary>
     /// 全局过滤器，默认将返回值作为BaseResponse中的Data属性
     /// </summary>
-    public class HResultFilter : ResultFilterAttribute
+    public class HResultFilter : ResultFilterAttribute,IResultFilter
     {
         public override void OnResultExecuting(ResultExecutingContext context)
         {
@@ -22,19 +22,7 @@ namespace Hao.Core.Filter
 
                 if (!descriptor.MethodInfo.CustomAttributes.Any(x => x.AttributeType == typeof(NoHResultAttribute)))
                 {
-                    if (!context.ModelState.IsValid)
-                    {
-                        var error = context.ModelState.Values.SelectMany(x => x.Errors.Select(p => p.ErrorMessage)).FirstOrDefault();
-                        var response = new BaseResponse
-                        {
-                            Success = false,
-                            Data = null,
-                            ErrorCode = -1,
-                            ErrorMsg = error
-                        };
-                        context.Result = new JsonResult(response);
-                    }
-                    else 
+                    if(!(context.Result is JsonResult))
                     {
                         var response = new BaseResponse
                         {
