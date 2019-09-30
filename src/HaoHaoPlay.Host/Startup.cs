@@ -199,23 +199,7 @@ namespace HaoHaoPlay.Host
             #region 模型验证
             services.Configure<ApiBehaviorOptions>(options =>
             {
-                options.InvalidModelStateResponseFactory = (context) =>
-                {
-                    var error = context.ModelState
-                        .Values
-                        .SelectMany(x => x.Errors
-                                    .Select(p => p.ErrorMessage))
-                        .FirstOrDefault();
-
-                    var result = new BaseResponse()
-                    {
-                        Success = false,
-                        ErrorCode = nameof(ErrorCode.E100010).GetCode(),
-                        ErrorMsg = error
-                    };
-
-                    return new ObjectResult(result);
-                };
+                options.SuppressModelStateInvalidFilter = true;
             });
 
             #endregion
@@ -240,7 +224,7 @@ namespace HaoHaoPlay.Host
 
             services.AddMvc(x =>
             {
-                x.Filters.Add(typeof(GlobalResultFilter));
+                x.Filters.Add(typeof(HResultFilter));
             })
             .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
             .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UserVMInValidator>()) //模型验证
@@ -336,7 +320,7 @@ namespace HaoHaoPlay.Host
             app.UseStaticFiles(new StaticFileOptions()
             {
                 FileProvider = new PhysicalFileProvider(exportExcelPath),
-                RequestPath = "/ExportExcel"
+                RequestPath = "/ExportExcel",
                 ContentTypeProvider = new FileExtensionContentTypeProvider(new Dictionary<string, string>
                 {
                     { ".xlsx","application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}

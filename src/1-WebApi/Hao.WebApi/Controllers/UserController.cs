@@ -59,7 +59,7 @@ namespace Hao.WebApi
         /// <param name="body"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<long> Post([FromBody]UserVMIn vm) => await _userAppService.AddUser(vm);
+        public async Task Post([FromBody]UserVMIn vm) => await _userAppService.AddUser(vm);
 
         /// <summary>
         /// 查询用户列表

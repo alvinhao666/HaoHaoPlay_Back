@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Hao.Core
 {
-    public class NoGlobalResultAttribute: Attribute
+    public class NoHResultAttribute : Attribute
     {
     }
 }
