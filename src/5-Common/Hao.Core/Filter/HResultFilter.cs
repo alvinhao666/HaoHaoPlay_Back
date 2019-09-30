@@ -10,28 +10,37 @@ using System.Text;
 namespace Hao.Core.Filter
 {
     /// <summary>
-    /// 全局过滤器，默认将返回值作为BaseResponse中的Data属性
+    /// 全局过滤器
     /// </summary>
     public class HResultFilter : ResultFilterAttribute,IResultFilter
     {
         public override void OnResultExecuting(ResultExecutingContext context)
         {
-            if (context.ActionDescriptor is ControllerActionDescriptor)
+//            if (context.ActionDescriptor is ControllerActionDescriptor)
+//            {
+//                var descriptor = context.ActionDescriptor as ControllerActionDescriptor;
+//
+//                if (descriptor != null && descriptor.MethodInfo.CustomAttributes.All(x => x.AttributeType != typeof(NoHResultAttribute)))
+//                {
+//                    if(!(context.Result is JsonResult))
+//                    {
+//                        var response = new BaseResponse
+//                        {
+//                            Success = true,
+//                            Data = context.Result is EmptyResult ? null : (context.Result as ObjectResult)?.Value
+//                        };
+//                        context.Result = new JsonResult(response);
+//                    }
+//                }
+//            }
+            if(!(context.Result is JsonResult))
             {
-                var descriptor = context.ActionDescriptor as ControllerActionDescriptor;
-
-                if (!descriptor.MethodInfo.CustomAttributes.Any(x => x.AttributeType == typeof(NoHResultAttribute)))
+                var response = new BaseResponse
                 {
-                    if(!(context.Result is JsonResult))
-                    {
-                        var response = new BaseResponse
-                        {
-                            Success = true,
-                            Data = context.Result is EmptyResult ? null : (context.Result as ObjectResult).Value
-                        };
-                        context.Result = new JsonResult(response);
-                    }
-                }
+                    Success = true,
+                    Data = context.Result is EmptyResult ? null : (context.Result as ObjectResult)?.Value
+                };
+                context.Result = new JsonResult(response);
             }
             base.OnResultExecuting(context);
         }
