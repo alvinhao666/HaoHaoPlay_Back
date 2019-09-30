@@ -11,9 +11,7 @@ namespace Hao.WebApi
     {
         public UserVMInValidator()
         {
-            RuleFor(x => x.Email)
-                    .NotEmpty()
-                    .WithMessage("FirstName is mandatory.");
+            RuleFor(x => x.Email).NotEmpty().WithMessage("邮箱不能为空");
         }
     }
 }
