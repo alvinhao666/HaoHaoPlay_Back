@@ -22,7 +22,6 @@ namespace Hao.Core.Filter
 
                 if (!descriptor.MethodInfo.CustomAttributes.Any(x => x.AttributeType == typeof(NoHResultAttribute)))
                 {
-                    var result = context.Result;
                     if (!context.ModelState.IsValid)
                     {
                         var error = context.ModelState.Values.SelectMany(x => x.Errors.Select(p => p.ErrorMessage)).FirstOrDefault();
@@ -37,7 +36,7 @@ namespace Hao.Core.Filter
                     }
                     else 
                     {
-                        if (result is EmptyResult)
+                        if (context.Result is EmptyResult)
                         {
                             context.Result = new ObjectResult(null);
                         }
