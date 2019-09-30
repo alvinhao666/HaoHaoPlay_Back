@@ -37,7 +37,7 @@ namespace Hao.WebApi
 
             var path = context.Request.Path.ToString();
 
-            if (!path.Contains($"{fileId}.xlsx"))
+            if (!path.Contains($"{fileId}"))
             {
                 throw new HException(ErrorCode.E100001, nameof(ErrorCode.E100001).GetCode());
             }

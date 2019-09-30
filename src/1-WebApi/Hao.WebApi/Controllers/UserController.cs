@@ -150,7 +150,7 @@ namespace Hao.WebApi
 //            var response = await DownFile(filePath, fileName);
 
             return new {FileName = fileName,FileId= _protector.Protect(fileName.Split('.')[0], 
-                TimeSpan.FromMinutes(10))};
+                TimeSpan.FromSeconds(5))};
         }
 
 

@@ -336,7 +336,7 @@ namespace HaoHaoPlay.Host
             app.UseStaticFiles(new StaticFileOptions()
             {
                 FileProvider = new PhysicalFileProvider(exportExcelPath),
-                RequestPath = "/ExportExcel",
+                RequestPath = "/ExportExcel"
                 ContentTypeProvider = new FileExtensionContentTypeProvider(new Dictionary<string, string>
                 {
                     { ".xlsx","application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}
