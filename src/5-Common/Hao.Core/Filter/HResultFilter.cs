@@ -36,14 +36,10 @@ namespace Hao.Core.Filter
                     }
                     else 
                     {
-                        if (context.Result is EmptyResult)
-                        {
-                            context.Result = new ObjectResult(null);
-                        }
                         var response = new BaseResponse
                         {
                             Success = true,
-                            Data = (context.Result as ObjectResult).Value,
+                            Data = context.Result is EmptyResult ? null : (context.Result as ObjectResult).Value
                         };
                         context.Result = new JsonResult(response);
                     }
