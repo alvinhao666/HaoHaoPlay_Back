@@ -36,8 +36,6 @@ namespace Hao.WebApi
             var fileId = _protector.Unprotect(context.Request.Query["FileId"].ToString());
             var path = context.Request.Path.ToString();
             var pathbase = context.Request.PathBase.ToString();
-            Console.WriteLine(path);
-            Console.WriteLine(pathbase);
             if (!path.Contains($"{fileId}.xlsx"))
             {
                 throw new HException("不存在", nameof(ErrorCode.E100001).GetCode());
