@@ -12,6 +12,7 @@ namespace Hao.Core.Repository
     /// 仓储通用接口类
     /// </summary>
     /// <typeparam name="T">泛型实体类</typeparam>
+    /// <typeparam name="TKey"></typeparam>
     public interface IRepository<T,TKey> where T : Entity<TKey>, new()
     {
         /// <summary>
@@ -24,7 +25,7 @@ namespace Hao.Core.Repository
         /// <summary>
         /// 根据主键值查询多条数据
         /// </summary>
-        /// <param name="pkValue">主键值</param>
+        /// <param name="pkValues"></param>
         /// <returns>泛型实体</returns>
         Task<List<T>> GetListAysnc(List<TKey> pkValues);
 
@@ -116,7 +117,7 @@ namespace Hao.Core.Repository
         /// <summary>
         /// 异步更新实体数据(多条)
         /// </summary>
-        /// <param name="entity"></param>
+        /// <param name="entities"></param>
         /// <returns></returns>
         Task<bool> UpdateAsync(List<T> entities);
     }

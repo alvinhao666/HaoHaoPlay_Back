@@ -7,18 +7,11 @@ using Hao.Core.AppController;
 using Hao.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using Hao.Core.Model;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
-using System.Net;
-using System.Net.Http.Headers;
-using Hao.Utility;
 using Microsoft.AspNetCore.Hosting;
-using System.Web;
-using System.Text;
 using AutoMapper;
 using Hao.FileHelper;
 using Hao.Library;
@@ -34,12 +27,11 @@ namespace Hao.WebApi
     [Route("[controller]/[action]")]
     public class UserController: HController
     {
-        private IUserAppService _userAppService;
+        private readonly  IUserAppService _userAppService;
 
-        private IMapper _mapper;
-
-
-        private IHostingEnvironment _hostingEnvironment;
+        private readonly IMapper _mapper;
+        
+        private readonly IHostingEnvironment _hostingEnvironment;
         
         private readonly ITimeLimitedDataProtector _protector;
 

@@ -3,11 +3,8 @@ using Hao.Core.Dependency;
 using SqlSugar;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
-using Hao.Core;
 using Hao.Core.Query;
-using System.Linq;
 using System.Linq.Expressions;
 using Snowflake.Core;
 using Microsoft.Extensions.Configuration;
@@ -16,33 +13,28 @@ namespace Hao.Core.Repository
 {
     public abstract class Repository<T, TKey> : IRepository<T, TKey>, ITransientDependency where T : Entity<TKey>, new()
     {
-        private ISqlSugarClient _db;
+        private readonly ISqlSugarClient _db;
 
-        private static IdWorker _worker = null;
+        private static  IdWorker _worker ;
 
         // 定义一个标识确保线程同步
-        private static readonly object _padlock = new object();
+        private static readonly object _workerLocker = new object();
 
-        private IConfiguration _config;
-
-        private ICurrentUser _currentUser;
+        private readonly ICurrentUser _currentUser;
         public Repository(ISqlSugarClient db, ICurrentUser user, IConfiguration config)
         {
             _db = db;
             _currentUser = user;
-            _config = config;
             // 当第一个线程运行到这里时，此时会对locker对象 "加锁"，
             // 当第二个线程运行该方法时，首先检测到locker对象为"加锁"状态，该线程就会挂起等待第一个线程解锁
             // lock语句运行完之后（即线程运行完之后）会对该对象"解锁"
-            if (_worker == null)
+            if (_worker != null) return;
+            lock (_workerLocker)
             {
-                lock (_padlock)
+                // 如果类的实例不存在则创建，否则直接返回
+                if (_worker == null)
                 {
-                    // 如果类的实例不存在则创建，否则直接返回
-                    if (_worker == null)
-                    {
-                        _worker = new IdWorker(_config["Snowflake:WorkerID"].ObjToInt(), _config["Snowflake:DataCenterID"].ObjToInt());
-                    }
+                    _worker = new IdWorker(config["Snowflake:WorkerID"].ObjToInt(), config["Snowflake:DataCenterID"].ObjToInt());
                 }
             }
         }
@@ -106,7 +98,9 @@ namespace Hao.Core.Repository
         /// <summary>
         /// 根据条件查询所有数据（未删除）
         /// </summary>
-        /// <param name="querys"></param>
+        /// <param name="conditions"></param>
+        /// <param name="expression"></param>
+        /// <param name="orderType"></param>
         /// <returns></returns>
         public virtual async Task<List<T>> GetListAysnc(List<IConditionalModel> conditions, Expression<Func<T, object>> expression = null, OrderByType orderType = OrderByType.Asc)
         {
@@ -120,7 +114,9 @@ namespace Hao.Core.Repository
         /// <summary>
         /// 根据条件查询所有数据
         /// </summary>
-        /// <param name="querys"></param>
+        /// <param name="conditions"></param>
+        /// <param name="expression"></param>
+        /// <param name="orderType"></param>
         /// <returns></returns>
         public virtual async Task<List<T>> GetAllAysnc(List<IConditionalModel> conditions, Expression<Func<T, object>> expression = null,OrderByType orderType = OrderByType.Asc)
         {
@@ -133,7 +129,7 @@ namespace Hao.Core.Repository
         /// <summary>
         /// 根据条件查询所有数据
         /// </summary>
-        /// <param name="querys"></param>
+        /// <param name="query"></param>
         /// <returns></returns>
         public virtual async Task<List<T>> GetListAysnc(Query<T> query)
         {
@@ -148,7 +144,7 @@ namespace Hao.Core.Repository
         /// <summary>
         /// 根据条件查询所有分页数据
         /// </summary>
-        /// <param name="querys"></param>
+        /// <param name="query"></param>
         /// <returns></returns>
         public virtual async Task<PagedList<T>> GetPagedListAysnc(Query<T> query)
         {
@@ -158,15 +154,15 @@ namespace Hao.Core.Repository
                                             .Where(a => a.IsDeleted == false)
                                             .OrderByIF(flag, a => a.CreateTime, OrderByType.Desc)
                                             .OrderByIF(!flag, query.OrderFileds)
-                                            .ToPageList(query.PageIndex.Value, query.PageSize.Value, ref totalNumber));
+                                            .ToPageList(query.PageIndex, query.PageSize, ref totalNumber));
 
             PagedList<T> pageList = new PagedList<T>()
             {
                 Items = items,
                 TotalCount = totalNumber,
-                PageIndex = query.PageIndex.Value,
-                PageSize = query.PageSize.Value,
-                TotalPagesCount = (totalNumber + query.PageSize.Value - 1) / query.PageSize.Value
+                PageIndex = query.PageIndex,
+                PageSize = query.PageSize,
+                TotalPagesCount = (totalNumber + query.PageSize - 1) / query.PageSize
             };
             return pageList;
         }
@@ -183,9 +179,10 @@ namespace Hao.Core.Repository
             var id = type.GetProperty("ID");
 
             if (isGuid)
-                id.SetValue(entity, Guid.NewGuid());
-            else
-                id.SetValue(entity, _worker.NextId());
+            {
+                if (id != null) id.SetValue(entity, Guid.NewGuid());
+            }
+            else if (id != null) id.SetValue(entity, _worker.NextId());
 
             entity.CreaterID = _currentUser.UserID;
             entity.CreateTime = DateTime.Now;
@@ -209,9 +206,11 @@ namespace Hao.Core.Repository
             entities.ForEach(item =>
             {
                 if (isGuid)
-                    id.SetValue(item, Guid.NewGuid());
-                else
-                    id.SetValue(item, _worker.NextId());
+                {
+                    if (id != null) id.SetValue(item, Guid.NewGuid());
+                }
+                else if (id != null) id.SetValue(item, _worker.NextId());
+
                 item.CreaterID = _currentUser.UserID;
                 item.CreateTime = timeNow;
                 item.IsDeleted = false;

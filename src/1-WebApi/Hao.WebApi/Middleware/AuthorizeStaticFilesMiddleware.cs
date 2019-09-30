@@ -20,8 +20,7 @@ namespace Hao.WebApi
         public AuthorizeStaticFilesMiddleware( RequestDelegate next,IDataProtectionProvider provider)
         {
             _next = next;
-            _protector = provider.CreateProtector("fileName")
-                .ToTimeLimitedDataProtector();
+            _protector = provider.CreateProtector("fileName").ToTimeLimitedDataProtector();
         }
 
         public async Task Invoke(HttpContext context)
