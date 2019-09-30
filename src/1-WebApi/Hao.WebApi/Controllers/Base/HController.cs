@@ -71,7 +71,8 @@ namespace Hao.Core.AppController
                     Argument = new
                     {
                         TraceIdentifier = traceId,
-                        Arguments = context.ActionArguments
+                        HttpContext.Request.Query,
+                        HttpContext.Request.Body
                     },
                     Description = "用户未登录"
                 });
@@ -87,7 +88,8 @@ namespace Hao.Core.AppController
                 {
                     TraceIdentifier = traceId,
                     UserId = userId.Value,
-                    Arguments = context.ActionArguments
+                    HttpContext.Request.Query,
+                    HttpContext.Request.Body
                 },
                 Description = "获取jwt用户信息"
             });
