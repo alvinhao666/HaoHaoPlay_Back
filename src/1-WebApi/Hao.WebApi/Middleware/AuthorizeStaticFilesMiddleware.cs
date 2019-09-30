@@ -34,11 +34,12 @@ namespace Hao.WebApi
             }
             
             var fileId = _protector.Unprotect(context.Request.Query["FileId"].ToString());
+
             var path = context.Request.Path.ToString();
-            var pathbase = context.Request.PathBase.ToString();
+
             if (!path.Contains($"{fileId}.xlsx"))
             {
-                throw new HException("不存在", nameof(ErrorCode.E100001).GetCode());
+                throw new HException(ErrorCode.E100001, nameof(ErrorCode.E100001).GetCode());
             }
 
             // 验证用户信息 //TODO
