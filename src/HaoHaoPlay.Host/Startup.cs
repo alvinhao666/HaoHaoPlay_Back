@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.Swagger;
 using SqlSugar;
 using Autofac;
@@ -35,8 +32,6 @@ using Hao.AppService;
 using Hao.Event;
 using Hao.SqlSugarExtensions;
 using FluentValidation.AspNetCore;
-using FluentValidation;
-using Hao.AppService.ViewModel;
 using Microsoft.Extensions.FileProviders;
 using Hao.FileHelper;
 using Newtonsoft.Json.Serialization;
@@ -50,13 +45,13 @@ namespace HaoHaoPlay.Host
 {
     public class Startup
     {
-        private const string SecretKey = "U8p6i6EQZg9sfxlN";
+        private const string ESecretKey = "U8p6i6EQZg9sfxlN";
 
-        private readonly SymmetricSecurityKey _signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(SecretKey));
+        private readonly SymmetricSecurityKey _signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(ESecretKey));
 
-        public IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
 
-        public IContainer ApplicationContainer { get; private set; }
+        private IContainer ApplicationContainer { get; set; }
 
 
         public Startup(IHostingEnvironment env)
@@ -64,13 +59,11 @@ namespace HaoHaoPlay.Host
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true) // 在运行时修改强类型配置，无需设置reloadOnChange = true,默认就为true,只需要使用IOptionsSnapshot接口,IOptions<> 生命周期为Singleton,IOptionsSnapshot<> 生命周期为Scope
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)  //没有的话 默认读取appsettings.json
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)  // 没有的话 默认读取appsettings.json
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
         }
-
-
-        // This method gets called by the runtime. Use this method to add services to the container.
+        
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             #region DeBug
@@ -145,10 +138,10 @@ namespace HaoHaoPlay.Host
                 c.InstanceName = "HaoHaoPlayInstance";
             });
 
-            var csredis = new CSRedisClient("127.0.0.1:6379,abortConnect=false,connectRetry=3,connectTimeout=3000,defaultDatabase=1,syncTimeout=3000,version=3.2.1,responseTimeout=3000");
+            var csRedis = new CSRedisClient("127.0.0.1:6379,abortConnect=false,connectRetry=3,connectTimeout=3000,defaultDatabase=1,syncTimeout=3000,version=3.2.1,responseTimeout=3000");
 
             //初始化 RedisHelper
-            RedisHelper.Initialization(csredis);
+            RedisHelper.Initialization(csRedis);
 
             services.AddSingleton<IDistributedCache>(new CSRedisCache(RedisHelper.Instance)); //利用分布式缓存
                                                                                               //现在,ASP.NET Core引入了IDistributedCache分布式缓存接口，它是一个相当基本的分布式缓存标准API，可以让您对它进行编程，然后无缝地插入第三方分布式缓存
@@ -315,22 +308,27 @@ namespace HaoHaoPlay.Host
             app.UseWhen(a => a.Request.Path.Value.Contains("ExportExcel") || a.Request.Path.Value.Contains("template"), b => b.UseMiddleware<AuthorizeStaticFilesMiddleware>());
             app.UseStaticFiles();//使用默认文件夹wwwroot
             //导出excel路径
-            var exportExcelPath = Path.Combine(new DirectoryInfo(Directory.GetCurrentDirectory()).Parent.FullName, "ExportFile/Excel");
-            if (!HFile.IsExistDirectory(exportExcelPath))
-                HFile.CreateDirectory(exportExcelPath);
-            app.UseStaticFiles(new StaticFileOptions()
+            var directoryInfo = new DirectoryInfo(Directory.GetCurrentDirectory()).Parent;
+            if (directoryInfo != null)
             {
-                FileProvider = new PhysicalFileProvider(exportExcelPath),
-                RequestPath = "/ExportExcel",
-                ContentTypeProvider = new FileExtensionContentTypeProvider(new Dictionary<string, string>
+                var exportExcelPath = Path.Combine(directoryInfo.FullName, "ExportFile/Excel");
+                if (!HFile.IsExistDirectory(exportExcelPath))
+                    HFile.CreateDirectory(exportExcelPath);
+                app.UseStaticFiles(new StaticFileOptions()
                 {
-                    { ".xlsx","application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}
-                })
-            });
+                    FileProvider = new PhysicalFileProvider(exportExcelPath),
+                    RequestPath = "/ExportExcel",
+                    ContentTypeProvider = new FileExtensionContentTypeProvider(new Dictionary<string, string>
+                    {
+                        { ".xlsx","application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}
+                    })
+                });
+            }
+
             #endregion
 
             #region 获取客户端ip
-            //nginx 获取ip
+            // Nginx 获取ip
             app.UseForwardedHeaders(new ForwardedHeadersOptions()
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
