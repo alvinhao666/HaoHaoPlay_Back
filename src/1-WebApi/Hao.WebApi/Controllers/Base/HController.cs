@@ -59,9 +59,9 @@ namespace Hao.Core.AppController
 
             var userId = User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sid); //Security Identifiers安全标识符
 
-            var traceId = HttpContext.TraceIdentifier;
-            var path = HttpContext.Request.Path.Value;
-
+            var traceId = context.HttpContext.TraceIdentifier;
+            var path = context.HttpContext.Request.Path.Value;
+            string body = ReadBody(context.HttpContext.Request);
             //用户未登录
             if (userId == null)
             {
@@ -72,11 +72,11 @@ namespace Hao.Core.AppController
                     Argument = new
                     {
                         TraceIdentifier = traceId,
-                        HttpContext.Request.Query,
-                        HttpContext.Request.Body
+                        Query = context.HttpContext.Request.QueryString,
+                        Body = body
                     },
                     Description = "用户未登录"
-                });
+                }); ;
 
                 throw new HException(ErrorCode.E005006, nameof(ErrorCode.E005006).GetCode());
             }
@@ -89,8 +89,8 @@ namespace Hao.Core.AppController
                 {
                     TraceIdentifier = traceId,
                     UserId = userId.Value,
-                    HttpContext.Request.Query,
-                    HttpContext.Request.Body
+                    Query = context.HttpContext.Request.QueryString,
+                    Body = body
                 },
                 Description = "获取jwt用户信息"
             });
@@ -140,7 +140,7 @@ namespace Hao.Core.AppController
 
         private string ReadBody(HttpRequest request)
         {
-            var result = string.Empty;
+            string result = null;
             string method = request.Method.ToLower();
             if (method.Equals("post") || method.Equals("put"))
             {
