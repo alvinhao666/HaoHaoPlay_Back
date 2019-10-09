@@ -18,6 +18,7 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http.Internal;
 
 namespace Hao.Core.AppController
 {
@@ -135,6 +136,28 @@ namespace Hao.Core.AppController
                 return response;
             });
 
+        }
+
+        private string ReadBody(HttpRequest request)
+        {
+            var result = string.Empty;
+            string method = request.Method.ToLower();
+            if (method.Equals("post") || method.Equals("put"))
+            {
+                request.EnableRewind();
+                request.Body.Seek(0, 0);
+                using (var reader = new StreamReader(request.Body, Encoding.UTF8))
+                {
+                    result = reader.ReadToEnd();
+                }
+
+                //Stream stream = request.Body;
+                //byte[] buffer = new byte[request.ContentLength.Value];
+                //stream.Read(buffer, 0, buffer.Length);
+                //var result = Encoding.UTF8.GetString(buffer);
+                return result;
+            }
+            return result;
         }
     }
 
