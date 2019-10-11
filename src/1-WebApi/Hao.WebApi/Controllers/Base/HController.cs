@@ -61,7 +61,7 @@ namespace Hao.Core.AppController
 
             var traceId = context.HttpContext.TraceIdentifier;
             var path = context.HttpContext.Request.Path.Value;
-            string body = ReadBody(context.HttpContext.Request);
+            string body = ReadBodyJson(context.HttpContext.Request);
             //用户未登录
             if (userId == null)
             {
@@ -138,9 +138,8 @@ namespace Hao.Core.AppController
 
         }
 
-        private string ReadBody(HttpRequest request)
+        private string ReadBodyJson(HttpRequest request)
         {
-            string result = null;
             string method = request.Method.ToLower();
             if (method.Equals("post") || method.Equals("put"))
             {
@@ -148,16 +147,15 @@ namespace Hao.Core.AppController
                 request.Body.Seek(0, 0);
                 using (var reader = new StreamReader(request.Body, Encoding.UTF8))
                 {
-                    result = reader.ReadToEnd();
+                    var result = reader.ReadToEnd();
+                    return result;
                 }
-
                 //Stream stream = request.Body;
                 //byte[] buffer = new byte[request.ContentLength.Value];
                 //stream.Read(buffer, 0, buffer.Length);
                 //var result = Encoding.UTF8.GetString(buffer);
-                return result;
             }
-            return result;
+            return null;
         }
     }
 
