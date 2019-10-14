@@ -144,7 +144,7 @@ namespace Hao.Core.AppController
             string result = null;
             var request = context.HttpContext.Request;
             string method = request.Method.ToLower();
-            if (method.Equals("post") || method.Equals("put") || method.Equals("delete"))
+            if (request.Body != null && request.Body.CanRead && (method.Equals("post") || method.Equals("put") || method.Equals("delete")))
             {
                 request.EnableRewind();
                 request.Body.Seek(0, 0);
@@ -153,11 +153,12 @@ namespace Hao.Core.AppController
                     result = reader.ReadToEnd();
                 }
                 var parameters = context.ActionDescriptor.Parameters;
-                var parameter = parameters.FirstOrDefault(a => a.BindingInfo?.BindingSource == BindingSource.Body);
+                var parameter = parameters.Where(a => a.BindingInfo?.BindingSource == BindingSource.Body).FirstOrDefault();
                 if (parameter != null)
                 {
-                    if (!string.IsNullOrWhiteSpace(result) && context.ActionArguments[parameter.Name] == null)
+                    if (!string.IsNullOrWhiteSpace(result) && (context.ActionArguments != null && context.ActionArguments.Count > 0 && context.ActionArguments[parameter.Name] == null))
                     {
+                        throw new HException(ErrorCode.E100011, nameof(ErrorCode.E100011).GetCode());
                     }
                 }
                 return result;
