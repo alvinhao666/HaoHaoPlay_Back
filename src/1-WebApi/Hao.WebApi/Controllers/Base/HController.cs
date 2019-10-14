@@ -77,7 +77,7 @@ namespace Hao.Core.AppController
                         Body = body
                     },
                     Description = "用户未登录"
-                }); ;
+                }); 
 
                 throw new HException(ErrorCode.E005006, nameof(ErrorCode.E005006).GetCode());
             }
@@ -156,6 +156,7 @@ namespace Hao.Core.AppController
                 var parameter = parameters.Where(a => a.BindingInfo?.BindingSource == BindingSource.Body).FirstOrDefault();
                 if (parameter != null && context.ActionArguments != null && !context.ActionArguments.ContainsKey(parameter.Name))
                 {
+                    _logger.Info(new LogInfo() { Method = context.HttpContext.Request.Path.Value, Argument = result, Description = "RequestBodyContent" });
                     throw new HException(ErrorCode.E100011, nameof(ErrorCode.E100011).GetCode());
                 }
                 return result;
