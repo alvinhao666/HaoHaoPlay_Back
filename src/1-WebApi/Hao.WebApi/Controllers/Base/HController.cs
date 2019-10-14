@@ -153,7 +153,7 @@ namespace Hao.Core.AppController
                     result = reader.ReadToEnd();
                 }
                 var parameters = context.ActionDescriptor.Parameters;
-                var parameter = parameters.Where(a => a.BindingInfo.BindingSource == BindingSource.Body).FirstOrDefault();
+                var parameter = parameters.FirstOrDefault(a => a.BindingInfo?.BindingSource == BindingSource.Body);
                 if (parameter != null)
                 {
                     if (!string.IsNullOrWhiteSpace(result) && context.ActionArguments[parameter.Name] == null)
