@@ -154,12 +154,9 @@ namespace Hao.Core.AppController
                 }
                 var parameters = context.ActionDescriptor.Parameters;
                 var parameter = parameters.Where(a => a.BindingInfo?.BindingSource == BindingSource.Body).FirstOrDefault();
-                if (parameter != null)
+                if (parameter != null && context.ActionArguments != null && !context.ActionArguments.ContainsKey(parameter.Name))
                 {
-                    if (!string.IsNullOrWhiteSpace(result) && context.ActionArguments != null && (context.ActionArguments.Count == 0 || context.ActionArguments[parameter.Name] == null))
-                    {
-                        throw new HException(ErrorCode.E100011, nameof(ErrorCode.E100011).GetCode());
-                    }
+                    throw new HException(ErrorCode.E100011, nameof(ErrorCode.E100011).GetCode());
                 }
                 return result;
             }
