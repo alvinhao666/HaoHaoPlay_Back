@@ -25,11 +25,11 @@ namespace Hao.Core.AppController
 {
     public class HController : Controller
     {
-        protected static readonly ILogger _logger = LogManager.GetCurrentClassLogger();
+        private readonly ILogger _logger = LogManager.GetCurrentClassLogger();
 
-        protected IConfiguration _config;
+        private IConfiguration _config;
 
-        protected ICurrentUser _currentUser;
+        private ICurrentUser _currentUser;
 
         public HController(IConfiguration config, ICurrentUser currentUser)
         {

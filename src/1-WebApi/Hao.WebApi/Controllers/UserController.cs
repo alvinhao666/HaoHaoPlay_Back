@@ -38,7 +38,6 @@ namespace Hao.WebApi
         public UserController(IDataProtectionProvider provider,IHostingEnvironment hostingEnvironment,IMapper mapper,IUserAppService userService, IConfiguration config, ICurrentUser currentUser) : base(config, currentUser)
         {
             _userAppService = userService;
-            _currentUser = currentUser;
             _mapper = mapper;
             _hostingEnvironment = hostingEnvironment;
             _protector = provider.CreateProtector("fileName")
