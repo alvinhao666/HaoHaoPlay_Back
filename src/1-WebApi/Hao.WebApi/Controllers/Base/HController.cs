@@ -156,7 +156,7 @@ namespace Hao.Core.AppController
                 var parameter = parameters.Where(a => a.BindingInfo?.BindingSource == BindingSource.Body).FirstOrDefault();
                 if (parameter != null)
                 {
-                    if (!string.IsNullOrWhiteSpace(result) && (context.ActionArguments != null && context.ActionArguments.Count > 0 && context.ActionArguments[parameter.Name] == null))
+                    if (!string.IsNullOrWhiteSpace(result) && context.ActionArguments != null && (context.ActionArguments.Count == 0 || context.ActionArguments[parameter.Name] == null))
                     {
                         throw new HException(ErrorCode.E100011, nameof(ErrorCode.E100011).GetCode());
                     }
