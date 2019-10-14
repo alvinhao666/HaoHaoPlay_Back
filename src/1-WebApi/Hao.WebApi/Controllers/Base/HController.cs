@@ -19,6 +19,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http.Internal;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Hao.Core.AppController
 {
@@ -61,7 +62,7 @@ namespace Hao.Core.AppController
 
             var traceId = context.HttpContext.TraceIdentifier;
             var path = context.HttpContext.Request.Path.Value;
-            string body = ReadBodyJson(context.HttpContext.Request);
+            string body = ReadBodyJson(context);
             //用户未登录
             if (userId == null)
             {
@@ -138,24 +139,30 @@ namespace Hao.Core.AppController
 
         }
 
-        private string ReadBodyJson(HttpRequest request)
+        private string ReadBodyJson(ActionExecutingContext context)
         {
+            string result = null;
+            var request = context.HttpContext.Request;
             string method = request.Method.ToLower();
-            if (method.Equals("post") || method.Equals("put"))
+            if (method.Equals("post") || method.Equals("put") || method.Equals("delete"))
             {
                 request.EnableRewind();
                 request.Body.Seek(0, 0);
                 using (var reader = new StreamReader(request.Body, Encoding.UTF8))
                 {
-                    var result = reader.ReadToEnd();
-                    return result;
+                    result = reader.ReadToEnd();
                 }
-                //Stream stream = request.Body;
-                //byte[] buffer = new byte[request.ContentLength.Value];
-                //stream.Read(buffer, 0, buffer.Length);
-                //var result = Encoding.UTF8.GetString(buffer);
+                var parameters = context.ActionDescriptor.Parameters;
+                var parameter = parameters.Where(a => a.BindingInfo.BindingSource == BindingSource.Body).FirstOrDefault();
+                if (parameter != null)
+                {
+                    if (!string.IsNullOrWhiteSpace(result) && context.ActionArguments[parameter.Name] == null)
+                    {
+                    }
+                }
+                return result;
             }
-            return null;
+            return result;
         }
     }
 
