@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace Hao.Core.AppController
+namespace Hao.WebApi
 {
     public class HController : Controller
     {
@@ -29,12 +29,11 @@ namespace Hao.Core.AppController
 
         private IConfiguration _config;
 
-        private ICurrentUser _currentUser;
+        public ICurrentUser _currentUser { protected get; set; }
 
-        public HController(IConfiguration config, ICurrentUser currentUser)
+        public HController(IConfiguration config)
         {
             _config = config;
-            _currentUser = currentUser;
         }
 
         /// <summary>
@@ -164,5 +163,4 @@ namespace Hao.Core.AppController
             return result;
         }
     }
-
 }

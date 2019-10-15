@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Hao.AppService;
 using Hao.AppService.ViewModel;
-using Hao.Core.AppController;
 using Hao.Core;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -35,7 +34,7 @@ namespace Hao.WebApi
         
         private readonly ITimeLimitedDataProtector _protector;
 
-        public UserController(IDataProtectionProvider provider,IHostingEnvironment hostingEnvironment,IMapper mapper,IUserAppService userService, IConfiguration config, ICurrentUser currentUser) : base(config, currentUser)
+        public UserController(IDataProtectionProvider provider,IHostingEnvironment hostingEnvironment,IMapper mapper,IUserAppService userService, IConfiguration config) : base(config)
         {
             _userAppService = userService;
             _mapper = mapper;

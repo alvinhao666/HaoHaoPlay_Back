@@ -1,5 +1,4 @@
 ﻿using Hao.Core;
-using Hao.Core.AppController;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -10,7 +9,7 @@ namespace Hao.WebApi
 {
     public class AttachmentController : HController
     {
-        public AttachmentController(IConfiguration config, ICurrentUser currentUser) : base( config, currentUser)
+        public AttachmentController(IConfiguration config) : base( config)
         {
         }
     }

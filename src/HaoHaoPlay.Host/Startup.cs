@@ -40,6 +40,9 @@ using Microsoft.Extensions.Caching.Redis;
 using Microsoft.Extensions.Caching.Distributed;
 using AutoMapper;
 using Microsoft.AspNetCore.StaticFiles;
+using System.Linq;
+using Microsoft.AspNetCore.Mvc.Controllers;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace HaoHaoPlay.Host
 {
@@ -205,7 +208,7 @@ namespace HaoHaoPlay.Host
 
             //services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>(); //即使service使用了单例模式，但是在多线程的情况下，HttpContextAccessor不会出现线程同步问题。// .net core 2.2不需要
 
-            services.AddScoped<ICurrentUser, CurrentUser>();
+            //services.AddScoped<ICurrentUser, CurrentUser>();
             #endregion
 
             #region 性能 压缩
@@ -214,6 +217,9 @@ namespace HaoHaoPlay.Host
 
 
             services.AddHttpClient();
+
+            //替换控制器所有者,详见有道笔记,放AddMvc前面
+            services.Replace(ServiceDescriptor.Transient<IControllerActivator, ServiceBasedControllerActivator>());
 
             services.AddMvc(x =>
             {
@@ -239,6 +245,7 @@ namespace HaoHaoPlay.Host
             services.AddDataProtection();
 
 
+
             #region Autofac
             var builder = new ContainerBuilder();//实例化 AutoFac  容器   
 
@@ -248,6 +255,13 @@ namespace HaoHaoPlay.Host
                    .Where(t => t.Name.EndsWith("AppService") || t.Name.EndsWith("Repository"))
                    .Where(m => typeof(ITransientDependency).IsAssignableFrom(m) && m != typeof(ITransientDependency))
                    .AsImplementedInterfaces().InstancePerLifetimeScope();
+
+
+            builder.RegisterType<CurrentUser>().As<ICurrentUser>().InstancePerLifetimeScope();
+
+            var controllersTypesInAssembly = typeof(HController).Assembly.GetExportedTypes()
+                .Where(type => typeof(Controller).IsAssignableFrom(type)).ToArray();
+            builder.RegisterTypes(controllersTypesInAssembly).PropertiesAutowired();
 
             builder.Populate(services);
             ApplicationContainer = builder.Build();
