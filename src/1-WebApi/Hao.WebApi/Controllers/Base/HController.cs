@@ -136,19 +136,19 @@ namespace Hao.WebApi
 
         private string ReadBodyJson(ActionExecutingContext context)
         {
-            string result = null;
             var request = context.HttpContext.Request;
             string method = request.Method.ToLower();
             if (request.Body != null && request.Body.CanRead && (method.Equals("post") || method.Equals("put") || method.Equals("delete")))
             {
                 request.EnableRewind();
                 request.Body.Seek(0, 0);
+                string result = null;
                 using (var reader = new StreamReader(request.Body, Encoding.UTF8))
                 {
                     result = reader.ReadToEnd();
                 }
                 var parameters = context.ActionDescriptor.Parameters;
-                var parameter = parameters.Where(a => a.BindingInfo?.BindingSource == BindingSource.Body).FirstOrDefault();
+                var parameter = parameters.FirstOrDefault(a => a.BindingInfo?.BindingSource == BindingSource.Body);
                 if (parameter != null && context.ActionArguments != null && !context.ActionArguments.ContainsKey(parameter.Name))
                 {
                     _logger.Info(new LogInfo() { Method = context.HttpContext.Request.Path.Value, Argument = result, Description = "RequestBodyContent" });
@@ -156,7 +156,7 @@ namespace Hao.WebApi
                 }
                 return result;
             }
-            return result;
+            return null;
         }
     }
 }
