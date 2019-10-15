@@ -12,7 +12,7 @@ namespace Hao.Repository
 {
     public class SYSUserRepository : Repository<SYSUser,long>, ISYSUserRepository
     {
-        public SYSUserRepository(ISqlSugarClient dbContext, ICurrentUser currentUser, IConfiguration config) : base(dbContext, currentUser,config)
+        public SYSUserRepository(IConfiguration config) : base(config)
         {
         }
 

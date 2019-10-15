@@ -254,7 +254,7 @@ namespace HaoHaoPlay.Host
                     Assembly.Load("Hao.Repository"))
                    .Where(t => t.Name.EndsWith("AppService") || t.Name.EndsWith("Repository"))
                    .Where(m => typeof(ITransientDependency).IsAssignableFrom(m) && m != typeof(ITransientDependency))
-                   .AsImplementedInterfaces().InstancePerLifetimeScope();
+                   .AsImplementedInterfaces().InstancePerLifetimeScope().PropertiesAutowired();
 
             
             #region 属性注入

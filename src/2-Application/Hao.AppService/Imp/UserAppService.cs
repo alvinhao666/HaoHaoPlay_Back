@@ -35,7 +35,6 @@ namespace Hao.AppService
 
         private IHostingEnvironment _hostingEnvironment;
 
-
         public UserAppService(ISYSUserRepository userRepository, IMapper mapper, ICapPublisher publisher, IHostingEnvironment hostingEnvironment)
         {
             _userRepository = userRepository;

@@ -29,7 +29,7 @@ namespace Hao.WebApi
 
         private IConfiguration _config;
 
-        public ICurrentUser _currentUser { protected get; set; }
+        public ICurrentUser _currentUser { get;  set; }
 
         public HController(IConfiguration config)
         {
