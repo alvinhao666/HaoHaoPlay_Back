@@ -208,7 +208,7 @@ namespace HaoHaoPlay.Host
 
             //services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>(); //即使service使用了单例模式，但是在多线程的情况下，HttpContextAccessor不会出现线程同步问题。// .net core 2.2不需要
 
-            //services.AddScoped<ICurrentUser, CurrentUser>();
+            services.AddScoped<ICurrentUser, CurrentUser>();
             #endregion
 
             #region 性能 压缩
@@ -245,7 +245,6 @@ namespace HaoHaoPlay.Host
             services.AddDataProtection();
 
 
-
             #region Autofac
             var builder = new ContainerBuilder();//实例化 AutoFac  容器   
 
@@ -258,8 +257,6 @@ namespace HaoHaoPlay.Host
 
             
             #region 属性注入
-            builder.RegisterType<CurrentUser>().As<ICurrentUser>().InstancePerLifetimeScope();
-
             var controllersTypesInAssembly = typeof(HController).Assembly.GetExportedTypes()
                 .Where(type => typeof(Controller).IsAssignableFrom(type)).ToArray();
             builder.RegisterTypes(controllersTypesInAssembly).PropertiesAutowired();
