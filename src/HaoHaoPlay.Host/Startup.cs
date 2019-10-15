@@ -91,12 +91,6 @@ namespace HaoHaoPlay.Host
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
             });
-
-            //跨域
-            var corsUrls = Configuration["Cors"].Split(',');
-            services.AddCors(options =>
-            options.AddPolicy("AllowOrigins",
-            p => p.WithOrigins(corsUrls).AllowAnyMethod().AllowAnyHeader().AllowCredentials())); //AllowAnyOrigin():允许所有来源
 #endif
             #endregion
 
@@ -282,17 +276,7 @@ namespace HaoHaoPlay.Host
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseHsts();
-            }
-
-#if DEBUG
-
+#if DEBUG 
             //配置Swagger
             app.UseSwagger();
             app.UseSwaggerUI(c =>
@@ -301,8 +285,7 @@ namespace HaoHaoPlay.Host
                 c.InjectStylesheet("/css/swagger_ui.css");
             });
 
-            //使用跨域
-            app.UseCors("AllowOrigins");
+            app.UseCors(x => x.AllowAnyHeader().AllowCredentials().AllowAnyMethod().AllowAnyOrigin());
 #endif
             #region 权限
             app.UseAuthentication();//[Authorize]
@@ -360,8 +343,7 @@ namespace HaoHaoPlay.Host
             #region 性能压缩
             app.UseResponseCompression();
             #endregion
-
-
+            
             app.UseMvc();
         }
     }
