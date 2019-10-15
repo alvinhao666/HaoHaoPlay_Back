@@ -256,12 +256,15 @@ namespace HaoHaoPlay.Host
                    .Where(m => typeof(ITransientDependency).IsAssignableFrom(m) && m != typeof(ITransientDependency))
                    .AsImplementedInterfaces().InstancePerLifetimeScope();
 
-
+            
+            #region 属性注入
             builder.RegisterType<CurrentUser>().As<ICurrentUser>().InstancePerLifetimeScope();
 
             var controllersTypesInAssembly = typeof(HController).Assembly.GetExportedTypes()
                 .Where(type => typeof(Controller).IsAssignableFrom(type)).ToArray();
             builder.RegisterTypes(controllersTypesInAssembly).PropertiesAutowired();
+            #endregion
+
 
             builder.Populate(services);
             ApplicationContainer = builder.Build();
