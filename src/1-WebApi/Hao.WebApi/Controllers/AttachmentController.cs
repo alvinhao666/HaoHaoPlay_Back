@@ -9,8 +9,5 @@ namespace Hao.WebApi
 {
     public class AttachmentController : HController
     {
-        public AttachmentController(IConfiguration config) : base( config)
-        {
-        }
     }
 }

@@ -12,10 +12,6 @@ namespace Hao.Repository
 {
     public class SYSUserRepository : Repository<SYSUser,long>, ISYSUserRepository
     {
-        public SYSUserRepository(IConfiguration config) : base(config)
-        {
-        }
-
 
         //public override async Task<PagedList<Student>> GetPagedListAysnc(Query<Student> query)
         //{

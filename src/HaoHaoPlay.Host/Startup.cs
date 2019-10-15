@@ -43,6 +43,7 @@ using Microsoft.AspNetCore.StaticFiles;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Snowflake.Core;
 
 namespace HaoHaoPlay.Host
 {
@@ -149,7 +150,10 @@ namespace HaoHaoPlay.Host
             services.AddSingleton<IDistributedCache>(new CSRedisCache(RedisHelper.Instance)); //利用分布式缓存
                                                                                               //现在,ASP.NET Core引入了IDistributedCache分布式缓存接口，它是一个相当基本的分布式缓存标准API，可以让您对它进行编程，然后无缝地插入第三方分布式缓存
                                                                                               //DistributedCache将拷贝缓存的文件到Slave节点
-            #endregion
+            
+             var redisPrefix= Configuration.GetSection(nameof(RedisPrefix));
+             services.Configure<RedisPrefix>(redisPrefix);
+             #endregion
 
             #region ORM
             services.AddSqlSugarClient(config =>
@@ -217,6 +221,10 @@ namespace HaoHaoPlay.Host
 
 
             services.AddHttpClient();
+            
+            var snowflake= Configuration.GetSection(nameof(SnowflakeIdInfo));
+            var worker =new IdWorker(long.Parse(snowflake[nameof(SnowflakeIdInfo.WorkerId)]), long.Parse(snowflake[nameof(SnowflakeIdInfo.DataCenterId)]));
+            services.AddSingleton(worker);
 
             //替换控制器所有者,详见有道笔记,放AddMvc前面
             services.Replace(ServiceDescriptor.Transient<IControllerActivator, ServiceBasedControllerActivator>());

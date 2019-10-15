@@ -34,7 +34,7 @@ namespace Hao.WebApi
         
         private readonly ITimeLimitedDataProtector _protector;
 
-        public UserController(IDataProtectionProvider provider,IHostingEnvironment hostingEnvironment,IMapper mapper,IUserAppService userService, IConfiguration config) : base(config)
+        public UserController(IDataProtectionProvider provider,IHostingEnvironment hostingEnvironment,IMapper mapper,IUserAppService userService) 
         {
             _userAppService = userService;
             _mapper = mapper;

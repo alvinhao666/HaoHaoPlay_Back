@@ -7,36 +7,16 @@ using System.Threading.Tasks;
 using Hao.Core.Query;
 using System.Linq.Expressions;
 using Snowflake.Core;
-using Microsoft.Extensions.Configuration;
 
 namespace Hao.Core.Repository
 {
     public abstract class Repository<T, TKey> : IRepository<T, TKey>, ITransientDependency where T : Entity<TKey>, new()
     {
         public ISqlSugarClient Db { get; set; }
-
-        private static  IdWorker _worker ;
-
-        // 定义一个标识确保线程同步
-        private static readonly object _workerLocker = new object();
-
+        
         public ICurrentUser CurrentUser { get; set; }
-        public Repository(IConfiguration config)
-        {
-
-            // 当第一个线程运行到这里时，此时会对locker对象 "加锁"，
-            // 当第二个线程运行该方法时，首先检测到locker对象为"加锁"状态，该线程就会挂起等待第一个线程解锁
-            // lock语句运行完之后（即线程运行完之后）会对该对象"解锁"
-            if (_worker != null) return;
-            lock (_workerLocker)
-            {
-                // 如果类的实例不存在则创建，否则直接返回
-                if (_worker == null)
-                {
-                    _worker = new IdWorker(config["Snowflake:WorkerID"].ObjToInt(), config["Snowflake:DataCenterID"].ObjToInt());
-                }
-            }
-        }
+        
+        public IdWorker IdWorker { get; set; }
 
         /// <summary>
         /// 根据主值查询单条数据
@@ -181,7 +161,7 @@ namespace Hao.Core.Repository
             {
                 if (id != null) id.SetValue(entity, Guid.NewGuid());
             }
-            else if (id != null) id.SetValue(entity, _worker.NextId());
+            else if (id != null) id.SetValue(entity, IdWorker.NextId());
 
             entity.CreaterID = CurrentUser.UserID;
             entity.CreateTime = DateTime.Now;
@@ -208,7 +188,7 @@ namespace Hao.Core.Repository
                 {
                     if (id != null) id.SetValue(item, Guid.NewGuid());
                 }
-                else if (id != null) id.SetValue(item, _worker.NextId());
+                else if (id != null) id.SetValue(item, IdWorker.NextId());
 
                 item.CreaterID = CurrentUser.UserID;
                 item.CreateTime = timeNow;

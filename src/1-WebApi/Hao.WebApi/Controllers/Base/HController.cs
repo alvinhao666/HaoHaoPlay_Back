@@ -20,22 +20,18 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Extensions.Options;
 
 namespace Hao.WebApi
 {
     public class HController : Controller
     {
         private readonly ILogger _logger = LogManager.GetCurrentClassLogger();
-
-        private IConfiguration _config;
-
-        public ICurrentUser _currentUser { get;  set; }
-
-        public HController(IConfiguration config)
-        {
-            _config = config;
-        }
-
+        
+        public ICurrentUser CurrentUser { get;  set; }
+        
+        public IOptions<RedisPrefix> RedisPrefix { get; set; }
+        
         /// <summary>
         /// 在进入方法之前 获取用户jwt中用户信息
         /// </summary>
@@ -95,7 +91,7 @@ namespace Hao.WebApi
                 Description = "获取jwt用户信息"
             });
 
-            var value = RedisHelper.Get(_config["LoginCachePrefix"] + userId.Value);
+            var value = RedisHelper.Get(RedisPrefix.Value.LoginInfo + userId.Value);
 
             if (value == null)
             {
@@ -105,8 +101,8 @@ namespace Hao.WebApi
             RedisCacheUser cacheUser = JsonExtensions.DeserializeFromJson<RedisCacheUser>(value);
 
             //当前用户信息
-            _currentUser.UserID = cacheUser.ID;
-            _currentUser.UserName = cacheUser.UserName;
+            CurrentUser.UserID = cacheUser.ID;
+            CurrentUser.UserName = cacheUser.UserName;
 
             base.OnActionExecuting(context);
         }
