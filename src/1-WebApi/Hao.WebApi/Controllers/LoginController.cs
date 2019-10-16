@@ -53,16 +53,14 @@ namespace Hao.WebApi
         [HttpPost]
         public async Task<LoginVMOut> Login([FromBody]UserQueryInput queryInput)
         {
-            var user = new LoginVMOut();
             var query = _mapper.Map<UserQuery>(queryInput);
+            query.Enabled = true;
 
             var rsa = new RSAHelper(RSAType.RSA2, Encoding.UTF8, EPrivateKey);
             string pwd = rsa.Decrypt(query.Password); //解密
 
-            query.Enabled = true;
             query.Password = EncryptProvider.HMACSHA256(pwd, "haohaoplay");
-            user = await _userAppService.Login(query);
-
+            var user = await _userAppService.Login(query);
 
             var timeNow = DateTime.Now;
             var validFrom = timeNow.Ticks;
@@ -71,9 +69,7 @@ namespace Hao.WebApi
                 new Claim(JwtRegisteredClaimNames.Sub,"hao"), //主题
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()), //针对当前 token 的唯一标识
                 new Claim(JwtRegisteredClaimNames.Sid, user.ID.ToString()),
-                new Claim(JwtRegisteredClaimNames.Exp, timeNow.AddDays(3).Ticks.ToString(), ClaimValueTypes.Integer64),
                 new Claim(JwtRegisteredClaimNames.Iat, validFrom.ToString(), ClaimValueTypes.Integer64), //token 创建时间
-                new Claim(JwtRegisteredClaimNames.Nbf, validFrom.ToString(), ClaimValueTypes.Integer64)
             };
             var jwt = new JwtSecurityToken(
                 issuer: _jwtOptions.Issuer,
@@ -87,14 +83,6 @@ namespace Hao.WebApi
 
             user.JwtToken = encodedJwt;
 
-            var cacheString = await RedisHelper.GetAsync(RedisPrefix.Value.LoginInfo + user.ID);
-
-            var cacheUser = new RedisCacheUser();
-
-            if (cacheString != null)
-            {
-                cacheUser = JsonExtensions.DeserializeFromJson<RedisCacheUser>(cacheString);
-            }
 
             var ip = HttpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault();
             if (string.IsNullOrWhiteSpace(ip))
