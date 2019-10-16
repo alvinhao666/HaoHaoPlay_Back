@@ -21,17 +21,18 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json.Linq;
 
 namespace Hao.WebApi
 {
     public class HController : Controller
     {
         private readonly ILogger _logger = LogManager.GetCurrentClassLogger();
-        
-        public ICurrentUser CurrentUser { get;  set; }
-        
+
+        public ICurrentUser CurrentUser { get; set; }
+
         public IOptions<RedisPrefix> RedisPrefix { get; set; }
-        
+
         /// <summary>
         /// 在进入方法之前 获取用户jwt中用户信息
         /// </summary>
@@ -57,26 +58,7 @@ namespace Hao.WebApi
 
             var traceId = context.HttpContext.TraceIdentifier;
             var path = context.HttpContext.Request.Path.Value;
-            string body = ReadBodyJson(context);
-            //用户未登录
-            if (userId == null)
-            {
-                //输入日志
-                _logger.Info(new LogInfo()
-                {
-                    Method = path,
-                    Argument = new
-                    {
-                        TraceIdentifier = traceId,
-                        Query = context.HttpContext.Request.QueryString,
-                        Body = body
-                    },
-                    Description = "用户未登录"
-                }); 
-
-                throw new HException(ErrorCode.E005006, nameof(ErrorCode.E005006).GetCode());
-            }
-
+            var body = ReadBodyJson(context);
 
             _logger.Info(new LogInfo()
             {
@@ -88,7 +70,7 @@ namespace Hao.WebApi
                     Query = context.HttpContext.Request.QueryString,
                     Body = body
                 },
-                Description = "获取jwt用户信息"
+                Description = "请求信息"
             });
 
             var value = RedisHelper.Get(RedisPrefix.Value.LoginInfo + userId.Value);
@@ -98,7 +80,7 @@ namespace Hao.WebApi
                 throw new HException(ErrorCode.E100002, nameof(ErrorCode.E100002).GetCode());
             }
 
-            RedisCacheUser cacheUser = JsonExtensions.DeserializeFromJson<RedisCacheUser>(value);
+            var cacheUser = JsonExtensions.DeserializeFromJson<RedisCacheUser>(value);
 
             //当前用户信息
             CurrentUser.UserID = cacheUser.ID;
@@ -134,11 +116,12 @@ namespace Hao.WebApi
 
         }
 
-        private string ReadBodyJson(ActionExecutingContext context)
+        private JObject ReadBodyJson(ActionExecutingContext context)
         {
             var request = context.HttpContext.Request;
             string method = request.Method.ToLower();
-            if (request.Body != null && request.Body.CanRead && (method.Equals("post") || method.Equals("put") || method.Equals("delete")))
+            if (request.Body != null && request.Body.CanRead && request.ContentType == "application/json"
+                && (method.Equals("post") || method.Equals("put") || method.Equals("delete")))
             {
                 request.EnableRewind();
                 request.Body.Seek(0, 0);
@@ -154,7 +137,11 @@ namespace Hao.WebApi
                     _logger.Info(new LogInfo() { Method = context.HttpContext.Request.Path.Value, Argument = result, Description = "RequestBodyContent" });
                     throw new HException(ErrorCode.E100011, nameof(ErrorCode.E100011).GetCode());
                 }
-                return result;
+                if (!string.IsNullOrWhiteSpace(result))
+                {
+                    return JObject.Parse(result);
+                }
+                return null;
             }
             return null;
         }
