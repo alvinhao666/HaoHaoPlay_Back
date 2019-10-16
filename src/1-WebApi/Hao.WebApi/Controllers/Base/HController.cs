@@ -20,7 +20,7 @@ namespace Hao.WebApi
 {
     public class HController : Controller
     {
-        private readonly ILogger _logger = LogManager.GetCurrentClassLogger();
+        public ILogger Logger { get; set; }
 
         public ICurrentUser CurrentUser { get; set; }
 
@@ -53,7 +53,7 @@ namespace Hao.WebApi
             var path = context.HttpContext.Request.Path.Value;
             var body = ReadBodyJson(context);
 
-            _logger.Info(new LogInfo()
+            Logger.Info(new LogInfo()
             {
                 Method = path,
                 Argument = new
@@ -127,7 +127,7 @@ namespace Hao.WebApi
                 var parameter = parameters.FirstOrDefault(a => a.BindingInfo?.BindingSource == BindingSource.Body);
                 if (parameter != null && context.ActionArguments != null && !context.ActionArguments.ContainsKey(parameter.Name))
                 {
-                    _logger.Info(new LogInfo() { Method = context.HttpContext.Request.Path.Value, Argument = result, Description = "RequestBodyContent" });
+                    Logger.Info(new LogInfo() { Method = context.HttpContext.Request.Path.Value, Argument = result, Description = "RequestBodyContent" });
                     throw new HException(ErrorCode.E100011, nameof(ErrorCode.E100011).GetCode());
                 }
                 if (!string.IsNullOrWhiteSpace(result))

@@ -220,6 +220,9 @@ namespace HaoHaoPlay.Host
             var worker =new IdWorker(long.Parse(snowflake[nameof(SnowflakeIdInfo.WorkerId)]), long.Parse(snowflake[nameof(SnowflakeIdInfo.DataCenterId)]));
             services.AddSingleton(worker);
 
+            var  logger = LogManager.GetCurrentClassLogger();
+            services.AddSingleton<NLog.ILogger>(logger);
+
             //替换控制器所有者,详见有道笔记,放AddMvc前面
             services.Replace(ServiceDescriptor.Transient<IControllerActivator, ServiceBasedControllerActivator>());
 
