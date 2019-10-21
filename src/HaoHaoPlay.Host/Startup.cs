@@ -209,10 +209,6 @@ namespace HaoHaoPlay.Host
             services.AddScoped<ICurrentUser, CurrentUser>();
             #endregion
 
-            #region 性能 压缩
-            services.AddResponseCompression();
-            #endregion
-
 
             services.AddHttpClient();
             
@@ -238,6 +234,12 @@ namespace HaoHaoPlay.Host
                 op.SerializerSettings.ContractResolver = new DefaultContractResolver(); //全局Filter json大小写
             }).AddWebApiConventions();//处理HttpResponseMessage类型返回值的问题
 
+            #region 性能 压缩
+            services.AddResponseCompression();
+            #endregion
+
+            services.AddDataProtection();
+
 
             #region AutoMapper
             services.AddSingleton<IMapper>(new Mapper(new MapperConfiguration(cfg =>
@@ -246,8 +248,6 @@ namespace HaoHaoPlay.Host
                 AutoMapperInitService.InitMap(cfg);
             })));
             #endregion
-
-            services.AddDataProtection();
 
 
             #region Autofac
