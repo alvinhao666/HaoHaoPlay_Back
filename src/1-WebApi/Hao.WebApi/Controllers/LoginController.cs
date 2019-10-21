@@ -35,7 +35,7 @@ namespace Hao.WebApi
 
         public ILogger Logger { get; set; }
 
-        public IOptions<RedisPrefix> RedisPrefix { get; set; }
+        public IOptions<RedisPrefixOptions> RedisPrefix { get; set; }
         
         public LoginController(IOptions<JwtOptions> jwtOptions,IMapper mapper, IUserAppService userService)
         {

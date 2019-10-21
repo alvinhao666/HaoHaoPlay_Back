@@ -1,6 +1,6 @@
 namespace Hao.Core
 {
-    public class SnowflakeIdInfo
+    public class SnowflakeIdOptions
     {
         public int WorkerId { get; set; }
         public int DataCenterId { get; set; }

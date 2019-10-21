@@ -7,7 +7,6 @@ namespace Hao.Library
 {
     public class JwtOptions
     {
-
         public SigningCredentials SigningKey { get; set; }
 
         /// <summary>
@@ -19,5 +18,7 @@ namespace Hao.Library
         /// </summary>
         public string Audience { get; set; }
 
+
+        public string SecretKey { get; set; }
     }
 }

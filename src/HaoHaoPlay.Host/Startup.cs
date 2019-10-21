@@ -49,10 +49,6 @@ namespace HaoHaoPlay.Host
 {
     public class Startup
     {
-        private const string ESecretKey = "U8p6i6EQZg9sfxlN";
-
-        private readonly SymmetricSecurityKey _signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(ESecretKey));
-
         private IConfiguration Configuration { get; }
 
         private IContainer ApplicationContainer { get; set; }
@@ -98,11 +94,13 @@ namespace HaoHaoPlay.Host
             #region Jwt
             var jwtSection = Configuration.GetSection(nameof(JwtOptions));
 
+            var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSection[nameof(JwtOptions.SecretKey)]));
+
             services.Configure<JwtOptions>(options =>
             {
                 options.Audience = jwtSection[nameof(JwtOptions.Audience)];
                 options.Issuer = jwtSection[nameof(JwtOptions.Issuer)];
-                options.SigningKey = new SigningCredentials(_signingKey, SecurityAlgorithms.HmacSha256);
+                options.SigningKey = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
             });
 
             //jwt验证：
@@ -120,7 +118,7 @@ namespace HaoHaoPlay.Host
                     ValidateIssuerSigningKey = true,//是否验证SecurityKey
                     ValidAudience = jwtSection[nameof(JwtOptions.Audience)],//Audience
                     ValidIssuer = jwtSection[nameof(JwtOptions.Issuer)],//Issuer，这两项和前面签发jwt的设置一致
-                    IssuerSigningKey = _signingKey,//拿到SecurityKey
+                    IssuerSigningKey = signingKey,//拿到SecurityKey
                     ValidateLifetime = true,//是否验证失效时间  当设置exp和nbf时有效 同时启用ClockSkew 
                     RequireExpirationTime = true,
                     ClockSkew = TimeSpan.Zero, // ClockSkew 属性，默认是5分钟缓冲。
@@ -145,8 +143,8 @@ namespace HaoHaoPlay.Host
                                                                                               //现在,ASP.NET Core引入了IDistributedCache分布式缓存接口，它是一个相当基本的分布式缓存标准API，可以让您对它进行编程，然后无缝地插入第三方分布式缓存
                                                                                               //DistributedCache将拷贝缓存的文件到Slave节点
             
-             var redisPrefix= Configuration.GetSection(nameof(RedisPrefix));
-             services.Configure<RedisPrefix>(redisPrefix);
+             var redisPrefix= Configuration.GetSection(nameof(RedisPrefixOptions));
+             services.Configure<RedisPrefixOptions>(redisPrefix);
              #endregion
 
             #region ORM
@@ -212,8 +210,8 @@ namespace HaoHaoPlay.Host
 
             services.AddHttpClient();
             
-            var snowflake= Configuration.GetSection(nameof(SnowflakeIdInfo));
-            var worker =new IdWorker(long.Parse(snowflake[nameof(SnowflakeIdInfo.WorkerId)]), long.Parse(snowflake[nameof(SnowflakeIdInfo.DataCenterId)]));
+            var snowflake= Configuration.GetSection(nameof(SnowflakeIdOptions));
+            var worker =new IdWorker(long.Parse(snowflake[nameof(SnowflakeIdOptions.WorkerId)]), long.Parse(snowflake[nameof(SnowflakeIdOptions.DataCenterId)]));
             services.AddSingleton(worker);
 
             var  logger = LogManager.GetCurrentClassLogger();

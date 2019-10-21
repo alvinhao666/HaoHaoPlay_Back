@@ -1,6 +1,6 @@
 namespace Hao.Library
 {
-    public class RedisPrefix
+    public class RedisPrefixOptions
     {
         public string LoginInfo { get; set; }
     }
