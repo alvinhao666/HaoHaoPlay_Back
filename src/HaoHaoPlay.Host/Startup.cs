@@ -134,7 +134,7 @@ namespace HaoHaoPlay.Host
                 c.InstanceName = "HaoHaoPlayInstance";
             });
 
-            var csRedis = new CSRedisClient("127.0.0.1:6379,abortConnect=false,connectRetry=3,connectTimeout=3000,defaultDatabase=1,syncTimeout=3000,version=3.2.1,responseTimeout=3000");
+            var csRedis = new CSRedisClient(Configuration.GetConnectionString("RedisConnection"));
 
             //初始化 RedisHelper
             RedisHelper.Initialization(csRedis);
