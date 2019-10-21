@@ -391,20 +391,19 @@ namespace HaoHaoPlay.Host
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public override Task Challenge(JwtBearerChallengeContext context)
+        public override async Task Challenge(JwtBearerChallengeContext context)
         {
             context.Response.Clear();
             context.Response.StatusCode =StatusCodes.Status200OK;
             context.Response.ContentType = "application/json";
-            BaseResponse response = new BaseResponse()
+            var response = new BaseResponse()
             {
                 Success = false,
                 ErrorCode = nameof(ErrorCode.E100001).GetCode(),
                 ErrorMsg = ErrorCode.E100001
             };
-            context.Response.WriteAsync(JsonConvert.SerializeObject(response));
+            await context.Response.WriteAsync(JsonConvert.SerializeObject(response));
             context.HandleResponse();
-            return Task.CompletedTask;
         }
     }
 }
