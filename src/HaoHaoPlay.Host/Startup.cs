@@ -290,6 +290,11 @@ namespace HaoHaoPlay.Host
 
             app.UseCors(x => x.AllowAnyHeader().AllowCredentials().AllowAnyMethod().AllowAnyOrigin());
 #endif
+            #region 日志
+            loggerFactory.AddNLog();//添加NLog
+            env.ConfigureNLog($"NLog.{env.EnvironmentName}.config");//读取Nlog配置文件
+            #endregion
+
             #region 权限
             app.UseAuthentication();//[Authorize]
             #endregion
@@ -301,14 +306,7 @@ namespace HaoHaoPlay.Host
             #endregion
 
             #region 异常处理
-
-            app.UseGlobalExceptionHandler(LogManager.GetCurrentClassLogger());
-
-            #endregion
-
-            #region 日志
-            loggerFactory.AddNLog();//添加NLog
-            env.ConfigureNLog($"NLog.{env.EnvironmentName}.config");//读取Nlog配置文件
+            app.UseGlobalExceptionHandler();
             #endregion
 
             #region 文件

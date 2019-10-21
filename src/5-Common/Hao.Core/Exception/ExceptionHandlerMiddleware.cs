@@ -21,14 +21,10 @@ namespace Hao.Core
         /// </summary>
         private const string EErrorMsg = "未知错误";
 
-        private static ILogger _log;
-        
-        public static void UseGlobalExceptionHandler(this IApplicationBuilder app, ILogger log)
-        {
-            if (app == null)
-                throw new ArgumentNullException(nameof(app));
+        public static ILogger _log = LogManager.GetCurrentClassLogger();
 
-            _log = log ?? throw new ArgumentNullException(nameof(log));
+        public static void UseGlobalExceptionHandler(this IApplicationBuilder app)
+        {
             try
             {
                 app.UseExceptionHandler(new ExceptionHandlerOptions
@@ -46,7 +42,7 @@ namespace Hao.Core
         {
             context.Response.StatusCode = 200;
             context.Response.ContentType = "application/json";
-            BaseResponse response = new BaseResponse
+            var response = new BaseResponse
             {
                 Success = false,
                 ErrorCode = EErrorCode,
