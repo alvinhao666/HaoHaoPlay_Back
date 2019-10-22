@@ -12,9 +12,8 @@ using Hao.Encrypt;
 using Hao.Library;
 using Hao.Utility;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using NLog;
 
 
 namespace Hao.WebApi
@@ -99,7 +98,7 @@ namespace Hao.WebApi
             };
             await RedisHelper.SetAsync(RedisPrefix.Value.LoginInfo + user.Id, JsonExtensions.SerializeToJson(userValue));
 
-            Logger.LogInformation(new LogInfo() { Method = "Login", Argument = query.LoginName, Description = "登录成功" }.ToString());
+            Logger.Info(new LogInfo() { Method = "Login", Argument = query.LoginName, Description = "登录成功" }.ToString());
 
             return user;
         }
