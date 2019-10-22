@@ -28,7 +28,7 @@ namespace Hao.Library
         /// <returns></returns>
         public static int GetErrorCode(this string errorName)
         {
-            int result = 100000;
+            int result = 0;
             if (!string.IsNullOrWhiteSpace(errorName))
             {
                 int.TryParse(errorName.Substring(1), out result);
