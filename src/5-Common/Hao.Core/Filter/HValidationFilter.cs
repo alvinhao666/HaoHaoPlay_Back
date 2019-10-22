@@ -19,7 +19,6 @@ namespace Hao.Core
                 {
                     Success = false,
                     Data = null,
-                    ErrorCode = -1,
                     ErrorMsg = error
                 };
                 context.Result = new JsonResult(response);
