@@ -9,7 +9,7 @@ namespace Hao.Core.Model
         /// <summary>
         /// 创建人
         /// </summary>
-        long? CreaterID { get; set; }
+        long? CreaterId { get; set; }
 
         /// <summary>
         /// 创建时间

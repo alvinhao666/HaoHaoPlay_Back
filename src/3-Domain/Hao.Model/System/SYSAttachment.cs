@@ -6,12 +6,12 @@ using System.Text;
 
 namespace Hao.Model
 {
-    [SugarTable("SYSAttachment")]
-    public class SYSAttachment:Entity<Guid>
+    [SugarTable("SysAttachment")]
+    public class SysAttachment:Entity<Guid>
     {
-        public new Guid? ID { get; set; }
+        public new Guid? Id { get; set; }
 
-        public string BindTableID { get; set; }
+        public string BindTableId { get; set; }
 
         public string BindTableName { get; set; }
 

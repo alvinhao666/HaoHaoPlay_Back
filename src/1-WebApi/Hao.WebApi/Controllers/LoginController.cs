@@ -67,7 +67,7 @@ namespace Hao.WebApi
             {
                 new Claim(JwtRegisteredClaimNames.Sub,"hao"), //主题
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()), //针对当前 token 的唯一标识
-                new Claim(JwtRegisteredClaimNames.Sid, user.ID.ToString()),
+                new Claim(JwtRegisteredClaimNames.Sid, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Iat, validFrom.ToString(), ClaimValueTypes.Integer64), //token 创建时间
             };
             var jwt = new JwtSecurityToken(
@@ -88,16 +88,16 @@ namespace Hao.WebApi
             {
                 ip = HttpContext.Connection.RemoteIpAddress.ToString();
             }
-            await _userAppService.UpdateLoginTimeAndIP(user.ID.Value, DateTime.Now, ip);
+            await _userAppService.UpdateLoginTimeAndIP(user.Id.Value, DateTime.Now, ip);
 
             //存入redis
             var userValue = new RedisCacheUser
             {
-                ID = user.ID,
+                Id = user.Id,
                 UserName = user.UserName,
                 LoginName = user.LoginName
             };
-            await RedisHelper.SetAsync(RedisPrefix.Value.LoginInfo + user.ID, JsonExtensions.SerializeToJson(userValue));
+            await RedisHelper.SetAsync(RedisPrefix.Value.LoginInfo + user.Id, JsonExtensions.SerializeToJson(userValue));
 
             Logger.LogInformation(new LogInfo() { Method = "Login", Argument = query.LoginName, Description = "登录成功" }.ToString());
 

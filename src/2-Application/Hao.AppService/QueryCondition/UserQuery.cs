@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Hao.AppService
 {
-    public class UserQuery : Query<SYSUser>
+    public class UserQuery : Query<SysUser>
     {
         public string LoginName { get; set; }
 
@@ -35,28 +35,28 @@ namespace Hao.AppService
                 List<IConditionalModel> models = new List<IConditionalModel>();
 
                 if (!string.IsNullOrWhiteSpace(LoginName))
-                    models.Add(new ConditionalModel() { FieldName = nameof(SYSUser.LoginName), ConditionalType = ConditionalType.Equal, FieldValue = LoginName });
+                    models.Add(new ConditionalModel() { FieldName = nameof(SysUser.LoginName), ConditionalType = ConditionalType.Equal, FieldValue = LoginName });
 
                 if (!string.IsNullOrWhiteSpace(Password))
-                    models.Add(new ConditionalModel() { FieldName = nameof(SYSUser.Password), ConditionalType = ConditionalType.Equal, FieldValue = Password });
+                    models.Add(new ConditionalModel() { FieldName = nameof(SysUser.Password), ConditionalType = ConditionalType.Equal, FieldValue = Password });
 
                 if (!string.IsNullOrWhiteSpace(UserName))
-                    models.Add(new ConditionalModel() { FieldName = nameof(SYSUser.UserName), ConditionalType = ConditionalType.Like, FieldValue = UserName });
+                    models.Add(new ConditionalModel() { FieldName = nameof(SysUser.UserName), ConditionalType = ConditionalType.Like, FieldValue = UserName });
 
                 if(!string.IsNullOrWhiteSpace(Phone))
-                    models.Add(new ConditionalModel() { FieldName = nameof(SYSUser.Phone), ConditionalType = ConditionalType.Like, FieldValue = Phone });
+                    models.Add(new ConditionalModel() { FieldName = nameof(SysUser.Phone), ConditionalType = ConditionalType.Like, FieldValue = Phone });
 
                 if (Gender.HasValue)
-                    models.Add(new ConditionalModel() { FieldName = nameof(SYSUser.Gender), ConditionalType = ConditionalType.Equal, FieldValue = ((int)Gender).ToString() });
+                    models.Add(new ConditionalModel() { FieldName = nameof(SysUser.Gender), ConditionalType = ConditionalType.Equal, FieldValue = ((int)Gender).ToString() });
 
                 if (Enabled.HasValue)
-                    models.Add(new ConditionalModel() { FieldName = nameof(SYSUser.Enabled), ConditionalType = ConditionalType.Equal, FieldValue = Convert.ToInt32(Enabled).ToString() });
+                    models.Add(new ConditionalModel() { FieldName = nameof(SysUser.Enabled), ConditionalType = ConditionalType.Equal, FieldValue = Convert.ToInt32(Enabled).ToString() });
 
                 if (LastLoginTimeStart.HasValue)
-                    models.Add(new ConditionalModel() { FieldName = nameof(SYSUser.LastLoginTime), ConditionalType = ConditionalType.GreaterThanOrEqual, FieldValue = LastLoginTimeStart.Value.ToDateString() });
+                    models.Add(new ConditionalModel() { FieldName = nameof(SysUser.LastLoginTime), ConditionalType = ConditionalType.GreaterThanOrEqual, FieldValue = LastLoginTimeStart.Value.ToDateString() });
 
                 if (LastLoginTimeEnd.HasValue)
-                    models.Add(new ConditionalModel() { FieldName = nameof(SYSUser.LastLoginTime), ConditionalType = ConditionalType.LessThanOrEqual, FieldValue = LastLoginTimeEnd.Value.ToDateString() });
+                    models.Add(new ConditionalModel() { FieldName = nameof(SysUser.LastLoginTime), ConditionalType = ConditionalType.LessThanOrEqual, FieldValue = LastLoginTimeEnd.Value.ToDateString() });
 
                 return models;
 

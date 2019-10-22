@@ -20,10 +20,10 @@ namespace Hao.Core
         /// <summary>
         ///用户编号 
         /// </summary>
-        public long? UserID
+        public long? UserId
         {
-            get => HConvert.ToLong((_session.GetString("CurrentUser_UserID")));
-            set => _session.SetString("CurrentUser_UserID", value.ToString());
+            get => HConvert.ToLong((_session.GetString("CurrentUser_UserId")));
+            set => _session.SetString("CurrentUser_UserId", value.ToString());
         }
 
         /// <summary>

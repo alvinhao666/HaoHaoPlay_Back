@@ -12,6 +12,6 @@ namespace Hao.Core.Model
         /// <summary>
         /// 获取当前领域实体类的全局唯一标识。
         /// </summary>
-        TKey ID { get; set; }
+        TKey Id { get; set; }
     }
 }

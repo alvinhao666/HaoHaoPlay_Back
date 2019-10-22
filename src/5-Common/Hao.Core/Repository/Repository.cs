@@ -155,7 +155,7 @@ namespace Hao.Core.Repository
         {
             Type type = typeof(T);
             bool isGuid = typeof(TKey) == typeof(Guid);
-            var id = type.GetProperty("ID");
+            var id = type.GetProperty("Id");
 
             if (isGuid)
             {
@@ -163,12 +163,12 @@ namespace Hao.Core.Repository
             }
             else if (id != null) id.SetValue(entity, IdWorker.NextId());
 
-            entity.CreaterID = CurrentUser.UserID;
+            entity.CreaterId = CurrentUser.UserId;
             entity.CreateTime = DateTime.Now;
             entity.IsDeleted = false;
 
             var obj = await Db.Insertable(entity).ExecuteReturnEntityAsync();
-            return obj.ID;
+            return obj.Id;
         }
 
         /// <summary>
@@ -180,7 +180,7 @@ namespace Hao.Core.Repository
         {
             bool isGuid = typeof(TKey) == typeof(Guid);
             Type type = typeof(T);
-            var id = type.GetProperty("ID");
+            var id = type.GetProperty("Id");
             DateTime timeNow = DateTime.Now;
             entities.ForEach(item =>
             {
@@ -190,7 +190,7 @@ namespace Hao.Core.Repository
                 }
                 else if (id != null) id.SetValue(item, IdWorker.NextId());
 
-                item.CreaterID = CurrentUser.UserID;
+                item.CreaterId = CurrentUser.UserId;
                 item.CreateTime = timeNow;
                 item.IsDeleted = false;
             });
@@ -204,7 +204,7 @@ namespace Hao.Core.Repository
         /// <returns></returns>
         public virtual async Task<bool> DeleteAysnc(T entity)
         {
-            entity.LastModifyUserID = CurrentUser.UserID;
+            entity.LastModifyUserId = CurrentUser.UserId;
             entity.LastModifyTime = DateTime.Now;
             entity.IsDeleted = true;
             return await Db.Updateable(entity).ExecuteCommandAsync() > 0;
@@ -217,8 +217,8 @@ namespace Hao.Core.Repository
         /// <returns></returns>
         public virtual async Task<bool> DeleteAysnc(TKey pkValue)
         {
-            return await Db.Updateable<T>(new { LastModifyTime = DateTime.Now, LastModifyUserID = CurrentUser.UserID, IsDeleted = true })
-                        .Where($"ID='{pkValue}'").ExecuteCommandAsync() > 0;
+            return await Db.Updateable<T>(new { LastModifyTime = DateTime.Now, LastModifyUserId = CurrentUser.UserId, IsDeleted = true })
+                        .Where($"Id='{pkValue}'").ExecuteCommandAsync() > 0;
 
         }
 
@@ -229,8 +229,8 @@ namespace Hao.Core.Repository
         /// <returns></returns>
         public virtual async Task<bool> DeleteAysnc(List<TKey> pkValues)
         {
-            return await Db.Updateable<T>(new { LastModifyTime = DateTime.Now, LastModifyUserID = CurrentUser.UserID, IsDeleted = true })
-                    .Where(it => pkValues.Contains(it.ID)).ExecuteCommandAsync() > 0;
+            return await Db.Updateable<T>(new { LastModifyTime = DateTime.Now, LastModifyUserId = CurrentUser.UserId, IsDeleted = true })
+                    .Where(it => pkValues.Contains(it.Id)).ExecuteCommandAsync() > 0;
         }
 
         /// <summary>
@@ -243,7 +243,7 @@ namespace Hao.Core.Repository
             DateTime timeNow = DateTime.Now;
             entities.ForEach(item =>
             {
-                item.LastModifyUserID = CurrentUser.UserID;
+                item.LastModifyUserId = CurrentUser.UserId;
                 item.LastModifyTime = timeNow;
                 item.IsDeleted = true;
             });
@@ -257,7 +257,7 @@ namespace Hao.Core.Repository
         /// <returns></returns>
         public virtual async Task<bool> UpdateAsync(T entity)
         {
-            entity.LastModifyUserID = CurrentUser.UserID;
+            entity.LastModifyUserId = CurrentUser.UserId;
             entity.LastModifyTime = DateTime.Now;
             return await Db.Updateable(entity).ExecuteCommandAsync() > 0;
         }
@@ -272,7 +272,7 @@ namespace Hao.Core.Repository
             DateTime timeNow = DateTime.Now;
             entities.ForEach(item =>
             {
-                item.LastModifyUserID = CurrentUser.UserID;
+                item.LastModifyUserId = CurrentUser.UserId;
                 item.LastModifyTime = timeNow;
             });
             return await Task.Factory.StartNew(() => Db.GetSimpleClient<T>().UpdateRange(entities.ToArray()));

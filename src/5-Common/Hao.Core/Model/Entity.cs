@@ -9,12 +9,12 @@ namespace Hao.Core.Model
     {
 
         [SugarColumn(IsPrimaryKey = true)]
-        public TKey ID { get; set; }
+        public TKey Id { get; set; }
 
-        public long? CreaterID { get; set; }
+        public long? CreaterId { get; set; }
         public DateTime? CreateTime { get; set; }
 
-        public long? LastModifyUserID { get; set; }
+        public long? LastModifyUserId { get; set; }
         public DateTime? LastModifyTime { get; set; }
 
         public bool? IsDeleted { get; set; }

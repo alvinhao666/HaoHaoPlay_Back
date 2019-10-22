@@ -57,7 +57,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task<LoginVMOut> Login(UserQuery query)
         {
-            var user = new SYSUser();
+            var user = new SysUser();
             var users = await _userRepository.GetListAysnc(query.Conditions);
             if (users.Count == 0)
                 throw new HException(ErrorInfo.E005005, nameof(ErrorInfo.E005005).GetErrorCode());
@@ -72,7 +72,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task<long> AddUser(UserVMIn vm)
         {
-            var user = _mapper.Map<SYSUser>(vm);
+            var user = _mapper.Map<SysUser>(vm);
             user.FirstNameSpell = HUtil.GetInitialSpell(user.UserName.ToCharArray()[0].ToString());
             user.Password = EncryptProvider.HMACSHA256(user.Password, "haohaoplay");
             return await _userRepository.InsertAysnc(user);
@@ -86,7 +86,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task AddUsers(List<UserVMIn> vms)
         {
-            var users = _mapper.Map<List<SYSUser>>(vms);
+            var users = _mapper.Map<List<SysUser>>(vms);
             foreach (var user in users)
             {
                 user.FirstNameSpell = HUtil.GetInitialSpell(user.UserName.ToCharArray()[0].ToString());
@@ -140,9 +140,9 @@ namespace Hao.AppService
         /// <param name="lastLoginTime"></param>
         /// <param name="ip"></param>
         /// <returns></returns>
-        public async Task UpdateLoginTimeAndIP(long userID, DateTime lastLoginTime, string ip)
+        public async Task UpdateLoginTimeAndIP(long userId, DateTime lastLoginTime, string ip)
         {
-            var user = await _userRepository.GetAysnc(userID);
+            var user = await _userRepository.GetAysnc(userId);
             if (user != null)
             {
                 user.LastLoginTime = lastLoginTime;
@@ -164,11 +164,11 @@ namespace Hao.AppService
         /// <summary>
         /// 注销/启用，用户
         /// </summary>
-        /// <param name="userID"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
-        public async Task UpdateUserEnabled(long userID, bool enabled)
+        public async Task UpdateUserEnabled(long userId, bool enabled)
         {
-            var user = await _userRepository.GetAysnc(userID);
+            var user = await _userRepository.GetAysnc(userId);
             if (user != null)
             {
                 user.Enabled = enabled;
@@ -179,12 +179,12 @@ namespace Hao.AppService
         /// <summary>
         /// 编辑用户
         /// </summary>
-        /// <param name="userID"></param>
+        /// <param name="userId"></param>
         /// <param name=""></param>
         /// <returns></returns>
-        public async Task EditUser(long userID, UserVMIn vm)
+        public async Task EditUser(long userId, UserVMIn vm)
         {
-            var user = await _userRepository.GetAysnc(userID);
+            var user = await _userRepository.GetAysnc(userId);
             if (user != null)
             {
                 user.UserName = vm.UserName;

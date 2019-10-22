@@ -8,7 +8,7 @@ namespace Hao.AppService.ViewModel
 {
     public class UserVMOut
     {
-        public string ID { get; set; }
+        public string Id { get; set; }
 
         public string LoginName { get; set; }
 

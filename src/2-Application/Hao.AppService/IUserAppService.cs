@@ -19,7 +19,7 @@ namespace Hao.AppService
         
         Task AddUsers(List<UserVMIn> vms);
         
-        Task EditUser(long userID, UserVMIn vm);
+        Task EditUser(long userId, UserVMIn vm);
 
         Task<PagedList<UserVMOut>> GetUsers(UserQuery query);
 

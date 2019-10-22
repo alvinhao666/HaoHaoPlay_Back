@@ -10,7 +10,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace Hao.Repository
 {
-    public class SYSUserRepository : Repository<SYSUser,long>, ISYSUserRepository
+    public class SYSUserRepository : Repository<SysUser,long>, ISYSUserRepository
     {
 
         //public override async Task<PagedList<Student>> GetPagedListAysnc(Query<Student> query)

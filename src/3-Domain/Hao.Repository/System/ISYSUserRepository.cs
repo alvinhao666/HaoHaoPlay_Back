@@ -7,7 +7,7 @@ using Hao.Model;
 
 namespace Hao.Repository
 {
-    public interface  ISYSUserRepository:IRepository<SYSUser,long>
+    public interface  ISYSUserRepository:IRepository<SysUser,long>
     {
     }
 }

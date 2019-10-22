@@ -9,7 +9,7 @@ namespace Hao.Library
     /// </summary>
     public class RedisCacheUser
     {
-        public  long? ID { get; set; }
+        public  long? Id { get; set; }
 
         public string LoginName { get; set; }
 

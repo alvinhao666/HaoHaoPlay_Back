@@ -7,9 +7,9 @@ namespace Hao.AppService.ViewModel
     public class LoginVMOut
     {
         /// <summary>
-        /// 用户ID
+        /// 用户Id
         /// </summary>
-        public long? ID { get; set; }
+        public long? Id { get; set; }
 
         /// <summary>
         /// 登录名

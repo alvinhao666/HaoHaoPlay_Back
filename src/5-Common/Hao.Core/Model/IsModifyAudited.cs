@@ -9,7 +9,7 @@ namespace Hao.Core.Model
         /// <summary>
         /// 最后一次修改人
         /// </summary>
-        long? LastModifyUserID { get; set; }
+        long? LastModifyUserId { get; set; }
 
         /// <summary>
         /// 最后一次修改时间
