@@ -399,7 +399,7 @@ namespace HaoHaoPlay.Host
             var response = new BaseResponse()
             {
                 Success = false,
-                ErrorCode = nameof(ErrorCode.E100001).GetCode(),
+                ErrorCode = nameof(ErrorCode.E100001).GetErrorCode(),
                 ErrorMsg = ErrorCode.E100001
             };
             await context.Response.WriteAsync(JsonConvert.SerializeObject(response));

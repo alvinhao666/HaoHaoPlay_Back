@@ -29,7 +29,7 @@ namespace Hao.WebApi
             //https传递查询参数肯定是没有问题的，但是不要用来传递可能引发安全问题的敏感信息奥。
             if (!context.Request.Query.ContainsKey("Authorization")||!context.Request.Query.ContainsKey("FileId"))
             {
-                throw new HException(ErrorCode.E100001, nameof(ErrorCode.E100001).GetCode());
+                throw new HException(ErrorCode.E100001, nameof(ErrorCode.E100001).GetErrorCode());
             }
             
             var fileId = _protector.Unprotect(context.Request.Query["FileId"].ToString());
@@ -38,7 +38,7 @@ namespace Hao.WebApi
 
             if (!path.Contains($"{fileId}"))
             {
-                throw new HException(ErrorCode.E100001, nameof(ErrorCode.E100001).GetCode());
+                throw new HException(ErrorCode.E100001, nameof(ErrorCode.E100001).GetErrorCode());
             }
 
             // 验证用户信息 //TODO

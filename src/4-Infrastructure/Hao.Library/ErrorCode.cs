@@ -7,8 +7,6 @@ namespace Hao.Library
 
         public const string E100001 = "用户未登录或令牌已过期，请重新登录";
         public const string E100002 = "用户未登录，请重新登录";
-        public const string E100003 = "用户未授权";
-        public const string E100010 = "模型验证失败";
         public const string E100011 = "提交数据类型错误，请检查";
         //基础异常
         public const string E005001 = "用户不存在";
@@ -26,15 +24,16 @@ namespace Hao.Library
         /// <summary>
         /// 返回错误Code
         /// </summary>
-        /// <param name="str"></param>
+        /// <param name="errorName"></param>
         /// <returns></returns>
-        public static int GetCode(this string str)
+        public static int GetErrorCode(this string errorName)
         {
-            if (!string.IsNullOrWhiteSpace(str))
+            int result = 100000;
+            if (!string.IsNullOrWhiteSpace(errorName))
             {
-                return int.Parse(str.Substring(1));
+                var flag = int.TryParse(errorName, out result);
             }
-            return 10000;
+            return result;
         }
     }
 }
