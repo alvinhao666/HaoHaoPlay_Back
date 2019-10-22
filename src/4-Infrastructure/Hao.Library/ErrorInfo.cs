@@ -2,7 +2,7 @@
 
 namespace Hao.Library
 {
-    public static class ErrorCode
+    public static class ErrorInfo
     {
 
         public const string E100001 = "用户未登录或令牌已过期，请重新登录";

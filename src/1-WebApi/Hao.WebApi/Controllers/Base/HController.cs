@@ -70,7 +70,7 @@ namespace Hao.WebApi
 
             if (value == null)
             {
-                throw new HException(ErrorCode.E100002, nameof(ErrorCode.E100002).GetErrorCode());
+                throw new HException(ErrorInfo.E100002, nameof(ErrorInfo.E100002).GetErrorCode());
             }
 
             var cacheUser = JsonExtensions.DeserializeFromJson<RedisCacheUser>(value);
@@ -128,7 +128,7 @@ namespace Hao.WebApi
                 if (parameter != null && context.ActionArguments != null && (!context.ActionArguments.ContainsKey(parameter.Name) || context.ActionArguments[parameter.Name] == null))
                 {
                     Logger.Info(new LogInfo() { Method = context.HttpContext.Request.Path.Value, Argument = result, Description = "RequestBodyContent" });
-                    throw new HException(ErrorCode.E100011, nameof(ErrorCode.E100011).GetErrorCode());
+                    throw new HException(ErrorInfo.E100011, nameof(ErrorInfo.E100011).GetErrorCode());
                 }
                 if (!string.IsNullOrWhiteSpace(result))
                 {

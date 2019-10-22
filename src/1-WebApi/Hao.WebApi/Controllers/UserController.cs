@@ -149,7 +149,7 @@ namespace Hao.WebApi
         {
             if (formCollection?.Files == null)
             {
-                throw new HException(ErrorCode.E005007,nameof(ErrorCode.E005007).GetErrorCode());
+                throw new HException(ErrorInfo.E005007,nameof(ErrorInfo.E005007).GetErrorCode());
             }
             //可能上传多个excel文件
             FormFileCollection files = (FormFileCollection)formCollection.Files;
@@ -159,7 +159,7 @@ namespace Hao.WebApi
             
             if (files.Any(b => !allowType.Contains(b.ContentType)))
             {
-                throw new HException(ErrorCode.E005008,nameof(ErrorCode.E005008).GetErrorCode());
+                throw new HException(ErrorInfo.E005008,nameof(ErrorInfo.E005008).GetErrorCode());
             }
             
 //            //大小限制

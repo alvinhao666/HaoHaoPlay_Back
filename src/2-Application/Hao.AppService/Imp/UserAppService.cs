@@ -60,7 +60,7 @@ namespace Hao.AppService
             var user = new SYSUser();
             var users = await _userRepository.GetListAysnc(query.Conditions);
             if (users.Count == 0)
-                throw new HException(ErrorCode.E005005, nameof(ErrorCode.E005005).GetErrorCode());
+                throw new HException(ErrorInfo.E005005, nameof(ErrorInfo.E005005).GetErrorCode());
             user = users.FirstOrDefault();
             return _mapper.Map<LoginVMOut>(user);
         }
