@@ -11,14 +11,7 @@ namespace Hao.Core
 {
     public static class ExceptionHandlerMiddleware
     {
-        /// <summary>
-		/// 未知异常ErrorCode
-		/// </summary>
-		private const int EErrorCode = -1;
 
-        /// <summary>
-        /// 未知异常ErrorMessage
-        /// </summary>
         private const string EErrorMsg = "未知错误";
 
         public static ILogger _log = LogManager.GetCurrentClassLogger();
@@ -45,7 +38,6 @@ namespace Hao.Core
             var response = new BaseResponse
             {
                 Success = false,
-                ErrorCode = EErrorCode,
                 ErrorMsg = EErrorMsg
             };
 
