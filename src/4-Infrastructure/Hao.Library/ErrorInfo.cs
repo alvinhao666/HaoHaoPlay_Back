@@ -31,7 +31,7 @@ namespace Hao.Library
             int result = 100000;
             if (!string.IsNullOrWhiteSpace(errorName))
             {
-                var flag = int.TryParse(errorName, out result);
+                int.TryParse(errorName.Substring(1), out result);
             }
             return result;
         }
