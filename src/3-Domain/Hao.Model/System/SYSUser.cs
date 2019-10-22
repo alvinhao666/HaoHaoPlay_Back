@@ -5,8 +5,8 @@ using SqlSugar;
 
 namespace Hao.Model
 {
-    [SugarTable("SYSUser")]
-    public class SYSUser : Entity<long>
+    [SugarTable("SysUser")]
+    public class SysUser : Entity<long>
     {
         /// <summary>
         /// 登录名
