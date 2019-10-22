@@ -29,13 +29,13 @@ namespace Hao.AppService
         private IMapper _mapper;
 
 
-        private ISysUserRepository _userRepository;
+        private ISYSUserRepository _userRepository;
 
         private readonly ICapPublisher _publisher;
 
         private IHostingEnvironment _hostingEnvironment;
 
-        public UserAppService(ISysUserRepository userRepository, IMapper mapper, ICapPublisher publisher, IHostingEnvironment hostingEnvironment)
+        public UserAppService(ISYSUserRepository userRepository, IMapper mapper, ICapPublisher publisher, IHostingEnvironment hostingEnvironment)
         {
             _userRepository = userRepository;
             _mapper = mapper;
