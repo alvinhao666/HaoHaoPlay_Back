@@ -113,7 +113,7 @@ namespace Hao.WebApi
         {
             var request = context.HttpContext.Request;
             string method = request.Method.ToLower();
-            if (request.Body != null && request.Body.CanRead && request.ContentType == "application/json"
+            if (request.Body != null && request.Body.CanRead && request.ContentType.Contains("application/json")
                 && (method.Equals("post") || method.Equals("put") || method.Equals("delete")))
             {
                 request.EnableRewind();
@@ -125,7 +125,7 @@ namespace Hao.WebApi
                 }
                 var parameters = context.ActionDescriptor.Parameters;
                 var parameter = parameters.FirstOrDefault(a => a.BindingInfo?.BindingSource == BindingSource.Body);
-                if (parameter != null && context.ActionArguments != null && (!context.ActionArguments.ContainsKey(parameter.Name) || context.ActionArguments[parameter.Name] == null))
+                if (parameter != null && context.ActionArguments != null && !context.ActionArguments.ContainsKey(parameter.Name))
                 {
                     Logger.Info(new LogInfo() { Method = context.HttpContext.Request.Path.Value, Argument = result, Description = "RequestBodyContent" });
                     throw new HException(ErrorInfo.E100011, nameof(ErrorInfo.E100011).GetErrorCode());
