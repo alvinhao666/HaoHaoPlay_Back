@@ -134,7 +134,6 @@ namespace Hao.WebApi
                 {
                     return JObject.Parse(result);
                 }
-                return null;
             }
             return null;
         }
