@@ -113,8 +113,9 @@ namespace Hao.WebApi
         {
             var request = context.HttpContext.Request;
             string method = request.Method.ToLower();
-            if (request.Body != null && request.Body.CanRead && request.ContentType.Contains("application/json")
-                && (method.Equals("post") || method.Equals("put") || method.Equals("delete")))
+            if (request.Body != null && request.Body.CanRead
+                && (method.Equals("post") || method.Equals("put") || method.Equals("delete"))
+                && request.ContentType != null && request.ContentType.Contains("application/json"))
             {
                 request.EnableRewind();
                 request.Body.Seek(0, 0);
