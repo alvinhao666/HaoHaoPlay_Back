@@ -44,6 +44,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Snowflake.Core;
+using Autofac.Extras.DynamicProxy;
 
 namespace HaoHaoPlay.Host
 {
@@ -251,14 +252,22 @@ namespace HaoHaoPlay.Host
             #region Autofac
             var builder = new ContainerBuilder();//实例化 AutoFac  容器   
 
-            builder.RegisterAssemblyTypes(
-                    Assembly.Load("Hao.AppService"),
-                    Assembly.Load("Hao.Repository"))
-                   .Where(t => t.Name.EndsWith("AppService") || t.Name.EndsWith("Repository"))
-                   .Where(m => typeof(ITransientDependency).IsAssignableFrom(m) && m != typeof(ITransientDependency))
-                   .AsImplementedInterfaces().InstancePerLifetimeScope().PropertiesAutowired();
+            builder.RegisterType<HTranAop>();
 
-            
+            builder.RegisterAssemblyTypes(
+                Assembly.Load("Hao.Repository"),
+                Assembly.Load("Hao.Core"))
+               .Where(m => typeof(ITransientDependency).IsAssignableFrom(m) && m != typeof(ITransientDependency))
+               .AsImplementedInterfaces().InstancePerLifetimeScope().PropertiesAutowired();
+
+            builder.RegisterAssemblyTypes(
+                    Assembly.Load("Hao.AppService"))
+                   //.Where(t => t.Name.EndsWith("AppService") || t.Name.EndsWith("Repository"))
+                   .Where(m => typeof(ITransientDependency).IsAssignableFrom(m) && m != typeof(ITransientDependency))
+                   .AsImplementedInterfaces().InstancePerLifetimeScope().PropertiesAutowired().EnableInterfaceInterceptors().InterceptedBy(typeof(HTranAop));
+            //一定要在你注入的服务后面加上EnableInterfaceInterceptors来开启你的拦截(aop)
+
+
             #region 属性注入
             var controllersTypesInAssembly = typeof(HController).Assembly.GetExportedTypes()
                 .Where(type => typeof(Controller).IsAssignableFrom(type)).ToArray();

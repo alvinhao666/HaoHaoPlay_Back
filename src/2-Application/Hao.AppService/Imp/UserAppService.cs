@@ -55,6 +55,7 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
+        //[UseTran]
         public async Task<LoginVMOut> Login(UserQuery query)
         {
             var user = new SysUser();
