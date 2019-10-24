@@ -64,7 +64,7 @@ namespace HaoHaoPlay.Host
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
         }
-        
+
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             #region DeBug
@@ -143,10 +143,10 @@ namespace HaoHaoPlay.Host
             services.AddSingleton<IDistributedCache>(new CSRedisCache(RedisHelper.Instance)); //利用分布式缓存
                                                                                               //现在,ASP.NET Core引入了IDistributedCache分布式缓存接口，它是一个相当基本的分布式缓存标准API，可以让您对它进行编程，然后无缝地插入第三方分布式缓存
                                                                                               //DistributedCache将拷贝缓存的文件到Slave节点
-            
-             var redisPrefix= Configuration.GetSection(nameof(RedisPrefixOptions));
-             services.Configure<RedisPrefixOptions>(redisPrefix);
-             #endregion
+
+            var redisPrefix = Configuration.GetSection(nameof(RedisPrefixOptions));
+            services.Configure<RedisPrefixOptions>(redisPrefix);
+            #endregion
 
             #region ORM
             services.AddSqlSugarClient(config =>
@@ -210,12 +210,12 @@ namespace HaoHaoPlay.Host
 
 
             services.AddHttpClient();
-            
-            var snowflake= Configuration.GetSection(nameof(SnowflakeIdOptions));
-            var worker =new IdWorker(long.Parse(snowflake[nameof(SnowflakeIdOptions.WorkerId)]), long.Parse(snowflake[nameof(SnowflakeIdOptions.DataCenterId)]));
+
+            var snowflake = Configuration.GetSection(nameof(SnowflakeIdOptions));
+            var worker = new IdWorker(long.Parse(snowflake[nameof(SnowflakeIdOptions.WorkerId)]), long.Parse(snowflake[nameof(SnowflakeIdOptions.DataCenterId)]));
             services.AddSingleton(worker);
 
-            var  logger = LogManager.GetCurrentClassLogger();
+            var logger = LogManager.GetCurrentClassLogger();
             services.AddSingleton<NLog.ILogger>(logger);
 
             //替换控制器所有者,详见有道笔记,放AddMvc前面
@@ -228,7 +228,8 @@ namespace HaoHaoPlay.Host
             })
             .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
             .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UserVMInValidator>()) //模型验证
-            .AddJsonOptions(op => {
+            .AddJsonOptions(op =>
+            {
                 op.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss"; //时间序列化格式
                 op.SerializerSettings.ContractResolver = new DefaultContractResolver(); //全局Filter json大小写
             }).AddWebApiConventions();//处理HttpResponseMessage类型返回值的问题
@@ -351,7 +352,7 @@ namespace HaoHaoPlay.Host
             #region 性能压缩
             app.UseResponseCompression();
             #endregion
-            
+
             app.UseMvc();
         }
     }
@@ -403,7 +404,7 @@ namespace HaoHaoPlay.Host
         public override async Task Challenge(JwtBearerChallengeContext context)
         {
             context.Response.Clear();
-            context.Response.StatusCode =StatusCodes.Status200OK;
+            context.Response.StatusCode = StatusCodes.Status200OK;
             context.Response.ContentType = "application/json";
             var response = new BaseResponse()
             {
