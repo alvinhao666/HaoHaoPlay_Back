@@ -30,7 +30,6 @@
     <PackageReference Include="DotNetCore.CAP.MySql" Version="2.6.0" />
     <PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="2.6.0" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="8.5.0" />
-    <PackageReference Include="Hao.SqlSugarExtensions" Version="1.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.WebApiCompatShim" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
