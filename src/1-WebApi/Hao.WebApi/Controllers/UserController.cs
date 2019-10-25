@@ -12,12 +12,12 @@ using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Hosting;
 using AutoMapper;
-using Hao.FileHelper;
 using Hao.Library;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
 using OfficeOpenXml;
+using Hao.File;
 
 namespace Hao.WebApi
 {

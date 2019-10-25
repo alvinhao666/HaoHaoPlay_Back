@@ -33,7 +33,6 @@ using Hao.Event;
 using Hao.SqlSugarExtensions;
 using FluentValidation.AspNetCore;
 using Microsoft.Extensions.FileProviders;
-using Hao.FileHelper;
 using Newtonsoft.Json.Serialization;
 using CSRedis;
 using Microsoft.Extensions.Caching.Redis;
@@ -45,6 +44,7 @@ using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Snowflake.Core;
 using Autofac.Extras.DynamicProxy;
+using Hao.File;
 
 namespace HaoHaoPlay.Host
 {

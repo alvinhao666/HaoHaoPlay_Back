@@ -7,7 +7,7 @@ using Hao.Core.Application;
 using Hao.Core.Model;
 using Hao.Encrypt;
 using Hao.EventData;
-using Hao.FileHelper;
+using Hao.File;
 using Hao.Library;
 using Hao.Model;
 using Hao.Model.Enum;
