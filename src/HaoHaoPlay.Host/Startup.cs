@@ -149,21 +149,23 @@ namespace HaoHaoPlay.Host
             #endregion
 
             #region ORM
-            services.AddSqlSugarClient(config =>
+            services.AddSqlSugarClient(new ConnectionConfig()
             {
-                config.ConnectionString = Configuration.GetConnectionString("MySqlConnection");
-                config.DbType = DbType.MySql;
-                config.IsAutoCloseConnection = true;
-                config.InitKeyType = InitKeyType.Attribute;//如果不是SA等高权限数据库的账号,需要从实体读取主键或者自增列 InitKeyType要设成Attribute
-                config.ConfigureExternalServices = new ConfigureExternalServices()
+                ConnectionString = Configuration.GetConnectionString("MySqlConnection"),
+                DbType = DbType.MySql,
+                IsAutoCloseConnection = true,
+                InitKeyType = InitKeyType.Attribute,//如果不是SA等高权限数据库的账号,需要从实体读取主键或者自增列 InitKeyType要设成Attribute
+                ConfigureExternalServices = new ConfigureExternalServices()
                 {
                     DataInfoCacheService = new SqlSugarRedisCache() //RedisCache是继承ICacheService自已实现的一个类
-                };
+                }
 
                 //config.SlaveConnectionConfigs = new List<SlaveConnectionConfig>() { //= 如果配置了 SlaveConnectionConfigs那就是主从模式,所有的写入删除更新都走主库，查询走从库，事务内都走主库，HitRate表示权重 值越大执行的次数越高，如果想停掉哪个连接可以把HitRate设为0 
                 //     new SlaveConnectionConfig() { HitRate=10, ConnectionString=Config.ConnectionString2 },
                 //     new SlaveConnectionConfig() { HitRate=30, ConnectionString=Config.ConnectionString3 }
             });
+
+
             #endregion
 
             #region CAP
