@@ -242,5 +242,16 @@ namespace Hao.Utility
                 ".gif"
             }.FirstOrDefault((string d) => url.ToLower().EndsWith(d)) != null;
         }
+
+        /// <summary>
+        /// 是否是默认值
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool IsDefault<T>(this T value)
+        {
+            return EqualityComparer<T>.Default.Equals(value, default(T));
+        }
     }
 }
