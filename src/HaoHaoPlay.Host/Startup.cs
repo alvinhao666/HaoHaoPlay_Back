@@ -153,8 +153,8 @@ namespace HaoHaoPlay.Host
             {
                 ConnectionString = Configuration.GetConnectionString("MySqlConnection"),
                 DbType = DbType.MySql,
-                IsAutoCloseConnection = true,
-                InitKeyType = InitKeyType.Attribute,//如果不是SA等高权限数据库的账号,需要从实体读取主键或者自增列 InitKeyType要设成Attribute
+                IsAutoCloseConnection = true,//开启自动释放模式和EF原理一样 自动释放数据务，如果存在事务，在事务结束后释放
+                InitKeyType = InitKeyType.SystemTable,  //如果不是SA等高权限数据库的账号,需要从实体读取主键或者自增列 InitKeyType要设成Attribute (不需要读取这些信息)
                 ConfigureExternalServices = new ConfigureExternalServices()
                 {
                     DataInfoCacheService = new SqlSugarRedisCache() //RedisCache是继承ICacheService自已实现的一个类
