@@ -135,12 +135,6 @@ namespace HaoHaoPlay.Host
 
             var redisConnection = Configuration.GetConnectionString("RedisConnection");
 
-            services.AddDistributedRedisCache(c =>
-            {
-                c.Configuration = redisConnection;
-                c.InstanceName = "HaoHaoPlayInstance";
-            });
-
             var csRedis = new CSRedisClient(redisConnection);
 
             //初始化 RedisHelper
