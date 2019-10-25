@@ -91,6 +91,9 @@ namespace HaoHaoPlay.Host
 #endif
             #endregion
 
+            #region Http
+            services.AddHttpClient();
+            #endregion
 
             #region Jwt
             var jwtSection = Configuration.GetSection(nameof(JwtOptions));
@@ -210,15 +213,32 @@ namespace HaoHaoPlay.Host
             services.AddScoped<ICurrentUser, CurrentUser>();
             #endregion
 
-
-            services.AddHttpClient();
-
+            #region 单例注入
             var snowflake = Configuration.GetSection(nameof(SnowflakeIdOptions));
             var worker = new IdWorker(long.Parse(snowflake[nameof(SnowflakeIdOptions.WorkerId)]), long.Parse(snowflake[nameof(SnowflakeIdOptions.DataCenterId)]));
             services.AddSingleton(worker);
 
             var logger = LogManager.GetCurrentClassLogger();
             services.AddSingleton<NLog.ILogger>(logger);
+            #endregion
+
+            #region 数据保护
+            services.AddDataProtection();
+            #endregion
+
+            #region 性能 压缩
+            services.AddResponseCompression();
+            #endregion
+
+
+            #region AutoMapper
+            services.AddSingleton<IMapper>(new Mapper(new MapperConfiguration(cfg =>
+            {
+                AutoMapperInitApi.InitMap(cfg);
+                AutoMapperInitService.InitMap(cfg);
+            })));
+            #endregion
+
 
             //替换控制器所有者,详见有道笔记,放AddMvc前面
             services.Replace(ServiceDescriptor.Transient<IControllerActivator, ServiceBasedControllerActivator>());
@@ -236,20 +256,6 @@ namespace HaoHaoPlay.Host
                 op.SerializerSettings.ContractResolver = new DefaultContractResolver(); //全局Filter json大小写
             }).AddWebApiConventions();//处理HttpResponseMessage类型返回值的问题
 
-            #region 性能 压缩
-            services.AddResponseCompression();
-            #endregion
-
-            services.AddDataProtection();
-
-
-            #region AutoMapper
-            services.AddSingleton<IMapper>(new Mapper(new MapperConfiguration(cfg =>
-            {
-                AutoMapperInitApi.InitMap(cfg);
-                AutoMapperInitService.InitMap(cfg);
-            })));
-            #endregion
 
 
             #region Autofac
