@@ -100,11 +100,12 @@ namespace HaoHaoPlay.Host
 
             var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSection[nameof(JwtOptions.SecretKey)]));
 
-            services.Configure<JwtOptions>(options =>
+            services.Configure<JwtOptions>(o =>
             {
-                options.Audience = jwtSection[nameof(JwtOptions.Audience)];
-                options.Issuer = jwtSection[nameof(JwtOptions.Issuer)];
-                options.SigningKey = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
+                o.Audience = jwtSection[nameof(JwtOptions.Audience)];
+                o.Issuer = jwtSection[nameof(JwtOptions.Issuer)];
+                o.SigningKey = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
+                o.Subject= jwtSection[nameof(JwtOptions.Subject)];
             });
 
             //jwt验证：

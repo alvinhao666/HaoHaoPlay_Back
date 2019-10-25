@@ -20,5 +20,10 @@ namespace Hao.Library
 
 
         public string SecretKey { get; set; }
+
+        /// <summary>
+        /// 主题
+        /// </summary>
+        public string Subject { get; set; }
     }
 }
