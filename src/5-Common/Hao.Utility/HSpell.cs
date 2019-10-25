@@ -48,7 +48,6 @@ namespace Hao.Utility
         /// </summary>
         /// <param name="c">汉字字符串</param>
         /// <returns>转换后的拼音(全拼)字符串</returns>
-        // Token: 0x0600003F RID: 63 RVA: 0x00002D2C File Offset: 0x00000F2C
         public static string GetSpells(char c)
         {
             string text = "";
