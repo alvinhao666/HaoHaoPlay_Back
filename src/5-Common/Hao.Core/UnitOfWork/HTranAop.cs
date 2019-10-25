@@ -29,7 +29,7 @@ namespace Hao.Core
             var method = invocation.MethodInvocationTarget ?? invocation.Method;
             //对当前方法的特性验证
             //如果需要验证
-            if (method.GetCustomAttributes(true).FirstOrDefault(x => x.GetType() == typeof(UseTranAttribute)) is UseTranAttribute)
+            if (method.GetCustomAttributes(true).FirstOrDefault(x => x.GetType() == typeof(UseTransactionAttribute)) is UseTransactionAttribute)
             {
                 try
                 {
