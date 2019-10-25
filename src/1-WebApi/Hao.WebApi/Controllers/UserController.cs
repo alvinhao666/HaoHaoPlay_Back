@@ -39,8 +39,7 @@ namespace Hao.WebApi
             _userAppService = userService;
             _mapper = mapper;
             _hostingEnvironment = hostingEnvironment;
-            _protector = provider.CreateProtector("fileName")
-                .ToTimeLimitedDataProtector();
+            _protector = provider.CreateProtector("fileName").ToTimeLimitedDataProtector();
         }
 
         /// <summary>

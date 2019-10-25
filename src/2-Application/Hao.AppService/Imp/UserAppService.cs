@@ -14,6 +14,7 @@ using Hao.Model.Enum;
 using Hao.Repository;
 using Hao.Utility;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -26,21 +27,24 @@ namespace Hao.AppService
     public class UserAppService : ApplicationService, IUserAppService
     {
 
-        private IMapper _mapper;
+        private readonly IMapper _mapper;
 
 
-        private ISysUserRepository _userRep;
+        private readonly ISysUserRepository _userRep;
 
         private readonly ICapPublisher _publisher;
 
-        private IHostingEnvironment _hostingEnvironment;
+        private readonly IHostingEnvironment _hostingEnvironment;
 
-        public UserAppService(ISysUserRepository userRepository, IMapper mapper, ICapPublisher publisher, IHostingEnvironment hostingEnvironment)
+        private readonly IConfiguration _config;
+
+        public UserAppService(IConfiguration config,ISysUserRepository userRepository, IMapper mapper, ICapPublisher publisher, IHostingEnvironment hostingEnvironment)
         {
             _userRep = userRepository;
             _mapper = mapper;
             _publisher = publisher;
             _hostingEnvironment = hostingEnvironment;
+            _config = config;
         }
 
         public async Task<UserVMOut> GetByID(long? id)
@@ -75,7 +79,7 @@ namespace Hao.AppService
         {
             var user = _mapper.Map<SysUser>(vm);
             user.FirstNameSpell = HUtil.GetInitialSpell(user.UserName.ToCharArray()[0].ToString());
-            user.Password = EncryptProvider.HMACSHA256(user.Password, "haohaoplay");
+            user.Password = EncryptProvider.HMACSHA256(user.Password, _config["KeyInfo:Sha256Key"]);
             return await _userRep.InsertAysnc(user);
         }
         
@@ -91,7 +95,7 @@ namespace Hao.AppService
             foreach (var user in users)
             {
                 user.FirstNameSpell = HUtil.GetInitialSpell(user.UserName.ToCharArray()[0].ToString());
-                user.Password = EncryptProvider.HMACSHA256(user.Password, "haohaoplay");
+                user.Password = EncryptProvider.HMACSHA256(user.Password, _config["KeyInfo:Sha256Key"]);
             }
             await _userRep.InsertAysnc(users);
         }
