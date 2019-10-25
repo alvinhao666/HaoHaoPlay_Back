@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.Extensions.Configuration;
 
 namespace Hao.WebApi
 {
@@ -17,10 +18,10 @@ namespace Hao.WebApi
         private readonly ITimeLimitedDataProtector _protector;
 
 
-        public AuthorizeStaticFilesMiddleware( RequestDelegate next,IDataProtectionProvider provider)
+        public AuthorizeStaticFilesMiddleware( RequestDelegate next,IDataProtectionProvider provider,IConfiguration config)
         {
             _next = next;
-            _protector = provider.CreateProtector("fileName").ToTimeLimitedDataProtector();
+            _protector = provider.CreateProtector(config["DataProtectorPurpose:FileDownload"]).ToTimeLimitedDataProtector();
         }
 
         public async Task Invoke(HttpContext context)

@@ -34,12 +34,12 @@ namespace Hao.WebApi
         
         private readonly ITimeLimitedDataProtector _protector;
 
-        public UserController(IDataProtectionProvider provider,IHostingEnvironment hostingEnvironment,IMapper mapper,IUserAppService userService) 
+        public UserController(IConfiguration config,IDataProtectionProvider provider,IHostingEnvironment hostingEnvironment,IMapper mapper,IUserAppService userService) 
         {
             _userAppService = userService;
             _mapper = mapper;
             _hostingEnvironment = hostingEnvironment;
-            _protector = provider.CreateProtector("fileName").ToTimeLimitedDataProtector();
+            _protector = provider.CreateProtector(config["DataProtectorPurpose:FileDownload"]).ToTimeLimitedDataProtector();
         }
 
         /// <summary>
