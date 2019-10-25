@@ -8,7 +8,7 @@ namespace Hao.Core.Application
     public abstract class ApplicationService: IApplicationService 
     {
         [AttributeUsage(AttributeTargets.Method)]
-        protected class UseTranAttribute : Attribute
+        protected internal class UseTranAttribute : Attribute
         {
 
         }
