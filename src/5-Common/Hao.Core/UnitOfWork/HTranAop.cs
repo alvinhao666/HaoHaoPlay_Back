@@ -12,10 +12,10 @@ namespace Hao.Core
     /// <summary>
     /// 事务拦截器  继承IInterceptor接口
     /// </summary>
-    public class HTranAop : IInterceptor
+    public class HTransactionAop : IInterceptor
     {
         private readonly IUnitOfWork _unitOfWork;
-        public HTranAop(IUnitOfWork unitOfWork)
+        public HTransactionAop(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }

@@ -253,7 +253,7 @@ namespace HaoHaoPlay.Host
             #region Autofac
             var builder = new ContainerBuilder();//实例化 AutoFac  容器   
 
-            builder.RegisterType<HTranAop>();
+            builder.RegisterType<HTransactionAop>();
 
             builder.RegisterAssemblyTypes(
                 Assembly.Load("Hao.Repository"),
@@ -265,7 +265,7 @@ namespace HaoHaoPlay.Host
                     Assembly.Load("Hao.AppService"))
                    //.Where(t => t.Name.EndsWith("AppService") || t.Name.EndsWith("Repository"))
                    .Where(m => typeof(ITransientDependency).IsAssignableFrom(m) && m != typeof(ITransientDependency))
-                   .AsImplementedInterfaces().InstancePerLifetimeScope().PropertiesAutowired().EnableInterfaceInterceptors().InterceptedBy(typeof(HTranAop));
+                   .AsImplementedInterfaces().InstancePerLifetimeScope().PropertiesAutowired().EnableInterfaceInterceptors().InterceptedBy(typeof(HTransactionAop));
             //一定要在你注入的服务后面加上EnableInterfaceInterceptors来开启你的拦截(aop)
 
 
