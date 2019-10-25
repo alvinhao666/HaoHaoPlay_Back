@@ -29,7 +29,7 @@ namespace Hao.AppService
         private IMapper _mapper;
 
 
-        private ISysUserRepository _userRepository;
+        private ISysUserRepository _userRep;
 
         private readonly ICapPublisher _publisher;
 
@@ -37,7 +37,7 @@ namespace Hao.AppService
 
         public UserAppService(ISysUserRepository userRepository, IMapper mapper, ICapPublisher publisher, IHostingEnvironment hostingEnvironment)
         {
-            _userRepository = userRepository;
+            _userRep = userRepository;
             _mapper = mapper;
             _publisher = publisher;
             _hostingEnvironment = hostingEnvironment;
@@ -45,7 +45,7 @@ namespace Hao.AppService
 
         public async Task<UserVMOut> GetByID(long? id)
         {
-            var user = await _userRepository.GetAysnc(id.Value);
+            var user = await _userRep.GetAysnc(id.Value);
 
             return _mapper.Map<UserVMOut>(user);
         }
@@ -59,7 +59,7 @@ namespace Hao.AppService
         public async Task<LoginVMOut> Login(UserQuery query)
         {
             var user = new SysUser();
-            var users = await _userRepository.GetListAysnc(query.Conditions);
+            var users = await _userRep.GetListAysnc(query.Conditions);
             if (users.Count == 0)
                 throw new HException(ErrorInfo.E005005, nameof(ErrorInfo.E005005).GetErrorCode());
             user = users.FirstOrDefault();
@@ -76,7 +76,7 @@ namespace Hao.AppService
             var user = _mapper.Map<SysUser>(vm);
             user.FirstNameSpell = HUtil.GetInitialSpell(user.UserName.ToCharArray()[0].ToString());
             user.Password = EncryptProvider.HMACSHA256(user.Password, "haohaoplay");
-            return await _userRepository.InsertAysnc(user);
+            return await _userRep.InsertAysnc(user);
         }
         
         
@@ -93,7 +93,7 @@ namespace Hao.AppService
                 user.FirstNameSpell = HUtil.GetInitialSpell(user.UserName.ToCharArray()[0].ToString());
                 user.Password = EncryptProvider.HMACSHA256(user.Password, "haohaoplay");
             }
-            await _userRepository.InsertAysnc(users);
+            await _userRep.InsertAysnc(users);
         }
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task<PagedList<UserVMOut>> GetUsers(UserQuery query)
         {
-            var users = await _userRepository.GetPagedListAysnc(query);
+            var users = await _userRep.GetPagedListAysnc(query);
             var result = _mapper.Map<PagedList<UserVMOut>>(users);
 
             ////指定发送的消息标题（供订阅）和内容
@@ -121,7 +121,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task<UserVMOut> GetUser(long id)
         {
-            var user = await _userRepository.GetAysnc(id);
+            var user = await _userRep.GetAysnc(id);
             return _mapper.Map<UserVMOut>(user);
         }
 
@@ -143,12 +143,12 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task UpdateLoginTimeAndIP(long userId, DateTime lastLoginTime, string ip)
         {
-            var user = await _userRepository.GetAysnc(userId);
+            var user = await _userRep.GetAysnc(userId);
             if (user != null)
             {
                 user.LastLoginTime = lastLoginTime;
                 user.LastLoginIP = ip;
-                await _userRepository.UpdateAsync(user);
+                await _userRep.UpdateAsync(user);
             }
         }
 
@@ -159,7 +159,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task DeleteUser(long userId)
         {
-            await _userRepository.DeleteAysnc(userId);
+            await _userRep.DeleteAysnc(userId);
         }
 
         /// <summary>
@@ -169,11 +169,11 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task UpdateUserEnabled(long userId, bool enabled)
         {
-            var user = await _userRepository.GetAysnc(userId);
+            var user = await _userRep.GetAysnc(userId);
             if (user != null)
             {
                 user.Enabled = enabled;
-                await _userRepository.UpdateAsync(user);
+                await _userRep.UpdateAsync(user);
             }
         }
 
@@ -185,7 +185,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task EditUser(long userId, UserVMIn vm)
         {
-            var user = await _userRepository.GetAysnc(userId);
+            var user = await _userRep.GetAysnc(userId);
             if (user != null)
             {
                 user.UserName = vm.UserName;
@@ -194,7 +194,7 @@ namespace Hao.AppService
                 user.Phone = vm.Phone;
                 user.Email = vm.Email;
                 user.WeChat = vm.WeChat;
-                await _userRepository.UpdateAsync(user);
+                await _userRep.UpdateAsync(user);
             }
         }
 
@@ -205,7 +205,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task<string> ExportUsers(UserQuery query)
         {
-            var users = await _userRepository.GetListAysnc(query);
+            var users = await _userRep.GetListAysnc(query);
 
             var exportData = users.Select(a => new Dictionary<string, string>{
                 {"姓名",a.UserName},
