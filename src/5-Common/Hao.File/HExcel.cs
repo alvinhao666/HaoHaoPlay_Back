@@ -21,10 +21,11 @@ namespace Hao.File
         /// <param name="mergedCells"></param>
         /// <param name="endMenus"></param>
         /// <returns></returns>
-        public static async Task ExportToExcel(string filePath, string tableTitle, List<Dictionary<string, string>> exportData, IEnumerable<int> mergedCells = null, List<string> endMenus = null)
+        public static async Task ExportToExcel(string filePath, List<Dictionary<string, string>> exportData, string tableTitle = null, IEnumerable<int> mergedCells = null, List<string> endMenus = null)
         {
 
-            await Task.Factory.StartNew(() => {
+            await Task.Factory.StartNew(() =>
+            {
                 using (Stream stream = new FileStream(filePath, FileMode.CreateNew)) //FileMode.CreateNew 当文件不存在时，创建新文件；如果文件存在，则引发异常。
                 {
 
@@ -69,30 +70,20 @@ namespace Hao.File
                     }
                     else
                     {
-                        IRow index = sheet.CreateRow(0);
-                        index.ZeroHeight = false;
-                        for (int i = 0; i < maxColumn; i++)
+                        IRow headerRow = sheet.CreateRow(0);
+                        headerRow.ZeroHeight = false;
+                        headerRow.HeightInPoints = 24;
+                        int colIndex = 0;
+                        foreach (var colName in keys)
                         {
-                            ICell cell = index.CreateCell(i);
-                            cell.SetCellValue(i + 1);
+                            ICell cell = headerRow.CreateCell(colIndex);
+                            cell.SetCellValue(colName);
                             cell.CellStyle = cellStyle;
+                            colIndex++;
                         }
                     }
 
-                    IRow headerRow = sheet.CreateRow(1);
-                    headerRow.ZeroHeight = false;
-                    headerRow.HeightInPoints = 24;
-                    int colIndex = 0;
-                    foreach (var colName in keys)
-                    {
-                        ICell cell = headerRow.CreateCell(colIndex);
-                        cell.SetCellValue(colName);
-                        cell.CellStyle = cellStyle;
-                        colIndex++;
-                    }
-
-
-                    int count = 2;
+                    int count = 1;
                     IRow childRow = null;
                     int lastCount = 0;
 

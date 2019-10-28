@@ -38,7 +38,7 @@ namespace Hao.AppService
 
         private readonly IConfiguration _config;
 
-        public UserAppService(IConfiguration config,ISysUserRepository userRepository, IMapper mapper, ICapPublisher publisher, IHostingEnvironment hostingEnvironment)
+        public UserAppService(IConfiguration config, ISysUserRepository userRepository, IMapper mapper, ICapPublisher publisher, IHostingEnvironment hostingEnvironment)
         {
             _userRep = userRepository;
             _mapper = mapper;
@@ -82,8 +82,8 @@ namespace Hao.AppService
             user.Password = EncryptProvider.HMACSHA256(user.Password, _config["KeyInfo:Sha256Key"]);
             return await _userRep.InsertAysnc(user);
         }
-        
-        
+
+
         /// <summary>
         /// 添加用户
         /// </summary>
@@ -230,9 +230,9 @@ namespace Hao.AppService
                 HFile.CreateDirectory(rootPath);
             string filePath = Path.Combine(rootPath, $"{fileName}");
 
-            await HFile.ExportToExcel(filePath, "用户数据", exportData);
+            await HFile.ExportToExcel(filePath, exportData);
 
-            return fileName; 
+            return fileName;
         }
     }
 }
