@@ -62,11 +62,10 @@ namespace Hao.AppService
         //[UseTransaction]
         public async Task<LoginVMOut> Login(UserQuery query)
         {
-            var user = new SysUser();
             var users = await _userRep.GetListAysnc(query.Conditions);
             if (users.Count == 0)
                 throw new HException(ErrorInfo.E005005, nameof(ErrorInfo.E005005).GetErrorCode());
-            user = users.FirstOrDefault();
+            var user = users.FirstOrDefault();
             return _mapper.Map<LoginVMOut>(user);
         }
 
