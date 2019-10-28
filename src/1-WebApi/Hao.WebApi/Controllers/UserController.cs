@@ -134,10 +134,6 @@ namespace Hao.WebApi
         {
             string fileName = await _userAppService.ExportUsers(_mapper.Map<UserQuery>(query));
 
-//            string filePath = Path.Combine(new DirectoryInfo(_hostingEnvironment.ContentRootPath).Parent.FullName + "/ExportFile/Excel/", $"{fileName}");
-
-//            var response = await DownFile(filePath, fileName);
-
             return new {FileName = fileName,FileId= _protector.Protect(fileName.Split('.')[0], 
                 TimeSpan.FromSeconds(5))};
         }
@@ -151,7 +147,7 @@ namespace Hao.WebApi
                 throw new HException(ErrorInfo.E005007,nameof(ErrorInfo.E005007).GetErrorCode());
             }
             //可能上传多个excel文件
-            FormFileCollection files = (FormFileCollection)formCollection.Files;
+            var files = (FormFileCollection)formCollection.Files;
             
             //格式限制
             var allowType = new string[] { "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"};
@@ -164,14 +160,14 @@ namespace Hao.WebApi
 //            //大小限制
 //            if (files.Sum(b => b.Length) >= 1024 * 1024 * 4)
 //            {
-//                return Json(new { isSuccess = false, message = "上传文件的总大小只能在4M以下" }, "text/html");
+//               
 //            }
 
             foreach (IFormFile file in files)
             {
-                StreamReader reader = new StreamReader(file.OpenReadStream());
-                String content = reader.ReadToEnd();
-                String name = file.FileName;
+                var reader = new StreamReader(file.OpenReadStream());
+                var content = reader.ReadToEnd();
+                var name = file.FileName;
 
                 string rootPath = new DirectoryInfo(_hostingEnvironment.ContentRootPath).Parent.FullName + $"/ImportFile/Excel/";
                 
@@ -179,7 +175,7 @@ namespace Hao.WebApi
                     HFile.CreateDirectory(rootPath);
                 string filePath = Path.Combine(rootPath, $"{name}");
                 
-                using (FileStream fs = System.IO.File.Create(filePath))
+                using (var fs = System.IO.File.Create(filePath))
                 {
                     // 复制文件
                     file.CopyTo(fs);
@@ -187,9 +183,9 @@ namespace Hao.WebApi
                     fs.Flush();
                 }
                 
-                List<UserVMIn> users=new List<UserVMIn>();
+                var users=new List<UserVMIn>();
                 
-                using (ExcelPackage ep = new ExcelPackage(new FileInfo(filePath)))
+                using (var ep = new ExcelPackage(new FileInfo(filePath)))
                 {
                     foreach (var ws in ep.Workbook.Worksheets)
                     {
