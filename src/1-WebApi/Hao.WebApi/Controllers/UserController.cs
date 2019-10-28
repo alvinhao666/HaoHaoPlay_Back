@@ -24,17 +24,17 @@ namespace Hao.WebApi
     [Authorize]
     [ApiController]
     [Route("[controller]/[action]")]
-    public class UserController: HController
+    public class UserController : HController
     {
-        private readonly  IUserAppService _userAppService;
+        private readonly IUserAppService _userAppService;
 
         private readonly IMapper _mapper;
-        
+
         private readonly IHostingEnvironment _hostingEnvironment;
-        
+
         private readonly ITimeLimitedDataProtector _protector;
 
-        public UserController(IConfiguration config,IDataProtectionProvider provider,IHostingEnvironment hostingEnvironment,IMapper mapper,IUserAppService userService) 
+        public UserController(IConfiguration config, IDataProtectionProvider provider, IHostingEnvironment hostingEnvironment, IMapper mapper, IUserAppService userService)
         {
             _userAppService = userService;
             _mapper = mapper;
@@ -87,7 +87,7 @@ namespace Hao.WebApi
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        public async Task Disable(long? id) => await _userAppService.UpdateUserEnabled(id.Value,false);
+        public async Task Disable(long? id) => await _userAppService.UpdateUserEnabled(id.Value, false);
 
         /// <summary>
         /// 启用用户
@@ -106,24 +106,24 @@ namespace Hao.WebApi
         public async Task<UserVMOut> GetCurrentUser() => await _userAppService.GetCurrentUser();
 
 
-//        /// <summary>
-//        /// 导出用户
-//        /// </summary>
-//        /// <param name="query"></param>
-//        /// <returns></returns>
-//        [HttpGet]
-//        [NoGlobalResult]
-//        public async Task<HttpResponseMessage> ExportUsers([FromQuery]UserQueryInput query)
-//        {
-//            string fileName = await _userAppService.ExportUsers(_mapper.Map<UserQuery>(query));
-//
-//            string filePath = Path.Combine(new DirectoryInfo(_hostingEnvironment.ContentRootPath).Parent.FullName + "/ExportFile/Excel/", $"{fileName}");
-//
-//            var response = await DownFile(filePath, fileName);
-//
-//            return response;
-//        }
-        
+        //        /// <summary>
+        //        /// 导出用户
+        //        /// </summary>
+        //        /// <param name="query"></param>
+        //        /// <returns></returns>
+        //        [HttpGet]
+        //        [NoGlobalResult]
+        //        public async Task<HttpResponseMessage> ExportUsers([FromQuery]UserQueryInput query)
+        //        {
+        //            string fileName = await _userAppService.ExportUsers(_mapper.Map<UserQuery>(query));
+        //
+        //            string filePath = Path.Combine(new DirectoryInfo(_hostingEnvironment.ContentRootPath).Parent.FullName + "/ExportFile/Excel/", $"{fileName}");
+        //
+        //            var response = await DownFile(filePath, fileName);
+        //
+        //            return response;
+        //        }
+
         /// <summary>
         /// 导出用户
         /// </summary>
@@ -134,8 +134,7 @@ namespace Hao.WebApi
         {
             string fileName = await _userAppService.ExportUsers(_mapper.Map<UserQuery>(query));
 
-            return new {FileName = fileName,FileId= _protector.Protect(fileName.Split('.')[0], 
-                TimeSpan.FromSeconds(5))};
+            return new { FileName = fileName, FileId = _protector.Protect(fileName.Split('.')[0], TimeSpan.FromSeconds(5)) };
         }
 
 
@@ -144,24 +143,24 @@ namespace Hao.WebApi
         {
             if (formCollection?.Files == null)
             {
-                throw new HException(ErrorInfo.E005007,nameof(ErrorInfo.E005007).GetErrorCode());
+                throw new HException(ErrorInfo.E005007, nameof(ErrorInfo.E005007).GetErrorCode());
             }
             //可能上传多个excel文件
             var files = (FormFileCollection)formCollection.Files;
-            
+
             //格式限制
-            var allowType = new string[] { "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"};
-            
+            var allowType = new string[] { "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" };
+
             if (files.Any(b => !allowType.Contains(b.ContentType)))
             {
-                throw new HException(ErrorInfo.E005008,nameof(ErrorInfo.E005008).GetErrorCode());
+                throw new HException(ErrorInfo.E005008, nameof(ErrorInfo.E005008).GetErrorCode());
             }
-            
-//            //大小限制
-//            if (files.Sum(b => b.Length) >= 1024 * 1024 * 4)
-//            {
-//               
-//            }
+
+            //            //大小限制
+            //            if (files.Sum(b => b.Length) >= 1024 * 1024 * 4)
+            //            {
+            //               
+            //            }
 
             foreach (IFormFile file in files)
             {
@@ -170,11 +169,11 @@ namespace Hao.WebApi
                 var name = file.FileName;
 
                 string rootPath = new DirectoryInfo(_hostingEnvironment.ContentRootPath).Parent.FullName + $"/ImportFile/Excel/";
-                
+
                 if (!HFile.IsExistDirectory(rootPath))
                     HFile.CreateDirectory(rootPath);
                 string filePath = Path.Combine(rootPath, $"{name}");
-                
+
                 using (var fs = System.IO.File.Create(filePath))
                 {
                     // 复制文件
@@ -182,9 +181,9 @@ namespace Hao.WebApi
                     // 清空缓冲区数据
                     fs.Flush();
                 }
-                
-                var users=new List<UserVMIn>();
-                
+
+                var users = new List<UserVMIn>();
+
                 using (var ep = new ExcelPackage(new FileInfo(filePath)))
                 {
                     foreach (var ws in ep.Workbook.Worksheets)
@@ -193,12 +192,12 @@ namespace Hao.WebApi
                         int colEnd = ws.Dimension.End.Column;       //工作区结束列
                         int rowStart = ws.Dimension.Start.Row;       //工作区开始行号,start=1
                         int rowEnd = ws.Dimension.End.Row;       //工作区结束行号
-                    
+
                         for (int i = rowStart + 1; i <= rowEnd; i++) //第1行是列名,跳过
                         {
-                            var user=new UserVMIn();
+                            var user = new UserVMIn();
                             user.UserName = ws.Cells[i, colStart].Text;
-                            user.LoginName=ws.Cells[i, colStart+1].Text;
+                            user.LoginName = ws.Cells[i, colStart + 1].Text;
                             user.Password = ws.Cells[i, colStart + 2].Text;
                             users.Add(user);
                         }
