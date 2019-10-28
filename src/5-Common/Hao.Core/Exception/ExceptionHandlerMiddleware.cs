@@ -14,7 +14,7 @@ namespace Hao.Core
 
         private const string EErrorMsg = "未知错误";
 
-        public static ILogger _log = LogManager.GetCurrentClassLogger();
+        private static ILogger _log = LogManager.GetCurrentClassLogger();
 
         public static void UseGlobalExceptionHandler(this IApplicationBuilder app)
         {
