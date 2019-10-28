@@ -15,16 +15,13 @@ namespace Hao.File
         /// <summary>
         /// 导出excel
         /// </summary>
-        /// <param name="fs"></param>
-        /// <param name="fileName"></param>
-        /// <param name="url"></param>
+        /// <param name="filePath"></param>
         /// <param name="tableTitle"></param>
-        /// <param name="tableHeaders"></param>
         /// <param name="exportData"></param>
         /// <param name="mergedCells"></param>
         /// <param name="endMenus"></param>
         /// <returns></returns>
-        public static async Task ExportToExcel(string fileName, string filePath, string tableTitle, List<Dictionary<string, string>> exportData, IEnumerable<int> mergedCells = null, List<string> endMenus = null)
+        public static async Task ExportToExcel(string filePath, string tableTitle, List<Dictionary<string, string>> exportData, IEnumerable<int> mergedCells = null, List<string> endMenus = null)
         {
 
             await Task.Factory.StartNew(() => {
