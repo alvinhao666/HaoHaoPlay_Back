@@ -225,7 +225,7 @@ namespace Hao.AppService
 
             string fileName = $"{Guid.NewGuid()}.xlsx";
             string rootPath = new DirectoryInfo(_hostingEnvironment.ContentRootPath).Parent.FullName + "/ExportFile/Excel/";
-            //string rootPath = _hostingEnvironment.ContentRootPath + "/excel/";
+
             if (!HFile.IsExistDirectory(rootPath))
                 HFile.CreateDirectory(rootPath);
             string filePath = Path.Combine(rootPath, $"{fileName}");
