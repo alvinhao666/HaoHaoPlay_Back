@@ -21,7 +21,6 @@ using Hao.File;
 
 namespace Hao.WebApi
 {
-    [Authorize]
     [ApiController]
     [Route("[controller]/[action]")]
     public class UserController : HController

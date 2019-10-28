@@ -15,9 +15,11 @@ using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Hao.WebApi
 {
+    [Authorize]
     public class HController : Controller
     {
         public ILogger Logger { get; set; }
