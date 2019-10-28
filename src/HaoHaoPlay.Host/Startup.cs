@@ -50,9 +50,9 @@ namespace HaoHaoPlay.Host
 {
     public class Startup
     {
-        private IConfiguration Configuration { get; }
+        private IConfiguration _config;
 
-        private IContainer ApplicationContainer { get; set; }
+        private IContainer _container;
 
 
         public Startup(IHostingEnvironment env)
@@ -62,7 +62,7 @@ namespace HaoHaoPlay.Host
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true) // 在运行时修改强类型配置，无需设置reloadOnChange = true,默认就为true,只需要使用IOptionsSnapshot接口,IOptions<> 生命周期为Singleton,IOptionsSnapshot<> 生命周期为Scope
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)  // 没有的话 默认读取appsettings.json
                 .AddEnvironmentVariables();
-            Configuration = builder.Build();
+            _config = builder.Build();
         }
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
@@ -96,7 +96,7 @@ namespace HaoHaoPlay.Host
             #endregion
 
             #region Jwt
-            var jwtSection = Configuration.GetSection(nameof(JwtOptions));
+            var jwtSection = _config.GetSection(nameof(JwtOptions));
 
             var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSection[nameof(JwtOptions.SecretKey)]));
 
@@ -133,7 +133,7 @@ namespace HaoHaoPlay.Host
 
             #region Redis
 
-            var redisConnection = Configuration.GetConnectionString("RedisConnection");
+            var redisConnection = _config.GetConnectionString("RedisConnection");
 
             var csRedis = new CSRedisClient(redisConnection);
 
@@ -144,14 +144,14 @@ namespace HaoHaoPlay.Host
                                                                                               //现在,ASP.NET Core引入了IDistributedCache分布式缓存接口，它是一个相当基本的分布式缓存标准API，可以让您对它进行编程，然后无缝地插入第三方分布式缓存
                                                                                               //DistributedCache将拷贝缓存的文件到Slave节点
 
-            var redisPrefix = Configuration.GetSection(nameof(RedisPrefixOptions));
+            var redisPrefix = _config.GetSection(nameof(RedisPrefixOptions));
             services.Configure<RedisPrefixOptions>(redisPrefix);
             #endregion
 
             #region ORM
             services.AddSqlSugarClient(new ConnectionConfig()
             {
-                ConnectionString = Configuration.GetConnectionString("MySqlConnection"),
+                ConnectionString = _config.GetConnectionString("MySqlConnection"),
                 DbType = DbType.MySql,
                 IsAutoCloseConnection = true,//开启自动释放模式和EF原理一样 自动释放数据务，如果存在事务，在事务结束后释放
                 InitKeyType = InitKeyType.SystemTable,  //如果不是SA等高权限数据库的账号,需要从实体读取主键或者自增列 InitKeyType要设成Attribute (不需要读取这些信息)
@@ -173,15 +173,15 @@ namespace HaoHaoPlay.Host
             services.AddCap(x =>
             {
 
-                x.UseMySql(cfg => { cfg.ConnectionString = Configuration.GetConnectionString("MySqlConnection"); });
+                x.UseMySql(cfg => { cfg.ConnectionString = _config.GetConnectionString("MySqlConnection"); });
 
                 x.UseRabbitMQ(cfg =>
                 {
-                    cfg.HostName = Configuration["RabbitMQ:HostName"];
-                    cfg.VirtualHost = Configuration["RabbitMQ:VirtualHost"];
-                    cfg.Port = Convert.ToInt32(Configuration["RabbitMQ:Port"]);
-                    cfg.UserName = Configuration["RabbitMQ:UserName"];
-                    cfg.Password = Configuration["RabbitMQ:Password"];
+                    cfg.HostName = _config["RabbitMQ:HostName"];
+                    cfg.VirtualHost = _config["RabbitMQ:VirtualHost"];
+                    cfg.Port = Convert.ToInt32(_config["RabbitMQ:Port"]);
+                    cfg.UserName = _config["RabbitMQ:UserName"];
+                    cfg.Password = _config["RabbitMQ:Password"];
                 });
 
                 x.FailedRetryCount = 2;
@@ -211,7 +211,7 @@ namespace HaoHaoPlay.Host
             #endregion
 
             #region 单例注入
-            var snowflake = Configuration.GetSection(nameof(SnowflakeIdOptions));
+            var snowflake = _config.GetSection(nameof(SnowflakeIdOptions));
             var worker = new IdWorker(long.Parse(snowflake[nameof(SnowflakeIdOptions.WorkerId)]), long.Parse(snowflake[nameof(SnowflakeIdOptions.DataCenterId)]));
             services.AddSingleton(worker);
 
@@ -282,9 +282,9 @@ namespace HaoHaoPlay.Host
 
 
             builder.Populate(services);
-            ApplicationContainer = builder.Build();
+            _container = builder.Build();
 
-            return new AutofacServiceProvider(ApplicationContainer);//第三方IOC接管 core内置DI容器
+            return new AutofacServiceProvider(_container);//第三方IOC接管 core内置DI容器
             #endregion
 
         }
