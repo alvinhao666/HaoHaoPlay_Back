@@ -5,12 +5,11 @@ using System.Text;
 
 namespace Hao.Enum
 {
-    [HDescription("性别")]
     public enum Gender
     {
         [HDescription("女")]
-        Women=1,
+        Women,
         [HDescription("男")]
-        Man=2
+        Man
     }
 }

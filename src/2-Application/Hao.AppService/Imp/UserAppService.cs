@@ -212,7 +212,7 @@ namespace Hao.AppService
 
             var exportData = users.Select(a => new Dictionary<string, string>{
                 {"姓名",a.UserName},
-                {"性别", HDescription.GetDescription(typeof(Gender),(int)a.Gender) },
+                {"性别", HDescription.GetDescription(a.Gender) },
                 {"年龄",a.Age.ToString()},
                 {"手机号",a.Phone},
                 {"邮箱",a.Email},
