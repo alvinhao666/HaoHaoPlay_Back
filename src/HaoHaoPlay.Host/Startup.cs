@@ -191,13 +191,6 @@ namespace HaoHaoPlay.Host
             });
             #endregion
 
-            #region 模型验证
-            services.Configure<ApiBehaviorOptions>(options =>
-            {
-                options.SuppressModelStateInvalidFilter = true;
-            });
-
-            #endregion
 
             #region Session 获取当前用户
             services.AddSession(options =>
@@ -240,9 +233,10 @@ namespace HaoHaoPlay.Host
             //替换控制器所有者,详见有道笔记,放AddMvc前面
             services.Replace(ServiceDescriptor.Transient<IControllerActivator, ServiceBasedControllerActivator>());
 
+
+
             services.AddMvc(x =>
             {
-                x.Filters.Add(typeof(HValidationFilter));
                 x.Filters.Add(typeof(HResultFilter));
             })
             .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
@@ -253,6 +247,22 @@ namespace HaoHaoPlay.Host
                 op.SerializerSettings.ContractResolver = new DefaultContractResolver(); //全局Filter json大小写
             }).AddWebApiConventions();//处理HttpResponseMessage类型返回值的问题
 
+            #region 模型验证 需要放AddMvc后面
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.InvalidModelStateResponseFactory = (context) =>
+                {
+                    var error = context.ModelState.Values.SelectMany(x => x.Errors.Select(p => p.ErrorMessage)).FirstOrDefault();
+                    var response = new BaseResponse
+                    {
+                        Success = false,
+                        Data = null,
+                        ErrorMsg = error
+                    };
+                    return new JsonResult(response);
+                };
+            });
+            #endregion
 
 
             #region Autofac
