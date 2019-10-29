@@ -1,6 +1,5 @@
 ﻿using System;
 using Hao.Core.Model;
-using Hao.Model.Enum;
 using SqlSugar;
 
 namespace Hao.Model
@@ -29,7 +28,7 @@ namespace Hao.Model
         /// <summary>
         /// 性别
         /// </summary>
-        public Gender? Gender { get; set; }
+        public Enum.Gender? Gender { get; set; }
 
         /// <summary>
         /// QQ
