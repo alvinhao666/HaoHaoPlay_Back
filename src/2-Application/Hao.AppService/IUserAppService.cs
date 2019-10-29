@@ -13,19 +13,19 @@ namespace Hao.AppService
 {
     public interface IUserAppService : IApplicationService
     {
-        Task<LoginVMOut> Login(UserQuery query);
+        Task<LoginOut> Login(UserQuery query);
 
-        Task<long> AddUser(UserVMIn vm);
+        Task<long> AddUser(UserIn vm);
         
-        Task AddUsers(List<UserVMIn> vms);
+        Task AddUsers(List<UserIn> vms);
         
-        Task EditUser(long userId, UserVMIn vm);
+        Task EditUser(long userId, UserIn vm);
 
-        Task<PagedList<UserVMOut>> GetUsers(UserQuery query);
+        Task<PagedList<UserOut>> GetUsers(UserQuery query);
 
-        Task<UserVMOut> GetUser(long id);
+        Task<UserOut> GetUser(long id);
 
-        Task<UserVMOut> GetCurrentUser();
+        Task<UserOut> GetCurrentUser();
 
         Task UpdateLoginTimeAndIP(long userId, DateTime lastLoginTime, string ip);
 

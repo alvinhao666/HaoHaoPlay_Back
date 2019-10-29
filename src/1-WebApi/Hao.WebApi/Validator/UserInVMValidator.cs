@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Hao.WebApi
 {
-    public class UserVMInValidator : AbstractValidator<UserVMIn>
+    public class UserVMInValidator : AbstractValidator<UserIn>
     {
         public UserVMInValidator()
         {

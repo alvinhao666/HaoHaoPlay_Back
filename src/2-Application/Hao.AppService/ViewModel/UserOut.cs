@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Hao.AppService.ViewModel
 {
-    public class UserVMOut
+    public class UserOut
     {
         public string Id { get; set; }
 

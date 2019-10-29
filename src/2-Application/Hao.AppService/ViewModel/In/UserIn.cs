@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Hao.AppService.ViewModel
 {
-    public class UserVMIn
+    public class UserIn
     {
         /// <summary>
         /// 用户名

@@ -49,7 +49,7 @@ namespace Hao.WebApi
         /// <param name="queryInput"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<LoginVMOut> Login([FromBody]UserQueryInput queryInput)
+        public async Task<LoginOut> Login([FromBody]UserQueryInput queryInput)
         {
             var query = _mapper.Map<UserQuery>(queryInput);
             query.Enabled = true;

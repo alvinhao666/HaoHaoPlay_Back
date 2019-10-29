@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="System\QueryModel\**" />
+    <EmbeddedResource Remove="System\QueryModel\**" />
+    <None Remove="System\QueryModel\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="sqlSugarCore" Version="5.0.0.9" />
   </ItemGroup>
 
@@ -15,7 +21,6 @@
 
   <ItemGroup>
     <Folder Include="System\Dto\" />
-    <Folder Include="System\QueryModel\" />
   </ItemGroup>
 
 </Project>

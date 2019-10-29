@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Hao.AppService.ViewModel
 {
-    public class LoginVMOut
+    public class LoginOut
     {
         /// <summary>
         /// 用户Id

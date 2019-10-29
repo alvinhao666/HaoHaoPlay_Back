@@ -47,14 +47,14 @@ namespace Hao.WebApi
         /// <param name="body"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task Post([FromBody]UserVMIn vm) => await _userAppService.AddUser(vm);
+        public async Task Post([FromBody]UserIn vm) => await _userAppService.AddUser(vm);
 
         /// <summary>
         /// 查询用户列表
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<PagedList<UserVMOut>> GetAll([FromQuery]UserQueryInput query) => await _userAppService.GetUsers(_mapper.Map<UserQuery>(query));
+        public async Task<PagedList<UserOut>> GetAll([FromQuery]UserQueryInput query) => await _userAppService.GetUsers(_mapper.Map<UserQuery>(query));
 
         /// <summary>
         /// 修改用户
@@ -63,14 +63,14 @@ namespace Hao.WebApi
         /// <param name="vm"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        public async Task Put(long? id, [FromBody]UserVMIn vm) => await _userAppService.EditUser(id.Value, vm);
+        public async Task Put(long? id, [FromBody]UserIn vm) => await _userAppService.EditUser(id.Value, vm);
         /// <summary>
         /// 根据id获取用户
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<UserVMOut> Get(long? id) => await _userAppService.GetUser(id.Value);
+        public async Task<UserOut> Get(long? id) => await _userAppService.GetUser(id.Value);
 
         /// <summary>
         /// 删除用户
@@ -102,7 +102,7 @@ namespace Hao.WebApi
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
-        public async Task<UserVMOut> GetCurrentUser() => await _userAppService.GetCurrentUser();
+        public async Task<UserOut> GetCurrentUser() => await _userAppService.GetCurrentUser();
 
 
         //        /// <summary>
@@ -181,7 +181,7 @@ namespace Hao.WebApi
                     fs.Flush();
                 }
 
-                var users = new List<UserVMIn>();
+                var users = new List<UserIn>();
 
                 using (var ep = new ExcelPackage(new FileInfo(filePath)))
                 {
@@ -194,7 +194,7 @@ namespace Hao.WebApi
 
                         for (int i = rowStart + 1; i <= rowEnd; i++) //第1行是列名,跳过
                         {
-                            var user = new UserVMIn();
+                            var user = new UserIn();
                             user.UserName = ws.Cells[i, colStart].Text;
                             user.LoginName = ws.Cells[i, colStart + 1].Text;
                             user.Password = ws.Cells[i, colStart + 2].Text;
