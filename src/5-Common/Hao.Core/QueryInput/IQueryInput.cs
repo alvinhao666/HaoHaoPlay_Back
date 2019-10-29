@@ -7,6 +7,6 @@ namespace Hao.Core.QueryInput
 {
     public interface IQueryInput
     {
-        OrderByType OrderByType { get; set; }
+        OrderByType? OrderByType { get; set; }
     }
 }
