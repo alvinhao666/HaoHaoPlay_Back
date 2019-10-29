@@ -234,7 +234,6 @@ namespace HaoHaoPlay.Host
             services.Replace(ServiceDescriptor.Transient<IControllerActivator, ServiceBasedControllerActivator>());
 
 
-
             services.AddMvc(x =>
             {
                 x.Filters.Add(typeof(HResultFilter));
