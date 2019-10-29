@@ -7,8 +7,8 @@ namespace Hao.Core.QueryInput
 {
     public interface IQueryInput
     {
-        string OrderFileds { get; set; }
+        //string OrderFileds { get; set; }
 
-        //OrderByType OrderByType { get; set; }
+        OrderByType OrderByType { get; set; }
     }
 }

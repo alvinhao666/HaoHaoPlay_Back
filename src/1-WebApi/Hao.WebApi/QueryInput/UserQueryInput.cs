@@ -23,5 +23,12 @@ namespace Hao.WebApi
         public DateTime? LastLoginTimeStart { get; set; }
 
         public DateTime? LastLoginTimeEnd { get; set; }
+
+        public SortUser? SortField { get; set; }
+    }
+
+    public enum SortUser
+    {
+        Age
     }
 }

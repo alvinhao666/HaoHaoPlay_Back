@@ -12,8 +12,8 @@ namespace Hao.Core.QueryInput
 
         public int PageSize { get; set; } = 10;
 
-        public string OrderFileds { get; set; }
+        //public string OrderFileds { get; set; }
 
-        //public OrderByType OrderByType { get; set; }
+        public OrderByType OrderByType { get; set; }
     }
 }

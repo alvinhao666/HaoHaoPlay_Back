@@ -10,7 +10,8 @@ namespace Hao.WebApi
     {
         public static void InitMap(IMapperConfigurationExpression cfg)
         {
-            cfg.CreateMap<UserQueryInput, UserQuery>();
+            cfg.CreateMap<UserQueryInput, UserQuery>()
+                .ForMember(x => x.OrderFileds, a => a.MapFrom(x => x.SortField.HasValue ? (x.SortField + " " + x.OrderByType) : null));
         }
     }
 }
