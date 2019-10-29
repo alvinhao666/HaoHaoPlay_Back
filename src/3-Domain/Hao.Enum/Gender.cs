@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Hao.Model.Enum
+namespace Hao.Enum
 {
     [HDescription("性别")]
     public enum Gender

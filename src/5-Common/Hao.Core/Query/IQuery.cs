@@ -14,6 +14,6 @@ namespace Hao.Core.Query
         string OrderFileds { get; set; }
 
         //Expression<Func<T, object>> Expression { get; set; }
-        //OrderByType OrderByType { get; set; } 
+        OrderByType? OrderByType { get; set; } 
     }
 }

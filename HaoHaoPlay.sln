@@ -39,7 +39,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.File", "src\5-Common\Ha
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{24D9690F-D45B-469F-A5A2-C2006330B3F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HaoHaoPlay.Host", "src\HaoHaoPlay.Host\HaoHaoPlay.Host.csproj", "{B48E4970-A1F8-4ED0-ADC6-B4B22856ED88}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HaoHaoPlay.Host", "src\HaoHaoPlay.Host\HaoHaoPlay.Host.csproj", "{B48E4970-A1F8-4ED0-ADC6-B4B22856ED88}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hao.Enum", "src\3-Domain\Hao.Enum\Hao.Enum.csproj", "{25BCF8DF-2336-46B7-9662-C4F4D7980EB4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -95,6 +97,10 @@ Global
 		{B48E4970-A1F8-4ED0-ADC6-B4B22856ED88}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B48E4970-A1F8-4ED0-ADC6-B4B22856ED88}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B48E4970-A1F8-4ED0-ADC6-B4B22856ED88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{25BCF8DF-2336-46B7-9662-C4F4D7980EB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{25BCF8DF-2336-46B7-9662-C4F4D7980EB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{25BCF8DF-2336-46B7-9662-C4F4D7980EB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{25BCF8DF-2336-46B7-9662-C4F4D7980EB4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -117,6 +123,7 @@ Global
 		{65505E5C-636B-4007-BC2A-2ABEA25D6097} = {D4FE854B-07DD-4C60-81D3-5B75912CE2F8}
 		{0706834F-676B-4D59-89FB-C374163D72BB} = {042FD3BE-DA74-462B-8F16-E6D1ADFC7454}
 		{B48E4970-A1F8-4ED0-ADC6-B4B22856ED88} = {094FBA78-1265-4B2A-A7C6-46B8AD420D1B}
+		{25BCF8DF-2336-46B7-9662-C4F4D7980EB4} = {D4FE854B-07DD-4C60-81D3-5B75912CE2F8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5BAAEA79-B086-4D1C-AC3A-B029DF5FA31A}

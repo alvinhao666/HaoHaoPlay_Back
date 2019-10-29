@@ -1,4 +1,4 @@
-﻿using Hao.Model.Enum;
+﻿using Hao.Enum;
 using Hao.Utility;
 using System;
 using System.Collections.Generic;

@@ -1,5 +1,5 @@
 ﻿using Hao.Core.QueryInput;
-using Hao.Model.Enum;
+using Hao.Enum;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -25,10 +25,5 @@ namespace Hao.WebApi
         public DateTime? LastLoginTimeEnd { get; set; }
 
         public SortUser? SortField { get; set; }
-    }
-
-    public enum SortUser
-    {
-        Age
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Hao.Core.Query;
+using Hao.Enum;
 using Hao.Model;
-using Hao.Model.Enum;
 using Hao.Utility;
 using SqlSugar;
 using System;

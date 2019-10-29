@@ -22,6 +22,7 @@ namespace Hao.Core.Query
         public virtual string QuerySql { get; }
 
         //public virtual Expression<Func<T, object>> Expression { get; set; }
-        //public virtual OrderByType OrderByType { get; set; } = OrderByType.Asc;
+        
+        public  OrderByType? OrderByType { get; set; }
     }
 }

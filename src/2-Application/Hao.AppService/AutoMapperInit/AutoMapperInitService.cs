@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Hao.AppService.ViewModel;
 using Hao.Core.Model;
+using Hao.Enum;
 using Hao.Model;
-using Hao.Model.Enum;
 using Hao.Utility;
 using System;
 using System.Collections.Generic;
