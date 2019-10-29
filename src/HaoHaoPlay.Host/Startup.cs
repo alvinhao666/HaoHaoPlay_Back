@@ -277,7 +277,6 @@ namespace HaoHaoPlay.Host
 
             builder.RegisterAssemblyTypes(
                     Assembly.Load("Hao.AppService"))
-                   //.Where(t => t.Name.EndsWith("AppService") || t.Name.EndsWith("Repository"))
                    .Where(m => typeof(ITransientDependency).IsAssignableFrom(m) && m != typeof(ITransientDependency))
                    .AsImplementedInterfaces().InstancePerLifetimeScope().PropertiesAutowired().EnableInterfaceInterceptors().InterceptedBy(typeof(HTransactionAop));
             //一定要在你注入的服务后面加上EnableInterfaceInterceptors来开启你的拦截(aop)
@@ -298,7 +297,7 @@ namespace HaoHaoPlay.Host
 
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
 #if DEBUG 
