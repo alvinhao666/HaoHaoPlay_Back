@@ -246,7 +246,7 @@ namespace HaoHaoPlay.Host
                 op.SerializerSettings.ContractResolver = new DefaultContractResolver(); //全局Filter json大小写
             }).AddWebApiConventions();//处理HttpResponseMessage类型返回值的问题
 
-            #region 模型验证 需要放AddMvc后面
+            #region 模型验证 ApiBehaviorOptions 的统一模型验证配置一定要放到(.AddMvc)后面
             services.Configure<ApiBehaviorOptions>(options =>
             {
                 options.InvalidModelStateResponseFactory = (context) =>
