@@ -15,7 +15,7 @@ namespace Hao.Utility
     public class HDescription
     {
 
-        private static ConcurrentDictionary<Type, HDescriptionAttribute[]> enumCache = new ConcurrentDictionary<Type, HDescriptionAttribute[]>();
+        private static readonly ConcurrentDictionary<Type, HDescriptionAttribute[]> enumCache = new ConcurrentDictionary<Type, HDescriptionAttribute[]>();
 
         /// <summary>
         /// 获取所有字段
@@ -25,21 +25,14 @@ namespace Hao.Utility
 
         private static HDescriptionAttribute[] Get(Type enumType)
         {
-            return enumCache.GetOrAdd(enumType, type => {
-
-                return type.GetFields(BindingFlags.Static | BindingFlags.Public).Select(a => Get(a)).ToArray();
-            });
+            return enumCache.GetOrAdd(enumType, type => type.GetFields(BindingFlags.Static | BindingFlags.Public).Select(a => Get(a)).ToArray());
         }
 
 
         private static HDescriptionAttribute Get(FieldInfo fieldInfo)
         {
-            HDescriptionAttribute customAttribute = fieldInfo.GetCustomAttribute<HDescriptionAttribute>();
-            if (customAttribute == null)
-            {
-                return null;
-            }
-
+            var customAttribute = fieldInfo.GetCustomAttribute<HDescriptionAttribute>();
+            if (customAttribute == null) return null;
             customAttribute.Field = fieldInfo;
             return customAttribute;
         }
@@ -61,12 +54,8 @@ namespace Hao.Utility
             var fieldName = @enum.ToString();
             var enumType = @enum.GetType();
             if (!Enum.IsDefined(enumType, @enum)) return null;
-            HDescriptionAttribute HDescriptionAttribute = Get(enumType, fieldName);
-            if (HDescriptionAttribute == null)
-            {
-                return null;
-            }
-            return HDescriptionAttribute.Description;
+            var hDescriptionAttribute = Get(enumType, fieldName);
+            return hDescriptionAttribute?.Description;
         }
 
         ///// <summary>
