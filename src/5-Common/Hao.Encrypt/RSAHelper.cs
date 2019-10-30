@@ -28,12 +28,12 @@ namespace Hao.Utility
         public RSAHelper(RSAType rsaType, Encoding encoding, string privateKey, string publicKey = null)
         {
             _encoding = encoding;
-            if (!string.IsNullOrEmpty(privateKey))
+            if (!string.IsNullOrWhiteSpace(privateKey))
             {
                 _privateKeyRsaProvider = CreateRsaProviderFromPrivateKey(privateKey);
             }
 
-            if (!string.IsNullOrEmpty(publicKey))
+            if (!string.IsNullOrWhiteSpace(publicKey))
             {
                 _publicKeyRsaProvider = CreateRsaProviderFromPublicKey(publicKey);
             }
@@ -107,7 +107,7 @@ namespace Hao.Utility
 
         #region 使用私钥创建RSA实例
 
-        public RSA CreateRsaProviderFromPrivateKey(string privateKey)
+        private RSA CreateRsaProviderFromPrivateKey(string privateKey)
         {
             var privateKeyBits = Convert.FromBase64String(privateKey);
 
@@ -152,7 +152,7 @@ namespace Hao.Utility
 
         #region 使用公钥创建RSA实例
 
-        public RSA CreateRsaProviderFromPublicKey(string publicKeyString)
+        private RSA CreateRsaProviderFromPublicKey(string publicKeyString)
         {
             // encoded OID sequence for  PKCS #1 rsaEncryption szOID_RSA_RSA = "1.2.840.113549.1.1.1"
             byte[] seqOid = { 0x30, 0x0D, 0x06, 0x09, 0x2A, 0x86, 0x48, 0x86, 0xF7, 0x0D, 0x01, 0x01, 0x01, 0x05, 0x00 };
