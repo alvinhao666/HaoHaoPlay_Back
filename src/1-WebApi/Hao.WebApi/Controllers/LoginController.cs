@@ -54,8 +54,10 @@ namespace Hao.WebApi
             var query = _mapper.Map<UserQuery>(queryInput);
             query.Enabled = true;
 
-            var rsa = new RSAHelper(RSAType.RSA2, _config["KeyInfo:RsaPrivateKey"]);
-            string pwd = rsa.Decrypt(query.Password); //解密
+            //var rsa = new RSAHelper(RSAType.RSA2, _config["KeyInfo:RsaPrivateKey"]);
+            //string pwd = rsa.Decrypt(query.Password); //解密
+
+            string pwd = EncryptProvider.RSADecryptWithPem("-----BEGIN PRIVATE KEY-----\n" + _config["KeyInfo:RsaPrivateKey"] + "\n-----END PRIVATE KEY-----", query.Password); //解密
 
             query.Password = EncryptProvider.HMACSHA256(pwd, _config["KeyInfo:Sha256Key"]);
             var user = await _userAppService.Login(query);
