@@ -16,7 +16,7 @@ namespace Hao.Utility
         private readonly RSA _privateKeyRsaProvider;
         private readonly RSA _publicKeyRsaProvider;
         private readonly HashAlgorithmName _hashAlgorithmName;
-        private readonly Encoding _encoding;
+        private readonly Encoding _encoding = Encoding.UTF8;
 
         /// <summary>
         /// 实例化RSAHelper
@@ -25,9 +25,8 @@ namespace Hao.Utility
         /// <param name="encoding">编码类型</param>
         /// <param name="privateKey">私钥</param>
         /// <param name="publicKey">公钥</param>
-        public RSAHelper(RSAType rsaType, Encoding encoding, string privateKey, string publicKey = null)
+        public RSAHelper(RSAType rsaType, string privateKey, string publicKey = null)
         {
-            _encoding = encoding;
             if (!string.IsNullOrWhiteSpace(privateKey))
             {
                 _privateKeyRsaProvider = CreateRsaProviderFromPrivateKey(privateKey);
