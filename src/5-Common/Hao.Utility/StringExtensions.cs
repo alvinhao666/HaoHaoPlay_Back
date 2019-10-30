@@ -110,5 +110,16 @@ namespace Hao.Utility
         {
             return string.Join(separator, value, startIndex, count);
         }
+
+
+        public static string ToPublicPem(this string publicKey)
+        {
+            return string.Format("-----BEGIN PUBLIC KEY-----\n{0}\n-----END PUBLIC KEY-----", publicKey);
+        }
+
+        public static string ToPrivatePem(this string privateKey)
+        {
+            return string.Format("-----BEGIN PRIVATE KEY-----\n{0}\n-----END PRIVATE KEY-----", privateKey);
+        }
     }
 }
