@@ -771,8 +771,7 @@ namespace Hao.Encrypt
 
             using (rsa)
             {
-                //byte[] srcBytes = srcString.ToBytes();
-                byte[] srcBytes = Convert.FromBase64String(srcString);
+                byte[] srcBytes = srcString.ToBytes();
                 byte[] decryptBytes = rsa.Decrypt(srcBytes, padding);
                 return Encoding.UTF8.GetString(decryptBytes);
             }

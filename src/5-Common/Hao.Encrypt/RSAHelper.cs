@@ -3,57 +3,30 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace Hao.Utility
+namespace Hao.Encrypt
 {
-    /// <summary>
-    /// RSA加解密 使用OpenSSL的公钥加密/私钥解密
-    /// 作者：李志强
-    /// 创建时间：2017年10月30日15:50:14
-    /// QQ:501232752
-    /// </summary>
-    public class RSAHelper
+
+    public class RsaHelper
     {
-        private readonly RSA _privateKeyRsaProvider;
-        private readonly RSA _publicKeyRsaProvider;
-        private readonly HashAlgorithmName _hashAlgorithmName;
-        private readonly Encoding _encoding = Encoding.UTF8;
-
-        /// <summary>
-        /// 实例化RSAHelper
-        /// </summary>
-        /// <param name="rsaType">加密算法类型 RSA SHA1;RSA2 SHA256 密钥长度至少为2048</param>
-        /// <param name="encoding">编码类型</param>
-        /// <param name="privateKey">私钥</param>
-        /// <param name="publicKey">公钥</param>
-        public RSAHelper(RSAType rsaType, string privateKey, string publicKey = null)
-        {
-            if (!string.IsNullOrWhiteSpace(privateKey))
-            {
-                _privateKeyRsaProvider = CreateRsaProviderFromPrivateKey(privateKey);
-            }
-
-            if (!string.IsNullOrWhiteSpace(publicKey))
-            {
-                _publicKeyRsaProvider = CreateRsaProviderFromPublicKey(publicKey);
-            }
-
-            _hashAlgorithmName = rsaType == RSAType.RSA ? HashAlgorithmName.SHA1 : HashAlgorithmName.SHA256;
-        }
 
         #region 使用私钥签名
-
         /// <summary>
         /// 使用私钥签名
         /// </summary>
         /// <param name="data">原始数据</param>
         /// <returns></returns>
-        public string Sign(string data)
+        public static string Sign(string privateKey,string data)
         {
-            byte[] dataBytes = _encoding.GetBytes(data);
+            byte[] dataBytes = Encoding.UTF8.GetBytes(data);
 
-            var signatureBytes = _privateKeyRsaProvider.SignData(dataBytes, _hashAlgorithmName, RSASignaturePadding.Pkcs1);
+            RSA privateKeyRsaProvider = CreateRsaProviderFromPrivateKey(privateKey);
 
-            return Convert.ToBase64String(signatureBytes);
+            using (privateKeyRsaProvider) 
+            {
+                var signatureBytes = privateKeyRsaProvider.SignData(dataBytes, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+
+                return Convert.ToBase64String(signatureBytes);
+            }
         }
 
         #endregion
@@ -66,47 +39,54 @@ namespace Hao.Utility
         /// <param name="data">原始数据</param>
         /// <param name="sign">签名</param>
         /// <returns></returns>
-        public bool Verify(string data, string sign)
+        public static bool Verify(string publicKey,string data, string sign)
         {
-            byte[] dataBytes = _encoding.GetBytes(data);
+            byte[] dataBytes = Encoding.UTF8.GetBytes(data);
             byte[] signBytes = Convert.FromBase64String(sign);
 
-            var verify = _publicKeyRsaProvider.VerifyData(dataBytes, signBytes, _hashAlgorithmName, RSASignaturePadding.Pkcs1);
+            RSA publicKeyRsaProvider = CreateRsaProviderFromPublicKey(publicKey);
 
-            return verify;
+            using (publicKeyRsaProvider)
+            {
+                var verify = publicKeyRsaProvider.VerifyData(dataBytes, signBytes, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+
+                return verify;
+            }
         }
 
         #endregion
 
         #region 解密
 
-        public string Decrypt(string cipherText)
+        public static string Decrypt(string privateKey, string cipherText)
         {
-            if (_privateKeyRsaProvider == null)
+            RSA privateKeyRsaProvider = CreateRsaProviderFromPrivateKey(privateKey);
+            using (privateKeyRsaProvider)
             {
-                throw new Exception("_privateKeyRsaProvider is null");
+                return Encoding.UTF8.GetString(privateKeyRsaProvider.Decrypt(Convert.FromBase64String(cipherText), RSAEncryptionPadding.Pkcs1));
             }
-            return Encoding.UTF8.GetString(_privateKeyRsaProvider.Decrypt(Convert.FromBase64String(cipherText), RSAEncryptionPadding.Pkcs1));
         }
 
         #endregion
 
         #region 加密
 
-        public string Encrypt(string text)
+        public string Encrypt(string publicKey,string text)
         {
-            if (_publicKeyRsaProvider == null)
+
+            RSA publicKeyRsaProvider = CreateRsaProviderFromPublicKey(publicKey);
+
+            using (publicKeyRsaProvider)
             {
-                throw new Exception("_publicKeyRsaProvider is null");
+                return Convert.ToBase64String(publicKeyRsaProvider.Encrypt(Encoding.UTF8.GetBytes(text), RSAEncryptionPadding.Pkcs1));
             }
-            return Convert.ToBase64String(_publicKeyRsaProvider.Encrypt(Encoding.UTF8.GetBytes(text), RSAEncryptionPadding.Pkcs1));
         }
 
         #endregion
 
         #region 使用私钥创建RSA实例
 
-        private RSA CreateRsaProviderFromPrivateKey(string privateKey)
+        private static RSA CreateRsaProviderFromPrivateKey(string privateKey)
         {
             var privateKeyBits = Convert.FromBase64String(privateKey);
 
@@ -151,7 +131,7 @@ namespace Hao.Utility
 
         #region 使用公钥创建RSA实例
 
-        private RSA CreateRsaProviderFromPublicKey(string publicKeyString)
+        private static RSA CreateRsaProviderFromPublicKey(string publicKeyString)
         {
             // encoded OID sequence for  PKCS #1 rsaEncryption szOID_RSA_RSA = "1.2.840.113549.1.1.1"
             byte[] seqOid = { 0x30, 0x0D, 0x06, 0x09, 0x2A, 0x86, 0x48, 0x86, 0xF7, 0x0D, 0x01, 0x01, 0x01, 0x05, 0x00 };
@@ -248,7 +228,7 @@ namespace Hao.Utility
 
         #region 导入密钥算法
 
-        private int GetIntegerSize(BinaryReader binr)
+        private static int GetIntegerSize(BinaryReader binr)
         {
             byte bt = 0;
             int count = 0;
@@ -280,7 +260,7 @@ namespace Hao.Utility
             return count;
         }
 
-        private bool CompareBytearrays(byte[] a, byte[] b)
+        private static bool CompareBytearrays(byte[] a, byte[] b)
         {
             if (a.Length != b.Length)
                 return false;
@@ -296,21 +276,5 @@ namespace Hao.Utility
 
         #endregion
 
-    }
-
-    /// <summary>
-    /// RSA算法类型
-    /// </summary>
-    public enum RSAType
-    {
-        /// <summary>
-        /// SHA1
-        /// </summary>
-        RSA = 0,
-        /// <summary>
-        /// RSA2 密钥长度至少为2048
-        /// SHA256
-        /// </summary>
-        RSA2
     }
 }
