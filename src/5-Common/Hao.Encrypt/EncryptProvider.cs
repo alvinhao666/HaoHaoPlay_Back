@@ -30,7 +30,7 @@ namespace Hao.Encrypt
             StringBuilder num = new StringBuilder();
 
             Random rnd = new Random(DateTime.Now.Millisecond);
-            for (int i = 0;i < length;i++)
+            for (int i = 0; i < length; i++)
             {
                 num.Append(arrChar[rnd.Next(0, arrChar.Length)].ToString());
             }
@@ -73,7 +73,7 @@ namespace Hao.Encrypt
             Check.Argument.IsNotEmpty(vector, nameof(vector));
             Check.Argument.IsNotOutOfRange(vector.Length, 16, 16, nameof(vector));
 
-            Byte[] plainBytes = Encoding.UTF8.GetBytes(data);
+            byte[] plainBytes = Encoding.UTF8.GetBytes(data);
 
             var encryptBytes = AESEncrypt(plainBytes, key, vector);
             if (encryptBytes == null)
@@ -100,13 +100,13 @@ namespace Hao.Encrypt
             Check.Argument.IsNotEmpty(vector, nameof(vector));
             Check.Argument.IsNotOutOfRange(vector.Length, 16, 16, nameof(vector));
 
-            Byte[] plainBytes = data;
-            Byte[] bKey = new Byte[32];
+            byte[] plainBytes = data;
+            byte[] bKey = new byte[32];
             Array.Copy(Encoding.UTF8.GetBytes(key.PadRight(bKey.Length)), bKey, bKey.Length);
-            Byte[] bVector = new Byte[16];
+            byte[] bVector = new byte[16];
             Array.Copy(Encoding.UTF8.GetBytes(vector.PadRight(bVector.Length)), bVector, bVector.Length);
 
-            Byte[] encryptData = null; // encrypted data
+            byte[] encryptData = null; // encrypted data
             using (Aes Aes = Aes.Create())
             {
                 try
@@ -149,9 +149,9 @@ namespace Hao.Encrypt
             Check.Argument.IsNotEmpty(vector, nameof(vector));
             Check.Argument.IsNotOutOfRange(vector.Length, 16, 16, nameof(vector));
 
-            Byte[] encryptedBytes = Convert.FromBase64String(data);
+            byte[] encryptedBytes = Convert.FromBase64String(data);
 
-            Byte[] decryptBytes = AESDecrypt(encryptedBytes, key, vector);
+            byte[] decryptBytes = AESDecrypt(encryptedBytes, key, vector);
 
             if (decryptBytes == null)
             {
@@ -178,13 +178,13 @@ namespace Hao.Encrypt
             Check.Argument.IsNotEmpty(vector, nameof(vector));
             Check.Argument.IsNotOutOfRange(vector.Length, 16, 16, nameof(vector));
 
-            Byte[] encryptedBytes = data;
-            Byte[] bKey = new Byte[32];
+            byte[] encryptedBytes = data;
+            byte[] bKey = new byte[32];
             Array.Copy(Encoding.UTF8.GetBytes(key.PadRight(bKey.Length)), bKey, bKey.Length);
-            Byte[] bVector = new Byte[16];
+            byte[] bVector = new byte[16];
             Array.Copy(Encoding.UTF8.GetBytes(vector.PadRight(bVector.Length)), bVector, bVector.Length);
 
-            Byte[] decryptedData = null; // decrypted data
+            byte[] decryptedData = null; // decrypted data
 
             using (Aes Aes = Aes.Create())
             {
@@ -196,7 +196,7 @@ namespace Hao.Encrypt
                         {
                             using (MemoryStream tempMemory = new MemoryStream())
                             {
-                                Byte[] Buffer = new Byte[1024];
+                                byte[] Buffer = new byte[1024];
                                 Int32 readBytes = 0;
                                 while ((readBytes = Decryptor.Read(Buffer, 0, Buffer.Length)) > 0)
                                 {
@@ -226,7 +226,6 @@ namespace Hao.Encrypt
         public static string AESEncrypt(string data, string key)
         {
             Check.Argument.IsNotEmpty(data, nameof(data));
-
             Check.Argument.IsNotEmpty(key, nameof(key));
             Check.Argument.IsNotOutOfRange(key.Length, 32, 32, nameof(key));
 
@@ -235,15 +234,14 @@ namespace Hao.Encrypt
                 using (Aes aes = Aes.Create())
                 {
                     byte[] plainBytes = Encoding.UTF8.GetBytes(data);
-                    Byte[] bKey = new Byte[32];
+                    byte[] bKey = new byte[32];
                     Array.Copy(Encoding.UTF8.GetBytes(key.PadRight(bKey.Length)), bKey, bKey.Length);
 
                     aes.Mode = CipherMode.ECB;
                     aes.Padding = PaddingMode.PKCS7;
                     aes.KeySize = 128;
-                    //aes.Key = _key;  
                     aes.Key = bKey;
-                    //aes.IV = _iV; 
+
                     using (CryptoStream cryptoStream = new CryptoStream(Memory, aes.CreateEncryptor(), CryptoStreamMode.Write))
                     {
                         try
@@ -273,21 +271,19 @@ namespace Hao.Encrypt
             Check.Argument.IsNotEmpty(key, nameof(key));
             Check.Argument.IsNotOutOfRange(key.Length, 32, 32, nameof(key));
 
-            Byte[] encryptedBytes = Convert.FromBase64String(data);
-            Byte[] bKey = new Byte[32];
+            byte[] encryptedBytes = Convert.FromBase64String(data);
+            byte[] bKey = new byte[32];
             Array.Copy(Encoding.UTF8.GetBytes(key.PadRight(bKey.Length)), bKey, bKey.Length);
 
             using (MemoryStream Memory = new MemoryStream(encryptedBytes))
             {
-                //mStream.Write( encryptedBytes, 0, encryptedBytes.Length );  
-                //mStream.Seek( 0, SeekOrigin.Begin );  
                 using (Aes aes = Aes.Create())
                 {
                     aes.Mode = CipherMode.ECB;
                     aes.Padding = PaddingMode.PKCS7;
                     aes.KeySize = 128;
                     aes.Key = bKey;
-                    //aes.IV = _iV;  
+
                     using (CryptoStream cryptoStream = new CryptoStream(Memory, aes.CreateDecryptor(), CryptoStreamMode.Read))
                     {
                         try
@@ -296,7 +292,8 @@ namespace Hao.Encrypt
                             int len = cryptoStream.Read(tmp, 0, encryptedBytes.Length);
                             byte[] ret = new byte[len];
                             Array.Copy(tmp, 0, ret, 0, len);
-                            return Encoding.UTF8.GetString(ret);
+
+                            return Encoding.UTF8.GetString(ret, 0, len);
                         }
                         catch (Exception ex)
                         {
@@ -305,6 +302,14 @@ namespace Hao.Encrypt
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// AES Rijndael
+        /// </summary>
+        public static void AESRijndael()
+        {
+            throw new NotImplementedException();
         }
         #endregion
 
@@ -317,6 +322,15 @@ namespace Hao.Encrypt
         public static string CreateDesKey()
         {
             return GetRandomStr(24);
+        }
+
+        /// <summary>
+        /// Create des iv
+        /// </summary>
+        /// <returns></returns>
+        public static string CreateDesIv()
+        {
+            return GetRandomStr(8);
         }
 
         /// <summary>  
@@ -332,7 +346,7 @@ namespace Hao.Encrypt
             Check.Argument.IsNotOutOfRange(key.Length, 24, 24, nameof(key));
 
             byte[] plainBytes = Encoding.UTF8.GetBytes(data);
-            var encryptBytes = DESEncrypt(plainBytes, key);
+            var encryptBytes = DESEncrypt(plainBytes, key, CipherMode.ECB);
 
             if (encryptBytes == null)
             {
@@ -344,10 +358,47 @@ namespace Hao.Encrypt
         /// <summary>  
         /// DES encrypt
         /// </summary>  
-        /// <param name="data">Raw data</param>  
+        /// <param name="data">Raw data byte array</param>  
         /// <param name="key">Key, requires 24 bits</param>  
         /// <returns>Encrypted byte array</returns>  
         public static byte[] DESEncrypt(byte[] data, string key)
+        {
+            Check.Argument.IsNotEmpty(data, nameof(data));
+            Check.Argument.IsNotEmpty(key, nameof(key));
+            Check.Argument.IsNotOutOfRange(key.Length, 24, 24, nameof(key));
+
+            return DESEncrypt(data, key, CipherMode.ECB);
+        }
+
+
+        /// <summary>  
+        /// DES encrypt
+        /// </summary>  
+        /// <param name="data">Raw data byte array</param>  
+        /// <param name="key">Key, requires 24 bits</param>  
+        /// <param name="vector">IV,requires 16 bits</param>  
+        /// <returns>Encrypted byte array</returns>  
+        public static byte[] DESEncrypt(byte[] data, string key, string vector)
+        {
+            Check.Argument.IsNotEmpty(data, nameof(data));
+            Check.Argument.IsNotEmpty(key, nameof(key));
+            Check.Argument.IsNotOutOfRange(key.Length, 24, 24, nameof(key));
+            Check.Argument.IsNotEmpty(vector, nameof(vector));
+            Check.Argument.IsNotOutOfRange(vector.Length, 8, 8, nameof(vector));
+
+            return DESEncrypt(data, key, CipherMode.CBC, vector);
+        }
+
+        /// <summary>  
+        /// DES encrypt
+        /// </summary>  
+        /// <param name="data">Raw data</param>  
+        /// <param name="key">Key, requires 24 bits</param>  
+        /// <param name="cipherMode"><see cref="CipherMode"/></param>  
+        /// <param name="paddingMode"><see cref="PaddingMode"/> default is PKCS7</param>  
+        /// <param name="vector">IV,requires 16 bits</param>  
+        /// <returns>Encrypted byte array</returns>  
+        private static byte[] DESEncrypt(byte[] data, string key, CipherMode cipherMode, string vector = "", PaddingMode paddingMode = PaddingMode.PKCS7)
         {
             Check.Argument.IsNotEmpty(data, nameof(data));
             Check.Argument.IsNotEmpty(key, nameof(key));
@@ -357,13 +408,21 @@ namespace Hao.Encrypt
             {
                 using (TripleDES des = TripleDES.Create())
                 {
-                    Byte[] plainBytes = data;
-                    Byte[] bKey = new Byte[24];
+                    byte[] plainBytes = data;
+                    byte[] bKey = new byte[24];
                     Array.Copy(Encoding.UTF8.GetBytes(key.PadRight(bKey.Length)), bKey, bKey.Length);
 
-                    des.Mode = CipherMode.ECB;
-                    des.Padding = PaddingMode.PKCS7;
+                    des.Mode = cipherMode;
+                    des.Padding = paddingMode;
                     des.Key = bKey;
+
+                    if (cipherMode == CipherMode.CBC)
+                    {
+                        byte[] bVector = new byte[8];
+                        Array.Copy(Encoding.UTF8.GetBytes(vector.PadRight(bVector.Length)), bVector, bVector.Length);
+                        des.IV = bVector;
+                    }
+
                     using (CryptoStream cryptoStream = new CryptoStream(Memory, des.CreateEncryptor(), CryptoStreamMode.Write))
                     {
                         try
@@ -393,8 +452,8 @@ namespace Hao.Encrypt
             Check.Argument.IsNotEmpty(key, nameof(key));
             Check.Argument.IsNotOutOfRange(key.Length, 24, 24, nameof(key));
 
-            Byte[] encryptedBytes = Convert.FromBase64String(data);
-            Byte[] bytes = DESDecrypt(encryptedBytes, key);
+            byte[] encryptedBytes = Convert.FromBase64String(data);
+            byte[] bytes = DESDecrypt(encryptedBytes, key, CipherMode.ECB);
 
             if (bytes == null)
             {
@@ -406,26 +465,69 @@ namespace Hao.Encrypt
         /// <summary>  
         /// DES decrypt
         /// </summary>  
-        /// <param name="data">Encrypted data</param>  
+        /// <param name="data">Encrypted data byte array</param>  
         /// <param name="key">Key, requires 24 bits</param>  
-        /// <returns>Decrypted byte array</returns>  
+        /// <returns>Decrypted string</returns>  
         public static byte[] DESDecrypt(byte[] data, string key)
         {
             Check.Argument.IsNotEmpty(data, nameof(data));
             Check.Argument.IsNotEmpty(key, nameof(key));
             Check.Argument.IsNotOutOfRange(key.Length, 24, 24, nameof(key));
 
-            Byte[] encryptedBytes = data;
-            Byte[] bKey = new Byte[24];
+            return DESDecrypt(data, key, CipherMode.ECB);
+        }
+
+        /// <summary>  
+        /// DES encrypt
+        /// </summary>  
+        /// <param name="data">Raw data byte array</param>  
+        /// <param name="key">Key, requires 24 bits</param>  
+        /// <param name="vector">IV,requires 16 bits</param>  
+        /// <returns>Encrypted byte array</returns>  
+        public static byte[] DESDecrypt(byte[] data, string key, string vector)
+        {
+            Check.Argument.IsNotEmpty(data, nameof(data));
+            Check.Argument.IsNotEmpty(key, nameof(key));
+            Check.Argument.IsNotOutOfRange(key.Length, 24, 24, nameof(key));
+            Check.Argument.IsNotEmpty(vector, nameof(vector));
+            Check.Argument.IsNotOutOfRange(vector.Length, 8, 8, nameof(vector));
+
+            return DESDecrypt(data, key, CipherMode.CBC, vector);
+        }
+
+        /// <summary>  
+        /// DES decrypt
+        /// </summary>  
+        /// <param name="data">Encrypted data</param>  
+        /// <param name="key">Key, requires 24 bits</param>  
+        /// <param name="cipherMode"><see cref="CipherMode"/></param>  
+        /// <param name="paddingMode"><see cref="PaddingMode"/> default is PKCS7</param>  
+        /// <returns>Decrypted byte array</returns>  
+        private static byte[] DESDecrypt(byte[] data, string key, CipherMode cipherMode, string vector = "", PaddingMode paddingMode = PaddingMode.PKCS7)
+        {
+            Check.Argument.IsNotEmpty(data, nameof(data));
+            Check.Argument.IsNotEmpty(key, nameof(key));
+            Check.Argument.IsNotOutOfRange(key.Length, 24, 24, nameof(key));
+
+            byte[] encryptedBytes = data;
+            byte[] bKey = new byte[24];
             Array.Copy(Encoding.UTF8.GetBytes(key.PadRight(bKey.Length)), bKey, bKey.Length);
 
             using (MemoryStream Memory = new MemoryStream(encryptedBytes))
             {
                 using (TripleDES des = TripleDES.Create())
                 {
-                    des.Mode = CipherMode.ECB;
-                    des.Padding = PaddingMode.PKCS7;
+                    des.Mode = cipherMode;
+                    des.Padding = paddingMode;
                     des.Key = bKey;
+
+                    if (cipherMode == CipherMode.CBC)
+                    {
+                        byte[] bVector = new byte[8];
+                        Array.Copy(Encoding.UTF8.GetBytes(vector.PadRight(bVector.Length)), bVector, bVector.Length);
+                        des.IV = bVector;
+                    }
+
                     using (CryptoStream cryptoStream = new CryptoStream(Memory, des.CreateDecryptor(), CryptoStreamMode.Read))
                     {
                         try
@@ -448,6 +550,112 @@ namespace Hao.Encrypt
         #endregion
 
         #region RSA
+
+        /// <summary>
+        /// RSA Converter to pem
+        /// </summary>
+        /// <param name="isPKCS8"></param>
+        /// <returns></returns>
+        public static (string publicPem, string privatePem) RSAToPem(bool isPKCS8)
+        {
+            var rsaKey = CreateRsaKey();
+
+            using (RSA rsa = RSA.Create())
+            {
+                rsa.FromJsonString(rsaKey.PrivateKey);
+
+                var publicPem = RsaProvider.ToPem(rsa, false, isPKCS8);
+                var privatePem = RsaProvider.ToPem(rsa, true, isPKCS8);
+
+                return (publicPem, privatePem);
+            }
+        }
+
+        /// <summary>
+        /// RSA From pem
+        /// </summary>
+        /// <param name="pem"></param>
+        /// <returns></returns>
+        public static RSA RSAFromPem(string pem)
+        {
+            Check.Argument.IsNotEmpty(pem, nameof(pem));
+            return RsaProvider.FromPem(pem);
+        }
+
+        /// <summary>
+        /// RSA Sign
+        /// </summary>
+        /// <param name="conent">raw cotent </param>
+        /// <param name="privateKey">private key</param>
+        /// <returns></returns>
+        public static string RSASign(string conent, string privateKey)
+        {
+            return RSASign(conent, privateKey, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1, Encoding.UTF8);
+        }
+
+        /// <summary>
+        /// RSA Sign
+        /// </summary>
+        /// <param name="content">raw content </param>
+        /// <param name="privateKey">private key</param>
+        /// <param name="hashAlgorithmName">hashAlgorithm name</param>
+        /// <param name="rSASignaturePadding">ras siginature padding</param>
+        /// <param name="encoding">text encoding</param>
+        /// <returns></returns>
+        public static string RSASign(string content, string privateKey, HashAlgorithmName hashAlgorithmName, RSASignaturePadding rSASignaturePadding, Encoding encoding)
+        {
+            Check.Argument.IsNotEmpty(content, nameof(content));
+            Check.Argument.IsNotEmpty(privateKey, nameof(privateKey));
+            Check.Argument.IsNotNull(rSASignaturePadding, nameof(rSASignaturePadding));
+
+            byte[] dataBytes = encoding.GetBytes(content);
+
+            using (RSA rsa = RSA.Create())
+            {
+                rsa.FromJsonString(privateKey);
+                var signBytes = rsa.SignData(dataBytes, hashAlgorithmName, rSASignaturePadding);
+
+                return Convert.ToBase64String(signBytes);
+            }
+        }
+
+        /// <summary>
+        /// RSA Verify
+        /// </summary>
+        /// <param name="content">raw content</param>
+        /// <param name="signStr">sign str</param>
+        /// <param name="publickKey">public key</param>
+        /// <returns></returns>
+        public static bool RSAVerify(string content, string signStr, string publickKey)
+        {
+            return RSAVerify(content, signStr, publickKey, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1, Encoding.UTF8);
+        }
+
+        /// <summary>
+        /// RSA Verify
+        /// </summary>
+        /// <param name="content">raw content</param>
+        /// <param name="signStr">sign str</param>
+        /// <param name="publickKey">public key</param>
+        /// <param name="hashAlgorithmName">hashAlgorithm name</param>
+        /// <param name="rSASignaturePadding">ras siginature padding</param>
+        /// <param name="encoding">text encoding</param>
+        /// <returns></returns>
+        public static bool RSAVerify(string content, string signStr, string publickKey, HashAlgorithmName hashAlgorithmName, RSASignaturePadding rSASignaturePadding, Encoding encoding)
+        {
+            Check.Argument.IsNotEmpty(content, nameof(content));
+            Check.Argument.IsNotEmpty(signStr, nameof(signStr));
+
+            byte[] dataBytes = encoding.GetBytes(content);
+            byte[] signBytes = Convert.FromBase64String(signStr);
+
+            using (RSA rsa = RSA.Create())
+            {
+                rsa.FromJsonString(publickKey);
+                return rsa.VerifyData(dataBytes, signBytes, hashAlgorithmName, rSASignaturePadding);
+            }
+        }
+
         /// <summary>
         /// RSA encrypt 
         /// </summary>
@@ -461,27 +669,50 @@ namespace Hao.Encrypt
         }
 
         /// <summary>
+        /// RSA encrypt with pem key
+        /// </summary>
+        /// <param name="publicKey">pem public key</param>
+        /// <param name="scrString">src string</param>
+        /// <returns></returns>
+        public static string RSAEncryptWithPem(string publicKey, string srcString)
+        {
+            string encryptStr = RSAEncrypt(publicKey, srcString, RSAEncryptionPadding.Pkcs1, true);
+            return encryptStr;
+        }
+
+        /// <summary>
         /// RSA encrypt 
         /// </summary>
         /// <param name="publicKey">public key</param>
         /// <param name="srcString">src string</param>
         /// <param name="padding">rsa encryptPadding <see cref="RSAEncryptionPadding"/> RSAEncryptionPadding.Pkcs1 for linux/mac openssl </param>
+        /// <param name="isPemKey">set key is pem format,default is false</param>
         /// <returns>encrypted string</returns>
-        public static string RSAEncrypt(string publicKey, string srcString, RSAEncryptionPadding padding)
+        public static string RSAEncrypt(string publicKey, string srcString, RSAEncryptionPadding padding, bool isPemKey = false)
         {
             Check.Argument.IsNotEmpty(publicKey, nameof(publicKey));
             Check.Argument.IsNotEmpty(srcString, nameof(srcString));
             Check.Argument.IsNotNull(padding, nameof(padding));
 
-            using (RSA rsa = RSA.Create())
+            RSA rsa;
+            if (isPemKey)
             {
+                rsa = RsaProvider.FromPem(publicKey);
+            }
+            else
+            {
+                rsa = RSA.Create();
                 rsa.FromJsonString(publicKey);
+            }
+
+            using (rsa)
+            {
                 var maxLength = GetMaxRsaEncryptLength(rsa, padding);
                 var rawBytes = Encoding.UTF8.GetBytes(srcString);
 
                 if (rawBytes.Length > maxLength)
                 {
-                    throw new OutofMaxlengthException(maxLength, $"'{srcString}' is out of max length");
+                    throw new OutofMaxlengthException($"'{srcString}' is out of max encrypt length {maxLength}", maxLength, rsa.KeySize, padding);
                 }
 
                 byte[] encryptBytes = rsa.Encrypt(rawBytes, padding);
@@ -502,21 +733,44 @@ namespace Hao.Encrypt
         }
 
         /// <summary>
+        /// RSA decrypt with pem key
+        /// </summary>
+        /// <param name="privateKey">pem private key</param>
+        /// <param name="scrString">src string</param>
+        /// <returns></returns>
+        public static string RSADecryptWithPem(string privateKey, string srcString)
+        {
+            string decryptStr = RSADecrypt(privateKey, srcString, RSAEncryptionPadding.Pkcs1, true);
+            return decryptStr;
+        }
+
+        /// <summary>
         /// RSA encrypt 
         /// </summary>
         /// <param name="publicKey">public key</param>
         /// <param name="srcString">src string</param>
         /// <param name="padding">rsa encryptPadding <see cref="RSAEncryptionPadding"/> RSAEncryptionPadding.Pkcs1 for linux/mac openssl </param>
+        /// <param name="isPemKey">set key is pem format,default is false</param>
         /// <returns>encrypted string</returns>
-        public static string RSADecrypt(string privateKey, string srcString, RSAEncryptionPadding padding)
+        public static string RSADecrypt(string privateKey, string srcString, RSAEncryptionPadding padding, bool isPemKey = false)
         {
             Check.Argument.IsNotEmpty(privateKey, nameof(privateKey));
             Check.Argument.IsNotEmpty(srcString, nameof(srcString));
             Check.Argument.IsNotNull(padding, nameof(padding));
 
-            using (RSA rsa = RSA.Create())
+            RSA rsa;
+            if (isPemKey)
             {
+                rsa = RsaProvider.FromPem(privateKey);
+            }
+            else
+            {
+                rsa = RSA.Create();
                 rsa.FromJsonString(privateKey);
+            }
+
+            using (rsa)
+            {
                 byte[] srcBytes = srcString.ToBytes();
                 byte[] decryptBytes = rsa.Decrypt(srcBytes, padding);
                 return Encoding.UTF8.GetString(decryptBytes);
@@ -546,7 +800,7 @@ namespace Hao.Encrypt
         {
             using (RSA rsa = RSA.Create())
             {
-                rsa.KeySize = (int) rsaSize;
+                rsa.KeySize = (int)rsaSize;
 
                 string publicKey = rsa.ToJsonString(false);
                 string privateKey = rsa.ToJsonString(true);
@@ -559,6 +813,27 @@ namespace Hao.Encrypt
                     Modulus = rsa.ExportParameters(false).Modulus.ToHexString()
                 };
             }
+        }
+
+        /// <summary>
+        /// Create an RSA key 
+        /// </summary>
+        /// <param name="rsa">rsa</param>
+        /// <returns></returns>
+        public static RSAKey CreateRsaKey(RSA rsa)
+        {
+            Check.Argument.IsNotNull(rsa, nameof(rsa));
+
+            string publicKey = rsa.ToJsonString(false);
+            string privateKey = rsa.ToJsonString(true);
+
+            return new RSAKey()
+            {
+                PublicKey = publicKey,
+                PrivateKey = privateKey,
+                Exponent = rsa.ExportParameters(false).Exponent.ToHexString(),
+                Modulus = rsa.ExportParameters(false).Modulus.ToHexString()
+            };
         }
 
         /// <summary>
@@ -911,7 +1186,7 @@ namespace Hao.Encrypt
             rng.GetBytes(random);
 
             StringBuilder machineKey = new StringBuilder(length);
-            for (int i = 0;i < random.Length;i++)
+            for (int i = 0; i < random.Length; i++)
             {
                 machineKey.Append(string.Format("{0:X2}", random[i]));
             }
