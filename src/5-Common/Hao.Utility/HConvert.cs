@@ -205,51 +205,51 @@ namespace Hao.Utility
 
         }
 
-        /// <summary>
-        /// 将字符串转变成List集合类型
-        /// </summary>
-        /// <param name="str">要转换的字符串</param>
-        /// <param name="split">分隔符</param>
-        /// <returns>List集合</returns>
-        public static List<string> ToList(string str, char split)
-        {
-            return HConvert.ToList<string>(str, split);
-        }
+        ///// <summary>
+        ///// 将字符串转变成List集合类型
+        ///// </summary>
+        ///// <param name="str">要转换的字符串</param>
+        ///// <param name="split">分隔符</param>
+        ///// <returns>List集合</returns>
+        //public static List<string> ToList(string str, char split)
+        //{
+        //    return HConvert.ToList<string>(str, split);
+        //}
 
-        /// <summary>
-        /// 将字符串转变成List集合类型
-        /// </summary>
-        /// <typeparam name="T">类型，目前只支持int,string</typeparam>
-        /// <param name="str">要转换的字符串</param>
-        /// <returns>List集合</returns>
-        public static List<T> ToList<T>(string str)
-        {
-            return HConvert.ToList<T>(str, ',');
-        }
+        ///// <summary>
+        ///// 将字符串转变成List集合类型
+        ///// </summary>
+        ///// <typeparam name="T">类型，目前只支持int,string</typeparam>
+        ///// <param name="str">要转换的字符串</param>
+        ///// <returns>List集合</returns>
+        //public static List<T> ToList<T>(string str)
+        //{
+        //    return HConvert.ToList<T>(str, ',');
+        //}
 
-        /// <summary>
-        /// 将字符串转变成List集合类型
-        /// </summary>
-        /// <typeparam name="T">类型，目前只支持int,string</typeparam>
-        /// <param name="str">要转换的字符串</param>
-        /// <param name="split">分隔符</param>
-        /// <returns>List集合</returns>
-        public static List<T> ToList<T>(string str, char split)
-        {
-            if (!string.IsNullOrEmpty(str))
-            {
-                List<T> list = new List<T>();
-                foreach (string text in str.Trim(new char[] { split }).Split(new char[] { split }))
-                {
-                    if (!string.IsNullOrEmpty(text))
-                    {
-                        list.Add(UtilCommon.ConvertTo<T>(text, UtilCommon.DefaultOf<T>()));
-                    }
-                }
-                return list;
-            }
-            return new List<T>();
-        }
+        ///// <summary>
+        ///// 将字符串转变成List集合类型
+        ///// </summary>
+        ///// <typeparam name="T">类型，目前只支持int,string</typeparam>
+        ///// <param name="str">要转换的字符串</param>
+        ///// <param name="split">分隔符</param>
+        ///// <returns>List集合</returns>
+        //public static List<T> ToList<T>(string str, char split)
+        //{
+        //    if (!string.IsNullOrEmpty(str))
+        //    {
+        //        List<T> list = new List<T>();
+        //        foreach (string text in str.Trim(new char[] { split }).Split(new char[] { split }))
+        //        {
+        //            if (!string.IsNullOrEmpty(text))
+        //            {
+        //                list.Add(UtilCommon.ConvertTo<T>(text, UtilCommon.DefaultOf<T>()));
+        //            }
+        //        }
+        //        return list;
+        //    }
+        //    return new List<T>();
+        //}
 
         /// <summary>
         /// 将金额转换成大写人民币

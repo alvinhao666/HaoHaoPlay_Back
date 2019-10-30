@@ -7,6 +7,50 @@ namespace Hao.Utility
 {
     public class HSpell
     {
+
+        /// <summary>
+        /// 获得中文字符串的首字母
+        /// </summary>
+        /// <param name="str">中文字符串</param>
+        /// <returns></returns>
+        public static string GetInitialSpells(string str)
+        {
+            return HSpell.GetSpell(str);
+        }
+
+        /// <summary>
+        /// 用来获得一个字的拼音首字母
+        /// </summary>
+        /// <param name="cnChar">一个字</param>
+        /// <returns></returns>
+        public static string GetInitialSpell(string cnChar)
+        {
+            if (string.IsNullOrWhiteSpace(cnChar))
+            {
+                return cnChar;
+            }
+            return HSpell.GetSpell(cnChar[0]);
+        }
+
+        /// <summary>
+        /// 获得姓名的缩写，例如zhangs
+        /// </summary>
+        /// <param name="cnChar"></param>
+        /// <returns></returns>
+        public static string GetNameSpells(string cnChar)
+        {
+            if (string.IsNullOrWhiteSpace(cnChar))
+            {
+                return cnChar;
+            }
+            StringBuilder text = new StringBuilder();
+            for (int i = 0; i < cnChar.Length; i++)
+            {
+                text.Append(i == 0 ? HSpell.GetSpells(cnChar[i]).ToLower() : HSpell.GetSpell(cnChar[i]).ToLower());
+            }
+            return text.ToString();
+        }
+
         /// <summary>
         /// 把汉字转换成拼音(全拼)
         /// </summary>

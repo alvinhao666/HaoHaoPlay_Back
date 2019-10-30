@@ -390,8 +390,6 @@ namespace Hao.Utility
             IEnumerator<TSource> enumerator = null;
             yield break;
         }
-
-
     }
 }
 
