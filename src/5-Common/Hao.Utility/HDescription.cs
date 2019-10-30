@@ -43,20 +43,20 @@ namespace Hao.Utility
             return Get(enumType).SingleOrDefault(d => d.Name == fieldName);
         }
 
-        /// <summary>
-        /// 获取描述
-        /// </summary>
-        /// <param name="enum">枚举对象</param>
-        /// <returns></returns>
-        public static string GetDescription(Enum @enum)
-        {
-            if (@enum == null) return null;
-            var fieldName = @enum.ToString();
-            var enumType = @enum.GetType();
-            if (!Enum.IsDefined(enumType, @enum)) return null;
-            var hDescriptionAttribute = Get(enumType, fieldName);
-            return hDescriptionAttribute?.Description;
-        }
+        ///// <summary>
+        ///// 获取描述
+        ///// </summary>
+        ///// <param name="enum">枚举对象</param>
+        ///// <returns></returns>
+        //public static string GetDescription(Enum @enum)
+        //{
+        //    if (@enum == null) return null;
+        //    var fieldName = @enum.ToString();
+        //    var enumType = @enum.GetType();
+        //    if (!Enum.IsDefined(enumType, @enum)) return null;
+        //    var hDescriptionAttribute = Get(enumType, fieldName);
+        //    return hDescriptionAttribute?.Description;
+        //}
 
         ///// <summary>
         ///// 获取字段
