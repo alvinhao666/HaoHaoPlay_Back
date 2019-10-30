@@ -13,58 +13,6 @@ namespace Hao.Utility
     /// </summary>
     public static class IEnumerableExtension
     {
-        /// <summary>
-        /// 当指定的值不为空时，执行筛选条件
-        /// </summary>
-        /// <typeparam name="TSource"></typeparam>
-        /// <typeparam name="TStruct"></typeparam>
-        /// <param name="source"></param>
-        /// <param name="condition"></param>
-        /// <param name="predicate"></param>
-        /// <returns></returns>
-        public static IEnumerable<TSource> WhereIf<TSource, TStruct>(this IEnumerable<TSource> source, TStruct? condition, Func<TSource, bool> predicate) where TStruct : struct
-        {
-            if (condition == null)
-            {
-                return source;
-            }
-            return source.Where(predicate);
-        }
-
-        public static IEnumerable<TSource> WhereIf<TSource, TStruct>(this IEnumerable<TSource> source, TStruct? condition, Func<Func<TSource, bool>, Func<TSource, bool>> predicate) where TStruct : struct
-        {
-            if (condition == null)
-            {
-                return source;
-            }
-            return source.Where(predicate((TSource d) => true));
-        }
-
-        public static IEnumerable<TSource> WhereIf<TSource, TStruct>(this IEnumerable<TSource> source, TStruct? condition, Func<Func<TSource, bool>> predicate) where TStruct : struct
-        {
-            if (condition == null)
-            {
-                return source;
-            }
-            return source.Where(predicate());
-        }
-
-        /// <summary>
-        /// 当指定的值不为空时，执行筛选条件
-        /// </summary>
-        /// <typeparam name="TSource"></typeparam>
-        /// <param name="source"></param>
-        /// <param name="condition"></param>
-        /// <param name="predicate"></param>
-        /// <returns></returns>
-        public static IEnumerable<TSource> WhereIf<TSource>(this IEnumerable<TSource> source, string condition, Func<TSource, bool> predicate)
-        {
-            if (string.IsNullOrEmpty(condition))
-            {
-                return source;
-            }
-            return source.Where(predicate);
-        }
 
         public static IEnumerable<TSource> WhereIf<TSource>(this IEnumerable<TSource> source, Func<bool> condition, Func<TSource, bool> predicate)
         {
@@ -73,24 +21,6 @@ namespace Hao.Utility
                 return source;
             }
             return source.Where(predicate);
-        }
-
-        public static IEnumerable<TSource> WhereIf<TSource>(this IEnumerable<TSource> source, string condition, Func<Func<TSource, bool>, Func<TSource, bool>> predicate)
-        {
-            if (string.IsNullOrEmpty(condition))
-            {
-                return source;
-            }
-            return source.Where(predicate((TSource d) => true));
-        }
-
-        public static IEnumerable<TSource> WhereIf<TSource>(this IEnumerable<TSource> source, string condition, Func<Func<TSource, bool>> predicate)
-        {
-            if (string.IsNullOrEmpty(condition))
-            {
-                return source;
-            }
-            return source.Where(predicate());
         }
 
         /// <summary>
@@ -172,43 +102,6 @@ namespace Hao.Utility
             }
             return source.Where(predicate());
         }
-
-        /// <summary>
-        /// 当指定的值不为空时，执行筛选条件
-        /// </summary>
-        /// <typeparam name="TSource1"></typeparam>
-        /// <typeparam name="TSource2"></typeparam>
-        /// <param name="source"></param>
-        /// <param name="condition"></param>
-        /// <param name="predicate"></param>
-        /// <returns></returns>
-        public static IEnumerable<TSource1> WhereIf<TSource1, TSource2>(this IEnumerable<TSource1> source, TSource2? condition, Func<TSource1, int, bool> predicate) where TSource2 : struct
-        {
-            if (condition == null)
-            {
-                return source;
-            }
-            return source.Where(predicate);
-        }
-
-        public static IEnumerable<TSource1> WhereIf<TSource1, TSource2>(this IEnumerable<TSource1> source, TSource2? condition, Func<Func<TSource1, int, bool>, Func<TSource1, int, bool>> predicate) where TSource2 : struct
-        {
-            if (condition == null)
-            {
-                return source;
-            }
-            return source.Where(predicate((TSource1 d, int i) => true));
-        }
-
-        public static IEnumerable<TSource1> WhereIf<TSource1, TSource2>(this IEnumerable<TSource1> source, TSource2? condition, Func<Func<TSource1, int, bool>> predicate) where TSource2 : struct
-        {
-            if (condition == null)
-            {
-                return source;
-            }
-            return source.Where(predicate());
-        }
-
     
 
         /// <summary>
@@ -387,7 +280,6 @@ namespace Hao.Utility
                 withor(tsource, index);
                 yield return tsource;
             }
-            IEnumerator<TSource> enumerator = null;
             yield break;
         }
     }
