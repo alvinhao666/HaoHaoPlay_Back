@@ -38,7 +38,7 @@ namespace Hao.Utility
         }
 
 
-        private static HDescriptionAttribute Get(Type enumType, string fieldName)
+        internal static HDescriptionAttribute Get(Type enumType, string fieldName)
         {
             return Get(enumType).SingleOrDefault(d => d.Name == fieldName);
         }
