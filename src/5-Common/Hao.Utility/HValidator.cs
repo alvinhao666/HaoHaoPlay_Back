@@ -231,7 +231,7 @@ namespace Hao.Utility
         /// <returns></returns>
         public static bool IsImage(string url)
         {
-            return !string.IsNullOrEmpty(url) && new string[]
+            return !string.IsNullOrWhiteSpace(url) && new string[]
             {
                 ".jpeg",
                 ".jpg",

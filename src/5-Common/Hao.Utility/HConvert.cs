@@ -91,7 +91,7 @@ namespace Hao.Utility
         {
             long value2 = 0L;
             long? result ;
-            if (value == null || string.IsNullOrEmpty(value.ToString()) || !long.TryParse(value.ToString(), out value2))
+            if (value == null || string.IsNullOrWhiteSpace(value.ToString()) || !long.TryParse(value.ToString(), out value2))
                 return null;
             else
                 result = value2;
