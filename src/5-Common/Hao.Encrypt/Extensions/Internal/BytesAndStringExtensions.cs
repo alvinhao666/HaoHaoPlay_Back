@@ -21,27 +21,27 @@ namespace Hao.Encrypt.Extensions.Internal
             return sb.ToString();
         }
 
-        /// <summary>
-        /// hex string to byte extension
-        /// </summary>
-        /// <param name="hex"></param>
-        /// <returns></returns>
-        internal static byte[] ToBytes(this string hex)
-        {
-            if (hex.Length == 0)
-            {
-                return new byte[] { 0 };
-            }
-            if (hex.Length % 2 == 1)
-            {
-                hex = "0" + hex;
-            }
-            byte[] result = new byte[hex.Length / 2];
-            for (int i = 0; i < hex.Length / 2; i++)
-            {
-                result[i] = byte.Parse(hex.Substring(2 * i, 2), System.Globalization.NumberStyles.AllowHexSpecifier);
-            }
-            return result;
-        }
+        ///// <summary>
+        ///// hex string to byte extension
+        ///// </summary>
+        ///// <param name="hex"></param>
+        ///// <returns></returns>
+        //internal static byte[] ToBytes(this string hex)
+        //{
+        //    if (hex.Length == 0)
+        //    {
+        //        return new byte[] { 0 };
+        //    }
+        //    if (hex.Length % 2 == 1)
+        //    {
+        //        hex = "0" + hex;
+        //    }
+        //    byte[] result = new byte[hex.Length / 2];
+        //    for (int i = 0; i < hex.Length / 2; i++)
+        //    {
+        //        result[i] = byte.Parse(hex.Substring(2 * i, 2), System.Globalization.NumberStyles.AllowHexSpecifier);
+        //    }
+        //    return result;
+        //}
     }
 }
