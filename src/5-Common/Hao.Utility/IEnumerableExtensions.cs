@@ -23,14 +23,6 @@ namespace Hao.Utility
             return source.Where(predicate);
         }
 
-        /// <summary>
-        /// 当指定的值不为空时，执行筛选条件
-        /// </summary>
-        /// <typeparam name="TSource"></typeparam>
-        /// <param name="source"></param>
-        /// <param name="condition"></param>
-        /// <param name="predicate"></param>
-        /// <returns></returns>
         public static IEnumerable<TSource> WhereIf<TSource>(this IEnumerable<TSource> source, bool condition, Func<TSource, bool> predicate)
         {
             if (!condition)
@@ -59,14 +51,6 @@ namespace Hao.Utility
             return source.Where(predicate());
         }
 
-        /// <summary>
-        /// 当指定的值不为空时，执行筛选条件
-        /// </summary>
-        /// <typeparam name="TSource"></typeparam>
-        /// <param name="source"></param>
-        /// <param name="condition"></param>
-        /// <param name="predicate"></param>
-        /// <returns></returns>
         public static IEnumerable<TSource> WhereIf<TSource>(this IEnumerable<TSource> source, bool condition, Func<TSource, int, bool> predicate)
         {
             if (!condition)
