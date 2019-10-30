@@ -59,13 +59,17 @@ namespace Hao.Utility
         {
             if (@enum == null) return null;
             var fieldName = @enum.ToString();
-
-            HDescriptionAttribute HDescriptionAttribute = Get(@enum.GetType(), fieldName);
-            if (HDescriptionAttribute == null)
+            var enumType = @enum.GetType();
+            if (Enum.IsDefined(enumType, @enum))
             {
-                return null;
+                HDescriptionAttribute HDescriptionAttribute = Get(enumType, fieldName);
+                if (HDescriptionAttribute == null)
+                {
+                    return null;
+                }
+                return HDescriptionAttribute.Description;
             }
-            return HDescriptionAttribute.Description;
+            return null;
         }
 
         ///// <summary>
