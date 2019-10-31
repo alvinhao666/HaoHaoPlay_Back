@@ -10,8 +10,8 @@ namespace Hao.Core
         /// <summary>
         /// 组合排序
         /// </summary>
+        /// <param name="orderByType"></param>
         /// <param name="sortField"></param>
-        /// <param name="orderType"></param>
         /// <returns></returns>
         public static string CombineNameWithSpace(this OrderByType? orderByType, Enum sortField)
         {
