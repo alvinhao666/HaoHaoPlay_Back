@@ -1,9 +1,6 @@
 ﻿using AutoMapper;
 using Hao.AppService;
-using Hao.Utility;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Hao.Core;
 
 namespace Hao.WebApi
 {
