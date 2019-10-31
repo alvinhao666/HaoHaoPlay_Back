@@ -19,18 +19,18 @@ namespace Hao.Core.Repository
         public IdWorker IdWorker { get; set; }
 
         /// <summary>
-        /// 根据主值查询单条数据
+        /// 根据主值查询单条数据（单表）
         /// </summary>s
         /// <param name="pkValue">主键值</param>
         /// <returns>泛型实体</returns>
         public virtual async Task<T> GetAysnc(TKey pkValue)
         {
-            var entity = await Task.Factory.StartNew(() => UnitOfWork.GetDbClient().Queryable<T>().Where(a => a.IsDeleted == false).InSingle(pkValue));
+            var entity = await Task.Factory.StartNew(() => UnitOfWork.GetDbClient().Queryable<T>().InSingle(pkValue));
             return entity;
         }
 
         /// <summary>
-        /// 根据主值查询多条数据
+        /// 根据主值查询多条数据（单表）
         /// </summary>s
         /// <param name="pkValues">主键值</param>
         /// <returns>泛型实体</returns>
@@ -52,7 +52,7 @@ namespace Hao.Core.Repository
         //            最快的是方式 3 ，与 Direct Create 的差异在一个数量级之内，约慢 7 倍的水平。其他方式，至少在 40 倍以上，最慢的是方式 4 ，要慢三个数量级。 
 
         /// <summary>
-        /// 查询所有数据（未删除）
+        /// 查询所有数据（未删除）（单表）
         /// </summary>
         /// <returns></returns>
         public virtual async Task<List<T>> GetListAysnc()
@@ -64,7 +64,7 @@ namespace Hao.Core.Repository
         }
 
         /// <summary>
-        /// 查询所有数据
+        /// 查询所有数据（单表）
         /// </summary>
         /// <returns></returns>
         public virtual async Task<List<T>> GetAllAysnc()
@@ -75,7 +75,7 @@ namespace Hao.Core.Repository
         }
 
         /// <summary>
-        /// 根据条件查询所有数据（未删除）
+        /// 根据条件查询所有数据（未删除）（单表）
         /// </summary>
         /// <param name="conditions"></param>
         /// <param name="expression"></param>
@@ -91,7 +91,7 @@ namespace Hao.Core.Repository
         }
 
         /// <summary>
-        /// 根据条件查询所有数据
+        /// 根据条件查询所有数据（单表）
         /// </summary>
         /// <param name="conditions"></param>
         /// <param name="expression"></param>
@@ -106,7 +106,7 @@ namespace Hao.Core.Repository
         }
 
         /// <summary>
-        /// 根据条件查询所有数据
+        /// 根据条件查询所有数据（未删除）（单表）
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
@@ -121,7 +121,7 @@ namespace Hao.Core.Repository
         }
 
         /// <summary>
-        /// 根据条件查询所有分页数据
+        /// 根据条件查询所有分页数据（未删除）（单表）
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
@@ -198,7 +198,7 @@ namespace Hao.Core.Repository
         }
 
         /// <summary>
-        /// 异步删除数据(逻辑删除)
+        /// 异步删除数据（逻辑删除）
         /// </summary>
         /// <param name="entity">实体类</param>
         /// <returns></returns>
