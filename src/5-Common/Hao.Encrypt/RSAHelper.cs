@@ -19,9 +19,7 @@ namespace Hao.Encrypt
         {
             byte[] dataBytes = Encoding.UTF8.GetBytes(data);
 
-            RSA privateKeyRsaProvider = CreateRsaProviderFromPrivateKey(privateKey);
-
-            using (privateKeyRsaProvider) 
+            using (RSA privateKeyRsaProvider = CreateRsaProviderFromPrivateKey(privateKey)) 
             {
                 var signatureBytes = privateKeyRsaProvider.SignData(dataBytes, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
 
@@ -44,9 +42,7 @@ namespace Hao.Encrypt
             byte[] dataBytes = Encoding.UTF8.GetBytes(data);
             byte[] signBytes = Convert.FromBase64String(sign);
 
-            RSA publicKeyRsaProvider = CreateRsaProviderFromPublicKey(publicKey);
-
-            using (publicKeyRsaProvider)
+            using (RSA publicKeyRsaProvider = CreateRsaProviderFromPublicKey(publicKey))
             {
                 var verify = publicKeyRsaProvider.VerifyData(dataBytes, signBytes, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
 
@@ -60,10 +56,10 @@ namespace Hao.Encrypt
 
         public static string Decrypt(string privateKey, string cipherText)
         {
-            RSA privateKeyRsaProvider = CreateRsaProviderFromPrivateKey(privateKey);
-            using (privateKeyRsaProvider)
+            byte[] dataBytes = Convert.FromBase64String(cipherText); //对加密方法返回的byte[]，用Convert.ToBase64String
+            using (RSA privateKeyRsaProvider = CreateRsaProviderFromPrivateKey(privateKey))
             {
-                return Encoding.UTF8.GetString(privateKeyRsaProvider.Decrypt(Convert.FromBase64String(cipherText), RSAEncryptionPadding.Pkcs1));
+                return Encoding.UTF8.GetString(privateKeyRsaProvider.Decrypt(dataBytes, RSAEncryptionPadding.Pkcs1));
             }
         }
 
@@ -73,12 +69,10 @@ namespace Hao.Encrypt
 
         public string Encrypt(string publicKey,string text)
         {
-
-            RSA publicKeyRsaProvider = CreateRsaProviderFromPublicKey(publicKey);
-
-            using (publicKeyRsaProvider)
+            byte[] dataBytes = Encoding.UTF8.GetBytes(text); //对普通的文字操作，用Encoding.UTF8.GetBytes()
+            using (RSA publicKeyRsaProvider = CreateRsaProviderFromPublicKey(publicKey))
             {
-                return Convert.ToBase64String(publicKeyRsaProvider.Encrypt(Encoding.UTF8.GetBytes(text), RSAEncryptionPadding.Pkcs1));
+                return Convert.ToBase64String(publicKeyRsaProvider.Encrypt(dataBytes, RSAEncryptionPadding.Pkcs1));
             }
         }
 
