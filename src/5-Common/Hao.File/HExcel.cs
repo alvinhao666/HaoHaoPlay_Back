@@ -1,6 +1,8 @@
 ﻿using NPOI.SS.UserModel;
 using NPOI.SS.Util;
 using NPOI.XSSF.UserModel;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,15 +15,64 @@ namespace Hao.File
     public partial class HFile
     {
         /// <summary>
-        /// 导出excel
+        /// 导出excel (EPPlus)
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <param name="exportData"></param>
+        /// <param name="tableTitle"></param>
+        /// <returns></returns>
+        public static async Task ExportToExcelEPPlus(string filePath, List<Dictionary<string, string>> exportData, string tableTitle = null)
+        {
+            await Task.Factory.StartNew(() =>
+            {
+                using (Stream stream = new FileStream(filePath, FileMode.CreateNew)) //FileMode.CreateNew 当文件不存在时，创建新文件；如果文件存在，则引发异常。
+                {
+                    using (ExcelPackage package = new ExcelPackage(stream))
+                    {
+                        ExcelWorksheet ws = package.Workbook.Worksheets.Add(string.IsNullOrWhiteSpace(tableTitle) ? "Sheet0" : tableTitle);
+
+                        var keys = exportData.FirstOrDefault().Keys;
+                        int maxColumn = keys.Count();
+
+                        int colIndex = 1;
+                        foreach (var colName in keys)
+                        {
+                            var headerCol = ws.Cells[1, colIndex];
+                            headerCol.Value = colName;
+                            headerCol.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                            headerCol.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                            headerCol.Style.Font.Bold = true;
+                            headerCol.Style.Font.Name = "微软雅黑";
+                            headerCol.Style.Font.Size = 12;
+                            colIndex++;
+                        }
+                        int row = 2;
+                        foreach (var item in exportData)
+                        {
+                            int cellNum = 1;
+                            foreach (var data in item)
+                            {
+                                var col = ws.Cells[row, cellNum];
+                                col.Value = data.Value;
+                                col.Style.Font.Name = "微软雅黑";
+                                cellNum++;
+                            }
+                            row++;
+                        }
+                        package.Save();
+                    }
+                }
+            });
+        }
+
+        /// <summary>
+        /// 导出excel（NPOI）
         /// </summary>
         /// <param name="filePath"></param>
         /// <param name="tableTitle"></param>
         /// <param name="exportData"></param>
-        /// <param name="mergedCells"></param>
-        /// <param name="endMenus"></param>
         /// <returns></returns>
-        public static async Task ExportToExcel(string filePath, List<Dictionary<string, string>> exportData, string tableTitle = null, IEnumerable<int> mergedCells = null, List<string> endMenus = null)
+        public static async Task ExportToExcelNPOI(string filePath, List<Dictionary<string, string>> exportData, string tableTitle = null)
         {
 
             await Task.Factory.StartNew(() =>
@@ -30,67 +81,43 @@ namespace Hao.File
                 {
 
                     IWorkbook wk = new XSSFWorkbook();
-                    ISheet sheet = wk.CreateSheet();
+                    ISheet sheet = string.IsNullOrWhiteSpace(tableTitle) ? wk.CreateSheet() : wk.CreateSheet(tableTitle);
 
-                    //表头单元格格式
-                    ICellStyle headStyle = wk.CreateCellStyle();
-                    headStyle.VerticalAlignment = VerticalAlignment.Center;//垂直对齐
-                    headStyle.Alignment = HorizontalAlignment.Center;//水平对齐
-                    headStyle.IsHidden = false;
-                    IFont headFontStyle = wk.CreateFont();
-                    headFontStyle.FontName = "微软雅黑";//字体
-                    headFontStyle.FontHeightInPoints = 12;//字号
-                    headFontStyle.Boldweight = 800;//粗体
-                    headStyle.SetFont(headFontStyle);
-                    headStyle.WrapText = true;
-
-
-                    ICellStyle cellStyle = wk.CreateCellStyle();
-                    cellStyle.VerticalAlignment = VerticalAlignment.Center;//垂直对齐
-                    cellStyle.Alignment = HorizontalAlignment.Center;//水平对齐
-                    cellStyle.IsHidden = false;
+                    ICellStyle headerStyle = wk.CreateCellStyle();
+                    headerStyle.VerticalAlignment = VerticalAlignment.Center;//垂直对齐
+                    headerStyle.Alignment = HorizontalAlignment.Center;//水平对齐
                     IFont fontStyle = wk.CreateFont();
                     fontStyle.FontName = "微软雅黑";//字体
-                    fontStyle.FontHeightInPoints = 11;//字号
-                    fontStyle.Boldweight = 700;//粗体
-                    cellStyle.SetFont(fontStyle);
+                    fontStyle.FontHeightInPoints = 12;//字号
+                    fontStyle.IsBold = true;//粗体
+                    headerStyle.SetFont(fontStyle);
+
 
                     var keys = exportData.FirstOrDefault().Keys;
                     int maxColumn = keys.Count();
 
-                    //创建表头
-                    if (!string.IsNullOrWhiteSpace(tableTitle))
+                    IRow headerRow = sheet.CreateRow(0);
+                    headerRow.ZeroHeight = false;
+                    headerRow.HeightInPoints = 24;
+                    int colIndex = 0;
+                    foreach (var colName in keys)
                     {
-                        sheet.AddMergedRegion(new CellRangeAddress(0, 0, 0, maxColumn - 1));
-                        IRow nameRow = sheet.CreateRow(0);
-                        nameRow.ZeroHeight = false;
-                        ICell nameCell = nameRow.CreateCell(0);
-                        nameCell.SetCellValue(tableTitle);
-                        nameCell.CellStyle = headStyle;
+                        ICell cell = headerRow.CreateCell(colIndex);
+                        cell.SetCellValue(colName);
+                        cell.CellStyle = headerStyle;
+                        colIndex++;
                     }
-                    else
-                    {
-                        IRow headerRow = sheet.CreateRow(0);
-                        headerRow.ZeroHeight = false;
-                        headerRow.HeightInPoints = 24;
-                        int colIndex = 0;
-                        foreach (var colName in keys)
-                        {
-                            ICell cell = headerRow.CreateCell(colIndex);
-                            cell.SetCellValue(colName);
-                            cell.CellStyle = cellStyle;
-                            colIndex++;
-                        }
-                    }
+
+                    ICellStyle cellStyle = wk.CreateCellStyle();
+                    IFont cellFontStyle = wk.CreateFont();
+                    cellFontStyle.FontName = "微软雅黑";//字体
+                    cellFontStyle.FontHeightInPoints = 11;//字号
+                    cellStyle.SetFont(cellFontStyle);
 
                     int count = 1;
-                    IRow childRow = null;
-                    int lastCount = 0;
-
-                    lastCount = count;
                     for (int childIndex = 0; childIndex < exportData.Count(); childIndex++)
                     {
-                        childRow = sheet.CreateRow(count++);
+                        IRow childRow = sheet.CreateRow(count++);
                         childRow.ZeroHeight = false;
 
                         var data = exportData[childIndex];
@@ -99,26 +126,8 @@ namespace Hao.File
                         {
                             ICell childCell = childRow.CreateCell(cellNum);
                             childCell.SetCellValue(col.Value);
+                            childCell.CellStyle = cellStyle;
                             cellNum++;
-                        }
-                    }
-
-                    if (mergedCells != null && mergedCells.Count() > 0)
-                    {
-                        foreach (int cellNum in mergedCells)
-                        {
-                            sheet.AddMergedRegion(new CellRangeAddress(lastCount, count - 1, cellNum, cellNum));
-                        }
-                    }
-
-                    if (endMenus != null)
-                    {
-                        foreach (var item in endMenus)
-                        {
-                            IRow endRow = sheet.CreateRow(count++);
-                            endRow.ZeroHeight = false;
-                            ICell oneCell = endRow.CreateCell(0);
-                            oneCell.SetCellValue(item);
                         }
                     }
                     wk.Write(stream);
