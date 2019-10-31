@@ -13,7 +13,7 @@ namespace Hao.WebApi
         {
             //string.Format方法在内部使用StringBuilder进行字符串的格式化
             cfg.CreateMap<UserQueryInput, UserQuery>()
-                .ForMember(x => x.OrderFileds, a => a.MapFrom(x => x.SortField.CombineNameWithSpace(x.OrderByType))); 
+                .ForMember(x => x.OrderFileds, a => a.MapFrom(x => x.OrderByType.CombineNameWithSpace(x.SortField))); 
         }
     }
 }
