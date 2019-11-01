@@ -50,11 +50,9 @@ namespace HaoHaoPlay.Host
 {
     public class Startup
     {
-        private IConfiguration _config;
+        private readonly IConfiguration _config;
 
-        private IContainer _container;
-
-        private DirectoryInfo _parentDir= new DirectoryInfo(Directory.GetCurrentDirectory()).Parent;
+        private readonly DirectoryInfo _parentDir= new DirectoryInfo(Directory.GetCurrentDirectory()).Parent;
 
         public Startup(IHostingEnvironment env)
         {
@@ -296,7 +294,7 @@ namespace HaoHaoPlay.Host
 
 
             builder.Populate(services);
-            _container = builder.Build();
+            var _container = builder.Build();
 
             return new AutofacServiceProvider(_container);//第三方IOC接管 core内置DI容器
             #endregion
