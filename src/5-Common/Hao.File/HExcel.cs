@@ -21,7 +21,7 @@ namespace Hao.File
         /// <param name="exportData"></param>
         /// <param name="tableTitle"></param>
         /// <returns></returns>
-        public static async Task ExportToExcelEPPlus(string filePath, List<Dictionary<string, string>> exportData, string tableTitle = null)
+        public static async Task ExportToExcelEPPlus(string filePath, IEnumerable<Dictionary<string, string>> exportData, string tableTitle = null)
         {
             await Task.Factory.StartNew(() =>
             {
@@ -52,10 +52,9 @@ namespace Hao.File
                             int cellNum = 1;
                             foreach (var data in item)
                             {
-                                var col = ws.Cells[row, cellNum];
+                                var col = ws.Cells[row, cellNum++];
                                 col.Value = data.Value;
                                 col.Style.Font.Name = "微软雅黑";
-                                cellNum++;
                             }
                             row++;
                         }
@@ -72,7 +71,7 @@ namespace Hao.File
         /// <param name="tableTitle"></param>
         /// <param name="exportData"></param>
         /// <returns></returns>
-        public static async Task ExportToExcelNPOI(string filePath, List<Dictionary<string, string>> exportData, string tableTitle = null)
+        public static async Task ExportToExcelNPOI(string filePath, IEnumerable<Dictionary<string, string>> exportData, string tableTitle = null)
         {
 
             await Task.Factory.StartNew(() =>
@@ -115,19 +114,15 @@ namespace Hao.File
                     cellStyle.SetFont(cellFontStyle);
 
                     int count = 1;
-                    for (int childIndex = 0; childIndex < exportData.Count(); childIndex++)
+                    foreach(var item in exportData)
                     {
                         IRow childRow = sheet.CreateRow(count++);
-                        childRow.ZeroHeight = false;
-
-                        var data = exportData[childIndex];
                         int cellNum = 0;
-                        foreach (var col in data)
+                        foreach (var col in item)
                         {
-                            ICell childCell = childRow.CreateCell(cellNum);
+                            ICell childCell = childRow.CreateCell(cellNum++);
                             childCell.SetCellValue(col.Value);
                             childCell.CellStyle = cellStyle;
-                            cellNum++;
                         }
                     }
                     wk.Write(stream);
