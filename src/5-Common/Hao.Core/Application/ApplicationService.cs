@@ -10,7 +10,6 @@ namespace Hao.Core.Application
         [AttributeUsage(AttributeTargets.Method)]
         protected internal class UseTransactionAttribute : Attribute
         {
-
         }
     }
 }

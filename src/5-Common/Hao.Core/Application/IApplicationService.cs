@@ -11,9 +11,5 @@ namespace Hao.Core.Application
     /// </summary>
     public interface IApplicationService : ITransientDependency
     {
-
-
-
     }
-
 }
