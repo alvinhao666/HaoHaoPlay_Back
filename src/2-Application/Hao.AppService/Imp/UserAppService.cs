@@ -33,7 +33,7 @@ namespace Hao.AppService
         private readonly IConfiguration _config;
 
 
-        public ExportFilePathInfo PathInfo { get; set; }
+        public FilePathInfo PathInfo { get; set; }
 
         public UserAppService(IConfiguration config, ISysUserRepository userRepository, IMapper mapper, ICapPublisher publisher)
         {

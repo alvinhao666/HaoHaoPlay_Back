@@ -4,13 +4,11 @@ using System.Threading.Tasks;
 using Hao.AppService;
 using Hao.AppService.ViewModel;
 using Hao.Core;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Hao.Core.Model;
 using System.IO;
 using System.Linq;
-using Microsoft.AspNetCore.Hosting;
 using AutoMapper;
 using Hao.Library;
 using Microsoft.AspNetCore.DataProtection;
@@ -29,15 +27,14 @@ namespace Hao.WebApi
 
         private readonly IMapper _mapper;
 
-        private readonly IHostingEnvironment _hostingEnvironment;
-
         private readonly ITimeLimitedDataProtector _protector;
 
-        public UserController(IConfiguration config, IDataProtectionProvider provider, IHostingEnvironment hostingEnvironment, IMapper mapper, IUserAppService userService)
+        public FilePathInfo PathInfo { get; set; }
+
+        public UserController(IConfiguration config, IDataProtectionProvider provider, IMapper mapper, IUserAppService userService)
         {
             _userAppService = userService;
             _mapper = mapper;
-            _hostingEnvironment = hostingEnvironment;
             _protector = provider.CreateProtector(config["DataProtectorPurpose:FileDownload"]).ToTimeLimitedDataProtector();
         }
 
@@ -167,7 +164,7 @@ namespace Hao.WebApi
                 var content = reader.ReadToEnd();
                 var name = file.FileName;
 
-                string rootPath = new DirectoryInfo(_hostingEnvironment.ContentRootPath).Parent.FullName + $"/ImportFile/Excel/";
+                string rootPath = PathInfo.ImportExcelPath;
 
                 if (!HFile.IsExistDirectory(rootPath))
                     HFile.CreateDirectory(rootPath);

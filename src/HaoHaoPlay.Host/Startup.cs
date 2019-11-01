@@ -211,8 +211,9 @@ namespace HaoHaoPlay.Host
             services.AddSingleton<NLog.ILogger>(logger);
 
 
-            ExportFilePathInfo pathInfo = new ExportFilePathInfo();
+            FilePathInfo pathInfo = new FilePathInfo();
             pathInfo.ExportExcelPath = Path.Combine(_parentDir.FullName, "ExportFile/Excel");
+            pathInfo.ImportExcelPath= Path.Combine(_parentDir.FullName, "ImportFile/Excel");
             services.AddSingleton(pathInfo);
             #endregion
 
