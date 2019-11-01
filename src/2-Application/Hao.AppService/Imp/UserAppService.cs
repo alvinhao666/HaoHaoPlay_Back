@@ -229,7 +229,7 @@ namespace Hao.AppService
                 HFile.CreateDirectory(rootPath);
             string filePath = Path.Combine(rootPath, $"{fileName}");
 
-            await HFile.ExportToExcelNPOI(filePath, exportData);
+            await HFile.ExportToExcelEPPlus(filePath, exportData);
 
             return fileName;
         }
