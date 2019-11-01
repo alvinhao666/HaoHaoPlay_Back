@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Hao.Utility;
+﻿using Hao.Utility;
 using Microsoft.AspNetCore.Http;
 
 namespace Hao.Core

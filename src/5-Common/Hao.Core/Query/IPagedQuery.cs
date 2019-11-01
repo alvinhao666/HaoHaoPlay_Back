@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Hao.Core.Query
+﻿namespace Hao.Core.Query
 {
     public interface IPagedQuery
     {

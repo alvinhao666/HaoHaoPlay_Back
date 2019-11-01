@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Hao.Core.Model
+﻿namespace Hao.Core.Model
 {
     /// <summary>
     /// 表示继承于该接口的类型是领域实体类。

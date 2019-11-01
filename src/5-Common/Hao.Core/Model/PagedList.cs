@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Hao.Core.Model
 {
@@ -9,7 +7,7 @@ namespace Hao.Core.Model
         /// <summary>
         /// 列表
         /// </summary>
-        public List<T> Items { get; set; }
+        public IEnumerable<T> Items { get; set; }
 
         /// <summary>
         /// 列表总数

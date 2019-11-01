@@ -1,8 +1,5 @@
 ﻿using Hao.Core.Query;
 using SqlSugar;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Hao.Core.QueryInput
 {
