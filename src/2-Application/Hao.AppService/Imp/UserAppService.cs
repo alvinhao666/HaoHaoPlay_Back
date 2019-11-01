@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using DotNetCore.CAP;
-using Hao.AppService;
 using Hao.AppService.ViewModel;
 using Hao.Core;
 using Hao.Core.Application;
@@ -13,13 +12,11 @@ using Hao.Library;
 using Hao.Model;
 using Hao.Repository;
 using Hao.Utility;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Hao.AppService
@@ -29,12 +26,12 @@ namespace Hao.AppService
 
         private readonly IMapper _mapper;
 
-
         private readonly ISysUserRepository _userRep;
 
         private readonly ICapPublisher _publisher;
 
         private readonly IConfiguration _config;
+
 
         public ExportFilePathInfo PathInfo { get; set; }
 
@@ -222,10 +219,11 @@ namespace Hao.AppService
             });
 
             string fileName = $"{Guid.NewGuid()}.xlsx";
+            string rootPath = PathInfo.ExportExcelPath;
 
-            if (!HFile.IsExistDirectory(PathInfo.ExportExcelPath))
-                HFile.CreateDirectory(PathInfo.ExportExcelPath);
-            string filePath = Path.Combine(PathInfo.ExportExcelPath, $"{fileName}");
+            if (!HFile.IsExistDirectory(rootPath))
+                HFile.CreateDirectory(rootPath);
+            string filePath = Path.Combine(rootPath, $"{fileName}");
 
             await HFile.ExportToExcelEPPlus(filePath, exportData);
 
