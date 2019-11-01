@@ -89,7 +89,7 @@ namespace Hao.WebApi
             await _userAppService.UpdateLoginTimeAndIP(user.Id.Value, DateTime.Now, ip);
 
             //存入redis
-            var userValue = new RedisCacheUser
+            var userValue = new RedisCacheUserInfo
             {
                 Id = user.Id,
                 UserName = user.UserName,

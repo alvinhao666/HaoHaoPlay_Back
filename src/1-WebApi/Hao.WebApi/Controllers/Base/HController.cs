@@ -75,7 +75,7 @@ namespace Hao.WebApi
                 throw new HException(ErrorInfo.E100002, nameof(ErrorInfo.E100002).GetErrorCode());
             }
 
-            var cacheUser = JsonExtensions.DeserializeFromJson<RedisCacheUser>(value);
+            var cacheUser = JsonExtensions.DeserializeFromJson<RedisCacheUserInfo>(value);
 
             //当前用户信息
             CurrentUser.UserId = cacheUser.Id;

@@ -7,7 +7,7 @@ namespace Hao.Library
     /// <summary>
     /// 用户认证实体
     /// </summary>
-    public class RedisCacheUser
+    public class RedisCacheUserInfo
     {
         public  long? Id { get; set; }
 
