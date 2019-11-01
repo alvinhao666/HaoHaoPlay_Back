@@ -54,6 +54,7 @@ namespace HaoHaoPlay.Host
 
         private IContainer _container;
 
+        private DirectoryInfo _parentDir= new DirectoryInfo(Directory.GetCurrentDirectory()).Parent;
 
         public Startup(IHostingEnvironment env)
         {
@@ -210,6 +211,11 @@ namespace HaoHaoPlay.Host
 
             var logger = LogManager.GetCurrentClassLogger();
             services.AddSingleton<NLog.ILogger>(logger);
+
+
+            ExportFilePathInfo pathInfo = new ExportFilePathInfo();
+            pathInfo.ExportExcelPath = Path.Combine(_parentDir.FullName, "ExportFile/Excel");
+            services.AddSingleton(pathInfo);
             #endregion
 
             #region 数据保护
@@ -335,10 +341,9 @@ namespace HaoHaoPlay.Host
             app.UseWhen(a => a.Request.Path.Value.Contains("ExportExcel") || a.Request.Path.Value.Contains("template"), b => b.UseMiddleware<AuthorizeStaticFilesMiddleware>());
             app.UseStaticFiles();//使用默认文件夹wwwroot
             //导出excel路径
-            var directoryInfo = new DirectoryInfo(Directory.GetCurrentDirectory()).Parent;
-            if (directoryInfo != null)
+            if (_parentDir != null)
             {
-                var exportExcelPath = Path.Combine(directoryInfo.FullName, "ExportFile/Excel");
+                var exportExcelPath = Path.Combine(_parentDir.FullName, "ExportFile/Excel");
                 if (!HFile.IsExistDirectory(exportExcelPath))
                     HFile.CreateDirectory(exportExcelPath);
                 app.UseStaticFiles(new StaticFileOptions()
@@ -350,6 +355,10 @@ namespace HaoHaoPlay.Host
                         { ".xlsx","application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}
                     })
                 });
+            }
+            else
+            {
+                throw new Exception("文件导出路径有误，请检查");
             }
 
             #endregion

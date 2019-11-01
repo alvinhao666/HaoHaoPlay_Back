@@ -34,16 +34,15 @@ namespace Hao.AppService
 
         private readonly ICapPublisher _publisher;
 
-        private readonly IHostingEnvironment _hostingEnvironment;
-
         private readonly IConfiguration _config;
 
-        public UserAppService(IConfiguration config, ISysUserRepository userRepository, IMapper mapper, ICapPublisher publisher, IHostingEnvironment hostingEnvironment)
+        public ExportFilePathInfo PathInfo { get; set; }
+
+        public UserAppService(IConfiguration config, ISysUserRepository userRepository, IMapper mapper, ICapPublisher publisher)
         {
             _userRep = userRepository;
             _mapper = mapper;
             _publisher = publisher;
-            _hostingEnvironment = hostingEnvironment;
             _config = config;
         }
 
@@ -223,11 +222,10 @@ namespace Hao.AppService
             });
 
             string fileName = $"{Guid.NewGuid()}.xlsx";
-            string rootPath = new DirectoryInfo(_hostingEnvironment.ContentRootPath).Parent.FullName + "/ExportFile/Excel/";
 
-            if (!HFile.IsExistDirectory(rootPath))
-                HFile.CreateDirectory(rootPath);
-            string filePath = Path.Combine(rootPath, $"{fileName}");
+            if (!HFile.IsExistDirectory(PathInfo.ExportExcelPath))
+                HFile.CreateDirectory(PathInfo.ExportExcelPath);
+            string filePath = Path.Combine(PathInfo.ExportExcelPath, $"{fileName}");
 
             await HFile.ExportToExcelEPPlus(filePath, exportData);
 
