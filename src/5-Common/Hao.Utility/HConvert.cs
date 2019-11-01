@@ -162,12 +162,12 @@ namespace Hao.Utility
             return DateTime.Parse(time.Value.ToString("yyyy-MM-dd") + "23:59:59");
         }
 
-
         /// <summary>
         /// 将金额转换成大写人民币
         /// </summary>
-        /// <param name="money">金额/数字</param>
-        public static string MoneyToRMB(double money)
+        /// <param name="money"></param>
+        /// <returns></returns>
+        public static string ToUpperRMB(double money)
         {
             if (money < 0.01)
             {
