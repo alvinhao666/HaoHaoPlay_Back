@@ -53,10 +53,10 @@ namespace Hao.AppService
                     models.Add(new ConditionalModel() { FieldName = nameof(SysUser.Enabled), ConditionalType = ConditionalType.Equal, FieldValue = Convert.ToInt32(Enabled).ToString() });
 
                 if (LastLoginTimeStart.HasValue)
-                    models.Add(new ConditionalModel() { FieldName = nameof(SysUser.LastLoginTime), ConditionalType = ConditionalType.GreaterThanOrEqual, FieldValue = LastLoginTimeStart.Value.ToDateString() });
+                    models.Add(new ConditionalModel() { FieldName = nameof(SysUser.LastLoginTime), ConditionalType = ConditionalType.GreaterThanOrEqual, FieldValue = LastLoginTimeStart.ToDateString() });
 
                 if (LastLoginTimeEnd.HasValue)
-                    models.Add(new ConditionalModel() { FieldName = nameof(SysUser.LastLoginTime), ConditionalType = ConditionalType.LessThanOrEqual, FieldValue = LastLoginTimeEnd.Value.ToDateString() });
+                    models.Add(new ConditionalModel() { FieldName = nameof(SysUser.LastLoginTime), ConditionalType = ConditionalType.LessThanOrEqual, FieldValue = LastLoginTimeEnd.ToDateString() });
 
                 return models;
 

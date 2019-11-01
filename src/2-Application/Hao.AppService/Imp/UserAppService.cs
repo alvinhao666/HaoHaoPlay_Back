@@ -218,7 +218,7 @@ namespace Hao.AppService
                 {"邮箱",a.Email},
                 {"微信",a.WeChat},
                 {"状态",a.Enabled.HasValue&&a.Enabled.Value?"启用":"注销"},
-                {"最后登录时间",a.LastLoginTime.HasValue?a.LastLoginTime.Value.ToDateString():""},
+                {"最后登录时间",a.LastLoginTime.ToDateString()},
                 {"最后登录地点",a.LastLoginIP}
             });
 

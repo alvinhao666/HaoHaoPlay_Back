@@ -153,29 +153,31 @@ namespace Hao.Utility
             return result;
         }
 
-        public static string ToDateString(this DateTime time)
+        public static string ToDateString(this DateTime? time)
         {
-            return time.ToString("yyyy-MM-dd HH:mm:ss");
+            return time.HasValue ? time.Value.ToString("yyyy-MM-dd HH:mm:ss") : "";
         }
 
-        public static string ToStartDateString(this DateTime time)
+        public static string ToStartDateString(this DateTime? time)
         {
-            return time.ToString("yyyy-MM-dd") + "00:00:00";
+            return time.HasValue ? time.Value.ToString("yyyy-MM-dd") + "00:00:00" : "";
         }
 
-        public static string ToEndDateString(this DateTime time)
+        public static string ToEndDateString(this DateTime? time)
         {
-            return time.ToString("yyyy-MM-dd") + "23:59:59";
+            return time.HasValue ? time.Value.ToString("yyyy-MM-dd") + "23:59:59" : "";
         }
 
-        public static DateTime ToStartDate(this DateTime time)
+        public static DateTime? ToStartDate(this DateTime? time)
         {
-            return DateTime.Parse(time.ToString("yyyy-MM-dd") + "00:00:00");
+            if (!time.HasValue) return null;
+            return DateTime.Parse(time.Value.ToString("yyyy-MM-dd") + "00:00:00");
         }
 
-        public static DateTime ToEndDate(this DateTime time)
+        public static DateTime? ToEndDate(this DateTime? time)
         {
-            return DateTime.Parse(time.ToString("yyyy-MM-dd") + "23:59:59");
+            if (!time.HasValue) return null;
+            return DateTime.Parse(time.Value.ToString("yyyy-MM-dd") + "23:59:59");
         }
 
         /// <summary>
