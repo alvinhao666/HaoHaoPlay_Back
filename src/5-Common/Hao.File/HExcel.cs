@@ -32,8 +32,7 @@ namespace Hao.File
                         ExcelWorksheet ws = package.Workbook.Worksheets.Add(string.IsNullOrWhiteSpace(tableTitle) ? "Sheet0" : tableTitle);
 
                         var keys = exportData.FirstOrDefault().Keys;
-                        int maxColumn = keys.Count();
-
+                        
                         int colIndex = 1;
                         foreach (var colName in keys)
                         {
@@ -93,7 +92,6 @@ namespace Hao.File
 
 
                     var keys = exportData.FirstOrDefault().Keys;
-                    int maxColumn = keys.Count();
 
                     IRow headerRow = sheet.CreateRow(0);
                     headerRow.ZeroHeight = false;

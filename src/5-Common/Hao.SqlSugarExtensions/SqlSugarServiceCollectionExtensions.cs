@@ -11,10 +11,7 @@ namespace Hao.SqlSugarExtensions
         public static IServiceCollection AddSqlSugarClient(this IServiceCollection services, ConnectionConfig config)
         {
 
-            services.AddScoped<ISqlSugarClient>(o =>
-            {
-                return new SqlSugarClient(config);
-            });
+            services.AddScoped<ISqlSugarClient>(o => new SqlSugarClient(config));
 
             return services;
         }
