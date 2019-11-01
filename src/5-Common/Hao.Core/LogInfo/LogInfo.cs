@@ -25,7 +25,7 @@ namespace Hao.Core
 
         public override string ToString()
         {
-            return JsonConvert.SerializeObject(this).ToString();
+            return JsonConvert.SerializeObject(this);
         }
     }
 }
