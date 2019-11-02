@@ -23,8 +23,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Hao.Core.Response;
 using Newtonsoft.Json;
 using Hao.Core.Filter;
-using NLog.Extensions.Logging;
-using NLog.Web;
 using NLog;
 using Microsoft.AspNetCore.HttpOverrides;
 using Hao.WebApi;
@@ -303,7 +301,7 @@ namespace HaoHaoPlay.Host
         }
 
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
 #if DEBUG 
             //配置Swagger
@@ -316,10 +314,6 @@ namespace HaoHaoPlay.Host
 
             app.UseCors(x => x.AllowAnyHeader().AllowCredentials().AllowAnyMethod().AllowAnyOrigin());
 #endif
-            #region 日志
-            loggerFactory.AddNLog();//添加NLog
-            env.ConfigureNLog($"NLog.{env.EnvironmentName}.config");//读取Nlog配置文件
-            #endregion
 
             #region 权限
             app.UseAuthentication();//[Authorize]
