@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using NLog.Web;
+using OfficeOpenXml.ConditionalFormatting;
 
 namespace HaoHaoPlay.Host
 {
@@ -18,13 +20,21 @@ namespace HaoHaoPlay.Host
 
         private static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-            .UseUrls("http://*:8000")
-            .UseKestrel()
-            .UseStartup<Startup>()
-            .ConfigureLogging((hostingContext,logging) =>
-            {
-                logging.AddNLog($"NLog.{hostingContext.HostingEnvironment.EnvironmentName}.config");
-            })
-            .UseNLog();
+                .ConfigureAppConfiguration((hostingContext, config) =>
+                {
+                    var env = hostingContext.HostingEnvironment;
+                    config.SetBasePath(env.ContentRootPath);
+                    config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                    config.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
+                    config.AddEnvironmentVariables().Build();
+                })
+                .ConfigureLogging((hostingContext, logging) =>
+                {
+                    logging.AddNLog($"NLog.{hostingContext.HostingEnvironment.EnvironmentName}.config");
+                })
+                .UseNLog()
+                .UseUrls("http://*:8000")
+                .UseKestrel()
+                .UseStartup<Startup>();
     }
 }
