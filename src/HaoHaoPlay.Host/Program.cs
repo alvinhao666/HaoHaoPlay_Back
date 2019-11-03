@@ -26,7 +26,7 @@ namespace HaoHaoPlay.Host
                     config.SetBasePath(env.ContentRootPath);
                     config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
                     config.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
-                    config.AddEnvironmentVariables().Build();
+                    config.AddEnvironmentVariables();
                 })
                 .ConfigureLogging((hostingContext, logging) =>
                 {
