@@ -15,10 +15,6 @@ namespace HaoHaoPlay.Host
         /// <param name="args"></param>
         public static void Main(string[] args)
         {
-            CreateWebHostBuilder(args).Build().Run();
-        }
-
-        private static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
@@ -35,6 +31,9 @@ namespace HaoHaoPlay.Host
                 .UseNLog()
                 .UseUrls("http://*:8000")
                 .UseKestrel()
-                .UseStartup<Startup>();
+                .UseStartup<Startup>()
+                .Build()
+                .Run();
+        }
     }
 }
