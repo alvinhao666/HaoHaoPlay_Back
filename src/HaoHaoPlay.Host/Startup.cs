@@ -47,12 +47,14 @@ namespace HaoHaoPlay.Host
 {
     public class Startup
     {
-        public  IConfiguration Config { get; }
+        private readonly DirectoryInfo _parentDir = new DirectoryInfo(Directory.GetCurrentDirectory()).Parent;
 
-        private readonly DirectoryInfo _parentDir= new DirectoryInfo(Directory.GetCurrentDirectory()).Parent;
+        public  IConfiguration Config { get; }
 
         public Startup(IConfiguration configuration)
         {
+            if (_parentDir == null) throw new Exception("项目安置路径有误，请检查");
+
             Config = configuration;
         }
 
@@ -328,26 +330,18 @@ namespace HaoHaoPlay.Host
             app.UseWhen(a => a.Request.Path.Value.Contains("ExportExcel") || a.Request.Path.Value.Contains("template"), b => b.UseMiddleware<AuthorizeStaticFilesMiddleware>());
             app.UseStaticFiles();//使用默认文件夹wwwroot
             //导出excel路径
-            if (_parentDir != null)
+            var exportExcelPath = Path.Combine(_parentDir.FullName, "ExportFile/Excel");
+            if (!HFile.IsExistDirectory(exportExcelPath))
+                HFile.CreateDirectory(exportExcelPath);
+            app.UseStaticFiles(new StaticFileOptions()
             {
-                var exportExcelPath = Path.Combine(_parentDir.FullName, "ExportFile/Excel");
-                if (!HFile.IsExistDirectory(exportExcelPath))
-                    HFile.CreateDirectory(exportExcelPath);
-                app.UseStaticFiles(new StaticFileOptions()
-                {
-                    FileProvider = new PhysicalFileProvider(exportExcelPath),
-                    RequestPath = "/ExportExcel",
-                    ContentTypeProvider = new FileExtensionContentTypeProvider(new Dictionary<string, string>
+                FileProvider = new PhysicalFileProvider(exportExcelPath),
+                RequestPath = "/ExportExcel",
+                ContentTypeProvider = new FileExtensionContentTypeProvider(new Dictionary<string, string>
                     {
                         { ".xlsx","application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}
                     })
-                });
-            }
-            else
-            {
-                throw new Exception("文件导出路径有误，请检查");
-            }
-
+            });
             #endregion
 
             #region 获取客户端ip
