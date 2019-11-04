@@ -12,7 +12,7 @@ using NLog.Web;
 using System.Linq;
 using System.Reflection;
 
-namespace HaoHaoPlay.Host
+namespace HaoHaoPlay.ApiHost
 {
     public class Program
     {
@@ -23,7 +23,7 @@ namespace HaoHaoPlay.Host
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder(args)
+            Host.CreateDefaultBuilder(args)
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory())
                 .ConfigureContainer<ContainerBuilder>(builder =>
                 {

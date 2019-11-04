@@ -37,7 +37,7 @@ using Snowflake.Core;
 using Hao.File;
 using Microsoft.OpenApi.Models;
 
-namespace HaoHaoPlay.Host
+namespace HaoHaoPlay.ApiHost
 {
     public class Startup
     {
