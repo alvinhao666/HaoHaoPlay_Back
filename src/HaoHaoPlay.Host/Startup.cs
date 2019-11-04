@@ -229,13 +229,13 @@ namespace HaoHaoPlay.Host
             services.Replace(ServiceDescriptor.Transient<IControllerActivator, ServiceBasedControllerActivator>());
 
 
-            services.AddMvc(x =>
+            services.AddControllers(x =>
             {
                 x.Filters.Add(typeof(HResultFilter));
             })
-            .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+            .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
             .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UserVMInValidator>()) //模型验证
-            .AddJsonOptions(op =>
+            .AddNewtonsoftJson(op =>
             {
                 op.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss"; //时间序列化格式
                 op.SerializerSettings.ContractResolver = new DefaultContractResolver(); //全局Filter json大小写
@@ -304,7 +304,7 @@ namespace HaoHaoPlay.Host
                 c.InjectStylesheet("/css/swagger_ui.css");
             });
 
-            app.UseCors(x => x.AllowAnyHeader().AllowCredentials().AllowAnyMethod().AllowAnyOrigin());
+            app.UseCors(x => x.AllowAnyOrigin());
 #endif
 
             #region 权限
@@ -352,7 +352,12 @@ namespace HaoHaoPlay.Host
             app.UseResponseCompression();
             #endregion
 
-            app.UseMvc();
+            app.UseRouting();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }
 
