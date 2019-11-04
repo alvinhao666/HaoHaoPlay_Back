@@ -53,13 +53,11 @@ namespace HaoHaoPlay.Host
 
         public Startup(IConfiguration configuration)
         {
+            Config = configuration;
 #if DEBUG
 #else
             if (_parentDir == null) throw new Exception("项目安置路径有误，请检查");
 #endif
-
-
-            Config = configuration;
         }
 
         public IServiceProvider ConfigureServices(IServiceCollection services)
