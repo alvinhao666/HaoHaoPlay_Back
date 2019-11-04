@@ -19,7 +19,7 @@ using NLog;
 
 namespace Hao.WebApi
 {
-    [Route("[controller]/[action]")]
+    [Route("[action]")]
     [ApiController]
     public class LoginController : Controller
     {
