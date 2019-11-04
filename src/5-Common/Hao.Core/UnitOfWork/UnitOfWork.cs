@@ -7,9 +7,11 @@ namespace Hao.Core
 {
     public class UnitOfWork : IUnitOfWork
     {
+
+        private readonly ILogger _log = LogManager.GetCurrentClassLogger();
+
         public  ISqlSugarClient SqlSugarClient { get; set; }
 
-        private static ILogger _log = LogManager.GetCurrentClassLogger();
 
         // 保证每次访问，多个仓储类，都用一个 client 实例
         public ISqlSugarClient GetDbClient()

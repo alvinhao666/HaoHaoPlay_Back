@@ -22,7 +22,7 @@ namespace Hao.WebApi
     [Authorize]
     public class HController : Controller
     {
-        public ILogger Logger { get; set; }
+        private readonly ILogger logger = LogManager.GetCurrentClassLogger();
 
         public ICurrentUser CurrentUser { get; set; }
 
@@ -55,7 +55,7 @@ namespace Hao.WebApi
             var path = context.HttpContext.Request.Path.Value;
             var body = ReadBodyJson(context);
 
-            Logger.Info(new LogInfo()
+            logger.Info(new LogInfo()
             {
                 Method = path,
                 Argument = new
@@ -130,7 +130,7 @@ namespace Hao.WebApi
                 var parameter = parameters.FirstOrDefault(a => a.BindingInfo?.BindingSource == BindingSource.Body);
                 if (parameter != null && context.ActionArguments != null && !context.ActionArguments.ContainsKey(parameter.Name))
                 {
-                    Logger.Info(new LogInfo() { Method = context.HttpContext.Request.Path.Value, Argument = result, Description = "RequestBodyContent" });
+                    logger.Info(new LogInfo() { Method = context.HttpContext.Request.Path.Value, Argument = result, Description = "RequestBodyContent" });
                     throw new HException(ErrorInfo.E100011, nameof(ErrorInfo.E100011).GetErrorCode());
                 }
                 if (!string.IsNullOrWhiteSpace(result))

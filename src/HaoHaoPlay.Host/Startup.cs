@@ -203,10 +203,6 @@ namespace HaoHaoPlay.Host
             var worker = new IdWorker(long.Parse(snowflake[nameof(SnowflakeIdOptions.WorkerId)]), long.Parse(snowflake[nameof(SnowflakeIdOptions.DataCenterId)]));
             services.AddSingleton(worker);
 
-            var logger = LogManager.GetCurrentClassLogger();
-            services.AddSingleton<NLog.ILogger>(logger);
-
-
             FilePathInfo pathInfo = new FilePathInfo();
             pathInfo.ExportExcelPath = Path.Combine(_parentDir.FullName, "ExportFile/Excel");
             pathInfo.ImportExcelPath = Path.Combine(_parentDir.FullName, "ImportFile/Excel");

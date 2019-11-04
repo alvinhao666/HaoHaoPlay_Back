@@ -23,13 +23,13 @@ namespace Hao.WebApi
     [ApiController]
     public class LoginController : Controller
     {
+        private readonly ILogger logger = LogManager.GetCurrentClassLogger();
+
         private readonly JwtOptions _jwtOptions;
 
         private readonly IUserAppService _userAppService;
 
         private readonly IMapper _mapper;
-
-        public ILogger Logger { get; set; }
 
         private readonly RedisPrefixOptions _redisPrefix;
 
@@ -98,7 +98,7 @@ namespace Hao.WebApi
             };
             await RedisHelper.SetAsync(_redisPrefix.LoginInfo + user.Id, JsonExtensions.SerializeToJson(userValue));
 
-            Logger.Info(new LogInfo() { Method = "Login", Argument = query.LoginName, Description = "登录成功" }.ToString());
+            logger.Info(new LogInfo() { Method = "Login", Argument = query.LoginName, Description = "登录成功" }.ToString());
 
             return user;
         }
