@@ -14,7 +14,7 @@ namespace Hao.Core
 
         private const string EErrorMsg = "未知错误";
 
-        private readonly static ILogger _log = LogManager.GetCurrentClassLogger();
+        private readonly static ILogger _logger = LogManager.GetCurrentClassLogger();
 
         public static void UseGlobalExceptionHandler(this IApplicationBuilder app)
         {
@@ -27,7 +27,7 @@ namespace Hao.Core
             }
             catch (Exception ex)
             {
-                _log.Error(ex, JsonConvert.SerializeObject(ex.Message));
+                _logger.Error(ex, JsonConvert.SerializeObject(ex.Message));
             }
         }
         
@@ -60,7 +60,7 @@ namespace Hao.Core
                 ex.Message
             };
 
-            _log.Error(ex, JsonConvert.SerializeObject(errorLog));
+            _logger.Error(ex, JsonConvert.SerializeObject(errorLog));
 
             await context.Response.WriteAsync(JsonConvert.SerializeObject(response));
         }

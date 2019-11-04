@@ -1,5 +1,4 @@
 ﻿using System;
-using Newtonsoft.Json;
 using NLog;
 using SqlSugar;
 
@@ -8,7 +7,7 @@ namespace Hao.Core
     public class UnitOfWork : IUnitOfWork
     {
 
-        private readonly ILogger _log = LogManager.GetCurrentClassLogger();
+        private readonly ILogger _logger = LogManager.GetCurrentClassLogger();
 
         public  ISqlSugarClient SqlSugarClient { get; set; }
 
@@ -33,7 +32,7 @@ namespace Hao.Core
             catch (Exception ex)
             {
                 SqlSugarClient.Ado.RollbackTran();
-                _log.Error(ex, JsonConvert.SerializeObject(ex.Message));
+                _logger.Error(ex, ex.Message);
             }
         }
 
