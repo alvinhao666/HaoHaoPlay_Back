@@ -49,11 +49,15 @@ namespace HaoHaoPlay.Host
     {
         private readonly DirectoryInfo _parentDir = new DirectoryInfo(Directory.GetCurrentDirectory()).Parent;
 
-        public  IConfiguration Config { get; }
+        public IConfiguration Config { get; }
 
         public Startup(IConfiguration configuration)
         {
+#if DEBUG
+#else
             if (_parentDir == null) throw new Exception("项目安置路径有误，请检查");
+#endif
+
 
             Config = configuration;
         }
@@ -98,7 +102,7 @@ namespace HaoHaoPlay.Host
                 o.Audience = jwtSection[nameof(JwtOptions.Audience)];
                 o.Issuer = jwtSection[nameof(JwtOptions.Issuer)];
                 o.SigningKey = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
-                o.Subject= jwtSection[nameof(JwtOptions.Subject)];
+                o.Subject = jwtSection[nameof(JwtOptions.Subject)];
             });
 
             //jwt验证：
@@ -207,7 +211,7 @@ namespace HaoHaoPlay.Host
 
             FilePathInfo pathInfo = new FilePathInfo();
             pathInfo.ExportExcelPath = Path.Combine(_parentDir.FullName, "ExportFile/Excel");
-            pathInfo.ImportExcelPath= Path.Combine(_parentDir.FullName, "ImportFile/Excel");
+            pathInfo.ImportExcelPath = Path.Combine(_parentDir.FullName, "ImportFile/Excel");
             services.AddSingleton(pathInfo);
             #endregion
 
@@ -299,7 +303,7 @@ namespace HaoHaoPlay.Host
 
         public void Configure(IApplicationBuilder app)
         {
-#if DEBUG 
+#if DEBUG
             //配置Swagger
             app.UseSwagger();
             app.UseSwaggerUI(c =>
