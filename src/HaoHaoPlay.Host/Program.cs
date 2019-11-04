@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using NLog.Web;
 
 namespace HaoHaoPlay.Host
@@ -14,16 +14,11 @@ namespace HaoHaoPlay.Host
         public static void Main(string[] args)
         {
             WebHost.CreateDefaultBuilder(args)
-                .ConfigureAppConfiguration((hostingContext, config) =>
-                {
-                    var env = hostingContext.HostingEnvironment;
-                    config.SetBasePath(env.ContentRootPath);
-                    config.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-                    config.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
-                    config.AddEnvironmentVariables();
-                })
                 .ConfigureLogging((hostingContext, logging) =>
                 {
+                    logging.ClearProviders();
+                    logging.SetMinimumLevel(LogLevel.Information);
+                    logging.AddConsole();
                     logging.AddNLog($"NLog.{hostingContext.HostingEnvironment.EnvironmentName}.config");
                 })
                 .UseNLog()
@@ -32,6 +27,15 @@ namespace HaoHaoPlay.Host
                 .UseStartup<Startup>()
                 .Build()
                 .Run();
+
+            //.ConfigureAppConfiguration((hostingContext, config) =>
+            //{
+            //    var env = hostingContext.HostingEnvironment;
+            //    config.SetBasePath(env.ContentRootPath);
+            //    config.AddJsonFile("appsettings.json", optional: true,reloadOnChange:true);
+            //    config.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true,reloadOnChange:true);//没有的话 默认读取appsettings.json
+            //    config.AddEnvironmentVariables();
+            //}) //WebHost.CreateDefaultBuilder(args)内部已经配置
         }
     }
 }
