@@ -31,13 +31,14 @@ namespace Hao.WebApi
 
         public ILogger Logger { get; set; }
 
-        public IOptions<RedisPrefixOptions> RedisPrefix { get; set; }
+        private readonly RedisPrefixOptions _redisPrefix;
 
-        public readonly IConfiguration _config;
+        private readonly IConfiguration _config;
 
-        public LoginController(IOptions<JwtOptions> jwtOptions, IMapper mapper, IUserAppService userService, IConfiguration Configuration)
+        public LoginController(IOptions<JwtOptions> jwtOptions, IOptions<RedisPrefixOptions> redisPrefix, IMapper mapper, IUserAppService userService, IConfiguration Configuration)
         {
             _jwtOptions = jwtOptions.Value;
+            _redisPrefix = redisPrefix.Value;
             _userAppService = userService;
             _mapper = mapper;
             _config = Configuration;
@@ -95,7 +96,7 @@ namespace Hao.WebApi
                 UserName = user.UserName,
                 LoginName = user.LoginName
             };
-            await RedisHelper.SetAsync(RedisPrefix.Value.LoginInfo + user.Id, JsonExtensions.SerializeToJson(userValue));
+            await RedisHelper.SetAsync(_redisPrefix.LoginInfo + user.Id, JsonExtensions.SerializeToJson(userValue));
 
             Logger.Info(new LogInfo() { Method = "Login", Argument = query.LoginName, Description = "登录成功" }.ToString());
 
