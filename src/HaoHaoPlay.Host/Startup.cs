@@ -40,6 +40,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Snowflake.Core;
 using Autofac.Extras.DynamicProxy;
 using Hao.File;
+using Microsoft.OpenApi.Models;
 
 namespace HaoHaoPlay.Host
 {
@@ -58,19 +59,19 @@ namespace HaoHaoPlay.Host
 #endif
         }
 
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
             #region DeBug
 #if DEBUG
             services.AddSwaggerGen(c =>
             {
                 //配置第一个Doc
-                c.SwaggerDoc("v1", new Info
+                c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
                     Title = "接口文档",
                     Description = "接口说明",
-                    Contact = new Contact
+                    Contact = new OpenApiContact
                     {
                         Name = "rongguohao",
                         Email = "843468011@qq.com"
@@ -259,37 +260,36 @@ namespace HaoHaoPlay.Host
             #endregion
 
 
-            #region Autofac
-            var builder = new ContainerBuilder();//实例化 AutoFac  容器   
+            //#region Autofac
+            //var builder = new ContainerBuilder();//实例化 AutoFac  容器   
 
-            builder.RegisterType<HTransactionAop>();
+            //builder.RegisterType<HTransactionAop>();
 
-            builder.RegisterAssemblyTypes(
-                Assembly.Load("Hao.Repository"),
-                Assembly.Load("Hao.Core"))
-               .Where(m => typeof(ITransientDependency).IsAssignableFrom(m) && m != typeof(ITransientDependency))
-               .AsImplementedInterfaces().InstancePerLifetimeScope().PropertiesAutowired();
+            //builder.RegisterAssemblyTypes(
+            //    Assembly.Load("Hao.Repository"),
+            //    Assembly.Load("Hao.Core"))
+            //   .Where(m => typeof(ITransientDependency).IsAssignableFrom(m) && m != typeof(ITransientDependency))
+            //   .AsImplementedInterfaces().InstancePerLifetimeScope().PropertiesAutowired();
 
-            builder.RegisterAssemblyTypes(
-                    Assembly.Load("Hao.AppService"))
-                   .Where(m => typeof(ITransientDependency).IsAssignableFrom(m) && m != typeof(ITransientDependency))
-                   .AsImplementedInterfaces().InstancePerLifetimeScope().PropertiesAutowired().EnableInterfaceInterceptors().InterceptedBy(typeof(HTransactionAop));
-            //一定要在你注入的服务后面加上EnableInterfaceInterceptors来开启你的拦截(aop)
-
-
-            #region 属性注入
-            var controllersTypesInAssembly = typeof(HController).Assembly.GetExportedTypes()
-                .Where(type => typeof(Controller).IsAssignableFrom(type)).ToArray();
-            builder.RegisterTypes(controllersTypesInAssembly).PropertiesAutowired();
-            #endregion
+            //builder.RegisterAssemblyTypes(
+            //        Assembly.Load("Hao.AppService"))
+            //       .Where(m => typeof(ITransientDependency).IsAssignableFrom(m) && m != typeof(ITransientDependency))
+            //       .AsImplementedInterfaces().InstancePerLifetimeScope().PropertiesAutowired().EnableInterfaceInterceptors().InterceptedBy(typeof(HTransactionAop));
+            ////一定要在你注入的服务后面加上EnableInterfaceInterceptors来开启你的拦截(aop)
 
 
-            builder.Populate(services);
-            var _container = builder.Build();
+            //#region 属性注入
+            //var controllersTypesInAssembly = typeof(HController).Assembly.GetExportedTypes()
+            //    .Where(type => typeof(Controller).IsAssignableFrom(type)).ToArray();
+            //builder.RegisterTypes(controllersTypesInAssembly).PropertiesAutowired();
+            //#endregion
 
-            return new AutofacServiceProvider(_container);//第三方IOC接管 core内置DI容器
-            #endregion
 
+            //builder.Populate(services);
+            //var _container = builder.Build();
+
+            //return new AutofacServiceProvider(_container);//第三方IOC接管 core内置DI容器
+            //#endregion
         }
 
 
@@ -304,7 +304,7 @@ namespace HaoHaoPlay.Host
                 c.InjectStylesheet("/css/swagger_ui.css");
             });
 
-            app.UseCors(x => x.AllowAnyOrigin());
+            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 #endif
 
             #region 权限
