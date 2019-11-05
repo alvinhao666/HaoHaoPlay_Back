@@ -117,7 +117,7 @@ namespace HaoHaoPlay.ApiHost
                     RequireExpirationTime = true,
                     ClockSkew = TimeSpan.Zero, // ClockSkew 属性，默认是5分钟缓冲。
                 };
-                options.Events = new JwtBearerOverrideEvents();
+                options.Events = new HJwtBearerEvents();
             });
             #endregion
 
@@ -333,7 +333,7 @@ namespace HaoHaoPlay.ApiHost
     /// <summary>
 	/// 重写JWT触发函数
 	/// </summary>
-	public class JwtBearerOverrideEvents : JwtBearerEvents
+	public class HJwtBearerEvents : JwtBearerEvents
     {
         #region 暂不需要重写
         ///// <summary>
