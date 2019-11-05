@@ -72,7 +72,6 @@ namespace Hao.File
         /// <returns></returns>
         public static async Task ExportToExcelNPOI(string filePath, IEnumerable<Dictionary<string, string>> exportData, string tableTitle = null)
         {
-
             await Task.Factory.StartNew(() =>
             {
                 using (Stream stream = new FileStream(filePath, FileMode.CreateNew)) //FileMode.CreateNew 当文件不存在时，创建新文件；如果文件存在，则引发异常。
