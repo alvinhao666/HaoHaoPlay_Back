@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
-using Newtonsoft.Json;
 using NLog;
 using System;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Hao.Core
@@ -27,7 +27,7 @@ namespace Hao.Core
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, JsonConvert.SerializeObject(ex.Message));
+                _logger.Error(ex, JsonSerializer.Serialize(ex.Message));
             }
         }
         
@@ -60,9 +60,9 @@ namespace Hao.Core
                 ex.Message
             };
 
-            _logger.Error(ex, JsonConvert.SerializeObject(errorLog));
+            _logger.Error(ex, JsonSerializer.Serialize(errorLog));
 
-            await context.Response.WriteAsync(JsonConvert.SerializeObject(response));
+            await context.Response.WriteAsync(JsonSerializer.Serialize(response));
         }
     }
 }

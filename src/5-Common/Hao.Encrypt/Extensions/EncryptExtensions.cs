@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Hao.Encrypt;
-using Newtonsoft.Json;
 using Hao.Encrypt.Shared;
 
 namespace Hao.Encrypt.Extensions

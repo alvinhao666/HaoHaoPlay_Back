@@ -27,7 +27,6 @@ namespace HaoHaoPlay.ApiHost
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory())
                 .ConfigureContainer<ContainerBuilder>(builder =>
                 {
-
                     builder.RegisterType<HTransactionAop>();
 
                     builder.RegisterAssemblyTypes(

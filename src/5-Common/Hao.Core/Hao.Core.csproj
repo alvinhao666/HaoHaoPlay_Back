@@ -13,6 +13,7 @@
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.9.0" />
     <PackageReference Include="Snowflake.Core" Version="2.0.0" />
     <PackageReference Include="sqlSugarCore" Version="5.0.0.10" />
+    <PackageReference Include="System.Text.Json" Version="4.6.0" />
   </ItemGroup>
 
   <ItemGroup>

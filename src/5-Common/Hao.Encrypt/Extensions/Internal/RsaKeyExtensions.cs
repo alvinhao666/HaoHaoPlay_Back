@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
 using System.Xml;
-using Newtonsoft.Json;
 using Hao.Encrypt.Shared;
 using Hao.Encrypt.Internal;
+using System.Text.Json;
 
 namespace Hao.Encrypt.Extensions.Internal
 {
@@ -28,7 +28,7 @@ namespace Hao.Encrypt.Extensions.Internal
             RSAParameters parameters = new RSAParameters();
             try
             {
-                var paramsJson = JsonConvert.DeserializeObject<RSAParametersJson>(jsonString);
+                var paramsJson = JsonSerializer.Deserialize<RSAParametersJson>(jsonString);
 
                 parameters.Modulus = paramsJson.Modulus != null ? Convert.FromBase64String(paramsJson.Modulus) : null;
                 parameters.Exponent = paramsJson.Exponent != null ? Convert.FromBase64String(paramsJson.Exponent) : null;
@@ -68,7 +68,7 @@ namespace Hao.Encrypt.Extensions.Internal
                 D = parameters.D != null ? Convert.ToBase64String(parameters.D) : null
             };
 
-            return JsonConvert.SerializeObject(parasJson);
+            return JsonSerializer.Serialize(parasJson);
         }
         #endregion
 

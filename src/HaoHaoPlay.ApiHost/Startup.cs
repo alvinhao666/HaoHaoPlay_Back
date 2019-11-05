@@ -24,7 +24,6 @@ using Hao.Event;
 using Hao.SqlSugarExtensions;
 using FluentValidation.AspNetCore;
 using Microsoft.Extensions.FileProviders;
-using Newtonsoft.Json.Serialization;
 using CSRedis;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Redis;
@@ -36,6 +35,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Snowflake.Core;
 using Hao.File;
 using Microsoft.OpenApi.Models;
+using System.Text.Encodings.Web;
 
 namespace HaoHaoPlay.ApiHost
 {
@@ -231,11 +231,17 @@ namespace HaoHaoPlay.ApiHost
             })
             .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
             .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UserVMInValidator>()) //模型验证
-            .AddNewtonsoftJson(op =>
+            .AddWebApiConventions()//处理HttpResponseMessage类型返回值的问题
+            .AddJsonOptions(o =>
             {
-                op.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss"; //时间序列化格式
-                op.SerializerSettings.ContractResolver = new DefaultContractResolver(); //全局Filter json大小写
-            }).AddWebApiConventions();//处理HttpResponseMessage类型返回值的问题
+                o.JsonSerializerOptions.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
+                o.JsonSerializerOptions.PropertyNamingPolicy = null;
+            });
+            //.AddNewtonsoftJson(op =>
+            //{
+            //    op.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss"; //时间序列化格式
+            //    op.SerializerSettings.ContractResolver = new DefaultContractResolver(); //全局Filter json大小写
+            //});
 
             #region 模型验证 ApiBehaviorOptions 的统一模型验证配置一定要放到(.AddMvc)后面
             services.Configure<ApiBehaviorOptions>(options =>
@@ -253,38 +259,6 @@ namespace HaoHaoPlay.ApiHost
                 };
             });
             #endregion
-
-
-            //#region Autofac
-            //var builder = new ContainerBuilder();//实例化 AutoFac  容器   
-
-            //builder.RegisterType<HTransactionAop>();
-
-            //builder.RegisterAssemblyTypes(
-            //    Assembly.Load("Hao.Repository"),
-            //    Assembly.Load("Hao.Core"))
-            //   .Where(m => typeof(ITransientDependency).IsAssignableFrom(m) && m != typeof(ITransientDependency))
-            //   .AsImplementedInterfaces().InstancePerLifetimeScope().PropertiesAutowired();
-
-            //builder.RegisterAssemblyTypes(
-            //        Assembly.Load("Hao.AppService"))
-            //       .Where(m => typeof(ITransientDependency).IsAssignableFrom(m) && m != typeof(ITransientDependency))
-            //       .AsImplementedInterfaces().InstancePerLifetimeScope().PropertiesAutowired().EnableInterfaceInterceptors().InterceptedBy(typeof(HTransactionAop));
-            ////一定要在你注入的服务后面加上EnableInterfaceInterceptors来开启你的拦截(aop)
-
-
-            //#region 属性注入
-            //var controllersTypesInAssembly = typeof(HController).Assembly.GetExportedTypes()
-            //    .Where(type => typeof(Controller).IsAssignableFrom(type)).ToArray();
-            //builder.RegisterTypes(controllersTypesInAssembly).PropertiesAutowired();
-            //#endregion
-
-
-            //builder.Populate(services);
-            //var _container = builder.Build();
-
-            //return new AutofacServiceProvider(_container);//第三方IOC接管 core内置DI容器
-            //#endregion
         }
 
 
