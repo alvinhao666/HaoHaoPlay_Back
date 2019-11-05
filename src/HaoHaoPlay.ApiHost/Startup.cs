@@ -36,6 +36,7 @@ using Snowflake.Core;
 using Hao.File;
 using Microsoft.OpenApi.Models;
 using System.Text.Encodings.Web;
+using Hao.Utility;
 
 namespace HaoHaoPlay.ApiHost
 {
@@ -236,12 +237,8 @@ namespace HaoHaoPlay.ApiHost
             {
                 o.JsonSerializerOptions.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
                 o.JsonSerializerOptions.PropertyNamingPolicy = null;
+                o.JsonSerializerOptions.Converters.Add(new DatetimeJsonConverter());
             });
-            //.AddNewtonsoftJson(op =>
-            //{
-            //    op.SerializerSettings.DateFormatString = "yyyy-MM-dd HH:mm:ss"; //时间序列化格式
-            //    op.SerializerSettings.ContractResolver = new DefaultContractResolver(); //全局Filter json大小写
-            //});
 
             #region 模型验证 ApiBehaviorOptions 的统一模型验证配置一定要放到(.AddMvc)后面
             services.Configure<ApiBehaviorOptions>(options =>
@@ -277,7 +274,8 @@ namespace HaoHaoPlay.ApiHost
 #endif
 
             #region 权限
-            app.UseAuthentication();//[Authorize]
+            app.UseAuthentication();
+            app.UseAuthorization();
             #endregion
 
             #region 获取当前用户

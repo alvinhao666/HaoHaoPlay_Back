@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 namespace Hao.WebApi
 {
@@ -50,6 +51,7 @@ namespace Hao.WebApi
             #endregion
 
             var userId = User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sid); //Security Identifiers安全标识符
+            if (userId == null) throw new HException(ErrorInfo.E100002, nameof(ErrorInfo.E100002).GetErrorCode());
 
             var traceId = context.HttpContext.TraceIdentifier;
             var path = context.HttpContext.Request.Path.Value;
@@ -70,10 +72,8 @@ namespace Hao.WebApi
 
             var value = RedisHelper.Get(RedisPrefix.Value.LoginInfo + userId.Value);
 
-            if (value == null)
-            {
-                throw new HException(ErrorInfo.E100002, nameof(ErrorInfo.E100002).GetErrorCode());
-            }
+            if (value == null) throw new HException(ErrorInfo.E100002, nameof(ErrorInfo.E100002).GetErrorCode());
+
 
             var cacheUser = JsonExtensions.DeserializeFromJson<RedisCacheUserInfo>(value);
 
@@ -119,7 +119,7 @@ namespace Hao.WebApi
                 && (method.Equals("post") || method.Equals("put") || method.Equals("delete"))
                 && request.ContentType != null && request.ContentType.Contains("application/json"))
             {
-                request.EnableRewind();
+                request.EnableBuffering();
                 request.Body.Seek(0, 0);
                 string result = null;
                 using (var reader = new StreamReader(request.Body, Encoding.UTF8))
