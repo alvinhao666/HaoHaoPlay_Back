@@ -226,9 +226,8 @@ namespace HaoHaoPlay.ApiHost
             services.Replace(ServiceDescriptor.Transient<IControllerActivator, ServiceBasedControllerActivator>());
 
 
-            services.AddMvc(x =>
+            services.AddControllers(x =>
             {
-                x.EnableEndpointRouting = false;
                 x.Filters.Add(typeof(HResultFilter));
             })
             .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
@@ -274,9 +273,7 @@ namespace HaoHaoPlay.ApiHost
             app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 #endif
 
-            #region 权限
-            app.UseAuthentication();
-            #endregion
+
 
             #region 获取当前用户
 
@@ -319,13 +316,17 @@ namespace HaoHaoPlay.ApiHost
             app.UseResponseCompression();
             #endregion
 
-            //app.UseRouting();
+            app.UseRouting();
 
-            //app.UseEndpoints(endpoints =>
-            //{
-            //    endpoints.MapControllers();
-            //});
-            app.UseMvc();
+            #region 权限 .net core3.0需要放UseRouting后面
+            app.UseAuthentication();
+            app.UseAuthorization();
+            #endregion
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }
 
