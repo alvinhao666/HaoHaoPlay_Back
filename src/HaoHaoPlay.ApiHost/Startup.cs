@@ -15,7 +15,6 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Hao.Core.Response;
-using Newtonsoft.Json;
 using Hao.Core.Filter;
 using Microsoft.AspNetCore.HttpOverrides;
 using Hao.WebApi;
@@ -37,6 +36,7 @@ using Hao.File;
 using Microsoft.OpenApi.Models;
 using System.Text.Encodings.Web;
 using Hao.Utility;
+using System.Text.Json;
 
 namespace HaoHaoPlay.ApiHost
 {
@@ -358,25 +358,13 @@ namespace HaoHaoPlay.ApiHost
         //    return Task.CompletedTask;
         //}
 
-        ///// <summary>
-        ///// AuthenticationFailed: 认证失败时调用。
-        ///// </summary>
-        ///// <param name="context"></param>
-        ///// <returns></returns>        
-        //public override Task AuthenticationFailed(AuthenticationFailedContext context)
-        //{
-        //    return Task.CompletedTask;
-        //}
-        #endregion
-
         /// <summary>
-        /// token过期 或者 没有token会出发此方法。 使用时一定要在 Controller上加[Authorize]
+        /// AuthenticationFailed: 认证失败时调用。触发场景：1.token过期（一定） 2.token值有误（不一定）   使用时一定要在 Controller或方法名上加[Authorize]
         /// </summary>
         /// <param name="context"></param>
-        /// <returns></returns>
-        public override async Task Challenge(JwtBearerChallengeContext context)
+        /// <returns></returns>        
+        public override async Task AuthenticationFailed(AuthenticationFailedContext context)
         {
-            context.Response.Clear();
             context.Response.StatusCode = StatusCodes.Status200OK;
             context.Response.ContentType = "application/json";
             var response = new BaseResponse()
@@ -385,8 +373,27 @@ namespace HaoHaoPlay.ApiHost
                 ErrorCode = nameof(ErrorInfo.E100001).GetErrorCode(),
                 ErrorMsg = ErrorInfo.E100001
             };
-            await context.Response.WriteAsync(JsonConvert.SerializeObject(response));
-            context.HandleResponse();
+            await context.Response.WriteAsync(JsonSerializer.Serialize(response));
+        }
+        #endregion
+
+        /// <summary>
+        /// Challenge:未授权时调用。 触发场景：1.token值为空。 使用时一定要在 Controller或方法名上加[Authorize]
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public override async Task Challenge(JwtBearerChallengeContext context)
+        {            
+            context.HandleResponse();//此处代码为终止.Net Core默认的返回类型和数据结果，这个很重要哦，必须
+            context.Response.StatusCode = StatusCodes.Status200OK;
+            context.Response.ContentType = "application/json";
+            var response = new BaseResponse()
+            {
+                Success = false,
+                ErrorCode = nameof(ErrorInfo.E100002).GetErrorCode(),
+                ErrorMsg = ErrorInfo.E100002
+            };
+            await context.Response.WriteAsync(JsonSerializer.Serialize(response));
         }
     }
 }
