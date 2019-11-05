@@ -378,7 +378,7 @@ namespace HaoHaoPlay.ApiHost
         #endregion
 
         /// <summary>
-        /// Challenge:未授权时调用。 触发场景：1.token值为空。 使用时一定要在 Controller或方法名上加[Authorize]
+        /// Challenge:未授权时调用。 触发场景：1.token值为空 （一定） 2.token值有误 (不一定)。 使用时一定要在 Controller或方法名上加[Authorize]
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
