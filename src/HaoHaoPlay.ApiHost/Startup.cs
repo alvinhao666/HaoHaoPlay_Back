@@ -357,6 +357,7 @@ namespace HaoHaoPlay.ApiHost
 
         //    return Task.CompletedTask;
         //}
+        #endregion
 
         /// <summary>
         /// AuthenticationFailed: 认证失败时调用。触发场景：1.token过期（一定） 2.token值有误（不一定）   使用时一定要在 Controller或方法名上加[Authorize]
@@ -375,7 +376,6 @@ namespace HaoHaoPlay.ApiHost
             };
             await context.Response.WriteAsync(JsonSerializer.Serialize(response));
         }
-        #endregion
 
         /// <summary>
         /// Challenge:未授权时调用。 触发场景：1.token值为空（一定） 2.token值有误 (不一定)。 使用时一定要在 Controller或方法名上加[Authorize]
