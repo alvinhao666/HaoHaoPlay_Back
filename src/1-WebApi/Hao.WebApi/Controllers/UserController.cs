@@ -134,6 +134,11 @@ namespace Hao.WebApi
         }
 
 
+        /// <summary>
+        /// 导入用户
+        /// </summary>
+        /// <param name="formCollection"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task ImportUsers([FromForm] IFormCollection formCollection)
         {
