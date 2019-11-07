@@ -16,14 +16,28 @@ namespace Hao.Utility
             return Convert.ToInt64(ts.TotalSeconds).ToString();
         }
 
-        /// <summary>  
-        /// 获取指定时间戳  
-        /// </summary>  
-        /// <returns></returns> 
+        /// <summary>
+        /// 时间转时间戳
+        /// </summary>
+        /// <param name="time"></param>
+        /// <returns></returns>
         public static string GetTimeStamp(DateTime time)
         {
             TimeSpan ts = time.ToUniversalTime() - new DateTime(1970, 1, 1, 0, 0, 0, 0);
             return Convert.ToInt64(ts.TotalSeconds).ToString();
+        }
+
+        /// <summary>
+        /// 时间戳转换为时间
+        /// </summary>
+        /// <param name="timeStamp"></param>
+        /// <returns></returns>
+        public static DateTime ToDateTime(long timeStamp)
+        {
+            DateTime startTime = TimeZoneInfo.ConvertTimeFromUtc(new DateTime(1970, 1, 1), TimeZoneInfo.Local);
+            long mTime = long.Parse(string.Format($"{timeStamp}0000000"));
+            TimeSpan toNow = new TimeSpan(mTime);
+            return startTime.Add(toNow);
         }
 
         /// <summary>
