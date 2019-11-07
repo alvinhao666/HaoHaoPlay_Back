@@ -35,7 +35,6 @@ namespace Hao.Core
 
                     invocation.Proceed();
 
-
                     // 异步获取异常，先执行
                     if (IsAsyncMethod(invocation.Method))
                     {
@@ -59,14 +58,10 @@ namespace Hao.Core
                              ex =>
                              {
                                  _unitOfWork.RollbackTran();
-
                              });
-
                         }
-
                     }
                     _unitOfWork.CommitTran();
-
                 }
                 catch
                 {
@@ -79,14 +74,17 @@ namespace Hao.Core
             }
 
         }
-
+        /// <summary>
+        /// 判断是否时异步方法或者异步的泛型方法
+        /// </summary>
+        /// <param name="method"></param>
+        /// <returns></returns>
         public static bool IsAsyncMethod(MethodInfo method)
         {
-            return (
-                method.ReturnType == typeof(Task) ||
-                (method.ReturnType.IsGenericType && method.ReturnType.GetGenericTypeDefinition() == typeof(Task<>))
-                );
+            return method.ReturnType == typeof(Task) ||(method.ReturnType.IsGenericType && method.ReturnType.GetGenericTypeDefinition() == typeof(Task<>));
         }
+
+
         private async Task TestActionAsync(IInvocation invocation)
         {
         }

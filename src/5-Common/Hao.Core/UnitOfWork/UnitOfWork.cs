@@ -12,17 +12,26 @@ namespace Hao.Core
         public  ISqlSugarClient SqlSugarClient { get; set; }
 
 
-        // 保证每次访问，多个仓储类，都用一个 client 实例
+        /// <summary>
+        /// 保证每次访问，多个仓储类，都用一个 client 实例
+        /// </summary>
+        /// <returns></returns>
         public ISqlSugarClient GetDbClient()
         {
             return SqlSugarClient;
         }
 
+        /// <summary>
+        /// 开始事务
+        /// </summary>
         public void BeginTran()
         {
             SqlSugarClient.Ado.BeginTran();
         }
 
+        /// <summary>
+        /// 提交事务
+        /// </summary>
         public void CommitTran()
         {
             try
@@ -36,7 +45,9 @@ namespace Hao.Core
             }
         }
 
-
+        /// <summary>
+        /// 回滚事务
+        /// </summary>
         public void RollbackTran()
         {
             SqlSugarClient.Ado.RollbackTran();

@@ -5,13 +5,22 @@ namespace Hao.Core
 {
     public interface IUnitOfWork: ITransientDependency
     {
-        // 创建 sqlsugar client 实例
+        /// <summary>
+        /// 获取 sqlsugar client 实例
+        /// </summary>
+        /// <returns></returns>
         ISqlSugarClient GetDbClient();
-        // 开始事务
+        /// <summary>
+        /// 开始事务
+        /// </summary>
         void BeginTran();
-        // 提交事务
+        /// <summary>
+        /// 提交事务
+        /// </summary>
         void CommitTran();
-        // 回滚事务
+        /// <summary>
+        /// 回滚事务
+        /// </summary>
         void RollbackTran();
     }
 }
