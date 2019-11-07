@@ -49,8 +49,7 @@ namespace HaoHaoPlay.ApiHost
                                                     logging.ClearProviders();
                                                     logging.SetMinimumLevel(LogLevel.Information);
                                                     logging.AddConsole();
-                                                    logging.AddNLog($"NLog.{hostingContext.HostingEnvironment.EnvironmentName}.config");
-                                                })
+                                                    logging.AddNLog($"NLog.{hostingContext.HostingEnvironment.EnvironmentName}.config");})
                               .UseNLog()
                               .UseUrls("http://*:8000")
                               .UseKestrel()
