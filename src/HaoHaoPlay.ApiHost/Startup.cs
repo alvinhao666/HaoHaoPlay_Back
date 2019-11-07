@@ -209,10 +209,6 @@ namespace HaoHaoPlay.ApiHost
             services.AddDataProtection();
             #endregion
 
-            #region 性能 压缩
-            services.AddResponseCompression();
-            #endregion
-
 
             #region AutoMapper
             services.AddSingleton<IMapper>(new Mapper(new MapperConfiguration(cfg =>
@@ -275,7 +271,6 @@ namespace HaoHaoPlay.ApiHost
 #endif
 
 
-
             #region 获取当前用户
 
             app.UseSession();
@@ -313,9 +308,6 @@ namespace HaoHaoPlay.ApiHost
             });
             #endregion
 
-            #region 性能压缩
-            app.UseResponseCompression();
-            #endregion
 
             app.UseRouting();
 
