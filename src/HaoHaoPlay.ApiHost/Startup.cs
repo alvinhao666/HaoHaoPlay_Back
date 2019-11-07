@@ -227,7 +227,6 @@ namespace HaoHaoPlay.ApiHost
             {
                 x.Filters.Add(typeof(HResultFilter));
             })
-            .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
             .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UserVMInValidator>()) //模型验证
             .AddWebApiConventions()//处理HttpResponseMessage类型返回值的问题
             .AddJsonOptions(o =>
