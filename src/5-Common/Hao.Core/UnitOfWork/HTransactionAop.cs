@@ -68,7 +68,7 @@ namespace Hao.Core
                     _unitOfWork.CommitTran();
 
                 }
-                catch (Exception)
+                catch
                 {
                     _unitOfWork.RollbackTran();
                 }

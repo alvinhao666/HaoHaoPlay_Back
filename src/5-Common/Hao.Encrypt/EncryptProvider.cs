@@ -250,7 +250,7 @@ namespace Hao.Encrypt
                             cryptoStream.FlushFinalBlock();
                             return Convert.ToBase64String(Memory.ToArray());
                         }
-                        catch (Exception ex)
+                        catch
                         {
                             return null;
                         }
@@ -295,7 +295,7 @@ namespace Hao.Encrypt
 
                             return Encoding.UTF8.GetString(ret, 0, len);
                         }
-                        catch (Exception ex)
+                        catch
                         {
                             return null;
                         }
@@ -431,7 +431,7 @@ namespace Hao.Encrypt
                             cryptoStream.FlushFinalBlock();
                             return Memory.ToArray();
                         }
-                        catch (Exception ex)
+                        catch
                         {
                             return null;
                         }

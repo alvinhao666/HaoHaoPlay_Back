@@ -41,7 +41,7 @@ namespace Hao.WebApi
         /// <summary>
         /// 添加用户
         /// </summary>
-        /// <param name="body"></param>
+        /// <param name="vm"></param>
         /// <returns></returns>
         [HttpPost]
         public async Task Post([FromBody]UserIn vm) => await _userAppService.AddUser(vm);
@@ -96,7 +96,6 @@ namespace Hao.WebApi
         /// <summary>
         /// 获取当前用户信息
         /// </summary>
-        /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
         public async Task<UserOut> GetCurrentUser() => await _userAppService.GetCurrentUser();
