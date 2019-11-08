@@ -1,4 +1,5 @@
-﻿using SqlSugar;
+﻿using Hao.Query;
+using SqlSugar;
 using System.Collections.Generic;
 
 namespace Hao.Core.Query

@@ -1,4 +1,4 @@
-﻿using Hao.Core.Query;
+﻿using Hao.Query;
 using SqlSugar;
 
 namespace Hao.Core.QueryInput

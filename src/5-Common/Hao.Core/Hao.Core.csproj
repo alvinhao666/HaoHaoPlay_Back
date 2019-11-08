@@ -14,6 +14,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Hao.Dependency\Hao.Dependency.csproj" />
     <ProjectReference Include="..\Hao.Entity\Hao.Entity.csproj" />
+    <ProjectReference Include="..\Hao.Query\Hao.Query.csproj" />
     <ProjectReference Include="..\Hao.Response\Hao.Response.csproj" />
     <ProjectReference Include="..\Hao.Utility\Hao.Utility.csproj" />
   </ItemGroup>

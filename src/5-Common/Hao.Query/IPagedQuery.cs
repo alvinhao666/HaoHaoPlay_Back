@@ -1,4 +1,4 @@
-﻿namespace Hao.Core.Query
+﻿namespace Hao.Query
 {
     public interface IPagedQuery
     {
