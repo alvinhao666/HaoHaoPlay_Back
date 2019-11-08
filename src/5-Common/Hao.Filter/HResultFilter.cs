@@ -1,8 +1,8 @@
-﻿using Hao.Core.Response;
+﻿using Hao.Response;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace Hao.Core.Filter
+namespace Hao.Filter
 {
     /// <summary>
     /// 全局过滤器
@@ -30,7 +30,7 @@ namespace Hao.Core.Filter
 //            }
             if(!(context.Result is JsonResult))
             {
-                var response = new BaseResponse
+                var response = new HResponse
                 {
                     Success = true,
                     Data = context.Result is EmptyResult ? null : (context.Result as ObjectResult)?.Value

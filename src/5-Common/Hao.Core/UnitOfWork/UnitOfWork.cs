@@ -1,14 +1,9 @@
-﻿using System;
-using NLog;
-using SqlSugar;
+﻿using SqlSugar;
 
 namespace Hao.Core
 {
     public class UnitOfWork : IUnitOfWork
     {
-
-        private readonly ILogger _logger = LogManager.GetCurrentClassLogger();
-
         public  ISqlSugarClient SqlSugarClient { get; set; }
 
 
@@ -38,10 +33,10 @@ namespace Hao.Core
             {
                 SqlSugarClient.Ado.CommitTran(); 
             }
-            catch (Exception ex)
+            catch
             {
                 SqlSugarClient.Ado.RollbackTran();
-                _logger.Error(ex, ex.Message);
+                throw;
             }
         }
 

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using Hao.Core.Dependency;
+using Hao.Dependency;
 
 namespace Hao.Event
 {

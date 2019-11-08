@@ -1,5 +1,5 @@
 ﻿using Hao.Core.Model;
-using Hao.Core.Dependency;
+using Hao.Dependency;
 using SqlSugar;
 using System;
 using System.Collections.Generic;
@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Hao.Core.Query;
 using System.Linq.Expressions;
 using Snowflake.Core;
+using Hao.Entity;
 
 namespace Hao.Core.Repository
 {

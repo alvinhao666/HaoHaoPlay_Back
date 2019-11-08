@@ -11,12 +11,13 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Hao.RunTimeException;
+using Hao.Log;
 
 namespace Hao.WebApi
 {
@@ -57,7 +58,7 @@ namespace Hao.WebApi
             var path = context.HttpContext.Request.Path.Value;
             var body = ReadBodyJson(context);
 
-            _logger.Info(new LogInfo()
+            _logger.Info(new HLog()
             {
                 Method = path,
                 Argument = new
@@ -130,7 +131,7 @@ namespace Hao.WebApi
                 var parameter = parameters.FirstOrDefault(a => a.BindingInfo?.BindingSource == BindingSource.Body);
                 if (parameter != null && context.ActionArguments != null && !context.ActionArguments.ContainsKey(parameter.Name))
                 {
-                    _logger.Info(new LogInfo() { Method = context.HttpContext.Request.Path.Value, Argument = result, Description = "RequestBodyContent" });
+                    _logger.Info(new HLog() { Method = context.HttpContext.Request.Path.Value, Argument = result, Description = "RequestBodyContent" });
                     throw new HException(ErrorInfo.E100011, nameof(ErrorInfo.E100011).GetErrorCode());
                 }
                 if (!string.IsNullOrWhiteSpace(result))

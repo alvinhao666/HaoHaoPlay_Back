@@ -1,8 +1,7 @@
 ﻿using Hao.AppService;
 using Hao.AppService.ViewModel;
 using Hao.Core.Application;
-using Hao.Core.Model;
-using Hao.Model;
+using Hao.Entity;
 using System;
 using System.Collections.Generic;
 using System.IO;

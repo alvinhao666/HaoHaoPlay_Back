@@ -1,4 +1,4 @@
-﻿using Hao.Core.Response;
+﻿using Hao.Response;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
@@ -7,7 +7,7 @@ using System;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Hao.Core
+namespace Hao.RunTimeException
 {
     public static class ExceptionHandlerMiddleware
     {
@@ -35,7 +35,7 @@ namespace Hao.Core
         {
             context.Response.StatusCode = 200;
             context.Response.ContentType = "application/json";
-            var response = new BaseResponse
+            var response = new HResponse
             {
                 Success = false,
                 ErrorMsg = EErrorMsg

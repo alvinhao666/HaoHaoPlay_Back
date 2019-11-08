@@ -10,6 +10,7 @@ using Hao.AppService.ViewModel;
 using Hao.Core;
 using Hao.Encrypt;
 using Hao.Library;
+using Hao.Log;
 using Hao.Utility;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -98,7 +99,7 @@ namespace Hao.WebApi
             };
             await RedisHelper.SetAsync(_redisPrefix.LoginInfo + user.Id, JsonExtensions.SerializeToJson(userValue));
 
-            _logger.Info(new LogInfo() { Method = "Login", Argument = query.LoginName, Description = "登录成功" }.ToString());
+            _logger.Info(new HLog() { Method = "Login", Argument = query.LoginName, Description = "登录成功" }.ToString());
 
             return user;
         }

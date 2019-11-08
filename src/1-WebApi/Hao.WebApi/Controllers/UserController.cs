@@ -16,6 +16,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
 using OfficeOpenXml;
 using Hao.File;
+using Hao.RunTimeException;
+using Hao.Entity;
 
 namespace Hao.WebApi
 {

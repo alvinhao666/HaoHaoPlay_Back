@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Hao.Core.Model
+namespace Hao.Entity
 {
     public interface IsCreateAudited
     {

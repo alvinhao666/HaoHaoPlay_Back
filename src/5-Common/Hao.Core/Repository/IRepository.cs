@@ -1,5 +1,6 @@
 ﻿using Hao.Core.Model;
 using Hao.Core.Query;
+using Hao.Entity;
 using SqlSugar;
 using System;
 using System.Collections.Generic;

@@ -2,7 +2,7 @@
 using Autofac.Extensions.DependencyInjection;
 using Autofac.Extras.DynamicProxy;
 using Hao.Core;
-using Hao.Core.Dependency;
+using Hao.Dependency;
 using Hao.WebApi;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;

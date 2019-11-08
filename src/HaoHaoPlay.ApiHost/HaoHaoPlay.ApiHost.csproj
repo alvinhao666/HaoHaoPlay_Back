@@ -39,6 +39,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\1-WebApi\Hao.WebApi\Hao.WebApi.csproj" />
+    <ProjectReference Include="..\5-Common\Hao.Exception\Hao.Exception.csproj" />
+    <ProjectReference Include="..\5-Common\Hao.Filter\Hao.Filter.csproj" />
     <ProjectReference Include="..\5-Common\Hao.SqlSugarExtensions\Hao.SqlSugarExtensions.csproj" />
   </ItemGroup>
 

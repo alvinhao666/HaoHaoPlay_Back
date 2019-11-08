@@ -1,4 +1,4 @@
-﻿namespace Hao.Core.Model
+﻿namespace Hao.Entity
 {
     /// <summary>
     /// 逻辑删除

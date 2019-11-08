@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Hao.Core.Model
+namespace Hao.Entity
 {
     public class PagedList<T>
     {
@@ -19,6 +19,5 @@ namespace Hao.Core.Model
         public int PageIndex { get; set; }
 
         public int TotalPagesCount { get; set; }
-
     }
 }

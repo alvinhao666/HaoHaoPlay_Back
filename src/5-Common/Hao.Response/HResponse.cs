@@ -1,9 +1,9 @@
-﻿namespace Hao.Core.Response
+﻿namespace Hao.Response
 {
     /// <summary>
     /// 视图输出根类
     /// </summary>
-    public class BaseResponse
+    public class HResponse
     {
         /// <summary>
         /// 错误消息

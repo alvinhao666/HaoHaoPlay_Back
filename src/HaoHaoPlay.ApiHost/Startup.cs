@@ -14,8 +14,7 @@ using Hao.Library;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Hao.Core.Response;
-using Hao.Core.Filter;
+using Hao.Response;
 using Microsoft.AspNetCore.HttpOverrides;
 using Hao.WebApi;
 using Hao.AppService;
@@ -37,6 +36,8 @@ using Microsoft.OpenApi.Models;
 using System.Text.Encodings.Web;
 using Hao.Utility;
 using System.Text.Json;
+using Hao.RunTimeException;
+using Hao.Filter;
 
 namespace HaoHaoPlay.ApiHost
 {
@@ -242,7 +243,7 @@ namespace HaoHaoPlay.ApiHost
                 options.InvalidModelStateResponseFactory = (context) =>
                 {
                     var error = context.ModelState.Values.SelectMany(x => x.Errors.Select(p => p.ErrorMessage)).FirstOrDefault();
-                    var response = new BaseResponse
+                    var response = new HResponse
                     {
                         Success = false,
                         Data = null,
@@ -360,7 +361,7 @@ namespace HaoHaoPlay.ApiHost
         {
             context.Response.StatusCode = StatusCodes.Status200OK;
             context.Response.ContentType = "application/json";
-            var response = new BaseResponse()
+            var response = new HResponse()
             {
                 Success = false,
                 ErrorCode = nameof(ErrorInfo.E100001).GetErrorCode(),
@@ -379,7 +380,7 @@ namespace HaoHaoPlay.ApiHost
             context.HandleResponse();//此处代码为终止.Net Core默认的返回类型和数据结果，这个很重要哦，必须
             context.Response.StatusCode = StatusCodes.Status200OK;
             context.Response.ContentType = "application/json";
-            var response = new BaseResponse()
+            var response = new HResponse()
             {
                 Success = false,
                 ErrorCode = nameof(ErrorInfo.E100002).GetErrorCode(),
