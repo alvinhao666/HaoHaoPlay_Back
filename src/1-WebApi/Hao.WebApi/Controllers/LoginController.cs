@@ -99,7 +99,7 @@ namespace Hao.WebApi
             };
             await RedisHelper.SetAsync(_redisPrefix.LoginInfo + user.Id, JsonExtensions.SerializeToJson(userValue));
 
-            _logger.Info(new HLog() { Method = "Login", Argument = query.LoginName, Description = "登录成功" }.ToString());
+            _logger.Info(new HLog() { Method = "Login", Argument = query.LoginName, Description = "登录成功" });
 
             return user;
         }

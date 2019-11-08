@@ -6,7 +6,7 @@ namespace Hao.Log
     public class HLog
     {
         /// <summary>
-        /// 方法
+        /// 方法名
         /// </summary>
         public string Method { get; set; }
 
@@ -19,11 +19,5 @@ namespace Hao.Log
         /// 描述
         /// </summary>
         public string Description { get; set; }
-
-
-        public override string ToString()
-        {
-            return JsonSerializer.Serialize(this);
-        }
     }
 }
