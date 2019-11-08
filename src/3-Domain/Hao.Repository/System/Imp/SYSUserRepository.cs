@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 using Hao.Core.Repository;
 using Hao.Core;
 using Hao.Model;
-using SqlSugar;
-using Microsoft.Extensions.Configuration;
 
 namespace Hao.Repository
 {
