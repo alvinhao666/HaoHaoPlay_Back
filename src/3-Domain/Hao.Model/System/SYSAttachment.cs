@@ -7,7 +7,7 @@ using System.Text;
 namespace Hao.Model
 {
     [SugarTable("SysAttachment")]
-    public class SysAttachment:Entity<Guid>
+    public class SysAttachment : Entity<Guid>
     {
         public new Guid? Id { get; set; }
 
