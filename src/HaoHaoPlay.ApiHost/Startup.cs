@@ -258,7 +258,7 @@ namespace HaoHaoPlay.ApiHost
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("v1/swagger.json", "haohaoplayApi");
+                c.SwaggerEndpoint("v1/swagger.json", "api");
                 c.InjectStylesheet("/css/swagger_ui.css");
             });
 
