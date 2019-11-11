@@ -7,8 +7,6 @@ namespace Hao.Core
     {
         private IHttpContextAccessor _httpContextAccessor;
 
-        private ISession _session => _httpContextAccessor.HttpContext.Session;
-
         public CurrentUser(IHttpContextAccessor httpContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
@@ -19,8 +17,8 @@ namespace Hao.Core
         /// </summary>
         public long? UserId
         {
-            get => HConvert.ToLong((_session.GetString("CurrentUser_UserId")));
-            set => _session.SetString("CurrentUser_UserId", value.ToString());
+            get => _httpContextAccessor.HttpContext == null ? -1 : HConvert.ToLong(_httpContextAccessor.HttpContext.Session.GetString("CurrentUser_UserId"));
+            set => _httpContextAccessor.HttpContext.Session.SetString("CurrentUser_UserId", value.ToString());
         }
 
         /// <summary>
@@ -28,8 +26,8 @@ namespace Hao.Core
         /// </summary>
         public string UserName
         {
-            get => _session.GetString("CurrentUser_UserName");
-            set => _session.SetString("CurrentUser_UserName", value);
+            get => _httpContextAccessor.HttpContext == null ? "系统" : _httpContextAccessor.HttpContext.Session.GetString("CurrentUser_UserName");
+            set => _httpContextAccessor.HttpContext.Session.SetString("CurrentUser_UserName", value);
         }
 
     }

@@ -7,8 +7,8 @@ using Hao.Dependency;
 
 namespace Hao.Event
 {
-    public interface IPersonEventHandler: ITransientDependency
+    public interface ILoginEventHandler: ITransientDependency
     {
-        Task CheckReceivedMessage(PersonEventData person);
+        Task UpdateLoginTimeAndIP(LoginEventData person);
     }
 }

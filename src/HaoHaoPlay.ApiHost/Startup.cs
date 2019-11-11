@@ -161,7 +161,7 @@ namespace HaoHaoPlay.ApiHost
             #endregion
 
             #region CAP
-            services.AddTransient<IPersonEventHandler, PersonEventHandler>();
+            services.AddTransient<ILoginEventHandler, LoginEventHandler>();
             services.AddCap(x =>
             {
 

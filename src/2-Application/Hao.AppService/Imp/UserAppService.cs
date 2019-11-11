@@ -106,11 +106,6 @@ namespace Hao.AppService
             var users = await _userRep.GetPagedListAysnc(query);
             var result = _mapper.Map<PagedList<UserOut>>(users);
 
-            ////指定发送的消息标题（供订阅）和内容
-            //await _publisher.PublishAsync("xxx.services.account.check",
-            //    new PersonEventData { Name = "Foo", Age = 11 }).ConfigureAwait(false);
-            // 你的业务代码。
-
             return result;
         }
 
@@ -143,13 +138,11 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task UpdateLoginTimeAndIP(long userId, DateTime lastLoginTime, string ip)
         {
-            var user = await _userRep.GetAysnc(userId);
-            if (user != null)
-            {
-                user.LastLoginTime = lastLoginTime;
-                user.LastLoginIP = ip;
-                await _userRep.UpdateAsync(user);
-            }
+
+            ////指定发送的消息标题（供订阅）和内容
+            await _publisher.PublishAsync("UserAppService.UpdateLoginTimeAndIP",
+                new LoginEventData { UserId = userId, LastLoginTime = lastLoginTime,LastLoginIP=ip });
+
         }
 
         /// <summary>
