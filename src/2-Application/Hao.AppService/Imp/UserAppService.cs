@@ -76,6 +76,7 @@ namespace Hao.AppService
             var user = _mapper.Map<SysUser>(vm);
             user.FirstNameSpell = HSpell.GetInitialSpell(user.UserName.ToCharArray()[0].ToString());
             user.Password = EncryptProvider.HMACSHA256(user.Password, _config["KeyInfo:Sha256Key"]);
+            user.Enabled = true;
             return await _userRep.InsertAysnc(user);
         }
 

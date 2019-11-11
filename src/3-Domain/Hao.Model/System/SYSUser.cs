@@ -50,7 +50,7 @@ namespace Hao.Model
         /// <summary>
         /// 是否启用
         /// </summary>
-        public bool? Enabled { get; set; } = true;
+        public bool? Enabled { get; set; } 
         /// <summary>
         /// 名字首字母
         /// </summary>
