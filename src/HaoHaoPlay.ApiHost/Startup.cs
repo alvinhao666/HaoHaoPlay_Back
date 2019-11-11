@@ -67,12 +67,7 @@ namespace HaoHaoPlay.ApiHost
                 {
                     Version = "v1",
                     Title = "接口文档",
-                    Description = "接口说明",
-                    Contact = new OpenApiContact
-                    {
-                        Name = "rongguohao",
-                        Email = "843468011@qq.com"
-                    }
+                    Description = "接口说明"
                 });
                 //c.IncludeXmlComments(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "HaoHaoPlay.WebHost.xml"));
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
