@@ -241,7 +241,6 @@ namespace HaoHaoPlay.ApiHost
                     var response = new HResponse
                     {
                         Success = false,
-                        Data = null,
                         ErrorMsg = error
                     };
                     return new JsonResult(response);
