@@ -87,6 +87,7 @@ namespace Hao.WebApi
             if (string.IsNullOrWhiteSpace(ip))
             {
                 ip = HttpContext.Connection.RemoteIpAddress.ToString();
+                if (ip == "::1") ip = "127.0.0.1";
             }
             await _userAppService.UpdateLoginTimeAndIP(user.Id.Value, DateTime.Now, ip);
 
