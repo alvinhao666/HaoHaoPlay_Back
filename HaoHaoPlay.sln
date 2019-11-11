@@ -43,19 +43,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.Enum", "src\3-Domain\Ha
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HaoHaoPlay.ApiHost", "src\HaoHaoPlay.ApiHost\HaoHaoPlay.ApiHost.csproj", "{FCC973D9-2A19-49EB-9DD5-96330EAEFE7B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hao.Dependency", "src\5-Common\Hao.Dependency\Hao.Dependency.csproj", "{1C605F38-7934-4F7D-8224-93DF5DBD5489}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.Dependency", "src\5-Common\Hao.Dependency\Hao.Dependency.csproj", "{1C605F38-7934-4F7D-8224-93DF5DBD5489}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hao.Exception", "src\5-Common\Hao.Exception\Hao.Exception.csproj", "{E1448CFB-4951-4ED6-B876-48B5D3B5601F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.Exception", "src\5-Common\Hao.Exception\Hao.Exception.csproj", "{E1448CFB-4951-4ED6-B876-48B5D3B5601F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hao.Response", "src\5-Common\Hao.Response\Hao.Response.csproj", "{00A3FD02-A5F8-44F4-841F-20CBABB0575D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.Response", "src\5-Common\Hao.Response\Hao.Response.csproj", "{00A3FD02-A5F8-44F4-841F-20CBABB0575D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hao.Entity", "src\5-Common\Hao.Entity\Hao.Entity.csproj", "{80DFBA0A-E419-4B44-8ED6-A63CA77B4C1D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.Entity", "src\5-Common\Hao.Entity\Hao.Entity.csproj", "{80DFBA0A-E419-4B44-8ED6-A63CA77B4C1D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hao.Log", "src\5-Common\Hao.Log\Hao.Log.csproj", "{CB385543-71C4-4ABC-80DF-EE7948D911CE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.Log", "src\5-Common\Hao.Log\Hao.Log.csproj", "{CB385543-71C4-4ABC-80DF-EE7948D911CE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hao.Filter", "src\5-Common\Hao.Filter\Hao.Filter.csproj", "{4628E6ED-6A82-45A1-B498-92D90496D40B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.Filter", "src\5-Common\Hao.Filter\Hao.Filter.csproj", "{4628E6ED-6A82-45A1-B498-92D90496D40B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hao.Query", "src\5-Common\Hao.Query\Hao.Query.csproj", "{A828DCC2-06C7-4B4B-8D11-A5918AAE5179}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.Query", "src\5-Common\Hao.Query\Hao.Query.csproj", "{A828DCC2-06C7-4B4B-8D11-A5918AAE5179}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
