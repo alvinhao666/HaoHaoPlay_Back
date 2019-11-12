@@ -193,7 +193,7 @@ namespace Hao.Core
                 item.CreateTime = timeNow;
                 item.IsDeleted = false;
             });
-            return await Task.Factory.StartNew(() => UnitOfWork.GetDbClient().GetSimpleClient<T>().InsertRange(entities.ToArray()));
+            return await Task.Factory.StartNew(() => UnitOfWork.GetDbClient().GetSimpleClient<T>().InsertRange(entities));
         }
 
         /// <summary>
@@ -246,7 +246,7 @@ namespace Hao.Core
                 item.LastModifyTime = timeNow;
                 item.IsDeleted = true;
             });
-            return await Task.Factory.StartNew(() => UnitOfWork.GetDbClient().GetSimpleClient<T>().UpdateRange(entities.ToArray()));
+            return await Task.Factory.StartNew(() => UnitOfWork.GetDbClient().GetSimpleClient<T>().UpdateRange(entities));
         }
 
         /// <summary>
@@ -274,7 +274,7 @@ namespace Hao.Core
                 item.LastModifyUserId = CurrentUser.UserId;
                 item.LastModifyTime = timeNow;
             });
-            return await Task.Factory.StartNew(() => UnitOfWork.GetDbClient().GetSimpleClient<T>().UpdateRange(entities.ToArray()));
+            return await Task.Factory.StartNew(() => UnitOfWork.GetDbClient().GetSimpleClient<T>().UpdateRange(entities));
         }
     }
 }
