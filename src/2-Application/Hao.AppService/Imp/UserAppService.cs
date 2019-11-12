@@ -138,7 +138,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task UpdateLoginTimeAndIP(long userId, DateTime lastLoginTime, string ip)
         {
-            await _publisher.PublishAsync("UserAppService.UpdateLoginTimeAndIP",
+            await _publisher.PublishAsync(nameof(LoginEventData),
                 new LoginEventData { UserId = userId, LastLoginTime = lastLoginTime,LastLoginIP=ip });
         }
 
