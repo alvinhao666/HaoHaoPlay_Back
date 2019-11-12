@@ -19,11 +19,6 @@ namespace Hao.Utility
             return Regex.IsMatch(email, "^[A-Za-z0-9](([_\\.\\-]?[a-zA-Z0-9]+)*)@([A-Za-z0-9]+)(([\\.\\-]?[a-zA-Z0-9]+)*)\\.([A-Za-z]{2,})$", RegexOptions.IgnoreCase);
         }
 
-        public static bool HasEmail(string email)
-        {
-            return Regex.IsMatch(email, "[A-Za-z0-9](([_\\.\\-]?[a-zA-Z0-9]+)*)@([A-Za-z0-9]+)(([\\.\\-]?[a-zA-Z0-9]+)*)\\.([A-Za-z]{2,})", RegexOptions.IgnoreCase);
-        }
-
         /// <summary>
         /// 验证网址是否有效
         /// </summary>
@@ -32,11 +27,6 @@ namespace Hao.Utility
         public static bool IsUrl(string url)
         {
             return Regex.IsMatch(url, "^(((file|gopher|news|nntp|telnet|http|ftp|https|ftps|sftp)://)|(www\\.))+(([a-zA-Z0-9\\._-]+\\.[a-zA-Z]{2,6})|([0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}))(/[a-zA-Z0-9\\&amp;%_\\./-~-]*)?$", RegexOptions.IgnoreCase);
-        }
-
-        public static bool HasUrl(string url)
-        {
-            return Regex.IsMatch(url, "(((file|gopher|news|nntp|telnet|http|ftp|https|ftps|sftp)://)|(www\\.))+(([a-zA-Z0-9\\._-]+\\.[a-zA-Z]{2,6})|([0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}))(/[a-zA-Z0-9\\&amp;%_\\./-~-]*)?", RegexOptions.IgnoreCase);
         }
 
         /// <summary>
@@ -69,11 +59,6 @@ namespace Hao.Utility
             return Regex.IsMatch(mobile, "^1\\d{10}$", RegexOptions.IgnoreCase);
         }
 
-        public static bool HasMobile(string mobile)
-        {
-            return Regex.IsMatch(mobile, "1\\d{10}", RegexOptions.IgnoreCase);
-        }
-
         /// <summary>
         /// 验证IP是否有效
         /// </summary>
@@ -82,11 +67,6 @@ namespace Hao.Utility
         public static bool IsIP(string ip)
         {
             return Regex.IsMatch(ip, "^(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])$", RegexOptions.IgnoreCase);
-        }
-
-        public static bool HasIP(string ip)
-        {
-            return Regex.IsMatch(ip, "(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])", RegexOptions.IgnoreCase);
         }
 
         /// <summary>
