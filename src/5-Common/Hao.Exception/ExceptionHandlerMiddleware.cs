@@ -11,9 +11,6 @@ namespace Hao.RunTimeException
 {
     public static class ExceptionHandlerMiddleware
     {
-
-        private const string EErrorMsg = "未知错误";
-
         private readonly static ILogger _logger = LogManager.GetCurrentClassLogger();
 
         public static void UseGlobalExceptionHandler(this IApplicationBuilder app)
@@ -38,7 +35,7 @@ namespace Hao.RunTimeException
             var response = new HResponse
             {
                 Success = false,
-                ErrorMsg = EErrorMsg
+                ErrorMsg = "未知错误"
             };
 
             var ex = context.Features.Get<IExceptionHandlerFeature>().Error;
