@@ -30,7 +30,7 @@ namespace Hao.RunTimeException
         
         private static async Task Invoke(HttpContext context)
         {
-            context.Response.StatusCode = 200;
+            context.Response.StatusCode = StatusCodes.Status200OK;
             context.Response.ContentType = "application/json";
             var response = new HResponse
             {
