@@ -36,10 +36,7 @@ namespace Hao.Core
         public virtual async Task<List<T>> GetListAysnc(List<TKey> pkValues)
         {
             //Type type = typeof(T); 类型判断，主要包括 is 和 typeof 两个操作符及对象实例上的 GetType 调用。这是最轻型的消耗，可以无需考虑优化问题。注意 typeof 运算符比对象实例上的 GetType 方法要快，只要可能则优先使用 typeof 运算符。 
-            return await UnitOfWork.GetDbClient().Queryable<T>().In(pkValues)
-                            //.OrderByIF(typeof(IsCreateAudited).IsAssignableFrom(type), "CreateTime Desc")
-                            .OrderBy(a => a.CreateTime, OrderByType.Desc)
-                            .ToListAsync();
+            return await UnitOfWork.GetDbClient().Queryable<T>().In(pkValues).ToListAsync();
         }
 
         //C#主要支持 5 种动态创建对象的方式： 
@@ -56,10 +53,7 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<List<T>> GetListAysnc()
         {
-            return await UnitOfWork.GetDbClient().Queryable<T>()
-                        .Where(a => a.IsDeleted == false)
-                        .OrderBy(a => a.CreateTime, OrderByType.Desc)
-                        .ToListAsync();
+            return await UnitOfWork.GetDbClient().Queryable<T>().ToListAsync();
         }
 
         /// <summary>
@@ -68,9 +62,7 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<List<T>> GetAllAysnc()
         {
-            return await UnitOfWork.GetDbClient().Queryable<T>()
-                        .OrderBy(a => a.CreateTime, OrderByType.Desc)
-                        .ToListAsync();
+            return await UnitOfWork.GetDbClient().Queryable<T>().ToListAsync();
         }
 
         /// <summary>
