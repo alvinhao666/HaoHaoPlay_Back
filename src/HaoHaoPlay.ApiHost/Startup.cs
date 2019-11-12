@@ -29,7 +29,6 @@ using Microsoft.AspNetCore.StaticFiles;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Snowflake.Core;
 using Hao.File;
 using Microsoft.OpenApi.Models;
 using System.Text.Encodings.Web;
@@ -38,6 +37,7 @@ using System.Text.Json;
 using Hao.RunTimeException;
 using Hao.Filter;
 using Hao.Event;
+using Hao.Snowflake;
 
 namespace HaoHaoPlay.ApiHost
 {

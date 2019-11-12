@@ -6,8 +6,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Hao.Core.Query;
 using System.Linq.Expressions;
-using Snowflake.Core;
 using Hao.Entity;
+using Hao.Snowflake;
 
 namespace Hao.Core.Repository
 {

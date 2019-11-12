@@ -7,7 +7,6 @@
   <ItemGroup>
     <PackageReference Include="Castle.Core" Version="4.4.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.2.0" />
-    <PackageReference Include="Snowflake.Core" Version="2.0.0" />
     <PackageReference Include="sqlSugarCore" Version="5.0.0.10" />
   </ItemGroup>
 
@@ -16,6 +15,7 @@
     <ProjectReference Include="..\Hao.Entity\Hao.Entity.csproj" />
     <ProjectReference Include="..\Hao.Query\Hao.Query.csproj" />
     <ProjectReference Include="..\Hao.Response\Hao.Response.csproj" />
+    <ProjectReference Include="..\Hao.Snowflake\Hao.Snowflake.csproj" />
     <ProjectReference Include="..\Hao.Utility\Hao.Utility.csproj" />
   </ItemGroup>
 

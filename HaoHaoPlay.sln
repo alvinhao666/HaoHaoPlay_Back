@@ -59,6 +59,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.Query", "src\5-Common\H
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hao.EventData", "src\3-Domain\Hao.EventData\Hao.EventData.csproj", "{271A0FB7-538E-417C-BD67-9C2FF6E49169}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hao.Snowflake", "src\5-Common\Hao.Snowflake\Hao.Snowflake.csproj", "{0A5E2F50-11A1-457F-8526-5DF11EAE18C6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -149,6 +151,10 @@ Global
 		{271A0FB7-538E-417C-BD67-9C2FF6E49169}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{271A0FB7-538E-417C-BD67-9C2FF6E49169}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{271A0FB7-538E-417C-BD67-9C2FF6E49169}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A5E2F50-11A1-457F-8526-5DF11EAE18C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A5E2F50-11A1-457F-8526-5DF11EAE18C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A5E2F50-11A1-457F-8526-5DF11EAE18C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A5E2F50-11A1-457F-8526-5DF11EAE18C6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -180,6 +186,7 @@ Global
 		{4628E6ED-6A82-45A1-B498-92D90496D40B} = {042FD3BE-DA74-462B-8F16-E6D1ADFC7454}
 		{A828DCC2-06C7-4B4B-8D11-A5918AAE5179} = {042FD3BE-DA74-462B-8F16-E6D1ADFC7454}
 		{271A0FB7-538E-417C-BD67-9C2FF6E49169} = {D4FE854B-07DD-4C60-81D3-5B75912CE2F8}
+		{0A5E2F50-11A1-457F-8526-5DF11EAE18C6} = {042FD3BE-DA74-462B-8F16-E6D1ADFC7454}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5BAAEA79-B086-4D1C-AC3A-B029DF5FA31A}
