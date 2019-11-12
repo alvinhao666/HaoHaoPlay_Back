@@ -6,10 +6,11 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />
+    <PackageReference Include="DotNetCore.CAP" Version="2.6.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\3-Domain\Hao.Event\Hao.Event.csproj" />
+    <ProjectReference Include="..\..\3-Domain\Hao.EventData\Hao.EventData.csproj" />
     <ProjectReference Include="..\..\3-Domain\Hao.Repository\Hao.Repository.csproj" />
     <ProjectReference Include="..\..\4-Infrastructure\Hao.Library\Hao.Library.csproj" />
     <ProjectReference Include="..\..\5-Common\Hao.Encrypt\Hao.Encrypt.csproj" />

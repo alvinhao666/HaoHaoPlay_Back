@@ -18,7 +18,6 @@ using Hao.Response;
 using Microsoft.AspNetCore.HttpOverrides;
 using Hao.WebApi;
 using Hao.AppService;
-using Hao.Event;
 using Hao.SqlSugarExtensions;
 using FluentValidation.AspNetCore;
 using Microsoft.Extensions.FileProviders;
@@ -38,6 +37,7 @@ using Hao.Utility;
 using System.Text.Json;
 using Hao.RunTimeException;
 using Hao.Filter;
+using Hao.Event;
 
 namespace HaoHaoPlay.ApiHost
 {
@@ -156,9 +156,10 @@ namespace HaoHaoPlay.ApiHost
             #endregion
 
             #region CAP
-            services.AddTransient<ILoginEventHandler, LoginEventHandler>();
+
             services.AddCap(x =>
             {
+                x.UseDashboard();
 
                 x.UseMySql(cfg => { cfg.ConnectionString = Config.GetConnectionString("MySqlConnection"); });
 
@@ -173,9 +174,11 @@ namespace HaoHaoPlay.ApiHost
 
                 x.FailedRetryCount = 2;
                 x.FailedRetryInterval = 5;
+                x.SucceedMessageExpiredAfter = 24 * 3600;
                 // If you are using Kafka, you need to add the configuration：
                 //x.UseKafka("localhost");
             });
+            services.AutoDependency(typeof(ILoginEventHandler));
             #endregion
 
 
