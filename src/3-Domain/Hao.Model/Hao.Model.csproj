@@ -13,8 +13,4 @@
     <ProjectReference Include="..\Hao.Enum\Hao.Enum.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Dto\" />
-  </ItemGroup>
-
 </Project>
