@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
 using DotNetCore.CAP;
 using Hao.AppService.ViewModel;
-using Hao.Core.Application;
-using Hao.Core.Model;
+using Hao.Core;
 using Hao.Encrypt;
 using Hao.Entity;
 using Hao.Enum;

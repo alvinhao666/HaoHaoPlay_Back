@@ -1,5 +1,5 @@
 ﻿using System;
-using Hao.Core.Model;
+using Hao.Core;
 using Hao.Enum;
 using SqlSugar;
 

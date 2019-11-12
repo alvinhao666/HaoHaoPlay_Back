@@ -1,15 +1,13 @@
-﻿using Hao.Core.Model;
-using Hao.Dependency;
+﻿using Hao.Dependency;
 using SqlSugar;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Hao.Core.Query;
 using System.Linq.Expressions;
 using Hao.Entity;
 using Hao.Snowflake;
 
-namespace Hao.Core.Repository
+namespace Hao.Core
 {
     public abstract class Repository<T, TKey> : IRepository<T, TKey>, ITransientDependency where T : Entity<TKey>, new()
     {

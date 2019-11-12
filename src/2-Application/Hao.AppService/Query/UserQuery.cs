@@ -1,4 +1,4 @@
-﻿using Hao.Core.Query;
+﻿using Hao.Core;
 using Hao.Enum;
 using Hao.Model;
 using Hao.Utility;

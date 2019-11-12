@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Hao.Core.Application
+namespace Hao.Core
 {
     public abstract class ApplicationService: IApplicationService 
     {

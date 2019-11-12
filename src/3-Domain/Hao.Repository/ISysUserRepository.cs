@@ -1,4 +1,4 @@
-﻿using Hao.Core.Repository;
+﻿using Hao.Core;
 using Hao.Model;
 
 namespace Hao.Repository

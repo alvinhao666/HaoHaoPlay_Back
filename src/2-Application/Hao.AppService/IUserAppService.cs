@@ -1,6 +1,6 @@
 ﻿using Hao.AppService;
 using Hao.AppService.ViewModel;
-using Hao.Core.Application;
+using Hao.Core;
 using Hao.Entity;
 using System;
 using System.Collections.Generic;

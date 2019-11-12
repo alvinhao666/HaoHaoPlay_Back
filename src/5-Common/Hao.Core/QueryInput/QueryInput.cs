@@ -1,7 +1,7 @@
 ﻿using Hao.Query;
 using SqlSugar;
 
-namespace Hao.Core.QueryInput
+namespace Hao.Core
 {
     public class QueryInput : IPagedQuery,IQueryInput
     {

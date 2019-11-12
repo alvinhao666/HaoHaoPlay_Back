@@ -1,6 +1,6 @@
 ﻿using Hao.Dependency;
 
-namespace Hao.Core.Application
+namespace Hao.Core
 {
     /// <summary>
     /// 应用服务 

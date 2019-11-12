@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using SqlSugar;
 
-namespace Hao.Core.Query
+namespace Hao.Core
 {
     public abstract class Query<T> : IQuery
     {

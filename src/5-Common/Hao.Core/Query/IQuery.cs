@@ -2,7 +2,7 @@
 using SqlSugar;
 using System.Collections.Generic;
 
-namespace Hao.Core.Query
+namespace Hao.Core
 {
     public interface IQuery:IPagedQuery
     {

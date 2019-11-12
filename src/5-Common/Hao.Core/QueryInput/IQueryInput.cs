@@ -1,6 +1,6 @@
 ﻿using SqlSugar;
 
-namespace Hao.Core.QueryInput
+namespace Hao.Core
 {
     public interface IQueryInput
     {

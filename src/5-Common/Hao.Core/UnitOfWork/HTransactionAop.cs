@@ -3,7 +3,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using static Hao.Core.Application.ApplicationService;
+using static Hao.Core.ApplicationService;
 
 namespace Hao.Core
 {

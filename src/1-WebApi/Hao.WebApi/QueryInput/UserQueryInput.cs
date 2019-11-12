@@ -1,4 +1,4 @@
-﻿using Hao.Core.QueryInput;
+﻿using Hao.Core;
 using Hao.Enum;
 using System;
 using System.Collections.Generic;

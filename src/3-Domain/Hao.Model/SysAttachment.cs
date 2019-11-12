@@ -1,8 +1,5 @@
-﻿using Hao.Core.Model;
+﻿using Hao.Core;
 using SqlSugar;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Hao.Model
 {

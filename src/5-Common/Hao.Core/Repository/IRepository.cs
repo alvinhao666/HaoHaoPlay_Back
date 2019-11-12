@@ -1,13 +1,11 @@
-﻿using Hao.Core.Model;
-using Hao.Core.Query;
-using Hao.Entity;
+﻿using Hao.Entity;
 using SqlSugar;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace Hao.Core.Repository
+namespace Hao.Core
 {
     /// <summary>
     /// 仓储通用接口类

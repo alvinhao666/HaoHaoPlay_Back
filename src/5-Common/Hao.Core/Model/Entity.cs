@@ -2,7 +2,7 @@
 using SqlSugar;
 using System;
 
-namespace Hao.Core.Model
+namespace Hao.Core
 {
     public abstract class Entity<TKey> : IEntity<TKey>, IsCreateAudited, IsModifyAudited, IsSoftDelete
     {
