@@ -5,22 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="System\QueryModel\**" />
-    <EmbeddedResource Remove="System\QueryModel\**" />
-    <None Remove="System\QueryModel\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="sqlSugarCore" Version="5.0.0.10" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\5-Common\Hao.Core\Hao.Core.csproj" />
     <ProjectReference Include="..\Hao.Model\Hao.Model.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="System\Dto\" />
   </ItemGroup>
 
 </Project>
