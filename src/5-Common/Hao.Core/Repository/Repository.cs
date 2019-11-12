@@ -111,7 +111,7 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<List<T>> GetListAysnc(Query<T> query)
         {
-            bool flag = string.IsNullOrWhiteSpace(query.OrderFileds);
+            var flag = string.IsNullOrWhiteSpace(query.OrderFileds);
             return await UnitOfWork.GetDbClient().Queryable<T>().Where(query.Conditions)
                                     .Where(a => a.IsDeleted == false)
                                     .OrderByIF(flag, a => a.CreateTime, OrderByType.Desc)
@@ -126,15 +126,15 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<PagedList<T>> GetPagedListAysnc(Query<T> query)
         {
-            int totalNumber = 0;
-            bool flag = string.IsNullOrWhiteSpace(query.OrderFileds);
-            List<T> items = await Task.Factory.StartNew(() => UnitOfWork.GetDbClient().Queryable<T>().Where(query.Conditions)
+            var totalNumber = 0;
+            var flag = string.IsNullOrWhiteSpace(query.OrderFileds);
+            var items = await Task.Factory.StartNew(() => UnitOfWork.GetDbClient().Queryable<T>().Where(query.Conditions)
                                             .Where(a => a.IsDeleted == false)
                                             .OrderByIF(flag, a => a.CreateTime, OrderByType.Desc)
                                             .OrderByIF(!flag, query.OrderFileds)
                                             .ToPageList(query.PageIndex, query.PageSize, ref totalNumber));
 
-            PagedList<T> pageList = new PagedList<T>()
+            var pageList = new PagedList<T>()
             {
                 Items = items,
                 TotalCount = totalNumber,
@@ -152,8 +152,8 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<TKey> InsertAysnc(T entity)
         {
-            Type type = typeof(T);
-            bool isGuid = typeof(TKey) == typeof(Guid);
+            var type = typeof(T);
+            var isGuid = typeof(TKey) == typeof(Guid);
             var id = type.GetProperty("Id");
 
             if (isGuid)
@@ -177,10 +177,10 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<bool> InsertAysnc(List<T> entities)
         {
-            bool isGuid = typeof(TKey) == typeof(Guid);
-            Type type = typeof(T);
+            var isGuid = typeof(TKey) == typeof(Guid);
+            var type = typeof(T);
             var id = type.GetProperty("Id");
-            DateTime timeNow = DateTime.Now;
+            var timeNow = DateTime.Now;
             entities.ForEach(item =>
             {
                 if (isGuid)
@@ -239,7 +239,7 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<bool> DeleteAysnc(List<T> entities)
         {
-            DateTime timeNow = DateTime.Now;
+            var timeNow = DateTime.Now;
             entities.ForEach(item =>
             {
                 item.LastModifyUserId = CurrentUser.UserId;
@@ -268,7 +268,7 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<bool> UpdateAsync(List<T> entities)
         {
-            DateTime timeNow = DateTime.Now;
+            var timeNow = DateTime.Now;
             entities.ForEach(item =>
             {
                 item.LastModifyUserId = CurrentUser.UserId;
