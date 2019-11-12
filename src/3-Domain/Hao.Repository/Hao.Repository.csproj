@@ -13,8 +13,4 @@
     <ProjectReference Include="..\Hao.Model\Hao.Model.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Dto\" />
-  </ItemGroup>
-
 </Project>
