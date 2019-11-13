@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -9,7 +8,6 @@ using Microsoft.Extensions.DependencyInjection;
 using SqlSugar;
 using System.Reflection;
 using Hao.Core;
-using Microsoft.AspNetCore.Http;
 using Hao.Library;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -33,7 +31,6 @@ using Hao.File;
 using Microsoft.OpenApi.Models;
 using System.Text.Encodings.Web;
 using Hao.Utility;
-using System.Text.Json;
 using Hao.RunTimeException;
 using Hao.Filter;
 using Hao.Event;
@@ -78,21 +75,25 @@ namespace HaoHaoPlay.ApiHost
 #endif
             #endregion
 
+            var appsettings = new AppSettingsInfo();
+            Config.Bind("AppSettingsInfo", appsettings);
+            var appsettingsOptions = Config.GetSection(nameof(AppSettingsInfo));
+            services.Configure<AppSettingsInfo>(appsettingsOptions);
+
+
             #region Http
             services.AddHttpClient();
             #endregion
 
             #region Jwt
-            var jwtSection = Config.GetSection(nameof(JwtOptions));
-
-            var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSection[nameof(JwtOptions.SecretKey)]));
+            var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(appsettings.JwtOptions.SecretKey));
 
             services.Configure<JwtOptions>(o =>
             {
-                o.Audience = jwtSection[nameof(JwtOptions.Audience)];
-                o.Issuer = jwtSection[nameof(JwtOptions.Issuer)];
+                o.Audience = appsettings.JwtOptions.Audience;
+                o.Issuer = appsettings.JwtOptions.Issuer;
                 o.SigningKey = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
-                o.Subject = jwtSection[nameof(JwtOptions.Subject)];
+                o.Subject = appsettings.JwtOptions.Subject;
             });
 
             //jwt验证：
@@ -107,8 +108,8 @@ namespace HaoHaoPlay.ApiHost
                     ValidateIssuer = true,//是否验证Issuer
                     ValidateAudience = true,//是否验证Audience
                     ValidateIssuerSigningKey = true,//是否验证SecurityKey
-                    ValidAudience = jwtSection[nameof(JwtOptions.Audience)],//Audience
-                    ValidIssuer = jwtSection[nameof(JwtOptions.Issuer)],//Issuer，这两项和前面签发jwt的设置一致
+                    ValidAudience = appsettings.JwtOptions.Audience,//Audience
+                    ValidIssuer = appsettings.JwtOptions.Issuer,//Issuer，这两项和前面签发jwt的设置一致
                     IssuerSigningKey = signingKey,//拿到SecurityKey
                     ValidateLifetime = true,//是否验证失效时间  当设置exp和nbf时有效 同时启用ClockSkew 
                     RequireExpirationTime = true,
@@ -120,7 +121,7 @@ namespace HaoHaoPlay.ApiHost
 
             #region Redis
 
-            var redisConnection = Config.GetConnectionString("RedisConnection");
+            var redisConnection = appsettings.ConnectionStrings.RedisConnection;
 
             var csRedis = new CSRedisClient(redisConnection);
 
@@ -130,15 +131,12 @@ namespace HaoHaoPlay.ApiHost
             services.AddSingleton<IDistributedCache>(new CSRedisCache(RedisHelper.Instance)); //利用分布式缓存
                                                                                               //现在,ASP.NET Core引入了IDistributedCache分布式缓存接口，它是一个相当基本的分布式缓存标准API，可以让您对它进行编程，然后无缝地插入第三方分布式缓存
                                                                                               //DistributedCache将拷贝缓存的文件到Slave节点
-
-            var redisPrefix = Config.GetSection(nameof(RedisPrefixOptions));
-            services.Configure<RedisPrefixOptions>(redisPrefix);
             #endregion
 
             #region ORM
             services.AddSqlSugarClient(new ConnectionConfig()
             {
-                ConnectionString = Config.GetConnectionString("MySqlConnection"),
+                ConnectionString = appsettings.ConnectionStrings.MySqlConnection,
                 DbType = DbType.MySql,
                 IsAutoCloseConnection = true,//开启自动释放模式和EF原理一样 自动释放数据务，如果存在事务，在事务结束后释放
                 InitKeyType = InitKeyType.SystemTable,  //如果不是SA等高权限数据库的账号,需要从实体读取主键或者自增列 InitKeyType要设成Attribute (不需要读取这些信息)
@@ -161,15 +159,15 @@ namespace HaoHaoPlay.ApiHost
             {
                 x.UseDashboard();
 
-                x.UseMySql(cfg => { cfg.ConnectionString = Config.GetConnectionString("MySqlConnection"); });
+                x.UseMySql(cfg => { cfg.ConnectionString = appsettings.ConnectionStrings.MySqlConnection; });
 
                 x.UseRabbitMQ(cfg =>
                 {
-                    cfg.HostName = Config["RabbitMQ:HostName"];
-                    cfg.VirtualHost = Config["RabbitMQ:VirtualHost"];
-                    cfg.Port = Convert.ToInt32(Config["RabbitMQ:Port"]);
-                    cfg.UserName = Config["RabbitMQ:UserName"];
-                    cfg.Password = Config["RabbitMQ:Password"];
+                    cfg.HostName = appsettings.RabbitMQ.HostName;
+                    cfg.VirtualHost = appsettings.RabbitMQ.VirtualHost;
+                    cfg.Port = appsettings.RabbitMQ.Port;
+                    cfg.UserName = appsettings.RabbitMQ.UserName;
+                    cfg.Password = appsettings.RabbitMQ.Password;
                 });
 
                 x.FailedRetryCount = 2;
@@ -194,8 +192,7 @@ namespace HaoHaoPlay.ApiHost
             #endregion
 
             #region 单例注入
-            var snowflake = Config.GetSection(nameof(SnowflakeIdOptions));
-            var worker = new IdWorker(long.Parse(snowflake[nameof(SnowflakeIdOptions.WorkerId)]), long.Parse(snowflake[nameof(SnowflakeIdOptions.DataCenterId)]));
+            var worker = new IdWorker(appsettings.SnowflakeIdOptions.WorkerId, appsettings.SnowflakeIdOptions.DataCenterId);
             services.AddSingleton(worker);
 
             FilePathInfo pathInfo = new FilePathInfo();
