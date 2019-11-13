@@ -33,7 +33,7 @@ namespace Hao.AppService
 
         private readonly AppSettingsInfo _appsettings;
 
-
+        //public  ISysAttachmentRepository _attachmentRep {get;set;} //测试事务操作
         public FilePathInfo PathInfo { get; set; }
 
         public UserAppService(IOptionsSnapshot<AppSettingsInfo> appsettingsOptions, ISysUserRepository userRepository, IMapper mapper, ICapPublisher publisher)
@@ -71,12 +71,21 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="vm"></param>
         /// <returns></returns>
+        //[UseTransaction]
         public async Task<long> AddUser(UserIn vm)
         {
             var user = _mapper.Map<SysUser>(vm);
             user.FirstNameSpell = HSpell.GetInitialSpell(user.UserName.ToCharArray()[0].ToString());
             user.Password = EncryptProvider.HMACSHA256(user.Password, _appsettings.KeyInfo.Sha256Key);
             user.Enabled = true;
+            //await _attachmentRep.InsertAysnc(new SysAttachment()
+            //{
+            //    BindTableName = "SysUser",
+            //    BindTableId = user.Id.ToString(),
+            //    Name = "xxx",
+            //    Path = "sdf"
+            //});
+            //throw new Exception("");
             return await _userRep.InsertAysnc(user);
         }
 

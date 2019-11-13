@@ -57,20 +57,20 @@ namespace Hao.WebApi
 
             var traceId = context.HttpContext.TraceIdentifier;
             var path = context.HttpContext.Request.Path.Value;
-            var body = ReadBodyJson(context);
+            //var body = ReadBodyJson(context);
 
-            _logger.Info(new HLog()
-            {
-                Method = path,
-                Argument = new
-                {
-                    TraceIdentifier = traceId,
-                    UserId = userId.Value,
-                    Query = context.HttpContext.Request.QueryString,
-                    Body = body
-                },
-                Description = "请求信息"
-            });
+            //_logger.Info(new HLog()
+            //{
+            //    Method = path,
+            //    Argument = new
+            //    {
+            //        TraceIdentifier = traceId,
+            //        UserId = userId.Value,
+            //        Query = context.HttpContext.Request.QueryString,
+            //        Body = body
+            //    },
+            //    Description = "请求信息"
+            //});
 
             var value = RedisHelper.Get(appsettingsOptions.Value.RedisPrefixOptions.LoginInfo + userId.Value);
 
