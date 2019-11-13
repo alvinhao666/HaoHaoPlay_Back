@@ -21,7 +21,7 @@ using Microsoft.Extensions.Options;
 namespace Hao.WebApi
 {
     [ApiController]
-    [Route("[controller]/[action]")]
+    [Route("[controller]")]
     public class UserController : HController
     {
         private readonly IUserAppService _userAppService;
@@ -83,7 +83,7 @@ namespace Hao.WebApi
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpPut("{id}")]
+        [HttpPut("Disable/{id}")]
         public async Task Disable(long? id) => await _userAppService.UpdateUserEnabled(id.Value, false);
 
         /// <summary>
@@ -91,15 +91,15 @@ namespace Hao.WebApi
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpPut("{id}")]
+        [HttpPut("Enable/{id}")]
         public async Task Enable(long? id) => await _userAppService.UpdateUserEnabled(id.Value, true);
 
-        /// <summary>
-        /// 获取当前用户信息
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        public async Task<UserOut> GetCurrentUser() => await _userAppService.GetCurrentUser();
+        ///// <summary>
+        ///// 获取当前用户信息
+        ///// </summary>
+        ///// <returns></returns>
+        //[HttpGet]
+        //public async Task<UserOut> GetCurrentUser() => await _userAppService.GetCurrentUser();
 
 
         //        /// <summary>
@@ -125,7 +125,7 @@ namespace Hao.WebApi
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        [HttpGet]
+        [HttpGet("ExportUser")]
         public async Task<object> ExportUsers([FromQuery]UserQueryInput query)
         {
             string fileName = await _userAppService.ExportUsers(_mapper.Map<UserQuery>(query));
@@ -139,7 +139,7 @@ namespace Hao.WebApi
         /// </summary>
         /// <param name="formCollection"></param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpPost("ImportUser")]
         public async Task ImportUsers([FromForm] IFormCollection formCollection)
         {
             if (formCollection?.Files == null)
