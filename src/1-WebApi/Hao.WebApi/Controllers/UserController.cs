@@ -16,6 +16,7 @@ using OfficeOpenXml;
 using Hao.File;
 using Hao.RunTimeException;
 using Hao.Entity;
+using Microsoft.Extensions.Options;
 
 namespace Hao.WebApi
 {
@@ -31,11 +32,11 @@ namespace Hao.WebApi
 
         public FilePathInfo PathInfo { get; set; }
 
-        public UserController(IConfiguration config, IDataProtectionProvider provider, IMapper mapper, IUserAppService userService)
+        public UserController(IOptionsSnapshot<AppSettingsInfo> appsettingsOptions, IDataProtectionProvider provider, IMapper mapper, IUserAppService userService)
         {
             _userAppService = userService;
             _mapper = mapper;
-            _protector = provider.CreateProtector(config["DataProtectorPurpose:FileDownload"]).ToTimeLimitedDataProtector();
+            _protector = provider.CreateProtector(appsettingsOptions.Value.DataProtectorPurpose.FileDownload).ToTimeLimitedDataProtector();
         }
 
         /// <summary>

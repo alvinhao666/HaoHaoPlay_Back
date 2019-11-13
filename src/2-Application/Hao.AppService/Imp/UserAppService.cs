@@ -13,6 +13,7 @@ using Hao.Repository;
 using Hao.RunTimeException;
 using Hao.Utility;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -30,17 +31,17 @@ namespace Hao.AppService
 
         private readonly ICapPublisher _publisher;
 
-        private readonly IConfiguration _config;
+        private readonly AppSettingsInfo _appsettings;
 
 
         public FilePathInfo PathInfo { get; set; }
 
-        public UserAppService(IConfiguration config, ISysUserRepository userRepository, IMapper mapper, ICapPublisher publisher)
+        public UserAppService(IOptionsSnapshot<AppSettingsInfo> appsettingsOptions, ISysUserRepository userRepository, IMapper mapper, ICapPublisher publisher)
         {
             _userRep = userRepository;
             _mapper = mapper;
             _publisher = publisher;
-            _config = config;
+            _appsettings = appsettingsOptions.Value;
         }
 
         public async Task<UserOut> GetByID(long? id)
@@ -74,7 +75,7 @@ namespace Hao.AppService
         {
             var user = _mapper.Map<SysUser>(vm);
             user.FirstNameSpell = HSpell.GetInitialSpell(user.UserName.ToCharArray()[0].ToString());
-            user.Password = EncryptProvider.HMACSHA256(user.Password, _config["KeyInfo:Sha256Key"]);
+            user.Password = EncryptProvider.HMACSHA256(user.Password, _appsettings.KeyInfo.Sha256Key);
             user.Enabled = true;
             return await _userRep.InsertAysnc(user);
         }
@@ -91,7 +92,7 @@ namespace Hao.AppService
             foreach (var user in users)
             {
                 user.FirstNameSpell = HSpell.GetInitialSpell(user.UserName.ToCharArray()[0].ToString());
-                user.Password = EncryptProvider.HMACSHA256(user.Password, _config["KeyInfo:Sha256Key"]);
+                user.Password = EncryptProvider.HMACSHA256(user.Password, _appsettings.KeyInfo.Sha256Key);
             }
             await _userRep.InsertAysnc(users);
         }
