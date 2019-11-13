@@ -9,7 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\5-Common\Hao.Core\Hao.Core.csproj" />
+    <ProjectReference Include="..\..\4-Infrastructure\Hao.Core\Hao.Core.csproj" />
     <ProjectReference Include="..\Hao.Enum\Hao.Enum.csproj" />
   </ItemGroup>
 
