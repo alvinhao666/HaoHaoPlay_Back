@@ -162,6 +162,7 @@ namespace Hao.WebApi
             //               
             //            }
 
+            var users = new List<UserIn>();
             foreach (IFormFile file in files)
             {
                 var reader = new StreamReader(file.OpenReadStream());
@@ -182,7 +183,6 @@ namespace Hao.WebApi
                     fs.Flush();
                 }
 
-                var users = new List<UserIn>();
 
                 using (var ep = new ExcelPackage(new FileInfo(filePath)))
                 {
@@ -203,8 +203,8 @@ namespace Hao.WebApi
                         }
                     }
                 }
-                await _userAppService.AddUsers(users);
             }
+            await _userAppService.AddUsers(users);
         }
     }
 }
