@@ -45,14 +45,14 @@ namespace Hao.WebApi
         /// <param name="vm"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task Post([FromBody]UserIn vm) => await _userAppService.AddUser(vm);
+        public async Task Add([FromBody]UserIn vm) => await _userAppService.AddUser(vm);
 
         /// <summary>
         /// 查询用户列表
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<PagedList<UserOut>> GetAll([FromQuery]UserQueryInput query) => await _userAppService.GetUsers(_mapper.Map<UserQuery>(query));
+        public async Task<PagedList<UserOut>> GetPagedList([FromQuery]UserQueryInput query) => await _userAppService.GetUsers(_mapper.Map<UserQuery>(query));
 
         /// <summary>
         /// 修改用户
@@ -61,7 +61,7 @@ namespace Hao.WebApi
         /// <param name="vm"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        public async Task Put(long? id, [FromBody]UserIn vm) => await _userAppService.EditUser(id.Value, vm);
+        public async Task Modify(long? id, [FromBody]UserIn vm) => await _userAppService.EditUser(id.Value, vm);
         /// <summary>
         /// 根据id获取用户
         /// </summary>
