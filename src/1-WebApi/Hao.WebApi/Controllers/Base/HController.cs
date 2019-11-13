@@ -57,20 +57,18 @@ namespace Hao.WebApi
 
             var traceId = context.HttpContext.TraceIdentifier;
             var path = context.HttpContext.Request.Path.Value;
-            //var body = ReadBodyJson(context);
 
-            //_logger.Info(new HLog()
-            //{
-            //    Method = path,
-            //    Argument = new
-            //    {
-            //        TraceIdentifier = traceId,
-            //        UserId = userId.Value,
-            //        Query = context.HttpContext.Request.QueryString,
-            //        Body = body
-            //    },
-            //    Description = "请求信息"
-            //});
+            _logger.Info(new HLog()
+            {
+                Method = path,
+                Argument = new
+                {
+                    TraceIdentifier = traceId,
+                    UserId = userId.Value,
+                    Arguments = context.ActionArguments
+                },
+                Description = "请求信息"
+            });
 
             var value = RedisHelper.Get(appsettingsOptions.Value.RedisPrefixOptions.LoginInfo + userId.Value);
 
@@ -113,34 +111,39 @@ namespace Hao.WebApi
 
         }
 
-        private JObject ReadBodyJson(ActionExecutingContext context)
-        {
-            var request = context.HttpContext.Request;
-            string method = request.Method.ToLower();
-            if (request.Body != null && request.Body.CanRead
-                && (method.Equals("post") || method.Equals("put") || method.Equals("delete"))
-                && request.ContentType != null && request.ContentType.Contains("application/json"))
-            {
-                request.EnableBuffering();
-                request.Body.Seek(0, 0);
-                string result = null;
-                using (var reader = new StreamReader(request.Body, Encoding.UTF8))
-                {
-                    result = reader.ReadToEnd();
-                }
-                var parameters = context.ActionDescriptor.Parameters;
-                var parameter = parameters.FirstOrDefault(a => a.BindingInfo?.BindingSource == BindingSource.Body);
-                if (parameter != null && context.ActionArguments != null && !context.ActionArguments.ContainsKey(parameter.Name))
-                {
-                    _logger.Info(new HLog() { Method = context.HttpContext.Request.Path.Value, Argument = result, Description = "RequestBodyContent" });
-                    throw new HException(ErrorInfo.E100011, nameof(ErrorInfo.E100011).GetErrorCode());
-                }
-                if (!string.IsNullOrWhiteSpace(result))
-                {
-                    return JObject.Parse(result);
-                }
-            }
-            return null;
-        }
+        ///// <summary>
+        ///// 读取body参数    （3.0 用的 新json api 会自动验证参数类型 转换不通过会报错  不需要此方法验证)
+        ///// </summary>
+        ///// <param name="context"></param>
+        ///// <returns></returns>
+        //private async Task<JObject> ReadBodyJson(ActionExecutingContext context)
+        //{
+        //    var request = context.HttpContext.Request;
+        //    string method = request.Method.ToLower();
+        //    if (request.Body != null && request.Body.CanRead
+        //        && (method.Equals("post") || method.Equals("put") || method.Equals("delete"))
+        //        && request.ContentType != null && request.ContentType.Contains("application/json"))
+        //    {
+        //        request.EnableBuffering();
+        //        string result = null;
+        //        using (var reader = new StreamReader(request.Body, Encoding.UTF8))
+        //        {
+        //            result = await reader.ReadToEndAsync();
+        //            request.Body.Seek(0, SeekOrigin.Begin);
+        //        }
+        //        var parameters = context.ActionDescriptor.Parameters;
+        //        var parameter = parameters.FirstOrDefault(a => a.BindingInfo?.BindingSource == BindingSource.Body);
+        //        if (parameter != null && context.ActionArguments != null && !context.ActionArguments.ContainsKey(parameter.Name))
+        //        {
+        //            _logger.Info(new HLog() { Method = context.HttpContext.Request.Path.Value, Argument = result, Description = "RequestBodyContent" });
+        //            throw new HException(ErrorInfo.E100011, nameof(ErrorInfo.E100011).GetErrorCode());
+        //        }
+        //        if (!string.IsNullOrWhiteSpace(result))
+        //        {
+        //            return JObject.Parse(result);
+        //        }
+        //    }
+        //    return null;
+        //}
     }
 }
