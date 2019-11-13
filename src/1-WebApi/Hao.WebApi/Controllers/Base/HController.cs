@@ -65,7 +65,7 @@ namespace Hao.WebApi
                 {
                     TraceIdentifier = traceId,
                     UserId = userId.Value,
-                    Arguments = context.ActionArguments
+                    context.ActionArguments
                 },
                 Description = "请求信息"
             });
