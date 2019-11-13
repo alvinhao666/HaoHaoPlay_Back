@@ -85,15 +85,6 @@ namespace HaoHaoPlay.ApiHost
             #endregion
 
             #region Jwt
-            var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(appsettings.JwtOptions.SecretKey));
-
-            services.Configure<JwtOptions>(o =>
-            {
-                o.Audience = appsettings.JwtOptions.Audience;
-                o.Issuer = appsettings.JwtOptions.Issuer;
-                o.SigningKey = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256);
-                o.Subject = appsettings.JwtOptions.Subject;
-            });
 
             //jwt验证：
             services.AddAuthentication(x =>
@@ -109,7 +100,7 @@ namespace HaoHaoPlay.ApiHost
                     ValidateIssuerSigningKey = true,//是否验证SecurityKey
                     ValidAudience = appsettings.JwtOptions.Audience,//Audience
                     ValidIssuer = appsettings.JwtOptions.Issuer,//Issuer，这两项和前面签发jwt的设置一致
-                    IssuerSigningKey = signingKey,//拿到SecurityKey
+                    IssuerSigningKey = appsettings.JwtOptions.SecurityKey,//拿到SecurityKey
                     ValidateLifetime = true,//是否验证失效时间  当设置exp和nbf时有效 同时启用ClockSkew 
                     RequireExpirationTime = true,
                     ClockSkew = TimeSpan.Zero, // ClockSkew 属性，默认是5分钟缓冲。

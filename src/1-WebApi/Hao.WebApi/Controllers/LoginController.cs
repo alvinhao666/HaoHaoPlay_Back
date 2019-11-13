@@ -69,7 +69,7 @@ namespace Hao.WebApi
                 claims: claims,
                 notBefore: timeNow, //生效时间
                 expires: timeNow.AddDays(3),//过期时间
-                signingCredentials: _appsettings.JwtOptions.SigningKey
+                signingCredentials: _appsettings.JwtOptions.SigningCredentials
             );
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 

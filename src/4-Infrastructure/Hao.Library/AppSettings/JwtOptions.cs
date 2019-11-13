@@ -7,7 +7,21 @@ namespace Hao.Library
 {
     public class JwtOptions
     {
-        public SigningCredentials SigningKey { get; set; }
+        public SigningCredentials SigningCredentials
+        {
+            get
+            {
+                return this.SecurityKey == null ? null : new SigningCredentials(this.SecurityKey, SecurityAlgorithms.HmacSha256);
+            }
+        }
+
+        public SecurityKey SecurityKey
+        {
+            get
+            {
+                return this.SecretKey == null ? null : new SymmetricSecurityKey(Encoding.ASCII.GetBytes(this.SecretKey));
+            }
+        }
 
         /// <summary>
         /// 签发者
