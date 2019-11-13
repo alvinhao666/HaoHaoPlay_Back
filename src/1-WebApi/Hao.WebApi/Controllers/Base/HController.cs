@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Hao.RunTimeException;
 using Hao.Log;
+using System.Text.Json;
 
 namespace Hao.WebApi
 {
@@ -76,7 +77,7 @@ namespace Hao.WebApi
             if (value == null) throw new HException(ErrorInfo.E100003, nameof(ErrorInfo.E100003).GetErrorCode());
 
 
-            var cacheUser = JsonExtensions.DeserializeFromJson<RedisCacheUserInfo>(value);
+            var cacheUser = JsonSerializer.Deserialize<RedisCacheUserInfo>(value);
 
             //当前用户信息
             CurrentUser.UserId = cacheUser.Id;

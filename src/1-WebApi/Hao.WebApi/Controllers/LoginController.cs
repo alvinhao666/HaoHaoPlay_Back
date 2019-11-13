@@ -3,6 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using AutoMapper;
 using Hao.AppService;
@@ -90,7 +91,7 @@ namespace Hao.WebApi
                 UserName = user.UserName,
                 LoginName = user.LoginName
             };
-            await RedisHelper.SetAsync(_appsettings.RedisPrefixOptions.LoginInfo + user.Id, JsonExtensions.SerializeToJson(userValue));
+            await RedisHelper.SetAsync(_appsettings.RedisPrefixOptions.LoginInfo + user.Id, JsonSerializer.Serialize(userValue));
 
             _logger.Info(new HLog() { Method = "Login", Argument = query.LoginName, Description = "登录成功" });
 
