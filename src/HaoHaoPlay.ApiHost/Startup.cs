@@ -16,7 +16,6 @@ using Hao.Response;
 using Microsoft.AspNetCore.HttpOverrides;
 using Hao.WebApi;
 using Hao.AppService;
-using Hao.SqlSugarExtensions;
 using FluentValidation.AspNetCore;
 using Microsoft.Extensions.FileProviders;
 using CSRedis;

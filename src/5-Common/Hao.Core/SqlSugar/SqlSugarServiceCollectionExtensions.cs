@@ -1,9 +1,6 @@
-﻿using System;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using SqlSugar;
+﻿using SqlSugar;
 
-namespace Hao.SqlSugarExtensions
+namespace Microsoft.Extensions.DependencyInjection
 {
     public static class SqlSugarServiceCollectionExtensions
     {
