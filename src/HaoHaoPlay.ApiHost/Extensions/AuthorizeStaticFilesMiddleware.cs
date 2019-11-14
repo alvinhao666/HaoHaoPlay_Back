@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.DataProtection;
 using Hao.RunTimeException;
 using Microsoft.Extensions.Options;
 
-namespace Hao.WebApi
+namespace HaoHaoPlay.ApiHost
 {
     public class AuthorizeStaticFilesMiddleware
     {
