@@ -94,12 +94,12 @@ namespace Hao.WebApi
         [HttpPut("Enable/{id}")]
         public async Task Enable(long? id) => await _userAppService.UpdateUserEnabled(id.Value, true);
 
-        ///// <summary>
-        ///// 获取当前用户信息
-        ///// </summary>
-        ///// <returns></returns>
-        //[HttpGet]
-        //public async Task<UserOut> GetCurrentUser() => await _userAppService.GetCurrentUser();
+        /// <summary>
+        /// 获取当前用户信息
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<UserOut> GetCurrentUser() => await _userAppService.GetCurrentUser();
 
 
         //        /// <summary>
