@@ -79,6 +79,7 @@ namespace HaoHaoPlay.ApiHost
 #endif
             #endregion
 
+
             #region 单例注入
             var worker = new IdWorker(appsettings.SnowflakeIdOptions.WorkerId, appsettings.SnowflakeIdOptions.DataCenterId);
             services.AddSingleton(worker);
@@ -89,13 +90,16 @@ namespace HaoHaoPlay.ApiHost
             services.AddSingleton(pathInfo);
             #endregion
 
+
             #region Http
             services.AddHttpClient();
             #endregion
 
+
             #region 数据保护
             services.AddDataProtection();
             #endregion
+
 
             #region Jwt
 
@@ -122,6 +126,7 @@ namespace HaoHaoPlay.ApiHost
             });
             #endregion
 
+
             #region Redis
 
             var redisConnection = appsettings.ConnectionStrings.RedisConnection;
@@ -135,6 +140,7 @@ namespace HaoHaoPlay.ApiHost
                                                                                               //现在,ASP.NET Core引入了IDistributedCache分布式缓存接口，它是一个相当基本的分布式缓存标准API，可以让您对它进行编程，然后无缝地插入第三方分布式缓存
                                                                                               //DistributedCache将拷贝缓存的文件到Slave节点
             #endregion
+
 
             #region ORM
             services.AddSqlSugarClient(new ConnectionConfig()
@@ -155,6 +161,7 @@ namespace HaoHaoPlay.ApiHost
 
 
             #endregion
+
 
             #region CAP
 
@@ -198,7 +205,6 @@ namespace HaoHaoPlay.ApiHost
             //替换控制器所有者,详见有道笔记,放AddMvc前面
             services.Replace(ServiceDescriptor.Transient<IControllerActivator, ServiceBasedControllerActivator>());
 
-
             services.AddControllers(x =>
             {
                 x.Filters.Add(typeof(HResultFilter));
@@ -211,6 +217,7 @@ namespace HaoHaoPlay.ApiHost
                 o.JsonSerializerOptions.PropertyNamingPolicy = null;
                 o.JsonSerializerOptions.Converters.Add(new DatetimeJsonConverter());
             });
+
 
             #region 模型验证 ApiBehaviorOptions 的统一模型验证配置一定要放到(.AddMvc)后面
             services.Configure<ApiBehaviorOptions>(options =>
@@ -228,6 +235,7 @@ namespace HaoHaoPlay.ApiHost
             });
             #endregion
 
+
             #region AutoMapper
             services.AddSingleton<IMapper>(new Mapper(new MapperConfiguration(cfg =>
             {
@@ -240,6 +248,7 @@ namespace HaoHaoPlay.ApiHost
 
         public void Configure(IApplicationBuilder app)
         {
+            #region Debug
 #if DEBUG
             //配置Swagger
             app.UseSwagger();
@@ -251,6 +260,7 @@ namespace HaoHaoPlay.ApiHost
 
             app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 #endif
+            #endregion
 
 
             #region 获取当前用户
@@ -259,9 +269,11 @@ namespace HaoHaoPlay.ApiHost
 
             #endregion
 
+
             #region 异常处理
             app.UseGlobalExceptionHandler();
             #endregion
+
 
             #region 文件
             //文件访问权限
@@ -281,6 +293,7 @@ namespace HaoHaoPlay.ApiHost
                     })
             });
             #endregion
+
 
             #region 获取客户端ip
             // Nginx 获取ip
