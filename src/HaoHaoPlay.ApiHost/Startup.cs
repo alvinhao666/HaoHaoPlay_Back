@@ -54,6 +54,11 @@ namespace HaoHaoPlay.ApiHost
 
         public void ConfigureServices(IServiceCollection services)
         {
+            var appsettings = new AppSettingsInfo();
+            Config.Bind("AppSettingsInfo", appsettings);
+            var appsettingsOptions = Config.GetSection(nameof(AppSettingsInfo));
+            services.Configure<AppSettingsInfo>(appsettingsOptions);
+
             #region DeBug
 #if DEBUG
             services.AddSwaggerGen(c =>
@@ -74,14 +79,22 @@ namespace HaoHaoPlay.ApiHost
 #endif
             #endregion
 
-            var appsettings = new AppSettingsInfo();
-            Config.Bind("AppSettingsInfo", appsettings);
-            var appsettingsOptions = Config.GetSection(nameof(AppSettingsInfo));
-            services.Configure<AppSettingsInfo>(appsettingsOptions);
+            #region 单例注入
+            var worker = new IdWorker(appsettings.SnowflakeIdOptions.WorkerId, appsettings.SnowflakeIdOptions.DataCenterId);
+            services.AddSingleton(worker);
 
+            FilePathInfo pathInfo = new FilePathInfo();
+            pathInfo.ExportExcelPath = Path.Combine(_parentDir.FullName, "ExportFile/Excel");
+            pathInfo.ImportExcelPath = Path.Combine(_parentDir.FullName, "ImportFile/Excel");
+            services.AddSingleton(pathInfo);
+            #endregion
 
             #region Http
             services.AddHttpClient();
+            #endregion
+
+            #region 数据保护
+            services.AddDataProtection();
             #endregion
 
             #region Jwt
@@ -181,29 +194,6 @@ namespace HaoHaoPlay.ApiHost
             services.AddScoped<ICurrentUser, CurrentUser>();
             #endregion
 
-            #region 单例注入
-            var worker = new IdWorker(appsettings.SnowflakeIdOptions.WorkerId, appsettings.SnowflakeIdOptions.DataCenterId);
-            services.AddSingleton(worker);
-
-            FilePathInfo pathInfo = new FilePathInfo();
-            pathInfo.ExportExcelPath = Path.Combine(_parentDir.FullName, "ExportFile/Excel");
-            pathInfo.ImportExcelPath = Path.Combine(_parentDir.FullName, "ImportFile/Excel");
-            services.AddSingleton(pathInfo);
-            #endregion
-
-            #region 数据保护
-            services.AddDataProtection();
-            #endregion
-
-
-            #region AutoMapper
-            services.AddSingleton<IMapper>(new Mapper(new MapperConfiguration(cfg =>
-            {
-                AutoMapperInitApi.InitMap(cfg);
-                AutoMapperInitService.InitMap(cfg);
-            })));
-            #endregion
-
 
             //替换控制器所有者,详见有道笔记,放AddMvc前面
             services.Replace(ServiceDescriptor.Transient<IControllerActivator, ServiceBasedControllerActivator>());
@@ -236,6 +226,14 @@ namespace HaoHaoPlay.ApiHost
                     return new JsonResult(response);
                 };
             });
+            #endregion
+
+            #region AutoMapper
+            services.AddSingleton<IMapper>(new Mapper(new MapperConfiguration(cfg =>
+            {
+                AutoMapperInitApi.InitMap(cfg);
+                AutoMapperInitService.InitMap(cfg);
+            })));
             #endregion
         }
 
