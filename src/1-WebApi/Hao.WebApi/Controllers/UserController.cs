@@ -98,7 +98,7 @@ namespace Hao.WebApi
         /// 获取当前用户信息
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
+        [HttpGet("GetCurrentUser")]
         public async Task<UserOut> GetCurrentUser() => await _userAppService.GetCurrentUser();
 
 
