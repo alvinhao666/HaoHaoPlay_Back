@@ -78,8 +78,8 @@ namespace Hao.WebApi
             var cacheUser = JsonSerializer.Deserialize<RedisCacheUserInfo>(value);
 
             //当前用户信息
-            CurrentUser.UserId = cacheUser.Id;
-            CurrentUser.UserName = cacheUser.UserName;
+            CurrentUser.Id = cacheUser.Id;
+            CurrentUser.Name = cacheUser.Name;
 
             base.OnActionExecuting(context);
         }

@@ -75,7 +75,7 @@ namespace Hao.AppService
         public async Task<long> AddUser(UserIn vm)
         {
             var user = _mapper.Map<SysUser>(vm);
-            user.FirstNameSpell = HSpell.GetInitialSpell(user.UserName.ToCharArray()[0].ToString());
+            user.FirstNameSpell = HSpell.GetInitialSpell(user.Name.ToCharArray()[0].ToString());
             user.Password = EncryptProvider.HMACSHA256(user.Password, _appsettings.KeyInfo.Sha256Key);
             user.Enabled = true;
             //await _attachmentRep.InsertAysnc(new SysAttachment()
@@ -100,7 +100,7 @@ namespace Hao.AppService
             var users = _mapper.Map<List<SysUser>>(vms);
             foreach (var user in users)
             {
-                user.FirstNameSpell = HSpell.GetInitialSpell(user.UserName.ToCharArray()[0].ToString());
+                user.FirstNameSpell = HSpell.GetInitialSpell(user.Name.ToCharArray()[0].ToString());
                 user.Password = EncryptProvider.HMACSHA256(user.Password, _appsettings.KeyInfo.Sha256Key);
             }
             await _userRep.InsertAysnc(users);
@@ -188,7 +188,7 @@ namespace Hao.AppService
             var user = await _userRep.GetAysnc(userId);
             if (user != null)
             {
-                user.UserName = vm.UserName;
+                user.Name = vm.Name;
                 user.Age = vm.Age;
                 user.Gender = vm.Gender;
                 user.Phone = vm.Phone;
@@ -208,7 +208,7 @@ namespace Hao.AppService
             var users = await _userRep.GetListAysnc(query);
 
             var exportData = users.Select(a => new Dictionary<string, string>{
-                {"姓名",a.UserName},
+                {"姓名",a.Name},
                 {"性别", a.Gender.GetDescription() },
                 {"年龄",a.Age.ToString()},
                 {"手机号",a.Phone},

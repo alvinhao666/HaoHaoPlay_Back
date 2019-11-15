@@ -8,9 +8,9 @@ namespace Hao.AppService.ViewModel
     public class UserIn
     {
         /// <summary>
-        /// 用户名
+        /// 姓名
         /// </summary>
-        public string UserName { get; set; }
+        public string Name { get; set; }
         /// <summary>
         /// 账号
         /// </summary>

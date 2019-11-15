@@ -17,9 +17,9 @@ namespace Hao.AppService.ViewModel
         public string LoginName { get; set; }
 
         /// <summary>
-        /// 用户名称
+        /// 姓名
         /// </summary>
-        public string UserName { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
         /// 令牌

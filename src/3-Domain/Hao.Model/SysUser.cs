@@ -17,10 +17,9 @@ namespace Hao.Model
         /// </summary>
         public string Password { get; set; }
         /// <summary>
-        /// 用户名（姓名）
+        /// 真实姓名
         /// </summary>
-        public string UserName { get; set; }
-
+        public string Name { get; set; }
         /// <summary>
         /// 年龄
         /// </summary>

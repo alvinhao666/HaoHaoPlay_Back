@@ -12,7 +12,7 @@ namespace Hao.AppService.ViewModel
 
         public string LoginName { get; set; }
 
-        public string UserName { get; set; }
+        public string Name { get; set; }
         
         public Gender? Gender { get; set; }
 

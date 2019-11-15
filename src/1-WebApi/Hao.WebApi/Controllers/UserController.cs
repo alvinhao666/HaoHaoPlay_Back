@@ -197,7 +197,7 @@ namespace Hao.WebApi
                         for (int i = rowStart + 1; i <= rowEnd; i++) //第1行是列名,跳过
                         {
                             var user = new UserIn();
-                            user.UserName = ws.Cells[i, colStart].Text;
+                            user.Name = ws.Cells[i, colStart].Text;
                             user.LoginName = ws.Cells[i, colStart + 1].Text;
                             user.Password = ws.Cells[i, colStart + 2].Text;
                             users.Add(user);

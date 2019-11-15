@@ -88,7 +88,7 @@ namespace Hao.WebApi
             var userValue = new RedisCacheUserInfo
             {
                 Id = user.Id,
-                UserName = user.UserName,
+                Name = user.Name,
                 LoginName = user.LoginName
             };
             await RedisHelper.SetAsync(_appsettings.RedisPrefixOptions.LoginInfo + user.Id, JsonSerializer.Serialize(userValue));

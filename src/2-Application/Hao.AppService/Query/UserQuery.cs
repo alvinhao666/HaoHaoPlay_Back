@@ -15,7 +15,7 @@ namespace Hao.AppService
 
         public string Password { get; set; }
 
-        public string UserName { get; set; }
+        public string Name { get; set; }
 
         public Gender? Gender { get; set; }
 
@@ -40,8 +40,8 @@ namespace Hao.AppService
                 if (!string.IsNullOrWhiteSpace(Password))
                     models.Add(new ConditionalModel() { FieldName = nameof(SysUser.Password), ConditionalType = ConditionalType.Equal, FieldValue = Password });
 
-                if (!string.IsNullOrWhiteSpace(UserName))
-                    models.Add(new ConditionalModel() { FieldName = nameof(SysUser.UserName), ConditionalType = ConditionalType.Like, FieldValue = UserName });
+                if (!string.IsNullOrWhiteSpace(Name))
+                    models.Add(new ConditionalModel() { FieldName = nameof(SysUser.Name), ConditionalType = ConditionalType.Like, FieldValue = Name });
 
                 if(!string.IsNullOrWhiteSpace(Phone))
                     models.Add(new ConditionalModel() { FieldName = nameof(SysUser.Phone), ConditionalType = ConditionalType.Like, FieldValue = Phone });
