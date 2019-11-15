@@ -1,10 +1,7 @@
 ﻿using Castle.DynamicProxy;
-using System;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using static Hao.Core.ApplicationService;
-using static Hao.Core.HEventHandler;
 
 namespace Hao.Core
 {
