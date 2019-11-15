@@ -1,4 +1,5 @@
-﻿using Hao.Entity;
+﻿using Hao.Dependency;
+using Hao.Entity;
 using SqlSugar;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace Hao.Core
     /// </summary>
     /// <typeparam name="T">泛型实体类</typeparam>
     /// <typeparam name="TKey"></typeparam>
-    public interface IRepository<T,TKey> where T : Entity<TKey>, new()
+    public interface IRepository<T,TKey> : ITransientDependency where T : new() where TKey : struct
     {
         /// <summary>
         /// 根据主键值查询单条数据

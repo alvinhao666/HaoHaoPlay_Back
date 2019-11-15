@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using DotNetCore.CAP;
 using Hao.Core;
 using Hao.EventData;
+using Hao.Model;
 using Hao.Repository;
 
 namespace Hao.Event
@@ -14,12 +15,16 @@ namespace Hao.Event
 
         private readonly ISysUserRepository _userRep;
 
-        public LoginEventHandler(ISysUserRepository userRepository)
+        private readonly ISysLoginRecordRepository _recordRep;
+
+        public LoginEventHandler(ISysUserRepository userRep, ISysLoginRecordRepository recordRep)
         {
-            _userRep = userRepository;
+            _userRep = userRep;
+            _recordRep = recordRep;
         }
 
         [CapSubscribe(nameof(LoginEventData))]
+        [UseTransaction]
         public async Task UpdateLogin(LoginEventData person)
         {
             var user = await _userRep.GetAysnc(person.UserId);
@@ -28,6 +33,7 @@ namespace Hao.Event
                 user.LastLoginTime = person.LastLoginTime;
                 user.LastLoginIP = person.LastLoginIP;
                 await _userRep.UpdateAsync(user);
+                await _recordRep.AddLoginRecord(new SysLoginRecord() { UserId = user.Id, IP = person.LastLoginIP ,Time=person.LastLoginTime});
             }
         }
     }
