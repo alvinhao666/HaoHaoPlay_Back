@@ -14,11 +14,11 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             services.Scan(scan => scan.FromAssembliesOf(types)
                 .AddClasses()
-                .AsMatchingInterface((x, p) => p.AssignableTo<ITransientDependency>())
+                .AsMatchingInterface((x, p) => typeof(ITransientDependency).IsAssignableFrom(p.GetType())) //直接或间接实现了ITransientDependency
                 .WithTransientLifetime()).
             Scan(scan => scan.FromAssembliesOf(types)
                 .AddClasses()
-                .AsMatchingInterface((x, p) => p.AssignableTo<ISingletonDependency>())
+                .AsMatchingInterface((x, p) => typeof(ISingletonDependency).IsAssignableFrom(p.GetType()))
                 .WithSingletonLifetime());
             return services;
         }

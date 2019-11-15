@@ -29,7 +29,7 @@ namespace HaoHaoPlay.ApiHost
                     builder.RegisterAssemblyTypes(
                         Assembly.Load("Hao.Repository"),
                         Assembly.Load("Hao.Core"))
-                        .Where(m => typeof(ITransientDependency).IsAssignableFrom(m) && m != typeof(ITransientDependency))
+                        .Where(m => typeof(ITransientDependency).IsAssignableFrom(m) && m != typeof(ITransientDependency)) //直接或间接实现了ITransientDependency
                         .AsImplementedInterfaces().InstancePerLifetimeScope().PropertiesAutowired();
 
                     builder.RegisterAssemblyTypes(

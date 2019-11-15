@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using DotNetCore.CAP;
+using Hao.Core;
 using Hao.EventData;
 using Hao.Repository;
 
 namespace Hao.Event
 {
-    public class LoginEventHandler : ILoginEventHandler, ICapSubscribe
+    public class LoginEventHandler : HEventHandler,ILoginEventHandler, ICapSubscribe
     {
 
         private readonly ISysUserRepository _userRep;

@@ -1,10 +1,10 @@
 ﻿using Hao.EventData;
 using System.Threading.Tasks;
-using Hao.Dependency;
+using Hao.Core;
 
 namespace Hao.Event
 {
-    public interface ILoginEventHandler: ITransientDependency
+    public interface ILoginEventHandler
     {
         Task UpdateLoginTimeAndIP(LoginEventData person);
     }

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Hao.AppService
 {
-    public interface IUserAppService : IApplicationService
+    public interface IUserAppService 
     {
         Task<LoginOut> Login(UserQuery query);
 

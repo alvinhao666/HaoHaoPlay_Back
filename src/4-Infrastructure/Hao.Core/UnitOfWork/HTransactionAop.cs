@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using static Hao.Core.ApplicationService;
+using static Hao.Core.HEventHandler;
 
 namespace Hao.Core
 {
@@ -27,7 +28,10 @@ namespace Hao.Core
             var method = invocation.MethodInvocationTarget ?? invocation.Method;
             //对当前方法的特性验证
             //如果需要验证
-            if (method.GetCustomAttributes(true).FirstOrDefault(x => x.GetType() == typeof(UseTransactionAttribute)) is UseTransactionAttribute)
+            //true 布尔值，指示特性能否被派生类和重写成员继承
+            if (method.GetCustomAttributes(true).FirstOrDefault(x => x.GetType() == typeof(ApplicationService.UseTransactionAttribute)) is ApplicationService.UseTransactionAttribute
+                || method.GetCustomAttributes(true).FirstOrDefault(x => x.GetType() == typeof(HEventHandler.UseTransactionAttribute)) is HEventHandler.UseTransactionAttribute
+                )
             {
                 try
                 {
