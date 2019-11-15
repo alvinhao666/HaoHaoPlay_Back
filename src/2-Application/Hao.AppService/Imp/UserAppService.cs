@@ -140,13 +140,13 @@ namespace Hao.AppService
         }
 
         /// <summary>
-        /// 更新用户最后登录时间Ip
+        /// 更新用户登录信息
         /// </summary>
         /// <param name="userId"></param>
         /// <param name="lastLoginTime"></param>
         /// <param name="ip"></param>
         /// <returns></returns>
-        public async Task UpdateLoginTimeAndIP(long userId, DateTime lastLoginTime, string ip)
+        public async Task UpdateLogin(long userId, DateTime lastLoginTime, string ip)
         {
             await _publisher.PublishAsync(nameof(LoginEventData),
                 new LoginEventData { UserId = userId, LastLoginTime = lastLoginTime,LastLoginIP=ip });

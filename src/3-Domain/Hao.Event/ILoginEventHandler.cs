@@ -6,6 +6,6 @@ namespace Hao.Event
 {
     public interface ILoginEventHandler
     {
-        Task UpdateLoginTimeAndIP(LoginEventData person);
+        Task UpdateLogin(LoginEventData person);
     }
 }

@@ -20,7 +20,7 @@ namespace Hao.Event
         }
 
         [CapSubscribe(nameof(LoginEventData))]
-        public async Task UpdateLoginTimeAndIP(LoginEventData person)
+        public async Task UpdateLogin(LoginEventData person)
         {
             var user = await _userRep.GetAysnc(person.UserId);
             if (user != null)
