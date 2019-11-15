@@ -4,7 +4,7 @@ using System;
 
 namespace Hao.Core
 {
-    public abstract class Entity<TKey> : IEntity<TKey>, IsCreateAudited, IsModifyAudited, IsSoftDelete
+    public abstract class Entity<TKey> : IEntity<TKey>, IsCreateAudited, IsModifyAudited, IsSoftDelete where TKey: struct
     {
 
         [SugarColumn(IsPrimaryKey = true)]

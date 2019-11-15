@@ -1,12 +1,13 @@
-﻿using System;
+﻿using Hao.Entity;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Hao.Model
 {
-    public class SysLoginRecord
+    public class SysLoginRecord: IEntity<long>
     {
-        public long? Id { get; set; }
+        public long Id { get; set; }
 
         public long? UserId { get; set; }
 
