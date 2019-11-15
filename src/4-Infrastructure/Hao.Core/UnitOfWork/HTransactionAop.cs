@@ -29,9 +29,9 @@ namespace Hao.Core
             //对当前方法的特性验证
             //如果需要验证
             //true 布尔值，指示特性能否被派生类和重写成员继承
-            if (method.GetCustomAttributes(true).FirstOrDefault(x => x.GetType() == typeof(ApplicationService.UseTransactionAttribute)) is ApplicationService.UseTransactionAttribute
-                || method.GetCustomAttributes(true).FirstOrDefault(x => x.GetType() == typeof(HEventHandler.UseTransactionAttribute)) is HEventHandler.UseTransactionAttribute
-                )
+            var attributes = method.GetCustomAttributes(true);
+            if (attributes.FirstOrDefault(x => x.GetType() == typeof(ApplicationService.UseTransactionAttribute)) is ApplicationService.UseTransactionAttribute
+                || attributes.FirstOrDefault(x => x.GetType() == typeof(HEventHandler.UseTransactionAttribute)) is HEventHandler.UseTransactionAttribute)
             {
                 try
                 {
@@ -85,7 +85,7 @@ namespace Hao.Core
         /// <returns></returns>
         public static bool IsAsyncMethod(MethodInfo method)
         {
-            return method.ReturnType == typeof(Task) ||(method.ReturnType.IsGenericType && method.ReturnType.GetGenericTypeDefinition() == typeof(Task<>));
+            return method.ReturnType == typeof(Task) || (method.ReturnType.IsGenericType && method.ReturnType.GetGenericTypeDefinition() == typeof(Task<>));
         }
 
 
