@@ -23,6 +23,11 @@ namespace Hao.Repository
             _unitOfWork = unitOfWork;
         }
 
+        /// <summary>
+        /// 添加登录记录
+        /// </summary>
+        /// <param name="record"></param>
+        /// <returns></returns>
         public async Task AddLoginRecord(SysLoginRecord record)
         {
             record.Id = IdWorker.NextId();

@@ -10,6 +10,11 @@ namespace Hao.Repository
 {
     public interface ISysLoginRecordRepository: ITransientDependency
     {
+        /// <summary>
+        /// 添加登录记录
+        /// </summary>
+        /// <param name="record"></param>
+        /// <returns></returns>
         Task AddLoginRecord(SysLoginRecord record);
     }
 }
