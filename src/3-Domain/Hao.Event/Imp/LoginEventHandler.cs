@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using DotNetCore.CAP;
 using Hao.Core;
 using Hao.EventData;
@@ -10,7 +7,7 @@ using Hao.Repository;
 
 namespace Hao.Event
 {
-    public class LoginEventHandler : HEventHandler,ILoginEventHandler, ICapSubscribe
+    public class LoginEventHandler : HEventHandler, ILoginEventHandler, ICapSubscribe
     {
 
         private readonly ISysUserRepository _userRep;
@@ -33,7 +30,7 @@ namespace Hao.Event
                 user.LastLoginTime = person.LastLoginTime;
                 user.LastLoginIP = person.LastLoginIP;
                 await _userRep.UpdateAsync(user);
-                await _recordRep.AddLoginRecord(new SysLoginRecord() { UserId = user.Id, IP = person.LastLoginIP ,Time=person.LastLoginTime});
+                await _recordRep.AddLoginRecord(new SysLoginRecord() { UserId = user.Id, IP = person.LastLoginIP, Time = person.LastLoginTime });
             }
         }
     }

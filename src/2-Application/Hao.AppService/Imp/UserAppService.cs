@@ -56,7 +56,6 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        //[UseTransaction]
         public async Task<LoginOut> Login(UserQuery query)
         {
             var users = await _userRep.GetListAysnc(query.Conditions);
@@ -71,21 +70,12 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="vm"></param>
         /// <returns></returns>
-        //[UseTransaction]
         public async Task<long> AddUser(UserIn vm)
         {
             var user = _mapper.Map<SysUser>(vm);
             user.FirstNameSpell = HSpell.GetInitialSpell(user.Name.ToCharArray()[0].ToString());
             user.Password = EncryptProvider.HMACSHA256(user.Password, _appsettings.KeyInfo.Sha256Key);
             user.Enabled = true;
-            //await _attachmentRep.InsertAysnc(new SysAttachment()
-            //{
-            //    BindTableName = "SysUser",
-            //    BindTableId = user.Id.ToString(),
-            //    Name = "xxx",
-            //    Path = "sdf"
-            //});
-            //throw new Exception("");
             return await _userRep.InsertAysnc(user);
         }
 
