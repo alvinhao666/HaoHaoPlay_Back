@@ -2,10 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Hao.Core;
 
 namespace Hao.Model
 {
-    public class SysLoginRecord: IEntity<long>
+    public class SysLoginRecord: EntityBase<long>
     {
         public long Id { get; set; }
 

@@ -8,13 +8,8 @@ using System.Threading.Tasks;
 
 namespace Hao.Repository
 {
-    public interface ISysLoginRecordRepository: ITransientDependency
+    public interface ISysLoginRecordRepository: IRepositoryBase<SysLoginRecord,long>
     {
-        /// <summary>
-        /// 添加登录记录
-        /// </summary>
-        /// <param name="record"></param>
-        /// <returns></returns>
-        Task AddLoginRecord(SysLoginRecord record);
+
     }
 }

@@ -11,27 +11,8 @@ using SqlSugar;
 
 namespace Hao.Repository
 {
-    public class SysLoginRecordRepository : ISysLoginRecordRepository
+    public class SysLoginRecordRepository : RepositoryBase<SysLoginRecord, long>,ISysLoginRecordRepository
     {
-
-        private readonly IUnitOfWork _unitOfWork;
-
-        public IdWorker IdWorker { get; set; }
-
-        public SysLoginRecordRepository(IUnitOfWork unitOfWork)
-        {
-            _unitOfWork = unitOfWork;
-        }
-
-        /// <summary>
-        /// 添加登录记录
-        /// </summary>
-        /// <param name="record"></param>
-        /// <returns></returns>
-        public async Task AddLoginRecord(SysLoginRecord record)
-        {
-            record.Id = IdWorker.NextId();
-            await _unitOfWork.GetDbClient().Insertable(record).ExecuteReturnEntityAsync();
-        }
+        
     }
 }

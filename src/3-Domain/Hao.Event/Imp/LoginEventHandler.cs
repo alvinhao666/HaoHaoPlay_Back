@@ -30,7 +30,7 @@ namespace Hao.Event
                 user.LastLoginTime = person.LastLoginTime;
                 user.LastLoginIP = person.LastLoginIP;
                 await _userRep.UpdateAsync(user);
-                await _recordRep.AddLoginRecord(new SysLoginRecord() { UserId = user.Id, IP = person.LastLoginIP, Time = person.LastLoginTime });
+                await _recordRep.InsertAysnc(new SysLoginRecord() { UserId = user.Id, IP = person.LastLoginIP, Time = person.LastLoginTime });
             }
         }
     }
