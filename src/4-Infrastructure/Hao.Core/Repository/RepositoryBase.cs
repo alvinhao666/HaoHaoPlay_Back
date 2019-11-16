@@ -9,7 +9,7 @@ using Hao.Snowflake;
 
 namespace Hao.Core
 {
-    public abstract class RepositoryBase<T, TKey> : IRepositoryBase<T, TKey>  where T : EntityBase<TKey>, new() where TKey : struct
+    public abstract class RepositoryBase<T, TKey> : IRepositoryBase<T, TKey>  where T : BaseEntity<TKey>, new() where TKey : struct
     {
         public ICurrentUser CurrentUser { get; set; }
 

@@ -6,7 +6,7 @@ using Hao.Core;
 
 namespace Hao.Model
 {
-    public class SysLoginRecord: EntityBase<long>
+    public class SysLoginRecord: BaseEntity<long>
     {
         public long? UserId { get; set; }
 

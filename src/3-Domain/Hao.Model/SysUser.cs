@@ -6,7 +6,7 @@ using SqlSugar;
 namespace Hao.Model
 {
     [SugarTable("SysUser")]
-    public class SysUser : Entity<long>
+    public class SysUser : FullAuditedEntity<long>
     {
         /// <summary>
         /// 登录名

@@ -4,7 +4,7 @@ using SqlSugar;
 namespace Hao.Model
 {
     [SugarTable("SysAttachment")]
-    public class SysAttachment : Entity<long>
+    public class SysAttachment : FullAuditedEntity<long>
     {
         public string BindTableId { get; set; }
 
