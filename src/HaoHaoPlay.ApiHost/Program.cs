@@ -40,7 +40,7 @@ namespace HaoHaoPlay.ApiHost
 
 
                     var controllersTypesInAssembly = typeof(HController).Assembly.GetExportedTypes()
-                                    .Where(type => typeof(Controller).IsAssignableFrom(type)).ToArray();
+                                    .Where(type => typeof(ControllerBase).IsAssignableFrom(type)).ToArray();
                     builder.RegisterTypes(controllersTypesInAssembly).PropertiesAutowired();
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
