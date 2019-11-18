@@ -26,7 +26,7 @@ namespace HaoHaoPlay.ApiHost
                 {
                     builder.RegisterType<HTransactionAop>();
 
-                    builder.RegisterAssemblyTypes(Assembly.Load("Hao.Repository"),Assembly.Load("Hao.Core"))
+                    builder.RegisterAssemblyTypes(Assembly.Load("Hao.Repository"), Assembly.Load("Hao.Core"))
                         .Where(m => typeof(ITransientDependency).IsAssignableFrom(m) && m != typeof(ITransientDependency)) //直接或间接实现了ITransientDependency
                         .AsImplementedInterfaces().InstancePerLifetimeScope().PropertiesAutowired();
 
@@ -42,11 +42,12 @@ namespace HaoHaoPlay.ApiHost
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.ConfigureLogging((hostingContext, logging) =>
-                                                {
-                                                    logging.ClearProviders();
-                                                    logging.SetMinimumLevel(LogLevel.Information);
-                                                    logging.AddConsole();
-                                                    logging.AddNLog($"NLog.{hostingContext.HostingEnvironment.EnvironmentName}.config");})
+                    {
+                        logging.ClearProviders();
+                        logging.SetMinimumLevel(LogLevel.Information);
+                        logging.AddConsole();
+                        logging.AddNLog($"NLog.{hostingContext.HostingEnvironment.EnvironmentName}.config");
+                    })
                               .UseNLog()
                               .UseUrls("http://*:8000")
                               .UseKestrel()
