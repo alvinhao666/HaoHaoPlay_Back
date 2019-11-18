@@ -33,7 +33,6 @@ namespace Hao.AppService
 
         private readonly AppSettingsInfo _appsettings;
 
-        //public  ISysAttachmentRepository _attachmentRep {get;set;} //测试事务操作
         public FilePathInfo PathInfo { get; set; }
 
         public UserAppService(IOptionsSnapshot<AppSettingsInfo> appsettingsOptions, ISysUserRepository userRepository, IMapper mapper, ICapPublisher publisher)
