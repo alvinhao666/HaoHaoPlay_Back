@@ -36,8 +36,8 @@ namespace HaoHaoPlay.ApiHost
                     //一定要在你注入的服务后面加上EnableInterfaceInterceptors来开启你的拦截(aop)
 
 
-                    var controllersTypesInAssembly = typeof(HController).Assembly.GetExportedTypes().Where(type => typeof(ControllerBase).IsAssignableFrom(type)).ToArray();
-                    builder.RegisterTypes(controllersTypesInAssembly).PropertiesAutowired();
+                    var types = typeof(HController).Assembly.GetExportedTypes().Where(type => typeof(ControllerBase).IsAssignableFrom(type)).ToArray();
+                    builder.RegisterTypes(types).PropertiesAutowired();
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
