@@ -47,14 +47,6 @@ namespace Hao.Core
         //            5. Assembly.CreateInstance(typeName)
         //            最快的是方式 3 ，与 Direct Create 的差异在一个数量级之内，约慢 7 倍的水平。其他方式，至少在 40 倍以上，最慢的是方式 4 ，要慢三个数量级。 
 
-        /// <summary>
-        /// 查询所有数据（未删除）（单表）
-        /// </summary>
-        /// <returns></returns>
-        public virtual async Task<List<T>> GetListAysnc()
-        {
-            return await UnitOfWork.GetDbClient().Queryable<T>().ToListAsync();
-        }
 
         /// <summary>
         /// 查询所有数据（单表）
@@ -68,42 +60,17 @@ namespace Hao.Core
         /// <summary>
         /// 根据条件查询所有数据（未删除）（单表）
         /// </summary>
-        /// <param name="conditions"></param>
-        /// <param name="expression"></param>
-        /// <param name="orderType"></param>
-        /// <returns></returns>
-        public virtual async Task<List<T>> GetListAysnc(List<IConditionalModel> conditions, Expression<Func<T, object>> expression = null, OrderByType orderType = OrderByType.Asc)
-        {
-            return await UnitOfWork.GetDbClient().Queryable<T>().Where(conditions)
-                .OrderByIF(expression != null, expression, orderType)
-                                    .ToListAsync();
-        }
-
-        /// <summary>
-        /// 根据条件查询所有数据（单表）
-        /// </summary>
-        /// <param name="conditions"></param>
-        /// <param name="expression"></param>
-        /// <param name="orderType"></param>
-        /// <returns></returns>
-        public virtual async Task<List<T>> GetAllAysnc(List<IConditionalModel> conditions, Expression<Func<T, object>> expression = null,OrderByType orderType = OrderByType.Asc)
-        {
-            return await UnitOfWork.GetDbClient().Queryable<T>().Where(conditions)
-                .OrderByIF(expression != null, expression, orderType)
-                                    .ToListAsync();
-        }
-
-        /// <summary>
-        /// 根据条件查询所有数据（未删除）（单表）
-        /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
         public virtual async Task<List<T>> GetListAysnc(Query<T> query)
         {
             var flag = string.IsNullOrWhiteSpace(query.OrderFileds);
-                return await UnitOfWork.GetDbClient().Queryable<T>().Where(query.Conditions)
-                    .OrderByIF(!flag, query.OrderFileds)
-                                    .ToListAsync();
+            var q = UnitOfWork.GetDbClient().Queryable<T>();
+            foreach (var item in query.QueryExpressions)
+            {
+                q.Where(item);
+            }
+            return await q.OrderByIF(!flag, query.OrderFileds).ToListAsync();
         }
 
         /// <summary>
@@ -115,19 +82,25 @@ namespace Hao.Core
         {
             var totalNumber = 0;
             var flag = string.IsNullOrWhiteSpace(query.OrderFileds);
-            var items = await Task.Factory.StartNew(() => UnitOfWork.GetDbClient().Queryable<T>().Where(query.Conditions)
-                .OrderByIF(!flag, query.OrderFileds)
-                                            .ToPageList(query.PageIndex, query.PageSize, ref totalNumber));
-
-            var pageList = new PagedList<T>()
+            var q = UnitOfWork.GetDbClient().Queryable<T>();
+            foreach (var item in query.QueryExpressions)
             {
-                Items = items,
-                TotalCount = totalNumber,
-                PageIndex = query.PageIndex,
-                PageSize = query.PageSize,
-                TotalPagesCount = (totalNumber + query.PageSize - 1) / query.PageSize
-            };
-            return pageList;
+                q.Where(item);
+            }
+            var items = q.OrderByIF(!flag, query.OrderFileds).ToPageList(query.PageIndex, query.PageSize, ref totalNumber);
+
+            return await Task.Factory.StartNew(() =>
+            {
+                var pageList = new PagedList<T>()
+                {
+                    Items = items,
+                    TotalCount = totalNumber,
+                    PageIndex = query.PageIndex,
+                    PageSize = query.PageSize,
+                    TotalPagesCount = (totalNumber + query.PageSize - 1) / query.PageSize
+                };
+                return pageList;
+            });
         }
 
         /// <summary>

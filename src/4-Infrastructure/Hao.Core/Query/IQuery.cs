@@ -1,16 +1,18 @@
-﻿using Hao.Query;
+﻿using Hao.Entity;
+using Hao.Query;
 using SqlSugar;
+using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace Hao.Core
 {
-    public interface IQuery:IPagedQuery
+    public interface IQuery<T> : IPagedQuery where T : new()
     {
-        List<IConditionalModel> Conditions { get; }
+        List<Expression<Func<T, bool>>> QueryExpressions { get; }
 
         string OrderFileds { get; set; }
 
-        //Expression<Func<T, object>> Expression { get; set; }
-        OrderByType? OrderByType { get; set; } 
+        OrderByType? OrderByType { get; set; }
     }
 }

@@ -58,7 +58,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task<LoginOut> Login(UserQuery query)
         {
-            var users = await _userRep.GetListAysnc(query.Conditions);
+            var users = await _userRep.GetListAysnc(query);
             if (users.Count == 0)
                 throw new HException(ErrorInfo.E005005, nameof(ErrorInfo.E005005).GetErrorCode());
             var user = users.FirstOrDefault();

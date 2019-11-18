@@ -42,18 +42,6 @@ namespace Hao.Core
         Task<List<T>> GetAllAysnc();
 
         /// <summary>
-        /// 根据条件查询所有数据（未删除）
-        /// </summary>
-        /// <returns></returns>
-        Task<List<T>> GetListAysnc(List<IConditionalModel> conditions, Expression<Func<T, object>> expression = null, OrderByType orderType = OrderByType.Asc);
-
-        /// <summary>
-        /// 根据条件查询所有数据
-        /// </summary>
-        /// <returns></returns>
-        Task<List<T>> GetAllAysnc(List<IConditionalModel> conditions, Expression<Func<T, object>> expression = null, OrderByType orderType = OrderByType.Asc);
-
-        /// <summary>
         /// 根据条件查询所有数据
         /// </summary>
         /// <returns></returns>
