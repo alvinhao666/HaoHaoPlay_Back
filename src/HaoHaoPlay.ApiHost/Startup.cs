@@ -161,7 +161,7 @@ namespace HaoHaoPlay.ApiHost
             {
                 OnLogExecuting = (sql, p) =>
                 {
-                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.ForegroundColor = ConsoleColor.Cyan;
                     Console.WriteLine(sql);
                     Console.WriteLine(string.Join(",", p?.Select(it => string.Format("{0}:{1}", it.ParameterName, it.Value))));
                     Console.ForegroundColor = ConsoleColor.White;
