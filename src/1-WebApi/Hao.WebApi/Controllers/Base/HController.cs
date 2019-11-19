@@ -112,7 +112,7 @@ namespace Hao.WebApi
         }
 
         ///// <summary>
-        ///// 读取body参数    （3.0 用的 新json api 会自动验证参数类型 转换不通过会报错  不需要此方法验证)
+        ///// 读取body参数    （.net core 3.0  会自动验证参数类型 转换不通过会报错  不需要此方法验证)
         ///// </summary>
         ///// <param name="context"></param>
         ///// <returns></returns>
