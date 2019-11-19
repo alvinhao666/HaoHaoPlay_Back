@@ -163,7 +163,7 @@ namespace HaoHaoPlay.ApiHost
                 {
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine(sql);
-                    Console.WriteLine(string.Join(",", p?.Select(it => it.ParameterName + ":" + it.Value)));
+                    Console.WriteLine(string.Join(",", p?.Select(it => string.Format("{0}:{1}", it.ParameterName, it.Value))));
                     Console.ForegroundColor = ConsoleColor.White;
                 }
             };
