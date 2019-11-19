@@ -13,7 +13,7 @@ namespace Hao.WebApi
         {
             RuleFor(x => x.LoginName).NotEmpty().WithMessage("账号不能为空");
 
-            RuleFor(x => x.PassWord).NotEmpty().WithMessage("密码不能为空");
+            RuleFor(x => x.Password).NotEmpty().WithMessage("密码不能为空");
         }
     }
 }
