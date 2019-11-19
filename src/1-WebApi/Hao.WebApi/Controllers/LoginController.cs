@@ -71,9 +71,7 @@ namespace Hao.WebApi
                 expires: timeNow.AddDays(3),//过期时间
                 signingCredentials: _appsettings.JwtOptions.SigningCredentials
             );
-            var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
-
-            user.JwtToken = encodedJwt;
+            user.JwtToken = new JwtSecurityTokenHandler().WriteToken(jwt);
 
 
             var ip = HttpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault();
@@ -82,7 +80,7 @@ namespace Hao.WebApi
                 ip = HttpContext.Connection.RemoteIpAddress.ToString();
                 if (ip == "::1") ip = "127.0.0.1";
             }
-            await _userAppService.UpdateLogin(user.Id.Value, DateTime.Now, ip);
+            await _userAppService.UpdateLogin(user.Id.Value, timeNow, ip);
 
             //存入redis
             var userValue = new RedisCacheUserInfo
