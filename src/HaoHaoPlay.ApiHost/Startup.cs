@@ -151,8 +151,17 @@ namespace HaoHaoPlay.ApiHost
                 ConfigureExternalServices = new ConfigureExternalServices()
                 {
                     DataInfoCacheService = new SqlSugarRedisCache() //RedisCache是继承ICacheService自已实现的一个类
+                },
+                AopEvents = new AopEvents
+                {
+                    OnLogExecuting = (sql, p) =>
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine(sql);
+                        Console.WriteLine(string.Join(",", p?.Select(it => it.ParameterName + ":" + it.Value)));
+                        Console.ForegroundColor = ConsoleColor.White;
+                    }
                 }
-
                 //config.SlaveConnectionConfigs = new List<SlaveConnectionConfig>() { //= 如果配置了 SlaveConnectionConfigs那就是主从模式,所有的写入删除更新都走主库，查询走从库，事务内都走主库，HitRate表示权重 值越大执行的次数越高，如果想停掉哪个连接可以把HitRate设为0 
                 //     new SlaveConnectionConfig() { HitRate=10, ConnectionString=Config.ConnectionString2 },
                 //     new SlaveConnectionConfig() { HitRate=30, ConnectionString=Config.ConnectionString3 }

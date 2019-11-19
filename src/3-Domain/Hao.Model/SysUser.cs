@@ -5,7 +5,7 @@ using SqlSugar;
 
 namespace Hao.Model
 {
-    [SugarTable("SysUser")]
+    [SugarTable("sysuser")]
     public class SysUser : FullAuditedEntity<long>
     {
         /// <summary>
