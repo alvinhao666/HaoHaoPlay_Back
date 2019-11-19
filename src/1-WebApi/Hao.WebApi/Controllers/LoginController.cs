@@ -47,7 +47,7 @@ namespace Hao.WebApi
         [HttpPost]
         public async Task<LoginOut> Login(LoginIn vm) //apicontroller 1.参数绑定策略的自动推断,可以省略[FromBody]
         {
-            var query = new UserQuery() { LoginName = vm.LoginName, Password = vm.PassWord, Enabled = true };
+            var query = new UserQuery() { LoginName = vm.LoginName, Enabled = true };
 
             string pwd = RsaHelper.Decrypt(_appsettings.KeyInfo.RsaPrivateKey, query.Password); //解密
 
