@@ -184,7 +184,7 @@ namespace HaoHaoPlay.ApiHost
                 x.UseRabbitMQ(cfg =>
                 {
                     cfg.HostName = appsettings.RabbitMQ.HostName;
-                    cfg.VirtualHost = appsettings.RabbitMQ.VirtualHost;
+                    cfg.VirtualHost = appsettings.RabbitMQ.VirtualHost; // 相当于数据库 可以在rabbitmq管理后台里面进行添加
                     cfg.Port = appsettings.RabbitMQ.Port;
                     cfg.UserName = appsettings.RabbitMQ.UserName;
                     cfg.Password = appsettings.RabbitMQ.Password;
