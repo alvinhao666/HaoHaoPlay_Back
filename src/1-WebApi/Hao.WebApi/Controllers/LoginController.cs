@@ -33,7 +33,7 @@ namespace Hao.WebApi
 
         private readonly IUserAppService _userAppService;
 
-        public LoginController(IOptionsSnapshot<AppSettingsInfo> appsettingsOptions, IUserAppService userService )
+        public LoginController(IOptionsSnapshot<AppSettingsInfo> appsettingsOptions, IUserAppService userService)
         {
             _appsettings = appsettingsOptions.Value;
             _userAppService = userService;
