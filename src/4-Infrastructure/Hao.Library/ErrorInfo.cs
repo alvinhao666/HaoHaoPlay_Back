@@ -8,7 +8,6 @@ namespace Hao.Library
         public const string E100001 = "认证失败，请重新登录";
         public const string E100002 = "未授权，请重新登录";
         public const string E100003 = "用户未登录，请重新登录";
-        public const string E100011 = "提交数据类型错误，请检查";
         //基础异常
         public const string E005001 = "用户不存在";
         public const string E005002 = "用户名已存在";
