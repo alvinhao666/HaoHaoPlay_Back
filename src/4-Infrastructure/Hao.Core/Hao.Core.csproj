@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="Castle.Core" Version="4.4.0" />
-    <PackageReference Include="CSRedisCore" Version="3.1.16" />
+    <PackageReference Include="CSRedisCore" Version="3.1.17" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.2.0" />
     <PackageReference Include="sqlSugarCore" Version="5.0.0.10" />
   </ItemGroup>
