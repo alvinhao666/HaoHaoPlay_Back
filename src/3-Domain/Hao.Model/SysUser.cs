@@ -64,5 +64,10 @@ namespace Hao.Model
         /// </summary>
         public string LastLoginIP { get; set; }
 
+        /// <summary>
+        /// 头像地址
+        /// </summary>
+        public string HeadImgUrl { get; set; }
+
     }
 }
