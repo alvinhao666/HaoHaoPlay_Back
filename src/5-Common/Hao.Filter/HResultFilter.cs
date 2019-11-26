@@ -11,23 +11,6 @@ namespace Hao.Filter
     {
         public override void OnResultExecuting(ResultExecutingContext context)
         {
-//            if (context.ActionDescriptor is ControllerActionDescriptor)
-//            {
-//                var descriptor = context.ActionDescriptor as ControllerActionDescriptor;
-//
-//                if (descriptor != null && descriptor.MethodInfo.CustomAttributes.All(x => x.AttributeType != typeof(NoHResultAttribute)))
-//                {
-//                    if(!(context.Result is JsonResult))
-//                    {
-//                        var response = new BaseResponse
-//                        {
-//                            Success = true,
-//                            Data = context.Result is EmptyResult ? null : (context.Result as ObjectResult)?.Value
-//                        };
-//                        context.Result = new JsonResult(response);
-//                    }
-//                }
-//            }
             if(!(context.Result is JsonResult))
             {
                 var response = new HResponse
