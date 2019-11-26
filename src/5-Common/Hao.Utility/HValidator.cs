@@ -30,26 +30,6 @@ namespace Hao.Utility
         }
 
         /// <summary>
-        /// 验证日期格式是否有效
-        /// </summary>
-        /// <param name="str"></param>
-        /// <returns></returns>
-        public static bool IsDateTime(string str)
-        {
-            bool result;
-            try
-            {
-                Convert.ToDateTime(str);
-                result = true;
-            }
-            catch
-            {
-                result = false;
-            }
-            return result;
-        }
-
-        /// <summary>
         /// 验证手机号，目前只支持中国手机号码
         /// </summary>
         /// <param name="mobile"></param>
@@ -234,8 +214,6 @@ namespace Hao.Utility
             return EqualityComparer<T>.Default.Equals(value, default(T));
         }
 
-
-
         public static bool IsInRange(this int thisValue, int begin, int end)
         {
             return thisValue >= begin && thisValue <= end;
@@ -254,42 +232,6 @@ namespace Hao.Utility
         public static bool IsContainsIn(this string thisValue, params string[] inValues)
         {
             return inValues.Any(it => thisValue.Contains(it));
-        }
-
-        public static bool IsNullOrEmpty(this object thisValue)
-        {
-            if (thisValue == null || thisValue == DBNull.Value) return true;
-            return thisValue.ToString() == "";
-        }
-
-        public static bool IsNullOrEmpty(this Guid? thisValue)
-        {
-            if (thisValue == null) return true;
-            return thisValue == Guid.Empty;
-        }
-
-        public static bool IsNullOrEmpty(this Guid thisValue)
-        {
-            if (thisValue == null) return true;
-            return thisValue == Guid.Empty;
-        }
-
-        public static bool IsNullOrEmpty(this IEnumerable<object> thisValue)
-        {
-            if (thisValue == null || thisValue.Count() == 0) return true;
-            return false;
-        }
-
-        public static bool HasValue(this object thisValue)
-        {
-            if (thisValue == null || thisValue == DBNull.Value) return false;
-            return thisValue.ToString() != "";
-        }
-
-        public static bool HasValue(this IEnumerable<object> thisValue)
-        {
-            if (thisValue == null || thisValue.Count() == 0) return false;
-            return true;
         }
 
         public static bool IsValuable(this IEnumerable<KeyValuePair<string, string>> thisValue)
@@ -390,11 +332,9 @@ namespace Hao.Utility
             return (thisValue + "").StartsWith("System.Linq.Enumerable");
         }
 
-        public static Type StringType = typeof(string);
-
         public static bool IsClass(this Type thisValue)
         {
-            return thisValue != StringType && thisValue.IsEntity();
+            return thisValue != HUtil.StringType && thisValue.IsEntity();
         }
     }
 }

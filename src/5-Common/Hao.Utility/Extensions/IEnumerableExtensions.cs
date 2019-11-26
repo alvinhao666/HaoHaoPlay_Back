@@ -104,6 +104,13 @@ namespace Hao.Utility
             }
             yield break;
         }
+
+
+        public static bool HasValue<TSource>(this IEnumerable<TSource> thisValue)
+        {
+            if (thisValue == null || thisValue.Count() == 0) return false;
+            return true;
+        }
     }
 }
 
