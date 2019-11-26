@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Linq.Expressions;
 using Hao.Entity;
 using Hao.Snowflake;
+using Hao.Utility;
 
 namespace Hao.Core
 {
@@ -125,7 +126,7 @@ namespace Hao.Core
         public virtual async Task<TKey> InsertAysnc(T entity)
         {
             var type = typeof(T);
-            var isGuid = typeof(TKey) == typeof(Guid);
+            var isGuid = typeof(TKey) == HUtil.GuidType;
             var id = type.GetProperty("Id");
 
             if (isGuid)
@@ -149,7 +150,7 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<bool> InsertAysnc(List<T> entities)
         {
-            var isGuid = typeof(TKey) == typeof(Guid);
+            var isGuid = typeof(TKey) == HUtil.GuidType;
             var type = typeof(T);
             var id = type.GetProperty("Id");
             var timeNow = DateTime.Now;

@@ -1,11 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Text;
 
 namespace Hao.Utility
 {
     public static class HUtil
     {
+        public static Type IntType = typeof(int);
+        public static Type LongType = typeof(long);
+        public static Type GuidType = typeof(Guid);
+        public static Type BoolType = typeof(bool);
+        public static Type BoolTypeNull = typeof(bool?);
+        public static Type ByteType = typeof(Byte);
+        public static Type ObjType = typeof(object);
+        public static Type DobType = typeof(double);
+        public static Type FloatType = typeof(float);
+        public static Type ShortType = typeof(short);
+        public static Type DecType = typeof(decimal);
+        public static Type StringType = typeof(string);
+        public static Type DateType = typeof(DateTime);
+        public static Type DateTimeOffsetType = typeof(DateTimeOffset);
+        public static Type TimeSpanType = typeof(TimeSpan);
+        public static Type ByteArrayType = typeof(byte[]);
+        public static Type DynamicType = typeof(ExpandoObject);
+
         /// <summary>  
         /// 获取当前时间戳  
         /// </summary>  
