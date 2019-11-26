@@ -226,6 +226,8 @@ namespace HaoHaoPlay.ApiHost
                 o.JsonSerializerOptions.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
                 o.JsonSerializerOptions.PropertyNamingPolicy = null;
                 o.JsonSerializerOptions.Converters.Add(new DatetimeJsonConverter());
+                //不加这个 接口接收参数 string类型的时间 转换 datetime类型报错 system.text.json不支持隐式转化
+                //Newtonsoft.Json 等默认支持隐式转换, 不一定是个合理的方式
             });
 
 
