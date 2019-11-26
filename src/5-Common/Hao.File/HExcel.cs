@@ -98,10 +98,9 @@ namespace Hao.File
                     int colIndex = 0;
                     foreach (var colName in keys)
                     {
-                        ICell cell = headerRow.CreateCell(colIndex);
+                        ICell cell = headerRow.CreateCell(colIndex++);
                         cell.SetCellValue(colName);
                         cell.CellStyle = headerStyle;
-                        colIndex++;
                     }
 
                     ICellStyle cellStyle = wk.CreateCellStyle();
