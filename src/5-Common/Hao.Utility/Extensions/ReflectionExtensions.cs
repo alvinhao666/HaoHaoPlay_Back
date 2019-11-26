@@ -7,11 +7,6 @@ namespace Hao.Utility
 {
     public static class ReflectionExtensions
     {
-        public static Type GetTypeInfo(this Type typeInfo)
-        {
-            return typeInfo;
-        }
-
         public static Type[] GetGenericArguments(this Type type)
         {
             var reval = type.GetTypeInfo().GetGenericArguments();
@@ -74,6 +69,17 @@ namespace Hao.Utility
         public static Type ReflectedType(this MethodInfo method)
         {
             return method.ReflectedType;
+        }
+
+        public static bool IsClass(this Type type)
+        {
+            return type != HUtil.StringType && type.IsEntity();
+        }
+
+        public static bool IsAnonymousType(this Type type)
+        {
+            string typeName = type.Name;
+            return typeName.Contains("<>") && typeName.Contains("__") && typeName.Contains("AnonymousType");
         }
     }
 }

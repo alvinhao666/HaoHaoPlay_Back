@@ -8,43 +8,6 @@ namespace Hao.Utility
 {
     public static class HValidator
     {
-        #region 类型判断
-        public static bool IsInt(string str)
-        {
-            return new Regex("^(-){0,1}\\d+$").Match(str).Success && long.Parse(str) <= 2147483647L && long.Parse(str) >= -2147483648L;
-        }
-
-        public static bool IsDate(this object thisValue)
-        {
-            if (thisValue == null) return false;
-            DateTime outValue = DateTime.MinValue;
-            return DateTime.TryParse(thisValue.ToString(), out outValue);
-        }
-
-        public static bool IsAnonymousType(this Type type)
-        {
-            string typeName = type.Name;
-            return typeName.Contains("<>") && typeName.Contains("__") && typeName.Contains("AnonymousType");
-        }
-        public static bool IsCollectionsList(this string thisValue)
-        {
-            return (thisValue + "").StartsWith("System.Collections.Generic.List") || (thisValue + "").StartsWith("System.Collections.Generic.IEnumerable");
-        }
-        public static bool IsStringArray(this string thisValue)
-        {
-            return (thisValue + "").IsMatch(@"System\.[a-z,A-Z,0-9]+?\[\]");
-        }
-        public static bool IsEnumerable(this string thisValue)
-        {
-            return (thisValue + "").StartsWith("System.Linq.Enumerable");
-        }
-
-        public static bool IsClass(this Type thisValue)
-        {
-            return thisValue != HUtil.StringType && thisValue.IsEntity();
-        }
-        #endregion
-
         #region 实用功能判断
         /// <summary>
         /// 验证邮箱
@@ -211,43 +174,5 @@ namespace Hao.Utility
         }
 
         #endregion
-
-        /// <summary>
-        /// 是否是默认值
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public static bool IsDefault<T>(this T value)
-        {
-            return EqualityComparer<T>.Default.Equals(value, default(T));
-        }
-
-        public static bool IsInRange(this int thisValue, int begin, int end)
-        {
-            return thisValue >= begin && thisValue <= end;
-        }
-
-        public static bool IsInRange(this DateTime thisValue, DateTime begin, DateTime end)
-        {
-            return thisValue >= begin && thisValue <= end;
-        }
-
-        public static bool IsIn<T>(this T thisValue, params T[] values)
-        {
-            return values.Contains(thisValue);
-        }
-
-        public static bool IsContainsIn(this string thisValue, params string[] inValues)
-        {
-            return inValues.Any(it => thisValue.Contains(it));
-        }
-
-        public static bool IsMatch(this object thisValue, string pattern)
-        {
-            if (thisValue == null) return false;
-            Regex reg = new Regex(pattern);
-            return reg.IsMatch(thisValue.ToString());
-        }
     }
 }
