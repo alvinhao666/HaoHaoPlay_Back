@@ -126,7 +126,7 @@ namespace Hao.WebApi
         /// <param name="query"></param>
         /// <returns></returns>
         [HttpGet("ExportUser")]
-        public async Task<object> ExportUsers([FromQuery]UserQueryInput query)
+        public async Task<object> ExportUser([FromQuery]UserQueryInput query)
         {
             string fileName = await _userAppService.ExportUsers(_mapper.Map<UserQuery>(query));
 
@@ -140,7 +140,7 @@ namespace Hao.WebApi
         /// <param name="formCollection"></param>
         /// <returns></returns>
         [HttpPost("ImportUser")]
-        public async Task ImportUsers()
+        public async Task ImportUser()
         {
             var files = HttpContext.Request.Form.Files;
 
