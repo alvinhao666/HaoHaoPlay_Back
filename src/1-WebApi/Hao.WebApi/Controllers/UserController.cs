@@ -140,14 +140,16 @@ namespace Hao.WebApi
         /// <param name="formCollection"></param>
         /// <returns></returns>
         [HttpPost("ImportUser")]
-        public async Task ImportUsers([FromForm] IFormCollection formCollection)
+        public async Task ImportUsers()
         {
-            if (formCollection?.Files == null)
+            var files = HttpContext.Request.Form.Files;
+
+            if (files == null || files.Count == 0) 
             {
                 throw new HException(ErrorInfo.E005007, nameof(ErrorInfo.E005007).GetErrorCode());
             }
             //可能上传多个excel文件
-            var files = (FormFileCollection)formCollection.Files;
+            //var files = (FormFileCollection)formCollection.Files;
 
             //格式限制
             var allowType = new string[] { "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" };
