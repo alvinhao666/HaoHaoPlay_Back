@@ -10,102 +10,90 @@ namespace Hao.Utility
     {
         public static int? ToInt(object value)
         {
-            int? result;
-            if (value == null || string.IsNullOrWhiteSpace(value.ToString()) || !int.TryParse(value.ToString(), out var value2))
-                result = null;
+            if (value == null || value == DBNull.Value || string.IsNullOrWhiteSpace(value.ToString()) || !int.TryParse(value.ToString(), out var result)) 
+                return null;
             else
-                result = value2;
-            return result;
+                return result;
         }
 
         public static int ToInt0(object value)
         {
-            var result = 0;
-            if (value != null)
+            int result = 0;
+            if (value != null && value != DBNull.Value)
                 int.TryParse(value.ToString(), out result);
             return result;
         }
 
         public static float? ToFloat(object value)
         {
-            float? result;
-            if (value == null || string.IsNullOrWhiteSpace(value.ToString()) || !float.TryParse(value.ToString(), out var value2))
-                result = null;
+            if (value == null || value == DBNull.Value || string.IsNullOrWhiteSpace(value.ToString()) || !float.TryParse(value.ToString(), out var result))
+                return null;
             else
-                result = value2;
-            return result;
+                return result;
         }
 
         public static float ToFloat0(object value)
         {
-            var result = 0f;
-            if (value != null)
+            float result = 0f;
+            if (value != null && value != DBNull.Value)
                 float.TryParse(value.ToString(), out result);
             return result;
         }
 
         public static decimal? ToDecimal(object value)
         {
-            decimal? result;
-            if (value == null || string.IsNullOrWhiteSpace(value.ToString()) || !decimal.TryParse(value.ToString(), out var value2))
-                result = null;
+            if (value == null || value == DBNull.Value || string.IsNullOrWhiteSpace(value.ToString()) || !decimal.TryParse(value.ToString(), out var result))
+                return null;
             else
-                result = value2;
-            return result;
+                return result;
         }
 
         public static decimal ToDecimal0(object value)
         {
             decimal result = 0m;
-            if (value != null)
+            if (value != null && value != DBNull.Value)
                 decimal.TryParse(value.ToString(), out result);
             return result;
         }
 
         public static double? ToDouble(object value)
         {
-            double? result;
-            if (value == null || string.IsNullOrWhiteSpace(value.ToString()) || !double.TryParse(value.ToString(), out var value2))
-                result = null;
+            if (value == null || value == DBNull.Value || string.IsNullOrWhiteSpace(value.ToString()) || !double.TryParse(value.ToString(), out var result))
+                return null;
             else
-                result = value2;
-            return result;
+                return result;
         }
 
         public static double ToDouble0(object value)
         {
             double result = 0d;
-            if (value != null)
+            if (value != null && value != DBNull.Value)
                 double.TryParse(value.ToString(), out result);
             return result;
         }
 
         public static long? ToLong(object value)
         {
-            long? result ;
-            if (value == null || string.IsNullOrWhiteSpace(value.ToString()) || !long.TryParse(value.ToString(), out var value2))
-                result = null;
+            if (value == null || value == DBNull.Value || string.IsNullOrWhiteSpace(value.ToString()) || !long.TryParse(value.ToString(), out var result))
+                return null;
             else
-                result = value2;
-            return result;
+                return  result;
         }
 
         public static long ToLong0(object value)
         {
             long result = 0L;
-            if (value != null)
+            if (value != null && value != DBNull.Value)
                 long.TryParse(value.ToString(), out result);
             return result;
         }
 
         public static bool? ToBool(object value)
         {
-            bool? result;
-            if (value == null || string.IsNullOrWhiteSpace(value.ToString()) || !bool.TryParse(value.ToString(), out var value2))
-                result = null;
+            if (value == null || value == DBNull.Value || string.IsNullOrWhiteSpace(value.ToString()) || !bool.TryParse(value.ToString(), out var result))
+                return null;
             else
-                result = value2;
-            return result;
+                return result;
         }
 
         public static bool ToBool0(object value)
@@ -117,22 +105,18 @@ namespace Hao.Utility
 
         public static Guid? ToGuid(object value)
         {
-            Guid? result;
-            if (value == null || string.IsNullOrWhiteSpace(value.ToString()) || !Guid.TryParse(value.ToString(), out var value2))
-                result = null;
+            if (value == null || value == DBNull.Value || string.IsNullOrWhiteSpace(value.ToString()) || !Guid.TryParse(value.ToString(), out var result))
+                return null;
             else
-                result = value2;
-            return result;
+                return result;
         }
 
         public static DateTime? ToDateTime(object value)
         {
-            DateTime? result;
-            if (value == null || string.IsNullOrWhiteSpace(value.ToString()) || !DateTime.TryParse(value.ToString(), out var value2))
-                result = null;
+            if (value == null || value == DBNull.Value || string.IsNullOrWhiteSpace(value.ToString()) || !DateTime.TryParse(value.ToString(), out var result))
+                return null;
             else
-                result = value2;
-            return result;
+                return result;
         }
 
         public static string ToDateString(this DateTime? time)
