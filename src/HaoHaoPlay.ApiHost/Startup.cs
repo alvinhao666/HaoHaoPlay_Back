@@ -270,7 +270,7 @@ namespace HaoHaoPlay.ApiHost
                 c.InjectStylesheet("/css/swagger_ui.css");
             });
 
-            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            app.UseCors(x => x.AllowCredentials().AllowAnyMethod().AllowAnyHeader().WithOrigins(new string[] { "http://localhost:4200" }));
 #endif
             #endregion
 
