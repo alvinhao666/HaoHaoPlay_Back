@@ -148,8 +148,6 @@ namespace Hao.WebApi
             {
                 throw new HException(ErrorInfo.E005007, nameof(ErrorInfo.E005007).GetErrorCode());
             }
-            //可能上传多个excel文件
-            //var files = (FormFileCollection)formCollection.Files;
 
             //格式限制
             var allowType = new string[] { "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" };
@@ -159,11 +157,11 @@ namespace Hao.WebApi
                 throw new HException(ErrorInfo.E005008, nameof(ErrorInfo.E005008).GetErrorCode());
             }
 
-            //            //大小限制
-            //            if (files.Sum(b => b.Length) >= 1024 * 1024 * 4)
-            //            {
-            //               
-            //            }
+            ////大小限制
+            //if (files.Sum(b => b.Length) >= 1024 * 1024 * 4)
+            //{
+               
+            //}
 
             var users = new List<UserIn>();
             foreach (IFormFile file in files)
