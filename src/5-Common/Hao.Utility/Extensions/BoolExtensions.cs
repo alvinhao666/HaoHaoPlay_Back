@@ -6,9 +6,9 @@ namespace Hao.Utility
 {
     public static class BoolExtensions
     {
-        public static bool IsTrue(this bool? flag)
+        public static bool IsTrue(this bool? value)
         {
-            return flag.HasValue && flag.Value;
+            return value.HasValue && value.Value;
         }
     }
 }
