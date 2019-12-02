@@ -20,19 +20,19 @@ namespace Hao.Utility
             return EqualityComparer<T>.Default.Equals(value, default(T));
         }
 
-        public static T IsNullReturnNew<T>(this T returnObj) where T : new()
+        public static T IsNullReturnNew<T>(this T value) where T : new()
         {
-            if (returnObj.IsNullOrEmpty())
+            if (value.IsNullOrWhiteSpace())
             {
-                returnObj = new T();
+                value = new T();
             }
-            return returnObj;
+            return value;
         }
 
-        public static bool IsNullOrEmpty(this object thisValue)
+        public static bool IsNullOrWhiteSpace(this object value)
         {
-            if (thisValue == null || thisValue == DBNull.Value) return true;
-            return thisValue.ToString() == "";
+            if (value == null || value == DBNull.Value || value.ToString().Trim() == "") return true;
+            return false;
         }
     }
 }
