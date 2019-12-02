@@ -36,6 +36,12 @@ namespace Hao.Core
         Task<List<T>> GetAllAysnc();
 
         /// <summary>
+        /// 根据条件查询所有数据
+        /// </summary>
+        /// <returns></returns>
+        Task<List<T>> GetListAysnc(Query<T> query);
+
+        /// <summary>
         /// 根据条件查询所有分页数据
         /// </summary>
         /// <returns></returns>
