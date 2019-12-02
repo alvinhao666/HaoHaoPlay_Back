@@ -10,7 +10,6 @@ using System.Reflection;
 using Hao.Core;
 using Hao.Library;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Hao.Response;
 using Microsoft.AspNetCore.HttpOverrides;
