@@ -75,11 +75,5 @@ namespace Hao.Utility
         {
             return type != HUtil.StringType && type.IsEntity();
         }
-
-        public static bool IsAnonymousType(this Type type)
-        {
-            string typeName = type.Name;
-            return typeName.Contains("<>") && typeName.Contains("__") && typeName.Contains("AnonymousType");
-        }
     }
 }
