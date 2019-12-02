@@ -118,34 +118,7 @@ namespace Hao.Utility
             else
                 return result;
         }
-
-        public static string ToDateString(this DateTime? time)
-        {
-            return time.HasValue ? time.Value.ToString("yyyy-MM-dd HH:mm:ss") : "";
-        }
-
-        public static string ToStartDateString(this DateTime? time)
-        {
-            return time.HasValue ? time.Value.ToString("yyyy-MM-dd") + "00:00:00" : "";
-        }
-
-        public static string ToEndDateString(this DateTime? time)
-        {
-            return time.HasValue ? time.Value.ToString("yyyy-MM-dd") + "23:59:59" : "";
-        }
-
-        public static DateTime? ToStartDate(this DateTime? time)
-        {
-            if (!time.HasValue) return null;
-            return DateTime.Parse(time.Value.ToString("yyyy-MM-dd") + "00:00:00");
-        }
-
-        public static DateTime? ToEndDate(this DateTime? time)
-        {
-            if (!time.HasValue) return null;
-            return DateTime.Parse(time.Value.ToString("yyyy-MM-dd") + "23:59:59");
-        }
-
+      
         /// <summary>
         /// 将金额转换成大写人民币
         /// </summary>
