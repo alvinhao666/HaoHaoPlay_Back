@@ -38,20 +38,5 @@ namespace Hao.Utility
             if (value == null) return false;
             return DateTime.TryParse(value.ToString(), out var outValue);
         }
-
-        public static bool IsCollectionsList(this string value)
-        {
-            return (value + "").StartsWith("System.Collections.Generic.List") || (value + "").StartsWith("System.Collections.Generic.IEnumerable");
-        }
-
-        public static bool IsStringArray(this string value)
-        {
-            return (value + "").IsMatch(@"System\.[a-z,A-Z,0-9]+?\[\]");
-        }
-
-        public static bool IsEnumerable(this string value)
-        {
-            return (value + "").StartsWith("System.Linq.Enumerable");
-        }
     }
 }
