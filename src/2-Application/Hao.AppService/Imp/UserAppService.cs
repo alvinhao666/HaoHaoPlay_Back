@@ -72,7 +72,7 @@ namespace Hao.AppService
         public async Task<long> AddUser(UserIn vm)
         {
             var user = _mapper.Map<SysUser>(vm);
-            user.FirstNameSpell = HSpell.GetInitialSpell(user.Name.ToCharArray()[0].ToString());
+            user.FirstNameSpell = HSpell.GetFirstLetter(user.Name.ToCharArray()[0]);
             user.Password = EncryptProvider.HMACSHA256(user.Password, _appsettings.KeyInfo.Sha256Key);
             user.Enabled = true;
             return await _userRep.InsertAysnc(user);
@@ -89,7 +89,7 @@ namespace Hao.AppService
             var users = _mapper.Map<List<SysUser>>(vms);
             foreach (var user in users)
             {
-                user.FirstNameSpell = HSpell.GetInitialSpell(user.Name.ToCharArray()[0].ToString());
+                user.FirstNameSpell = HSpell.GetFirstLetter(user.Name.ToCharArray()[0]);
                 user.Password = EncryptProvider.HMACSHA256(user.Password, _appsettings.KeyInfo.Sha256Key);
             }
             await _userRep.InsertAysnc(users);

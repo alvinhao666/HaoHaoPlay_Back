@@ -7,59 +7,15 @@ namespace Hao.Utility
 {
     public class HSpell
     {
-
         /// <summary>
-        /// 获得中文字符串的首字母
+        /// 一组汉字转换成拼音 (全拼)
         /// </summary>
-        /// <param name="str">中文字符串</param>
+        /// <param name="value"></param>
         /// <returns></returns>
-        public static string GetInitialSpells(string str)
-        {
-            return HSpell.GetSpell(str);
-        }
-
-        /// <summary>
-        /// 用来获得一个字的拼音首字母
-        /// </summary>
-        /// <param name="cnChar">一个字</param>
-        /// <returns></returns>
-        public static string GetInitialSpell(string cnChar)
-        {
-            if (string.IsNullOrWhiteSpace(cnChar))
-            {
-                return cnChar;
-            }
-            return HSpell.GetSpell(cnChar[0]);
-        }
-
-        /// <summary>
-        /// 获得姓名的缩写，例如zhangs
-        /// </summary>
-        /// <param name="cnChar"></param>
-        /// <returns></returns>
-        public static string GetNameSpells(string cnChar)
-        {
-            if (string.IsNullOrWhiteSpace(cnChar))
-            {
-                return cnChar;
-            }
-            StringBuilder text = new StringBuilder();
-            for (int i = 0; i < cnChar.Length; i++)
-            {
-                text.Append(i == 0 ? HSpell.GetSpells(cnChar[i]).ToLower() : HSpell.GetSpell(cnChar[i]).ToLower());
-            }
-            return text.ToString();
-        }
-
-        /// <summary>
-        /// 把汉字转换成拼音(全拼)
-        /// </summary>
-        /// <param name="hzString">汉字字符串</param>
-        /// <returns>转换后的拼音(全拼)字符串</returns>
-        public static string GetSpells(string hzString)
+        public static string GetSpells(string value)
         {
             string text = "";
-            char[] array = hzString.ToCharArray();
+            char[] array = value.ToCharArray();
             for (int i = 0; i < array.Length; i++)
             {
                 text += HSpell.GetSpells(array[i]);
@@ -68,42 +24,22 @@ namespace Hao.Utility
         }
 
         /// <summary>
-        /// 把汉字转换成拼音(全拼)
+        /// 单个汉字转换成拼音 (全拼)
         /// </summary>
-        /// <param name="hzString">汉字字符串</param>
-        /// <param name="spliter">字符间隔</param>
-        /// <returns>转换后的拼音(全拼)字符串</returns>
-        public static string GetSpells(string hzString, char spliter)
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static string GetSpells(char value)
         {
             string text = "";
-            char[] array = hzString.ToCharArray();
-            for (int i = 0; i < array.Length; i++)
+            if (HSpell.regex.IsMatch(value.ToString()))
             {
-                text = text + spliter.ToString() + HSpell.GetSpells(array[i]);
-            }
-            return text.TrimStart(new char[]
-            {
-                spliter
-            });
-        }
-
-        /// <summary>
-        /// 把汉字转换成拼音(全拼)
-        /// </summary>
-        /// <param name="c">汉字字符串</param>
-        /// <returns>转换后的拼音(全拼)字符串</returns>
-        public static string GetSpells(char c)
-        {
-            string text = "";
-            if (HSpell.regex.IsMatch(c.ToString()))
-            {
-                byte[] bytes = Encoding.Default.GetBytes(c.ToString());
+                byte[] bytes = Encoding.Default.GetBytes(value.ToString());
                 int num = (int)bytes[0];
                 int num2 = (int)bytes[1];
                 int num3 = num * 256 + num2 - 65536;
                 if (num3 > 0 && num3 < 160)
                 {
-                    text += c.ToString();
+                    text += value.ToString();
                 }
                 else if (num3 == -9254)
                 {
@@ -123,72 +59,29 @@ namespace Hao.Utility
             }
             else
             {
-                text += c.ToString();
+                text += value.ToString();
             }
             return text;
         }
 
         /// <summary>
-        /// 汉字转拼音缩写 (大写)
+        /// 单个字符的拼音首字母 (大写)
         /// </summary>
-        /// <param name="str">要转换的汉字字符串</param>
-        /// <returns>拼音缩写</returns>
-        public static string GetSpell(string str)
-        {
-            string text = "";
-            foreach (char c in str)
-            {
-                if (c >= '!' && c <= '~')
-                {
-                    text += c.ToString();
-                }
-                else
-                {
-                    text += HSpell.GetSpell(c);
-                }
-            }
-            return text;
-        }
-
-        /// <summary>
-        /// 汉字转拼音缩写  (字符串)(大写)(空格间隔)
-        /// </summary>
-        /// <param name="str">要转换的汉字字符串</param>
-        /// <returns>拼音缩写</returns>
-        public static string GetSpell(string str, char spliter)
-        {
-            string text = "";
-            foreach (char c in str)
-            {
-                if (c >= '!' && c <= '~')
-                {
-                    text = text + spliter.ToString() + c.ToString();
-                }
-                else
-                {
-                    text = text + spliter.ToString() + HSpell.GetSpell(c);
-                }
-            }
-            return text.Trim();
-        }
-
-        /// <summary>
-        /// 取单个字符的拼音声母
-        /// </summary>
-        /// <param name="c">要转换的单个汉字</param>
+        /// <param name="value">要转换的单个汉字</param>
         /// <returns>拼音声母</returns>
-        public static string GetSpell(char c)
+        public static string GetFirstLetter(char value)
         {
-            if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'))
+            if ((value >= 'a' && value <= 'z') || (value >= 'A' && value <= 'Z'))
             {
-                return char.ToUpper(c).ToString();
+                return char.ToUpper(value).ToString();
             }
-            if (c >= '一' && c <= '龥')
+            if (value >= '一' && value <= '龥')
             {
-                return HSpell.pyFirst[(int)(c - '一')].ToString();
+                return HSpell.pyFirst[(int)(value - '一')].ToString();
             }
-            return c.ToString();
+            return value.ToString();
         }
+
 
         /// <summary>
         /// 汉字的机内码数组
@@ -596,7 +489,6 @@ namespace Hao.Utility
         /// <summary>
         /// 机内码对应的拼音数组
         /// </summary>
-        // Token: 0x04000012 RID: 18
         private static string[] pyName = new string[]
         {
             "A",

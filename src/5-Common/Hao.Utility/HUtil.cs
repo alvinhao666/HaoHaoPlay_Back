@@ -64,7 +64,7 @@ namespace Hao.Utility
         /// </summary>
         /// <param name="length"></param>
         /// <returns></returns>
-        private static string GetRandomStr(int length)
+        private static string GetRandomCha(int length)
         {
             char[] arrChar = new char[]{
            'a','b','d','c','e','f','g','h','i','j','k','l','m','n','p','r','q','s','t','u','v','w','z','y','x',
