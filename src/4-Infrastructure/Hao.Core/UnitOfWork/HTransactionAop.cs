@@ -73,8 +73,8 @@ namespace Hao.Core
             {
                 invocation.Proceed();//直接执行被拦截方法
             }
-
         }
+
         /// <summary>
         /// 判断是否时异步方法或者异步的泛型方法
         /// </summary>
