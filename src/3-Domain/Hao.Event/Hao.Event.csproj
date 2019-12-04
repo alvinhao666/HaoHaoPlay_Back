@@ -10,7 +10,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\2-Application\Hao.AppService\Hao.AppService.csproj" />
-    <ProjectReference Include="..\Hao.EventData\Hao.EventData.csproj" />
   </ItemGroup>
 
 </Project>
