@@ -27,17 +27,18 @@ namespace Hao.AppService
 
         private readonly ISysUserRepository _userRep;
 
-        private readonly ICapPublisher _publisher;
+
+        private readonly ISysLoginRecordRepository _recordRep;
 
         private readonly AppSettingsInfo _appsettings;
 
         public FilePathInfo PathInfo { get; set; }
 
-        public UserAppService(IOptionsSnapshot<AppSettingsInfo> appsettingsOptions, ISysUserRepository userRepository, IMapper mapper, ICapPublisher publisher)
+        public UserAppService(IOptionsSnapshot<AppSettingsInfo> appsettingsOptions, ISysUserRepository userRepository, ISysLoginRecordRepository recordRep, IMapper mapper)
         {
             _userRep = userRepository;
+            _recordRep = recordRep;
             _mapper = mapper;
-            _publisher = publisher;
             _appsettings = appsettingsOptions.Value;
         }
 
@@ -133,10 +134,18 @@ namespace Hao.AppService
         /// <param name="lastLoginTime"></param>
         /// <param name="ip"></param>
         /// <returns></returns>
+        [UseTransaction]
         public async Task UpdateLogin(long userId, DateTime lastLoginTime, string ip)
         {
-            await _publisher.PublishAsync(nameof(LoginEventData),
-                new LoginEventData { UserId = userId, LastLoginTime = lastLoginTime,LastLoginIP=ip });
+            var user = await _userRep.GetAysnc(userId);
+            if (user != null)
+            {
+                user.LastLoginTime = lastLoginTime;
+                user.LastLoginIP = ip;
+                await _userRep.UpdateAsync(user);
+                await _recordRep.InsertAysnc(new SysLoginRecord() { UserId = user.Id, IP = ip, Time = lastLoginTime });
+            }
+            throw new Exception();
         }
 
         /// <summary>

@@ -4,9 +4,11 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
+using DotNetCore.CAP;
 using Hao.AppService;
 using Hao.AppService.ViewModel;
 using Hao.Encrypt;
+using Hao.EventData;
 using Hao.Library;
 using Hao.Log;
 using Microsoft.AspNetCore.Mvc;
@@ -28,9 +30,12 @@ namespace Hao.WebApi
 
         private readonly IUserAppService _userAppService;
 
-        public LoginController(IOptionsSnapshot<AppSettingsInfo> appsettingsOptions, IUserAppService userService)
+        private readonly ICapPublisher _publisher;
+
+        public LoginController(IOptionsSnapshot<AppSettingsInfo> appsettingsOptions, IUserAppService userService, ICapPublisher publisher)
         {
             _appsettings = appsettingsOptions.Value; //IOptionsSnapshot动态获取配置
+            _publisher = publisher;
             _userAppService = userService;
         }
 
@@ -75,7 +80,8 @@ namespace Hao.WebApi
                 ip = HttpContext.Connection.RemoteIpAddress.ToString();
                 if (ip == "::1") ip = "127.0.0.1";
             }
-            await _userAppService.UpdateLogin(user.Id.Value, timeNow, ip);
+
+            await _publisher.PublishAsync(nameof(LoginEventData),new LoginEventData { UserId = user.Id.Value, LastLoginTime = timeNow, LastLoginIP = ip });
 
             //存入redis
             var userValue = new RedisCacheUserInfo
