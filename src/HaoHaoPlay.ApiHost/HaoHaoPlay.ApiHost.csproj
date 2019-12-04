@@ -29,7 +29,7 @@
     <PackageReference Include="Caching.CSRedis" Version="3.1.6" />
     <PackageReference Include="CSRedisCore" Version="3.1.17" />
     <PackageReference Include="DotNetCore.CAP" Version="2.6.0" />
-    <PackageReference Include="DotNetCore.CAP.MySql" Version="2.6.0" />
+    <PackageReference Include="DotNetCore.CAP.PostgreSql" Version="2.6.0" />
     <PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="2.6.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.WebApiCompatShim" Version="2.2.0" />

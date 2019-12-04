@@ -178,7 +178,7 @@ namespace HaoHaoPlay.ApiHost
             {
                 x.UseDashboard();
 
-                x.UseMySql(cfg => { cfg.ConnectionString = appsettings.ConnectionStrings.MySqlConnection; });
+                x.UsePostgreSql(cfg => { cfg.ConnectionString = appsettings.ConnectionStrings.PostgreSqlConnection; });
 
                 x.UseRabbitMQ(cfg =>
                 {
