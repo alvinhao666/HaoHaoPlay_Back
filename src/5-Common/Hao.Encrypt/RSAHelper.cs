@@ -5,8 +5,7 @@ using System.Text;
 
 namespace Hao.Encrypt
 {
-
-    public class RsaHelper
+    public class RSAHelper
     {
 
         #region 使用私钥签名

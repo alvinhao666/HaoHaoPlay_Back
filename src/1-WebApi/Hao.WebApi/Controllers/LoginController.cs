@@ -42,7 +42,7 @@ namespace Hao.WebApi
         [HttpPost]
         public async Task<LoginOut> Login(LoginIn vm) //apicontroller 1.参数绑定策略的自动推断,可以省略[FromBody]
         {
-            string pwd = RsaHelper.Decrypt(_appsettings.KeyInfo.RsaPrivateKey, vm.Password); //解密
+            string pwd = RSAHelper.Decrypt(_appsettings.KeyInfo.RsaPrivateKey, vm.Password); //解密
 
             pwd = EncryptProvider.HMACSHA256(pwd, _appsettings.KeyInfo.Sha256Key);
 
