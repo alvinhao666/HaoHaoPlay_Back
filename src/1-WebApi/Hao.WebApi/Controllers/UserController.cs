@@ -100,24 +100,6 @@ namespace Hao.WebApi
         public async Task<UserOut> GetCurrentUser() => await _userAppService.GetCurrentUser();
 
 
-        //        /// <summary>
-        //        /// 导出用户
-        //        /// </summary>
-        //        /// <param name="query"></param>
-        //        /// <returns></returns>
-        //        [HttpGet]
-        //        [NoGlobalResult]
-        //        public async Task<HttpResponseMessage> ExportUsers([FromQuery]UserQueryInput query)
-        //        {
-        //            string fileName = await _userAppService.ExportUsers(_mapper.Map<UserQuery>(query));
-        //
-        //            string filePath = Path.Combine(new DirectoryInfo(_hostingEnvironment.ContentRootPath).Parent.FullName + "/ExportFile/Excel/", $"{fileName}");
-        //
-        //            var response = await DownFile(filePath, fileName);
-        //
-        //            return response;
-        //        }
-
         /// <summary>
         /// 导出用户
         /// </summary>
