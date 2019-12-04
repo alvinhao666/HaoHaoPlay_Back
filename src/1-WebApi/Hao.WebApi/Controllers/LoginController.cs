@@ -30,7 +30,7 @@ namespace Hao.WebApi
 
         public LoginController(IOptionsSnapshot<AppSettingsInfo> appsettingsOptions, IUserAppService userService)
         {
-            _appsettings = appsettingsOptions.Value;
+            _appsettings = appsettingsOptions.Value; //IOptionsSnapshot动态获取配置
             _userAppService = userService;
         }
 
