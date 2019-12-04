@@ -209,8 +209,7 @@ namespace Hao.AppService
             string fileName = $"{Guid.NewGuid()}.xlsx";
             string rootPath = PathInfo.ExportExcelPath;
 
-            if (!HFile.IsExistDirectory(rootPath))
-                HFile.CreateDirectory(rootPath);
+            HFile.CreateDirectory(rootPath);
             string filePath = Path.Combine(rootPath, $"{fileName}");
 
             await HFile.ExportToExcelEPPlus(filePath, exportData);

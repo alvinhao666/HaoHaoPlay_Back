@@ -292,8 +292,8 @@ namespace HaoHaoPlay.ApiHost
             app.UseStaticFiles();//使用默认文件夹wwwroot
             //导出excel路径
             var exportExcelPath = Path.Combine(_parentDir.FullName, "ExportFile/Excel");
-            if (!HFile.IsExistDirectory(exportExcelPath))
-                HFile.CreateDirectory(exportExcelPath);
+
+            HFile.CreateDirectory(exportExcelPath);
             app.UseStaticFiles(new StaticFileOptions()
             {
                 FileProvider = new PhysicalFileProvider(exportExcelPath),

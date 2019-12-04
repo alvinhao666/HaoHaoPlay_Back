@@ -170,8 +170,7 @@ namespace Hao.WebApi
 
                 string rootPath = PathInfo.ImportExcelPath;
 
-                if (!HFile.IsExistDirectory(rootPath))
-                    HFile.CreateDirectory(rootPath);
+                HFile.CreateDirectory(rootPath);
                 string filePath = Path.Combine(rootPath, $"{name}");
 
                 using (var fs = System.IO.File.Create(filePath))
