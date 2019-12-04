@@ -19,7 +19,9 @@ namespace Hao.Core
 
             try
             {
+                // 等待原有任务执行完成
                 await actualReturnValue;
+                // 执行 postAction() 表示本工作单元已经顺利执行
                 await postAction();
             }
             catch (Exception ex)

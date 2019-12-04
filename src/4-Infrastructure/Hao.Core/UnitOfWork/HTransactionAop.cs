@@ -47,7 +47,6 @@ namespace Hao.Core
                                 ex =>
                                 {
                                     _unitOfWork.RollbackTran();
-
                                 });
                         }
                         else //Task<TResult>
