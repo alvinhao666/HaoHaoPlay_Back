@@ -36,7 +36,7 @@ namespace Hao.Core
 
                     invocation.Proceed();
 
-                    // 异步获取异常，先执行
+                    // 异步获取异常，普通的 try catch 外层不能达到目的，毕竟是异步的
                     if (IsAsyncMethod(invocation.Method))
                     {
                         if (invocation.Method.ReturnType == typeof(Task))
