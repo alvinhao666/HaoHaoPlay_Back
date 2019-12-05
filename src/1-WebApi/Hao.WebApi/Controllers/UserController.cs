@@ -168,7 +168,7 @@ namespace Hao.WebApi
                     var worksheet = ep.Workbook.Worksheets[0];
                     if (worksheet != null && worksheet.Cells[1, 1].Text.Trim() != "姓名") 
                     {
-                        throw new Exception("上传Excel数据列名有误，请检查");
+                        throw new HException("上传Excel数据列名有误，请检查");
                     }
                     foreach (var ws in ep.Workbook.Worksheets)
                     {
