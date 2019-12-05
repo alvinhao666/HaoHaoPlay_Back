@@ -145,7 +145,6 @@ namespace Hao.AppService
                 await _userRep.UpdateAsync(user);
                 await _recordRep.InsertAysnc(new SysLoginRecord() { UserId = user.Id, IP = ip, Time = lastLoginTime });
             }
-            throw new Exception();
         }
 
         /// <summary>

@@ -190,7 +190,7 @@ namespace HaoHaoPlay.ApiHost
                     cfg.Password = appsettings.RabbitMQ.Password;
                 });
 
-                x.FailedRetryCount = 2;
+                x.FailedRetryCount = 2; //失败重试机会
                 x.FailedRetryInterval = 5;
                 x.SucceedMessageExpiredAfter = 24 * 3600;
                 // If you are using Kafka, you need to add the configuration：
