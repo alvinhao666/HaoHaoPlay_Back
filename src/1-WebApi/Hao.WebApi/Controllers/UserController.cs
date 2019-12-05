@@ -163,9 +163,13 @@ namespace Hao.WebApi
                     fs.Flush();
                 }
 
-
                 using (var ep = new ExcelPackage(new FileInfo(filePath)))
                 {
+                    var worksheet = ep.Workbook.Worksheets[0];
+                    if (worksheet != null && worksheet.Cells[1, 1].Text.Trim() != "姓名") 
+                    {
+                        throw new Exception("上传Excel数据列名有误，请检查");
+                    }
                     foreach (var ws in ep.Workbook.Worksheets)
                     {
                         int colStart = ws.Dimension.Start.Column;  //工作区开始列,start=1
@@ -177,13 +181,12 @@ namespace Hao.WebApi
                         {
                             var user = new UserIn();
                             user.Name = ws.Cells[i, colStart].Text;
-                            user.LoginName = ws.Cells[i, colStart + 1].Text;
-                            user.Password = ws.Cells[i, colStart + 2].Text;
                             users.Add(user);
                         }
                     }
                 }
             }
+            if (users.Count == 0) return;
             await _userAppService.AddUsers(users);
         }
     }
