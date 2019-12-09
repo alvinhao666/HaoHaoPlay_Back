@@ -86,6 +86,7 @@ namespace Hao.Core
 
         private async Task TestActionAsync(IInvocation invocation)
         {
+            await Task.FromResult(0);
         }
 
     }

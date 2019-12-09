@@ -29,8 +29,6 @@ using Hao.File;
 using Microsoft.OpenApi.Models;
 using System.Text.Encodings.Web;
 using Hao.Utility;
-using Hao.RunTimeException;
-using Hao.Filter;
 using Hao.Event;
 using Hao.Snowflake;
 
@@ -220,7 +218,7 @@ namespace HaoHaoPlay.ApiHost
                 x.Filters.Add(typeof(HResultFilter));
             })
             .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginInValidator>()) //模型验证
-            .AddWebApiConventions()//处理HttpResponseMessage类型返回值的问题
+            //.AddWebApiConventions()//处理HttpResponseMessage类型返回值的问题
             .AddJsonOptions(o =>
             {
                 o.JsonSerializerOptions.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;

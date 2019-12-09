@@ -1,4 +1,5 @@
 ﻿using Hao.Response;
+using Hao.RunTimeException;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
@@ -7,7 +8,7 @@ using System;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Hao.RunTimeException
+namespace HaoHaoPlay.ApiHost
 {
     public static class ExceptionHandlerMiddleware
     {
