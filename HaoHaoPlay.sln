@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29215.179
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{094FBA78-1265-4B2A-A7C6-46B8AD420D1B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1-WebApi", "1-WebApi", "{68CCE9AA-0E76-4F43-9C77-1AC05A755176}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1-Api", "1-Api", "{68CCE9AA-0E76-4F43-9C77-1AC05A755176}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2-Application", "2-Application", "{EDCED01B-B884-415C-972B-7D6257256919}"
 EndProject
@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4-Infrastructure", "4-Infra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.Repository", "src\3-Domain\Hao.Repository\Hao.Repository.csproj", "{2ADA8FF1-D817-46E0-9BA4-BE70A540481D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.WebApi", "src\1-WebApi\Hao.WebApi\Hao.WebApi.csproj", "{0C39DA4A-1D39-4200-A233-2D1C6B26EC12}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.WebApi", "src\1-Api\Hao.WebApi\Hao.WebApi.csproj", "{0C39DA4A-1D39-4200-A233-2D1C6B26EC12}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5-Common", "5-Common", "{042FD3BE-DA74-462B-8F16-E6D1ADFC7454}"
 EndProject
