@@ -39,7 +39,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\1-Api\Hao.WebApi\Hao.WebApi.csproj" />
-    <ProjectReference Include="..\1-WebApi\Hao.WebApi\Hao.WebApi.csproj" />
     <ProjectReference Include="..\3-Domain\Hao.Event\Hao.Event.csproj" />
     <ProjectReference Include="..\5-Common\Hao.Exception\Hao.Exception.csproj" />
     <ProjectReference Include="..\5-Common\Hao.Filter\Hao.Filter.csproj" />
