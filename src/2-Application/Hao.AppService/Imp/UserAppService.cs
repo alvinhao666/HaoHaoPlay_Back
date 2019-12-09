@@ -124,7 +124,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task<UserOut> GetCurrentUser()
         {
-            return new UserOut();
+            return await Task.FromResult(new UserOut());
         }
 
         /// <summary>
