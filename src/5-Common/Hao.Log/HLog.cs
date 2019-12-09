@@ -1,6 +1,4 @@
 ﻿
-using System.Text.Json;
-
 namespace Hao.Log
 {
     public class HLog
