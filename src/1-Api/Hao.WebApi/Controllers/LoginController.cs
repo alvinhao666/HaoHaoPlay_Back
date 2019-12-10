@@ -71,7 +71,7 @@ namespace Hao.WebApi
                 expires: timeNow.AddDays(3),//过期时间
                 signingCredentials: _appsettings.JwtOptions.SigningCredentials
             );
-            user.JwtToken = new JwtSecurityTokenHandler().WriteToken(jwt);
+            user.Jwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 
 
             var ip = HttpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault();

@@ -24,6 +24,6 @@ namespace Hao.AppService.ViewModel
         /// <summary>
         /// 令牌
         /// </summary>
-        public string JwtToken { get; set; }
+        public string Jwt { get; set; }
     }
 }
