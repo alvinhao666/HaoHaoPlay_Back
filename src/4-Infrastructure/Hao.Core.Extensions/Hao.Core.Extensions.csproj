@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\5-Common\Hao.Exception\Hao.Exception.csproj" />
+    <ProjectReference Include="..\Hao.Core\Hao.Core.csproj" />
+    <ProjectReference Include="..\Hao.Library\Hao.Library.csproj" />
+  </ItemGroup>
+
+</Project>

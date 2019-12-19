@@ -31,7 +31,6 @@
     <PackageReference Include="DotNetCore.CAP" Version="2.6.0" />
     <PackageReference Include="DotNetCore.CAP.PostgreSql" Version="2.6.0" />
     <PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="2.6.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0-rc4" />
     <PackageReference Include="System.Text.Json" Version="4.7.0" />
   </ItemGroup>
@@ -39,6 +38,7 @@
   <ItemGroup>
     <ProjectReference Include="..\1-Api\Hao.WebApi\Hao.WebApi.csproj" />
     <ProjectReference Include="..\3-Domain\Hao.Event\Hao.Event.csproj" />
+    <ProjectReference Include="..\4-Infrastructure\Hao.Core.Extensions\Hao.Core.Extensions.csproj" />
     <ProjectReference Include="..\5-Common\Hao.Exception\Hao.Exception.csproj" />
     <ProjectReference Include="..\5-Common\Hao.Json\Hao.Json.csproj" />
   </ItemGroup>

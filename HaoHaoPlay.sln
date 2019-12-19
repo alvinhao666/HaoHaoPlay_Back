@@ -62,7 +62,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".global", ".global", "{4B99
 		Dockerfile = Dockerfile
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hao.Json", "src\5-Common\Hao.Json\Hao.Json.csproj", "{A21BC0AB-6C64-4DE4-AFF6-60153F790F9D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.Json", "src\5-Common\Hao.Json\Hao.Json.csproj", "{A21BC0AB-6C64-4DE4-AFF6-60153F790F9D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hao.Core.Extensions", "src\4-Infrastructure\Hao.Core.Extensions\Hao.Core.Extensions.csproj", "{8ED48A73-C61C-4C7D-8A01-47F564C9DBC1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -154,6 +156,10 @@ Global
 		{A21BC0AB-6C64-4DE4-AFF6-60153F790F9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A21BC0AB-6C64-4DE4-AFF6-60153F790F9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A21BC0AB-6C64-4DE4-AFF6-60153F790F9D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8ED48A73-C61C-4C7D-8A01-47F564C9DBC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8ED48A73-C61C-4C7D-8A01-47F564C9DBC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8ED48A73-C61C-4C7D-8A01-47F564C9DBC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8ED48A73-C61C-4C7D-8A01-47F564C9DBC1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -185,6 +191,7 @@ Global
 		{271A0FB7-538E-417C-BD67-9C2FF6E49169} = {D4FE854B-07DD-4C60-81D3-5B75912CE2F8}
 		{0A5E2F50-11A1-457F-8526-5DF11EAE18C6} = {042FD3BE-DA74-462B-8F16-E6D1ADFC7454}
 		{A21BC0AB-6C64-4DE4-AFF6-60153F790F9D} = {042FD3BE-DA74-462B-8F16-E6D1ADFC7454}
+		{8ED48A73-C61C-4C7D-8A01-47F564C9DBC1} = {2F74256B-F2C2-494A-82AE-97722C2A4F4B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5BAAEA79-B086-4D1C-AC3A-B029DF5FA31A}
