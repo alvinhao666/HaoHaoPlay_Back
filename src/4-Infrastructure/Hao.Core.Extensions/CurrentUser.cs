@@ -5,11 +5,11 @@ namespace Hao.Core
 {
     public class CurrentUser : ICurrentUser
     {
-        private IHttpContextAccessor _httpContextAccessor;
+        private readonly HttpContext _httpContext;
 
         public CurrentUser(IHttpContextAccessor httpContextAccessor)
         {
-            _httpContextAccessor = httpContextAccessor;
+            _httpContext = httpContextAccessor.HttpContext;
         }
 
         /// <summary>
@@ -17,8 +17,8 @@ namespace Hao.Core
         /// </summary>
         public long? Id
         {
-            get => _httpContextAccessor.HttpContext == null ? -1 : HConvert.ToLong(_httpContextAccessor.HttpContext.Session.GetString("CurrentUser_UserId"));
-            set => _httpContextAccessor.HttpContext.Session.SetString("CurrentUser_UserId", value.ToString());
+            get => _httpContext == null ? -1 : HConvert.ToLong(_httpContext.Session.GetString("CurrentUser_UserId"));
+            set => _httpContext.Session.SetString("CurrentUser_UserId", value.ToString());
         }
 
         /// <summary>
@@ -26,8 +26,8 @@ namespace Hao.Core
         /// </summary>
         public string Name
         {
-            get => _httpContextAccessor.HttpContext == null ? "系统" : _httpContextAccessor.HttpContext.Session.GetString("CurrentUser_UserName");
-            set => _httpContextAccessor.HttpContext.Session.SetString("CurrentUser_UserName", value);
+            get => _httpContext == null ? "系统" : _httpContext.Session.GetString("CurrentUser_UserName");
+            set => _httpContext.Session.SetString("CurrentUser_UserName", value);
         }
 
     }
