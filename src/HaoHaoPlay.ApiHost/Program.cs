@@ -48,10 +48,10 @@ namespace HaoHaoPlay.ApiHost
                         logging.AddConsole();
                         logging.AddNLog($"NLog.{hostingContext.HostingEnvironment.EnvironmentName}.config");
                     })
-                              .UseNLog()
-                              .UseUrls("http://*:8000")
-                              .UseKestrel()
-                              .UseStartup<Startup>();
+                    .UseNLog()
+                    .UseUrls("http://*:8000")
+                    .UseKestrel()
+                    .UseStartup<Startup>();
                 })
                 .Build()
                 .Run();
