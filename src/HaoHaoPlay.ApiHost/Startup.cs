@@ -274,9 +274,7 @@ namespace HaoHaoPlay.ApiHost
 
 
             #region 获取当前用户
-
             app.UseSession();
-
             #endregion
 
 
@@ -305,14 +303,12 @@ namespace HaoHaoPlay.ApiHost
             #endregion
 
 
-            #region 获取客户端ip
-            // Nginx 获取ip
+            #region  Nginx 获取ip
             app.UseForwardedHeaders(new ForwardedHeadersOptions()
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
             #endregion
-
 
             app.UseRouting();
 
