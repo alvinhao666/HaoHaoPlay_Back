@@ -14,7 +14,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Hao.Response;
 using Microsoft.AspNetCore.HttpOverrides;
 using Hao.WebApi;
-using Hao.AppService;
 using FluentValidation.AspNetCore;
 using Microsoft.Extensions.FileProviders;
 using CSRedis;
