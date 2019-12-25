@@ -4,9 +4,9 @@ using Hao.Core;
 
 namespace Hao.WebApi
 {
-    public class AutoMapperInitApi
+    public class MapperInit
     {
-        public static void InitMap(IMapperConfigurationExpression cfg)
+        public static void Map(IMapperConfigurationExpression cfg)
         {
             cfg.CreateMap<UserQueryInput, UserQuery>()
                 .ForMember(x => x.OrderFileds, a => a.MapFrom(x => x.OrderByType.CombineNameWithSpace(x.SortField))); 

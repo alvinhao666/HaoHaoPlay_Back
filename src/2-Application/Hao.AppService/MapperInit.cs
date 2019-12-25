@@ -7,9 +7,9 @@ using Hao.Utility;
 
 namespace Hao.AppService
 {
-    public class AutoMapperInitService
+    public class MapperInit
     {
-        public static void InitMap(IMapperConfigurationExpression cfg)
+        public static void Map(IMapperConfigurationExpression cfg)
         {
 
             cfg.CreateMap<SysUser, LoginOut>();

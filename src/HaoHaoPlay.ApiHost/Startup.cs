@@ -249,8 +249,8 @@ namespace HaoHaoPlay.ApiHost
             #region AutoMapper
             services.AddSingleton<IMapper>(new Mapper(new MapperConfiguration(cfg =>
             {
-                AutoMapperInitApi.InitMap(cfg);
-                AutoMapperInitService.InitMap(cfg);
+                Hao.WebApi.MapperInit.Map(cfg);
+                Hao.AppService.MapperInit.Map(cfg);
             })));
             #endregion
         }
