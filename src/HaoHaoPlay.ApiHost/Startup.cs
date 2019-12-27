@@ -201,19 +201,7 @@ namespace HaoHaoPlay.ApiHost
 
 
             #region 模型验证 ApiBehaviorOptions 的统一模型验证配置一定要放到(.AddMvc)后面
-            services.Configure<ApiBehaviorOptions>(options =>
-            {
-                options.InvalidModelStateResponseFactory = (context) =>
-                {
-                    var error = context.ModelState.Values.SelectMany(x => x.Errors.Select(p => p.ErrorMessage)).FirstOrDefault();
-                    var response = new HResponse
-                    {
-                        Success = false,
-                        ErrorMsg = error
-                    };
-                    return new JsonResult(response);
-                };
-            });
+            services.AddInvalidModel();
             #endregion
 
 
