@@ -9,7 +9,7 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class HInvalidModel
     {
-        public static IServiceCollection AddInvalidModel(this IServiceCollection services)
+        public static IServiceCollection AddInvalidModelService(this IServiceCollection services)
         {
             services.Configure<ApiBehaviorOptions>(options =>
             {

@@ -139,28 +139,7 @@ namespace HaoHaoPlay.ApiHost
 
 
             #region CAP
-
-            services.AddCap(x =>
-            {
-                x.UseDashboard();
-
-                x.UsePostgreSql(cfg => { cfg.ConnectionString = appsettings.ConnectionStrings.PostgreSqlConnection; });
-
-                x.UseRabbitMQ(cfg =>
-                {
-                    cfg.HostName = appsettings.RabbitMQ.HostName;
-                    cfg.VirtualHost = appsettings.RabbitMQ.VirtualHost; // 相当于数据库 可以在rabbitmq管理后台里面进行添加
-                    cfg.Port = appsettings.RabbitMQ.Port;
-                    cfg.UserName = appsettings.RabbitMQ.UserName;
-                    cfg.Password = appsettings.RabbitMQ.Password;
-                });
-
-                x.FailedRetryCount = 2; //失败重试机会
-                x.FailedRetryInterval = 5;
-                x.SucceedMessageExpiredAfter = 24 * 3600;
-                // If you are using Kafka, you need to add the configuration：
-                //x.UseKafka("localhost");
-            });
+            services.AddCapService(appsettings.ConnectionStrings.PostgreSqlConnection, appsettings.RabbitMQ.HostName, appsettings.RabbitMQ.VirtualHost, appsettings.RabbitMQ.Port, appsettings.RabbitMQ.UserName, appsettings.RabbitMQ.Password);
             services.AutoDependency(typeof(ILoginEventHandler));
             #endregion
 
@@ -197,7 +176,7 @@ namespace HaoHaoPlay.ApiHost
 
 
             #region 模型验证 ApiBehaviorOptions 的统一模型验证配置一定要放到(.AddMvc)后面
-            services.AddInvalidModel();
+            services.AddInvalidModelService();
             #endregion
 
 
