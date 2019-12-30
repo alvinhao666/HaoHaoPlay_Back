@@ -82,19 +82,8 @@ namespace HaoHaoPlay.ApiHost
             #endregion
 
 
-            #region Http
-            services.AddHttpClient();
-            #endregion
-
-
-            #region 数据保护
-            services.AddDataProtection();
-            #endregion
-
-
             #region Jwt
 
-            //jwt验证：
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -125,29 +114,27 @@ namespace HaoHaoPlay.ApiHost
             //初始化 RedisHelper
             RedisHelper.Initialization(csRedis);
 
-            services.AddSingleton<IDistributedCache>(new CSRedisCache(RedisHelper.Instance)); //利用分布式缓存
-                                                                                              //现在,ASP.NET Core引入了IDistributedCache分布式缓存接口，它是一个相当基本的分布式缓存标准API，可以让您对它进行编程，然后无缝地插入第三方分布式缓存
-                                                                                              //DistributedCache将拷贝缓存的文件到Slave节点
+            //利用分布式缓存
+            //现在,ASP.NET Core引入了IDistributedCache分布式缓存接口，它是一个相当基本的分布式缓存标准API，可以让您对它进行编程，然后无缝地插入第三方分布式缓存
+            //DistributedCache将拷贝缓存的文件到Slave节点
+            services.AddSingleton<IDistributedCache>(new CSRedisCache(RedisHelper.Instance));
+
             #endregion
 
 
-            #region ORM
-
+            //ORM
             services.AddPostgreSQLService(appsettings.ConnectionStrings.PostgreSqlConnection);
 
-            #endregion
-
-
-            #region CAP
+            //CAP
             services.AddCapService(appsettings.ConnectionStrings.PostgreSqlConnection, appsettings.RabbitMQ.HostName, appsettings.RabbitMQ.VirtualHost, appsettings.RabbitMQ.Port, appsettings.RabbitMQ.UserName, appsettings.RabbitMQ.Password);
             services.AutoDependency(typeof(ILoginEventHandler));
-            #endregion
 
 
             #region Session 获取当前用户
             services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromSeconds(10);//设置session的过期时间
+                //设置session的过期时间
+                options.IdleTimeout = TimeSpan.FromSeconds(10);
             });
 
             //services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>(); //即使service使用了单例模式，但是在多线程的情况下，HttpContextAccessor不会出现线程同步问题。// .net core 2.2不需要
@@ -163,21 +150,25 @@ namespace HaoHaoPlay.ApiHost
             {
                 x.Filters.Add(typeof(HResultFilter));
             })
-            .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginInValidator>()) //模型验证
-            //.AddWebApiConventions()//处理HttpResponseMessage类型返回值的问题
+            .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginInValidator>())
             .AddJsonOptions(o =>
             {
+                //不加这个 接口接收参数 string类型的时间 转换 datetime类型报错 system.text.json不支持隐式转化
+                //Newtonsoft.Json 等默认支持隐式转换, 不一定是个合理的方式
                 o.JsonSerializerOptions.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
                 o.JsonSerializerOptions.PropertyNamingPolicy = null;
                 o.JsonSerializerOptions.Converters.Add(new DatetimeJsonConverter());
-                //不加这个 接口接收参数 string类型的时间 转换 datetime类型报错 system.text.json不支持隐式转化
-                //Newtonsoft.Json 等默认支持隐式转换, 不一定是个合理的方式
-            });
+            }); //.AddWebApiConventions()//处理HttpResponseMessage类型返回值的问题
 
 
-            #region 模型验证 ApiBehaviorOptions 的统一模型验证配置一定要放到(.AddMvc)后面
+            //模型验证 ApiBehaviorOptions 的统一模型验证配置一定要放到(.AddMvc)后面
             services.AddInvalidModelService();
-            #endregion
+
+            //Http
+            services.AddHttpClient();
+
+            //数据保护
+            services.AddDataProtection();
 
 
             #region AutoMapper
@@ -194,7 +185,6 @@ namespace HaoHaoPlay.ApiHost
         {
             #region Debug
 #if DEBUG
-            //配置Swagger
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
@@ -220,7 +210,8 @@ namespace HaoHaoPlay.ApiHost
             #region 文件
             //文件访问权限
             app.UseWhen(a => a.Request.Path.Value.Contains("ExportExcel") || a.Request.Path.Value.Contains("template"), b => b.UseMiddleware<AuthorizeStaticFilesMiddleware>());
-            app.UseStaticFiles();//使用默认文件夹wwwroot
+            //使用默认文件夹wwwroot
+            app.UseStaticFiles();
             //导出excel路径
             var exportExcelPath = Path.Combine(_parentDir.FullName, "ExportFile/Excel");
 
