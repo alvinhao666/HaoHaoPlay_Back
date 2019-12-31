@@ -4,11 +4,11 @@ namespace Hao.RunTimeException
 {
     public class HException : Exception
     {
-        public int Code { get; private set; }
+        public int? Code { get; private set; }
 
         public HException() { }
 
-        public HException(int code)
+        public HException(int? code)
         {
             this.Code = Code;
         }
@@ -16,7 +16,7 @@ namespace Hao.RunTimeException
         public HException(string message)
             : base(message) { }
 
-        public HException(string message, int code)
+        public HException(string message, int? code)
             : base(message)
         {
             this.Code = code;

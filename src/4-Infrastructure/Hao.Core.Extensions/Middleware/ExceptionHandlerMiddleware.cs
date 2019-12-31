@@ -8,7 +8,7 @@ using System;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace HaoHaoPlay.ApiHost
+namespace Hao.Core.Extensions
 {
     public static class ExceptionHandlerMiddleware
     {

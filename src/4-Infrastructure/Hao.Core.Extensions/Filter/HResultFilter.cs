@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace HaoHaoPlay.ApiHost
+namespace Hao.Core.Extensions
 {
     /// <summary>
     /// 全局过滤器

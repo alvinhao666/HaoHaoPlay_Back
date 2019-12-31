@@ -35,21 +35,6 @@ namespace Hao.WebApi
         public override void OnActionExecuting(ActionExecutingContext context)
         {
 
-            #region 若需要Claims里面其他信息，则取消注释
-            if (HttpContext.Request.Headers.ContainsKey("Authorization"))
-            {
-                var strToken = HttpContext.Request.Headers["Authorization"].ToString();
-                if (strToken.Contains("Bearer "))
-                {
-                    var jwtHandler = new JwtSecurityTokenHandler();
-                    JwtSecurityToken jwtToken = jwtHandler.ReadJwtToken(strToken.Remove(0, 7)); //去除"Bearer "
-                    var identity = new ClaimsIdentity(jwtToken.Claims);
-                    var principal = new ClaimsPrincipal(identity);
-                    HttpContext.User = principal;
-                }
-            }
-            #endregion
-
             var userId = User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sid)?.Value; //Security Identifiers安全标识符
             if (userId == null) throw new HException(ErrorInfo.E100003, nameof(ErrorInfo.E100003).GetErrorCode());
 

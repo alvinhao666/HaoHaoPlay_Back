@@ -7,16 +7,16 @@ using Microsoft.AspNetCore.DataProtection;
 using Hao.RunTimeException;
 using Microsoft.Extensions.Options;
 
-namespace HaoHaoPlay.ApiHost
+namespace Hao.Core.Extensions
 {
-    public class AuthorizeStaticFilesMiddleware
+    public class StaticFileHandlerMiddleware
     {
         private readonly RequestDelegate _next;
         
         private readonly ITimeLimitedDataProtector _protector;
 
 
-        public AuthorizeStaticFilesMiddleware( RequestDelegate next,IDataProtectionProvider provider, IOptionsSnapshot<AppSettingsInfo> appsettingsOptions)
+        public StaticFileHandlerMiddleware( RequestDelegate next,IDataProtectionProvider provider, IOptionsSnapshot<AppSettingsInfo> appsettingsOptions)
         {
             _next = next;
             _protector = provider.CreateProtector(appsettingsOptions.Value.DataProtectorPurpose.FileDownload).ToTimeLimitedDataProtector();

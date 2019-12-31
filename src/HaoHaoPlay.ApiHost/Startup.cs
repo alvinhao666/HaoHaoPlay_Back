@@ -26,6 +26,7 @@ using System.Text.Encodings.Web;
 using Hao.Event;
 using Hao.Snowflake;
 using Hao.Json;
+using Hao.Core.Extensions;
 
 namespace HaoHaoPlay.ApiHost
 {
@@ -190,9 +191,11 @@ namespace HaoHaoPlay.ApiHost
             #endregion
 
 
+            app.UseWhen(a => !a.Request.Path.Value.Contains("Login"), b => b.UseMiddleware<JwtHandlerMiddleware>());
+
             #region 文件
             //文件访问权限
-            app.UseWhen(a => a.Request.Path.Value.Contains("ExportExcel") || a.Request.Path.Value.Contains("template"), b => b.UseMiddleware<AuthorizeStaticFilesMiddleware>());
+            app.UseWhen(a => a.Request.Path.Value.Contains("ExportExcel") || a.Request.Path.Value.Contains("template"), b => b.UseMiddleware<StaticFileHandlerMiddleware>());
             //使用默认文件夹wwwroot
             app.UseStaticFiles();
             //导出excel路径

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 
-namespace Hao.Core
+namespace Hao.Core.Extensions
 {
     public class CurrentUser : ICurrentUser
     {
