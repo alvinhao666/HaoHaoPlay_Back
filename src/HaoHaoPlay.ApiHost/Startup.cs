@@ -127,8 +127,6 @@ namespace HaoHaoPlay.ApiHost
 
             //CAP
             services.AddCapService(appsettings.ConnectionStrings.PostgreSqlConnection, appsettings.RabbitMQ.HostName, appsettings.RabbitMQ.VirtualHost, appsettings.RabbitMQ.Port, appsettings.RabbitMQ.UserName, appsettings.RabbitMQ.Password);
-            services.AutoDependency(typeof(ILoginEventHandler));
-
 
             #region Session 获取当前用户
             services.AddSession(options =>
@@ -170,7 +168,7 @@ namespace HaoHaoPlay.ApiHost
             //数据保护
             services.AddDataProtection();
 
-
+            services.AutoDependency(typeof(ILoginEventHandler));
             #region AutoMapper
             services.AddSingleton<IMapper>(new Mapper(new MapperConfiguration(cfg =>
             {

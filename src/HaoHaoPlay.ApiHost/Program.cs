@@ -26,11 +26,14 @@ namespace HaoHaoPlay.ApiHost
                 {
                     builder.RegisterType<HTransactionAop>();
 
+                    //InstancePerLifetimeScope：同一个Lifetime生成的对象是同一个实例；
+                    //SingleInstance：单例模式，每次调用，都会使用同一个实例化的对象；每次都用同一个对象；
+                    //InstancePerDependency：默认模式，每次调用，都会重新实例化对象；每次请求都创建一个新的对象；
                     builder.RegisterAssemblyTypes(Assembly.Load("Hao.Repository"), Assembly.Load("Hao.Core"))
                         .Where(m => typeof(ITransientDependency).IsAssignableFrom(m) && m != typeof(ITransientDependency)) //直接或间接实现了ITransientDependency
                         .AsImplementedInterfaces().InstancePerLifetimeScope().PropertiesAutowired();
 
-                    builder.RegisterAssemblyTypes(Assembly.Load("Hao.AppService"))
+                    builder.RegisterAssemblyTypes(Assembly.Load("Hao.AppService"), Assembly.Load("Hao.Event"))
                             .Where(m => typeof(ITransientDependency).IsAssignableFrom(m) && m != typeof(ITransientDependency))
                             .AsImplementedInterfaces().InstancePerLifetimeScope().PropertiesAutowired().EnableInterfaceInterceptors().InterceptedBy(typeof(HTransactionAop));
                     //一定要在你注入的服务后面加上EnableInterfaceInterceptors来开启你的拦截(aop)
