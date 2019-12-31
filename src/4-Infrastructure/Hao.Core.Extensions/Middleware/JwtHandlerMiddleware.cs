@@ -20,10 +20,10 @@ namespace Hao.Core.Extensions
 
         public async Task Invoke(HttpContext context)
         {
-            if (!context.Request.Headers.ContainsKey("Authorization")) throw new HException("请传递Header头的Authorization参数");
+            if (!context.Request.Headers.ContainsKey("Authorization")) throw new HException("Header头缺少Authorization参数");
 
             var strToken = context.Request.Headers["Authorization"].ToString();
-            if (!strToken.Contains("Bearer ")) throw new HException("请检查Authorization参数格式");
+            if (!strToken.Contains("Bearer ")) throw new HException("Authorization格式有误");
 
             var jwtHandler = new JwtSecurityTokenHandler();
             JwtSecurityToken jwtToken = jwtHandler.ReadJwtToken(strToken.Remove(0, 7)); //去除"Bearer "
