@@ -71,8 +71,7 @@ namespace Hao.WebApi
 
             if (value == null) throw new HException(ErrorInfo.E100003, nameof(ErrorInfo.E100003).GetErrorCode());
 
-
-            var cacheUser = JsonSerializer.Deserialize<RedisCacheUserInfo>(value);
+            //var cacheUser = JsonSerializer.Deserialize<RedisCacheUserInfo>(value);
 
             base.OnActionExecuting(context);
         }
