@@ -49,7 +49,7 @@ namespace Hao.WebApi
             }
             #endregion
 
-            var userId = User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sid); //Security Identifiers安全标识符
+            var userId = User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sid)?.Value; //Security Identifiers安全标识符
             if (userId == null) throw new HException(ErrorInfo.E100003, nameof(ErrorInfo.E100003).GetErrorCode());
 
             var traceId = context.HttpContext.TraceIdentifier;
@@ -61,13 +61,13 @@ namespace Hao.WebApi
                 Argument = new
                 {
                     TraceIdentifier = traceId,
-                    UserId = userId.Value,
+                    UserId = userId,
                     context.ActionArguments
                 },
                 Description = "请求信息"
             });
 
-            var value = RedisHelper.Get(appsettingsOptions.Value.RedisPrefixOptions.LoginInfo + userId.Value);
+            var value = RedisHelper.Get(appsettingsOptions.Value.RedisPrefixOptions.LoginInfo + userId);
 
             if (value == null) throw new HException(ErrorInfo.E100003, nameof(ErrorInfo.E100003).GetErrorCode());
 
