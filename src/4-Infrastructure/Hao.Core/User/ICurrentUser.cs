@@ -2,8 +2,8 @@
 {
     public interface ICurrentUser
     {
-        long? Id { get; set; }
+        long? Id { get; }
 
-        string Name { get; set; }
+        string Name { get; }
     }
 }

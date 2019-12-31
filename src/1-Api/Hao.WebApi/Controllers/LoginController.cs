@@ -62,6 +62,7 @@ namespace Hao.WebApi
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()), //针对当前 token 的唯一标识
                 new Claim(JwtRegisteredClaimNames.Sid, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Iat, validFrom.ToString(), ClaimValueTypes.Integer64), //token 创建时间
+                new Claim(JwtRegisteredClaimNames.GivenName, user.Name)
             };
             var jwt = new JwtSecurityToken(
                 issuer: _appsettings.JwtOptions.Issuer,

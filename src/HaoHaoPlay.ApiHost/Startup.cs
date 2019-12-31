@@ -128,18 +128,6 @@ namespace HaoHaoPlay.ApiHost
             //CAP
             services.AddCapService(appsettings.ConnectionStrings.PostgreSqlConnection, appsettings.RabbitMQ.HostName, appsettings.RabbitMQ.VirtualHost, appsettings.RabbitMQ.Port, appsettings.RabbitMQ.UserName, appsettings.RabbitMQ.Password);
 
-            #region Session 获取当前用户
-            services.AddSession(options =>
-            {
-                //设置session的过期时间
-                options.IdleTimeout = TimeSpan.FromSeconds(10);
-            });
-
-            //services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>(); //即使service使用了单例模式，但是在多线程的情况下，HttpContextAccessor不会出现线程同步问题。// .net core 2.2不需要
-
-            services.AddScoped<ICurrentUser, CurrentUser>();
-            #endregion
-
 
             //替换控制器所有者,详见有道笔记,放AddMvc前面
             services.Replace(ServiceDescriptor.Transient<IControllerActivator, ServiceBasedControllerActivator>());
@@ -168,6 +156,8 @@ namespace HaoHaoPlay.ApiHost
             //数据保护
             services.AddDataProtection();
 
+
+            services.AddScoped<ICurrentUser, CurrentUser>();
             services.AutoDependency(typeof(ILoginEventHandler));
             #region AutoMapper
             services.AddSingleton<IMapper>(new Mapper(new MapperConfiguration(cfg =>
@@ -192,11 +182,6 @@ namespace HaoHaoPlay.ApiHost
 
             app.UseCors(x => x.AllowCredentials().AllowAnyMethod().AllowAnyHeader().WithOrigins(new string[] { "http://localhost:4200" }));
 #endif
-            #endregion
-
-
-            #region 获取当前用户
-            app.UseSession();
             #endregion
 
 

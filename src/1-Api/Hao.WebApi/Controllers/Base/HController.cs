@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Authorization;
 using Hao.RunTimeException;
 using Hao.Log;
 using System.Text.Json;
+using System.Security.Claims;
 
 namespace Hao.WebApi
 {
@@ -35,17 +36,17 @@ namespace Hao.WebApi
         {
 
             #region 若需要Claims里面其他信息，则取消注释
-            //var tokenHeader = HttpContext.Request.Headers["Authorization"];
+            var tokenHeader = HttpContext.Request.Headers["Authorization"];
 
-            //var strToken = tokenHeader.ToString();
-            //if (strToken.Contains("Bearer "))
-            //{
-            //    var jwtHandler = new JwtSecurityTokenHandler();
-            //    JwtSecurityToken jwtToken = jwtHandler.ReadJwtToken(strToken.Remove(0, 7)); //去除"Bearer "
-            //    var identity = new ClaimsIdentity(jwtToken.Claims);
-            //    var principal = new ClaimsPrincipal(identity);
-            //    HttpContext.User = principal;
-            //}
+            var strToken = tokenHeader.ToString();
+            if (strToken.Contains("Bearer "))
+            {
+                var jwtHandler = new JwtSecurityTokenHandler();
+                JwtSecurityToken jwtToken = jwtHandler.ReadJwtToken(strToken.Remove(0, 7)); //去除"Bearer "
+                var identity = new ClaimsIdentity(jwtToken.Claims);
+                var principal = new ClaimsPrincipal(identity);
+                HttpContext.User = principal;
+            }
             #endregion
 
             var userId = User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sid); //Security Identifiers安全标识符
@@ -72,10 +73,6 @@ namespace Hao.WebApi
 
 
             var cacheUser = JsonSerializer.Deserialize<RedisCacheUserInfo>(value);
-
-            //当前用户信息
-            CurrentUser.Id = cacheUser.Id;
-            CurrentUser.Name = cacheUser.Name;
 
             base.OnActionExecuting(context);
         }
