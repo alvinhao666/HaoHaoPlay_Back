@@ -185,11 +185,7 @@ namespace HaoHaoPlay.ApiHost
 #endif
             #endregion
 
-
-            #region 异常处理
             app.UseGlobalExceptionHandler();
-            #endregion
-
 
             app.UseWhen(a => !a.Request.Path.Value.Contains("/Login"), b => b.UseMiddleware<JwtHandlerMiddleware>());
 
@@ -202,6 +198,7 @@ namespace HaoHaoPlay.ApiHost
             var exportExcelPath = Path.Combine(_parentDir.FullName, "ExportFile/Excel");
 
             HFile.CreateDirectory(exportExcelPath);
+
             app.UseStaticFiles(new StaticFileOptions()
             {
                 FileProvider = new PhysicalFileProvider(exportExcelPath),
