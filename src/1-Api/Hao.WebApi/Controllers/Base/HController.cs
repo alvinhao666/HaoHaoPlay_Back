@@ -36,16 +36,17 @@ namespace Hao.WebApi
         {
 
             #region 若需要Claims里面其他信息，则取消注释
-            var tokenHeader = HttpContext.Request.Headers["Authorization"];
-
-            var strToken = tokenHeader.ToString();
-            if (strToken.Contains("Bearer "))
+            if (HttpContext.Request.Headers.ContainsKey("Authorization"))
             {
-                var jwtHandler = new JwtSecurityTokenHandler();
-                JwtSecurityToken jwtToken = jwtHandler.ReadJwtToken(strToken.Remove(0, 7)); //去除"Bearer "
-                var identity = new ClaimsIdentity(jwtToken.Claims);
-                var principal = new ClaimsPrincipal(identity);
-                HttpContext.User = principal;
+                var strToken = HttpContext.Request.Headers["Authorization"].ToString();
+                if (strToken.Contains("Bearer "))
+                {
+                    var jwtHandler = new JwtSecurityTokenHandler();
+                    JwtSecurityToken jwtToken = jwtHandler.ReadJwtToken(strToken.Remove(0, 7)); //去除"Bearer "
+                    var identity = new ClaimsIdentity(jwtToken.Claims);
+                    var principal = new ClaimsPrincipal(identity);
+                    HttpContext.User = principal;
+                }
             }
             #endregion
 
