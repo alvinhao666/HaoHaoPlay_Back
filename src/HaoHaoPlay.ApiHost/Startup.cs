@@ -187,7 +187,7 @@ namespace HaoHaoPlay.ApiHost
 
             app.UseGlobalExceptionHandler();
 
-            app.UseWhen(a => !a.Request.Path.Value.Contains("/Login"), b => b.UseMiddleware<JwtHandlerMiddleware>());
+            app.UseMiddleware<JwtHandlerMiddleware>();
 
             #region 文件
             //文件访问权限

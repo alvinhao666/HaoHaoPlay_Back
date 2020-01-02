@@ -20,16 +20,17 @@ namespace Hao.Core.Extensions
 
         public async Task Invoke(HttpContext context)
         {
-            if (!context.Request.Headers.ContainsKey("Authorization")) throw new HException("Header头缺少Authorization参数");
+            if (context.Request.Headers.ContainsKey("Authorization"))
+            {
+                var strToken = context.Request.Headers["Authorization"].ToString();
+                if (!strToken.Contains("Bearer ")) throw new HException("Authorization参数格式有误");
 
-            var strToken = context.Request.Headers["Authorization"].ToString();
-            if (!strToken.Contains("Bearer ")) throw new HException("Authorization格式有误");
-
-            var jwtHandler = new JwtSecurityTokenHandler();
-            JwtSecurityToken jwtToken = jwtHandler.ReadJwtToken(strToken.Remove(0, 7)); //去除"Bearer "
-            var identity = new ClaimsIdentity(jwtToken.Claims);
-            var principal = new ClaimsPrincipal(identity);
-            context.User = principal;
+                var jwtHandler = new JwtSecurityTokenHandler();
+                JwtSecurityToken jwtToken = jwtHandler.ReadJwtToken(strToken.Remove(0, 7)); //去除"Bearer "
+                var identity = new ClaimsIdentity(jwtToken.Claims);
+                var principal = new ClaimsPrincipal(identity);
+                context.User = principal;
+            }
             await _next(context);
         }
     }
