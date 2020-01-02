@@ -1,13 +1,11 @@
-﻿using Hao.Core;
-using Hao.Library;
-using Microsoft.AspNetCore.Authentication;
+﻿using Hao.Library;
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.DataProtection;
 using Hao.RunTimeException;
 using Microsoft.Extensions.Options;
 
-namespace Hao.Core.Extensions
+namespace HaoHaoPlay.ApiHost
 {
     public class StaticFileHandlerMiddleware
     {

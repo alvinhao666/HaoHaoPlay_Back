@@ -11,7 +11,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\5-Common\Hao.Exception\Hao.Exception.csproj" />
     <ProjectReference Include="..\Hao.Core\Hao.Core.csproj" />
-    <ProjectReference Include="..\Hao.Library\Hao.Library.csproj" />
   </ItemGroup>
 
 </Project>

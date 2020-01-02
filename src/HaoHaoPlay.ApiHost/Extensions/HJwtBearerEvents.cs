@@ -2,13 +2,10 @@
 using Hao.Response;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Hao.Core.Extensions
+namespace HaoHaoPlay.ApiHost
 {
 
     /// <summary>
