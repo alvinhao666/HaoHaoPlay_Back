@@ -6,9 +6,17 @@ namespace Hao.Utility
 {
     public static class DateTimeExtensions
     {
-        public static string ToDateString(this DateTime? time)
+        public static string ToDateString(this DateTime? time, string format = null)
         {
-            return time.HasValue ? time.Value.ToString("yyyy-MM-dd HH:mm:ss") : "";
+            if (time.HasValue)
+            {
+                if (!string.IsNullOrWhiteSpace(format))
+                {
+                    return time.Value.ToString(format);
+                }
+                return time.Value.ToString("yyyy-MM-dd HH:mm:ss");
+            }
+            return "";
         }
 
         public static string ToStartDateString(this DateTime? time)
