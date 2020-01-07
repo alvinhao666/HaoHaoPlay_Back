@@ -49,11 +49,6 @@ namespace HaoHaoPlay.ApiHost
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var appsettings = new AppSettingsInfo();
-            Config.Bind("AppSettingsInfo", appsettings);
-            var appsettingsOptions = Config.GetSection(nameof(AppSettingsInfo));
-            services.Configure<AppSettingsInfo>(appsettingsOptions);
-
             #region DeBug
 #if DEBUG
             services.AddSwaggerGen(c =>
@@ -74,6 +69,11 @@ namespace HaoHaoPlay.ApiHost
 #endif
             #endregion
 
+
+            var appsettings = new AppSettingsInfo();
+            Config.Bind("AppSettingsInfo", appsettings);
+            var appsettingsOptions = Config.GetSection(nameof(AppSettingsInfo));
+            services.Configure<AppSettingsInfo>(appsettingsOptions);
 
             #region 单例注入
             var worker = new IdWorker(appsettings.SnowflakeIdOptions.WorkerId, appsettings.SnowflakeIdOptions.DataCenterId);
@@ -157,9 +157,9 @@ namespace HaoHaoPlay.ApiHost
             //数据保护
             services.AddDataProtection();
 
-
             services.AddScoped<ICurrentUser, CurrentUser>();
             services.AutoDependency(typeof(ILoginEventHandler));
+
             #region AutoMapper
             services.AddSingleton<IMapper>(new Mapper(new MapperConfiguration(cfg =>
             {
