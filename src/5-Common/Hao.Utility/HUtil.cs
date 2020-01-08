@@ -29,10 +29,10 @@ namespace Hao.Utility
         /// 获取当前时间戳  
         /// </summary>  
         /// <returns></returns>  
-        public static string GetTimeStamp()
+        public static long GetTimeStamp()
         {
             TimeSpan ts = DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0);
-            return Convert.ToInt64(ts.TotalSeconds).ToString();
+            return Convert.ToInt64(ts.TotalSeconds);
         }
 
         /// <summary>
@@ -40,10 +40,10 @@ namespace Hao.Utility
         /// </summary>
         /// <param name="time"></param>
         /// <returns></returns>
-        public static string GetTimeStamp(DateTime time)
+        public static long GetTimeStamp(DateTime time)
         {
             TimeSpan ts = time.ToUniversalTime() - new DateTime(1970, 1, 1, 0, 0, 0, 0);
-            return Convert.ToInt64(ts.TotalSeconds).ToString();
+            return Convert.ToInt64(ts.TotalSeconds);
         }
 
         /// <summary>
