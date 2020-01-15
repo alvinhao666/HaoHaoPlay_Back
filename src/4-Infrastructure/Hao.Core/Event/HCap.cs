@@ -10,7 +10,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             services.AddCap(x =>
             {
-                x.UseDashboard(); 
+                //x.UseDashboard(); 
 
                 x.UsePostgreSql(cfg => { cfg.ConnectionString = postgresqlConnection; });
 
