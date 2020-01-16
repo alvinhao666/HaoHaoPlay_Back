@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Hao.Utility
 {
-    public class HttpHelper
+    public class HttpHelper : IHttpHelper
     {
         public readonly IHttpClientFactory HttpFactory;
 
