@@ -1,7 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Hao.Utility
 {
@@ -64,7 +69,7 @@ namespace Hao.Utility
         /// </summary>
         /// <param name="length"></param>
         /// <returns></returns>
-        private static string GetRandomCha(int length)
+        public static string GetRandomCha(int length)
         {
             char[] arrChar = new char[]{
            'a','b','d','c','e','f','g','h','i','j','k','l','m','n','p','r','q','s','t','u','v','w','z','y','x',
@@ -81,6 +86,31 @@ namespace Hao.Utility
             }
 
             return num.ToString();
+        }
+
+        /// <summary>
+        /// 将网络图片转base64
+        /// </summary>
+        /// <param name="imageUrl"></param>
+        /// <returns></returns>
+        public static string GetBase64String(string imageUrl)
+        {
+            var webreq = WebRequest.Create(imageUrl);
+            var webres = webreq.GetResponse();
+            string image = string.Empty;
+            using (var stream = webres.GetResponseStream())
+            {
+                using (var ms = new MemoryStream())
+                {
+                    stream.CopyTo(ms);
+                    ms.Flush();
+                    ms.Seek(0, SeekOrigin.Begin);
+                    byte[] fileBytes = new byte[ms.Length];
+                    ms.Read(fileBytes, 0, (int)ms.Length);
+                    image = Convert.ToBase64String(fileBytes);
+                }
+            }
+            return image;
         }
     }
 }

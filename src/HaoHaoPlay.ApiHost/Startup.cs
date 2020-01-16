@@ -27,6 +27,7 @@ using Hao.Event;
 using Hao.Snowflake;
 using Hao.Json;
 using Hao.Core.Extensions;
+using Hao.Utility;
 
 namespace HaoHaoPlay.ApiHost
 {
@@ -158,6 +159,7 @@ namespace HaoHaoPlay.ApiHost
             services.AddDataProtection();
 
             services.AddScoped<ICurrentUser, CurrentUser>();
+            services.AddScoped<IHttpHelper, HttpHelper>();
             services.AutoDependency(typeof(ILoginEventHandler));
 
             #region AutoMapper
