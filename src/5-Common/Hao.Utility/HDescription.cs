@@ -32,6 +32,10 @@ namespace Hao.Utility
             return new List<HDescriptionAttribute>();
         }
 
+        internal static HDescriptionAttribute Get(Type enumType, string fieldName)
+        {
+            return Get(enumType).SingleOrDefault(d => d.Name == fieldName); // SingleOrDefault只取一个 如果没有数据等于 null， 如果>1异常
+        }
 
         private static HDescriptionAttribute Get(FieldInfo fieldInfo)
         {
@@ -39,12 +43,6 @@ namespace Hao.Utility
             if (customAttribute == null) return null;
             customAttribute.Field = fieldInfo;
             return customAttribute;
-        }
-
-
-        internal static HDescriptionAttribute Get(Type enumType, string fieldName)
-        {
-            return Get(enumType).SingleOrDefault(d => d.Name == fieldName); // SingleOrDefault只取一个 如果没有数据等于 null， 如果>1异常
         }
 
         ///// <summary>
