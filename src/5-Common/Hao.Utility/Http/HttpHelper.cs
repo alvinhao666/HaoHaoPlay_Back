@@ -18,10 +18,10 @@ namespace Hao.Utility
             HttpFactory = httpFactory;
         }
 
-        public async Task<string> Post(string url, Dictionary<string, object> dic, string mediaType)
+        public async Task<string> Post(string url, Dictionary<string, string> dic, string mediaType)
         {
-            var body = dic.Select(pair => pair.Key + "=" + WebUtility.UrlEncode(pair.Value.ToString()))
-                          .DefaultIfEmpty("")
+            var body = dic.Select(pair => pair.Key + "=" + WebUtility.UrlEncode(pair.Value))
+                          .DefaultIfEmpty("") //如果是空 返回 new List<string>(){""};
                           .Aggregate((a, b) => a + "&" + b);
             StringContent c = new StringContent(body, Encoding.UTF8);
             c.Headers.ContentType = new MediaTypeHeaderValue(mediaType);
