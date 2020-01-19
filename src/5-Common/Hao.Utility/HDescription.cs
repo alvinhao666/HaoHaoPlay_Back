@@ -15,7 +15,7 @@ namespace Hao.Utility
     public class HDescription
     {
 
-        private static readonly ConcurrentDictionary<Type, HDescriptionAttribute[]> enumCache = new ConcurrentDictionary<Type, HDescriptionAttribute[]>();
+        private static readonly ConcurrentDictionary<Type, List<HDescriptionAttribute>> enumCache = new ConcurrentDictionary<Type, List<HDescriptionAttribute>>();
 
         /// <summary>
         /// 获取所有字段
@@ -23,9 +23,13 @@ namespace Hao.Utility
         /// <param name="enumType">枚举类型</param>
         /// <returns></returns>
 
-        private static HDescriptionAttribute[] Get(Type enumType)
+        public static List<HDescriptionAttribute> Get(Type enumType)
         {
-            return enumCache.GetOrAdd(enumType, type => type.GetFields(BindingFlags.Static | BindingFlags.Public).Select(a => Get(a)).ToArray());
+            if (enumType.IsEnum)
+            {
+                return enumCache.GetOrAdd(enumType, type => type.GetFields(BindingFlags.Static | BindingFlags.Public).Select(a => Get(a)).ToList());
+            }
+            return new List<HDescriptionAttribute>();
         }
 
 
