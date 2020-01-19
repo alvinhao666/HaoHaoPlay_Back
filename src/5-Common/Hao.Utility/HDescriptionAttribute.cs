@@ -42,16 +42,16 @@ namespace Hao.Utility
             }
         }
 
-        ///// <summary>
-        ///// 值
-        ///// </summary>
-        //public IConvertible Value
-        //{
-        //    get
-        //    {
-        //        return (IConvertible)this.Field.GetValue(null);
-        //    }
-        //}
+        /// <summary>
+        /// 值
+        /// </summary>
+        public IConvertible Value
+        {
+            get
+            {
+                return (IConvertible)this.Field.GetValue(null);
+            }
+        }
 
         ///// <summary>
         ///// 值
