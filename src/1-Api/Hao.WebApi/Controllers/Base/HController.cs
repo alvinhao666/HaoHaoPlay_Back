@@ -26,7 +26,7 @@ namespace Hao.WebApi
 
         public ICurrentUser CurrentUser { get; set; }
 
-        public IOptionsSnapshot<AppSettingsInfo> appsettingsOptions { get; set; }
+        public IOptionsSnapshot<AppSettingsInfo> AppsettingsOptions { get; set; }
 
         /// <summary>
         /// 在进入方法之前 获取用户jwt中用户信息, 先执行这个方法 再执行模型验证
@@ -53,7 +53,7 @@ namespace Hao.WebApi
                 Description = "请求信息"
             });
 
-            var value = RedisHelper.Get(appsettingsOptions.Value.RedisPrefixOptions.LoginInfo + userId);
+            var value = RedisHelper.Get(AppsettingsOptions.Value.RedisPrefixOptions.LoginInfo + userId);
 
             if (value == null) throw new HException(ErrorInfo.E100003, nameof(ErrorInfo.E100003).GetErrorCode());
 

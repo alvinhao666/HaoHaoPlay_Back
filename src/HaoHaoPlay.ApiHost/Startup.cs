@@ -35,7 +35,7 @@ namespace HaoHaoPlay.ApiHost
     {
         private readonly DirectoryInfo _parentDir = new DirectoryInfo(Directory.GetCurrentDirectory()).Parent;
 
-        private readonly FilePathInfo pathInfo;
+        private readonly FilePathInfo _pathInfo;
 
         public IConfiguration Config { get; }
 
@@ -43,9 +43,9 @@ namespace HaoHaoPlay.ApiHost
         {
             Config = configuration;
             if (_parentDir == null) throw new Exception("项目安置路径有误，请检查");
-            pathInfo = new FilePathInfo();
-            pathInfo.ExportExcelPath = Path.Combine(_parentDir.FullName, "ExportFile/Excel");
-            pathInfo.ImportExcelPath = Path.Combine(_parentDir.FullName, "ImportFile/Excel");
+            _pathInfo = new FilePathInfo();
+            _pathInfo.ExportExcelPath = Path.Combine(_parentDir.FullName, "ExportFile/Excel");
+            _pathInfo.ImportExcelPath = Path.Combine(_parentDir.FullName, "ImportFile/Excel");
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -80,7 +80,7 @@ namespace HaoHaoPlay.ApiHost
             var worker = new IdWorker(appsettings.SnowflakeIdOptions.WorkerId, appsettings.SnowflakeIdOptions.DataCenterId);
             services.AddSingleton(worker);
 
-            services.AddSingleton(pathInfo);
+            services.AddSingleton(_pathInfo);
             #endregion
 
 
