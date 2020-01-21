@@ -7,7 +7,7 @@ namespace Hao.Utility
     /// <summary>
     /// 基于工具类的工具类
     /// </summary>
-    public static class UtilCommon
+    internal static class UtilCommon
     {
         ///// <summary>
         ///// 将对象转换为目标类型
