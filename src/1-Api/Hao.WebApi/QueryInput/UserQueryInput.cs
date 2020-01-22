@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Hao.WebApi
 {
-    public class UserQueryInput:QueryInput
+    public class UserQueryInput : QueryInput
     {
         /// <summary>
         /// 登录名
@@ -43,5 +43,10 @@ namespace Hao.WebApi
         public DateTime? LastLoginTimeEnd { get; set; }
 
         public SortUser? SortField { get; set; }
+    }
+
+    public enum SortUser
+    {
+        Age
     }
 }
