@@ -15,6 +15,7 @@ using Hao.File;
 using Hao.RunTimeException;
 using Hao.Entity;
 using Microsoft.Extensions.Options;
+using Hao.Core.Extensions;
 
 namespace Hao.WebApi
 {

@@ -2,8 +2,8 @@
 using Autofac.Extensions.DependencyInjection;
 using Autofac.Extras.DynamicProxy;
 using Hao.Core;
+using Hao.Core.Extensions;
 using Hao.Dependency;
-using Hao.Event;
 using Hao.WebApi;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -39,7 +39,7 @@ namespace HaoHaoPlay.ApiHost
                     //一定要在你注入的服务后面加上EnableInterfaceInterceptors来开启你的拦截(aop)
 
 
-                    var types = typeof(HController).Assembly.GetExportedTypes().Where(type => typeof(ControllerBase).IsAssignableFrom(type)).ToArray();
+                    var types = typeof(LoginController).Assembly.GetExportedTypes().Where(type => typeof(ControllerBase).IsAssignableFrom(type)).ToArray();
                     builder.RegisterTypes(types).PropertiesAutowired();
                 })
                 .ConfigureWebHostDefaults(webBuilder =>

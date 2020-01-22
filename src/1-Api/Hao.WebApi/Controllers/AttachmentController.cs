@@ -1,4 +1,5 @@
 ﻿using Hao.Core;
+using Hao.Core.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
