@@ -7,9 +7,9 @@ using System.Text;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
-    public static class HInvalidModel
+    public static class HCheckViewModel
     {
-        public static IServiceCollection AddInvalidModelService(this IServiceCollection services)
+        public static IServiceCollection AddCheckViewModelService(this IServiceCollection services)
         {
             services.Configure<ApiBehaviorOptions>(options =>
             {

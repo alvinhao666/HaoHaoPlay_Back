@@ -150,7 +150,7 @@ namespace HaoHaoPlay.ApiHost
 
 
             //模型验证 ApiBehaviorOptions 的统一模型验证配置一定要放到(.AddMvc)后面
-            services.AddInvalidModelService();
+            services.AddCheckViewModelService();
 
             //Http
             services.AddHttpClient();
