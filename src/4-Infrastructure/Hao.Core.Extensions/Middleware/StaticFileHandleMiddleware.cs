@@ -7,14 +7,14 @@ using Microsoft.Extensions.Options;
 
 namespace HaoHaoPlay.ApiHost
 {
-    public class StaticFileHandlerMiddleware
+    public class StaticFileHandleMiddleware
     {
         private readonly RequestDelegate _next;
         
         private readonly ITimeLimitedDataProtector _protector;
 
 
-        public StaticFileHandlerMiddleware( RequestDelegate next,IDataProtectionProvider provider, IOptionsSnapshot<AppSettingsInfo> appsettingsOptions)
+        public StaticFileHandleMiddleware( RequestDelegate next,IDataProtectionProvider provider, IOptionsSnapshot<AppSettingsInfo> appsettingsOptions)
         {
             _next = next;
             _protector = provider.CreateProtector(appsettingsOptions.Value.DataProtectorPurpose.FileDownload).ToTimeLimitedDataProtector();

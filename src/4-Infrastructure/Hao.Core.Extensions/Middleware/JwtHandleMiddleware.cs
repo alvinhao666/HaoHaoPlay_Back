@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace Hao.Core.Extensions
 {
-    public class JwtHandlerMiddleware
+    public class JwtHandleMiddleware
     {
         private readonly RequestDelegate _next;
 
-        public JwtHandlerMiddleware(RequestDelegate next)
+        public JwtHandleMiddleware(RequestDelegate next)
         {
             _next = next;
         }
