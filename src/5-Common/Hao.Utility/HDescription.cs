@@ -26,7 +26,7 @@ namespace Hao.Utility
         /// <returns></returns>
         public static List<HDescriptionAttribute> Get(Type enumType)
         {
-            if (enumType.IsEnum && enumType.IsDefined(_descriptionAttributeType, true))
+            if (enumType.IsEnum)
             {
                 return _enumCache.GetOrAdd(enumType,
                     type => type.GetFields(BindingFlags.Static | BindingFlags.Public).Select(Get).ToList());
