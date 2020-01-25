@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 
@@ -14,8 +15,9 @@ namespace Hao.Utility
     /// </summary>
     public class HDescription
     {
-        private static readonly ConcurrentDictionary<Type, List<HDescriptionAttribute>> enumCache =
-            new ConcurrentDictionary<Type, List<HDescriptionAttribute>>();
+        private static readonly ConcurrentDictionary<Type, List<HDescriptionAttribute>> _enumCache = new ConcurrentDictionary<Type, List<HDescriptionAttribute>>();
+        
+        private static  readonly  Type _descriptionAttributeType = typeof(HDescriptionAttribute);
 
         /// <summary>
         /// 获取所有字段
@@ -24,9 +26,9 @@ namespace Hao.Utility
         /// <returns></returns>
         public static List<HDescriptionAttribute> Get(Type enumType)
         {
-            if (enumType.IsEnum && enumType.IsDefined(typeof(HDescription), true))
+            if (enumType.IsEnum && enumType.IsDefined(_descriptionAttributeType, true))
             {
-                return enumCache.GetOrAdd(enumType,
+                return _enumCache.GetOrAdd(enumType,
                     type => type.GetFields(BindingFlags.Static | BindingFlags.Public).Select(Get).ToList());
             }
 

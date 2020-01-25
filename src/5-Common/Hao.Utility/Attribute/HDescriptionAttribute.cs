@@ -11,7 +11,7 @@ namespace Hao.Utility
     /// <summary>
     /// 枚举说明
     /// </summary>
-    [AttributeUsage(AttributeTargets.Enum | AttributeTargets.Field)]
+    [AttributeUsage(AttributeTargets.Enum | AttributeTargets.Field)] //枚举且是字段
     public class HDescriptionAttribute: DescriptionAttribute
     {
         internal FieldInfo Field { get; set; }
