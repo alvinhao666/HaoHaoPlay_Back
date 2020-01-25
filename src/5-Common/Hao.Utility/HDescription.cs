@@ -17,8 +17,6 @@ namespace Hao.Utility
     {
         private static readonly ConcurrentDictionary<Type, List<HDescriptionAttribute>> _enumCache = new ConcurrentDictionary<Type, List<HDescriptionAttribute>>();
         
-        private static  readonly  Type _descriptionAttributeType = typeof(HDescriptionAttribute);
-
         /// <summary>
         /// 获取所有字段
         /// </summary>
