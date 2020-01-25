@@ -14,21 +14,22 @@ namespace Hao.Utility
     /// </summary>
     public class HDescription
     {
-
-        private static readonly ConcurrentDictionary<Type, List<HDescriptionAttribute>> enumCache = new ConcurrentDictionary<Type, List<HDescriptionAttribute>>();
+        private static readonly ConcurrentDictionary<Type, List<HDescriptionAttribute>> enumCache =
+            new ConcurrentDictionary<Type, List<HDescriptionAttribute>>();
 
         /// <summary>
         /// 获取所有字段
         /// </summary>
         /// <param name="enumType">枚举类型</param>
         /// <returns></returns>
-
         public static List<HDescriptionAttribute> Get(Type enumType)
         {
-            if (enumType.IsEnum)
+            if (enumType.IsEnum && enumType.IsDefined(typeof(HDescription), true))
             {
-                return enumCache.GetOrAdd(enumType, type => type.GetFields(BindingFlags.Static | BindingFlags.Public).Select(a => Get(a)).ToList());
+                return enumCache.GetOrAdd(enumType,
+                    type => type.GetFields(BindingFlags.Static | BindingFlags.Public).Select(Get).ToList());
             }
+
             return new List<HDescriptionAttribute>();
         }
 
