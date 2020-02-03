@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace Hao.Core.Extensions
 {
-    public static class ExceptionHandleMiddleware
+    public static class ExceptionMiddleware
     {
         private readonly static ILogger _logger = LogManager.GetCurrentClassLogger();
 
-        public static void UseExceptionHandleMiddleware(this IApplicationBuilder app)
+        public static void UseExceptionMiddleware(this IApplicationBuilder app)
         {
             try
             {

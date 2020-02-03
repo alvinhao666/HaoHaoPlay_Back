@@ -187,13 +187,13 @@ namespace HaoHaoPlay.ApiHost
 #endif
             #endregion
 
-            app.UseExceptionHandleMiddleware();
+            app.UseExceptionMiddleware();
 
-            app.UseMiddleware<JwtHandleMiddleware>();
+            app.UseMiddleware<JwtMiddleware>();
 
             #region 文件
             //文件访问权限
-            app.UseWhen(a => a.Request.Path.Value.Contains("ExportExcel") || a.Request.Path.Value.Contains("template"), b => b.UseMiddleware<StaticFileHandleMiddleware>());
+            app.UseWhen(a => a.Request.Path.Value.Contains("ExportExcel") || a.Request.Path.Value.Contains("template"), b => b.UseMiddleware<StaticFileMiddleware>());
             //使用默认文件夹wwwroot
             app.UseStaticFiles();
             //导出excel路径
