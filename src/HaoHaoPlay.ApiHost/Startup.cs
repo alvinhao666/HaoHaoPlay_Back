@@ -43,9 +43,11 @@ namespace HaoHaoPlay.ApiHost
         {
             Config = configuration;
             if (_parentDir == null) throw new Exception("项目安置路径有误，请检查");
-            _pathInfo = new FilePathInfo();
-            _pathInfo.ExportExcelPath = Path.Combine(_parentDir.FullName, "ExportFile/Excel");
-            _pathInfo.ImportExcelPath = Path.Combine(_parentDir.FullName, "ImportFile/Excel");
+            _pathInfo = new FilePathInfo
+            {
+                ExportExcelPath = Path.Combine(_parentDir.FullName, "ExportFile/Excel"),
+                ImportExcelPath = Path.Combine(_parentDir.FullName, "ImportFile/Excel")
+            };
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -71,13 +73,13 @@ namespace HaoHaoPlay.ApiHost
             #endregion
 
 
-            var appsettings = new AppSettingsInfo();
-            Config.Bind("AppSettingsInfo", appsettings);
-            var appsettingsOptions = Config.GetSection(nameof(AppSettingsInfo));
-            services.Configure<AppSettingsInfo>(appsettingsOptions);
+            var appSettings = new AppSettingsInfo();
+            Config.Bind("AppSettingsInfo", appSettings);
+            var appSettingsOption = Config.GetSection(nameof(AppSettingsInfo));
+            services.Configure<AppSettingsInfo>(appSettingsOption);
 
             #region 单例注入
-            var worker = new IdWorker(appsettings.SnowflakeIdOptions.WorkerId, appsettings.SnowflakeIdOptions.DataCenterId);
+            var worker = new IdWorker(appSettings.SnowflakeIdOptions.WorkerId, appSettings.SnowflakeIdOptions.DataCenterId);
             services.AddSingleton(worker);
 
             services.AddSingleton(_pathInfo);
@@ -97,9 +99,9 @@ namespace HaoHaoPlay.ApiHost
                     ValidateIssuer = true,//是否验证Issuer
                     ValidateAudience = true,//是否验证Audience
                     ValidateIssuerSigningKey = true,//是否验证SecurityKey
-                    ValidAudience = appsettings.JwtOptions.Audience,//Audience
-                    ValidIssuer = appsettings.JwtOptions.Issuer,//Issuer，这两项和前面签发jwt的设置一致
-                    IssuerSigningKey = appsettings.JwtOptions.SecurityKey,//拿到SecurityKey
+                    ValidAudience = appSettings.JwtOptions.Audience,//Audience
+                    ValidIssuer = appSettings.JwtOptions.Issuer,//Issuer，这两项和前面签发jwt的设置一致
+                    IssuerSigningKey = appSettings.JwtOptions.SecurityKey,//拿到SecurityKey
                     ValidateLifetime = true,//是否验证失效时间  当设置exp和nbf时有效 同时启用ClockSkew 
                     RequireExpirationTime = true,
                     ClockSkew = TimeSpan.Zero, // ClockSkew 属性，默认是5分钟缓冲。
@@ -111,7 +113,7 @@ namespace HaoHaoPlay.ApiHost
 
             #region Redis
 
-            var csRedis = new CSRedisClient(appsettings.ConnectionStrings.RedisConnection);
+            var csRedis = new CSRedisClient(appSettings.ConnectionStrings.RedisConnection);
 
             //初始化 RedisHelper
             RedisHelper.Initialization(csRedis);
@@ -125,10 +127,10 @@ namespace HaoHaoPlay.ApiHost
 
 
             //ORM
-            services.AddPostgreSQLService(appsettings.ConnectionStrings.PostgreSqlConnection);
+            services.AddPostgreSQLService(appSettings.ConnectionStrings.PostgreSqlConnection);
 
             //CAP
-            services.AddCapService(appsettings.ConnectionStrings.PostgreSqlConnection, appsettings.RabbitMQ.HostName, appsettings.RabbitMQ.VirtualHost, appsettings.RabbitMQ.Port, appsettings.RabbitMQ.UserName, appsettings.RabbitMQ.Password);
+            services.AddCapService(appSettings.ConnectionStrings.PostgreSqlConnection, appSettings.RabbitMQ.HostName, appSettings.RabbitMQ.VirtualHost, appSettings.RabbitMQ.Port, appSettings.RabbitMQ.UserName, appSettings.RabbitMQ.Password);
 
 
             //替换控制器所有者,详见有道笔记,放AddMvc前面
