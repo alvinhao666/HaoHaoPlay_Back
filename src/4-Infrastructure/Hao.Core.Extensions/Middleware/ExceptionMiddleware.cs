@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using NLog;
 using System;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -32,7 +33,7 @@ namespace Hao.Core.Extensions
         private static async Task Invoke(HttpContext context)
         {
             context.Response.StatusCode = StatusCodes.Status200OK;
-            context.Response.ContentType = "application/json;charset=utf-8";
+            context.Response.ContentType = "application/json";
             var response = new HResponse
             {
                 Success = false,
@@ -60,7 +61,7 @@ namespace Hao.Core.Extensions
 
             _logger.Error(ex, JsonSerializer.Serialize(errorLog));
 
-            await context.Response.WriteAsync(JsonSerializer.Serialize(response));
+            await context.Response.WriteAsync(JsonSerializer.Serialize(response),Encoding.UTF8);
         }
     }
 }
