@@ -32,7 +32,7 @@ namespace Hao.Core.Extensions
         private static async Task Invoke(HttpContext context)
         {
             context.Response.StatusCode = StatusCodes.Status200OK;
-            context.Response.ContentType = "application/json";
+            context.Response.ContentType = "application/json;charset=utf-8";
             var response = new HResponse
             {
                 Success = false,
