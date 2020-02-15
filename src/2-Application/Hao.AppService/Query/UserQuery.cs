@@ -36,7 +36,7 @@ namespace Hao.AppService
                 if (!string.IsNullOrWhiteSpace(LoginName)) expressions.Add(x => x.LoginName == LoginName);
                 if (!string.IsNullOrWhiteSpace(Password)) expressions.Add(x => x.Password == Password);
                 if (!string.IsNullOrWhiteSpace(Name)) expressions.Add(x => x.Name.Contains(Name));
-                if (!string.IsNullOrWhiteSpace(Phone)) expressions.Add(x => x.Name.Contains(Phone));
+                if (!string.IsNullOrWhiteSpace(Phone)) expressions.Add(x => x.Phone.Contains(Phone));
                 if (Gender.HasValue) expressions.Add(x => x.Gender==Gender);
                 if (Enabled.HasValue) expressions.Add(x => x.Enabled == Enabled);
                 if (LastLoginTimeStart.HasValue) expressions.Add(x => x.LastLoginTime >= LastLoginTimeStart);
