@@ -24,19 +24,19 @@ namespace HaoHaoPlay.ApiHost
         {
             //https传输 URL参数肯定是安全的 被加密
             //https传递查询参数肯定是没有问题的，但是不要用来传递可能引发安全问题的敏感信息奥。
-            if (!context.Request.Query.ContainsKey("Authorization")||!context.Request.Query.ContainsKey("FileId"))
+            if (!context.Request.Query.ContainsKey("Authorization"))
             {
                 throw new HException(ErrorInfo.E100001, nameof(ErrorInfo.E100001).GetErrorCode());
             }
             
-            var fileId = _protector.Unprotect(context.Request.Query["FileId"].ToString());
+            // var fileId = _protector.Unprotect(context.Request.Query["FileId"].ToString());
+            //
+            // var path = context.Request.Path.ToString();
 
-            var path = context.Request.Path.ToString();
-
-            if (!path.Contains($"{fileId}"))
-            {
-                throw new HException(ErrorInfo.E100001, nameof(ErrorInfo.E100001).GetErrorCode());
-            }
+            // if (!path.Contains($"{fileId}"))
+            // {
+            //     throw new HException(ErrorInfo.E100001, nameof(ErrorInfo.E100001).GetErrorCode());
+            // }
 
             // 验证用户信息 //TODO
             //var tokenHeader = HttpContext.Request.Query["Authorization"];
