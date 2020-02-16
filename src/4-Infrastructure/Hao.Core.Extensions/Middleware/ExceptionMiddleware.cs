@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using NLog;
 using System;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -29,7 +30,7 @@ namespace Hao.Core.Extensions
                 _logger.Error(ex, JsonSerializer.Serialize(ex.Message));
             }
         }
-        
+
         private static async Task Invoke(HttpContext context)
         {
             context.Response.StatusCode = StatusCodes.Status200OK;
@@ -47,7 +48,7 @@ namespace Hao.Core.Extensions
                 response.ErrorCode = exception.Code;
                 response.ErrorMsg = exception.Message;
             }
-            
+
 #if DEBUG
             response.ErrorMsg = ex.Message;
 #endif
@@ -61,7 +62,10 @@ namespace Hao.Core.Extensions
 
             _logger.Error(ex, JsonSerializer.Serialize(errorLog));
 
-            await context.Response.WriteAsync(JsonSerializer.Serialize(response),Encoding.UTF8);
+            await context.Response.WriteAsync(
+                JsonSerializer.Serialize(response,
+                    options: new JsonSerializerOptions() {Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping}),
+                Encoding.UTF8);
         }
     }
 }
