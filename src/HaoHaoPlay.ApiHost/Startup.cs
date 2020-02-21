@@ -130,7 +130,14 @@ namespace HaoHaoPlay.ApiHost
             services.AddPostgreSQLService(appSettings.ConnectionStrings.PostgreSqlConnection);
 
             //CAP
-            services.AddCapService(appSettings.ConnectionStrings.PostgreSqlConnection, appSettings.RabbitMQ.HostName, appSettings.RabbitMQ.VirtualHost, appSettings.RabbitMQ.Port, appSettings.RabbitMQ.UserName, appSettings.RabbitMQ.Password);
+            services.AddCapService(new HCapParam() {
+                PostgreSqlConnection = appSettings.ConnectionStrings.PostgreSqlConnection,
+                HostName=appSettings.RabbitMQ.HostName,
+                VirtualHost=appSettings.RabbitMQ.VirtualHost,
+                Port=appSettings.RabbitMQ.Port,
+                UserName=appSettings.RabbitMQ.UserName,
+                Password=appSettings.RabbitMQ.Password
+            });
 
 
             //替换控制器所有者,详见有道笔记,放AddMvc前面
