@@ -34,12 +34,15 @@ namespace Hao.AppService
 
         public FilePathInfo PathInfo { get; set; }
 
-        public UserAppService(IOptionsSnapshot<AppSettingsInfo> appsettingsOptions, ISysUserRepository userRepository, ISysLoginRecordRepository recordRep, IMapper mapper)
+        private readonly ICurrentUser _currentUser;
+
+        public UserAppService(IOptionsSnapshot<AppSettingsInfo> appsettingsOptions, ISysUserRepository userRepository, ISysLoginRecordRepository recordRep, IMapper mapper,ICurrentUser currentUser)
         {
             _userRep = userRepository;
             _recordRep = recordRep;
             _mapper = mapper;
             _appsettings = appsettingsOptions.Value;
+            _currentUser = currentUser;
         }
 
         public async Task<UserOut> GetByID(long? id)
@@ -122,9 +125,10 @@ namespace Hao.AppService
         /// 获取当前用户信息
         /// </summary>
         /// <returns></returns>
-        public async Task<UserOut> GetCurrentUser()
+        public async Task<CurrentUserOut> GetCurrentUser()
         {
-            return await Task.FromResult(new UserOut());
+            var user = await _userRep.GetAysnc(_currentUser.Id);
+            return _mapper.Map<CurrentUserOut>(user);
         }
 
         /// <summary>

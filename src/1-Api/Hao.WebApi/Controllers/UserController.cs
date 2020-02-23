@@ -97,8 +97,8 @@ namespace Hao.WebApi
         /// 获取当前用户信息
         /// </summary>
         /// <returns></returns>
-        [HttpGet("GetCurrentUser")]
-        public async Task<UserOut> GetCurrentUser() => await _userAppService.GetCurrentUser();
+        [HttpGet("Current")]
+        public async Task<CurrentUserOut> GetCurrentUser() => await _userAppService.GetCurrentUser();
 
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace Hao.WebApi
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        [HttpGet("ExportUser")]
+        [HttpGet("Export")]
         public async Task<object> ExportUser([FromQuery]UserQueryInput query)
         {
             string fileName = await _userAppService.ExportUsers(_mapper.Map<UserQuery>(query));
@@ -120,7 +120,7 @@ namespace Hao.WebApi
         /// </summary>
         /// <param name="formCollection"></param>
         /// <returns></returns>
-        [HttpPost("ImportUser")]
+        [HttpPost("Import")]
         public async Task ImportUser()
         {
             var files = HttpContext.Request.Form.Files;

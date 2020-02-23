@@ -24,7 +24,7 @@ namespace Hao.AppService
 
         Task<UserOut> GetUser(long id);
 
-        Task<UserOut> GetCurrentUser();
+        Task<CurrentUserOut> GetCurrentUser();
 
         Task UpdateLogin(long userId, DateTime lastLoginTime, string ip);
 

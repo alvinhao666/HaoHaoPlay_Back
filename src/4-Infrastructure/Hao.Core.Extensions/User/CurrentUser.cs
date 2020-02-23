@@ -18,9 +18,9 @@ namespace Hao.Core.Extensions
         /// <summary>
         ///用户编号 
         /// </summary>
-        public long? Id
+        public long Id
         {
-            get => _httpContext == null ? -1 : HConvert.ToLong(_httpContext.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sid)?.Value);
+            get => _httpContext == null ? -1 : HConvert.ToLong0(_httpContext.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sid)?.Value);
         }
 
         /// <summary>
