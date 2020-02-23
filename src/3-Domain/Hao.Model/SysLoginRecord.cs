@@ -7,7 +7,7 @@ using SqlSugar;
 
 namespace Hao.Model
 {
-    [SugarTable("SysLoginRecord")]
+    [SugarTable("sysloginrecord")]
     public class SysLoginRecord: BaseEntity<long>
     {
         public long? UserId { get; set; }

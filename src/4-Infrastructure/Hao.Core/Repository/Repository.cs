@@ -25,7 +25,7 @@ namespace Hao.Core
         /// <returns>泛型实体</returns>
         public virtual async Task<T> GetAysnc(TKey pkValue)
         {
-            var entity = await Task.Factory.StartNew(() => UnitOfWork.GetDbClient().Queryable<T>().InSingle(pkValue));
+            var entity = await UnitOfWork.GetDbClient().Queryable<T>().InSingleAsync(pkValue);
             return entity;
         }
 
