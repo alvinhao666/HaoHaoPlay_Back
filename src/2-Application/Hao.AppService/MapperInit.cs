@@ -22,6 +22,8 @@ namespace Hao.AppService
               .ForMember(x => x.EnabledString, a => a.MapFrom(x => x.Enabled.Value ? "启用" : "注销"));
             
             cfg.CreateMap<UserIn, SysUser>();
+            
+            cfg.CreateMap<SysUser, CurrentUserOut>();
         }
     }
 }
