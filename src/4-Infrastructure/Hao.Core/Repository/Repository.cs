@@ -159,7 +159,7 @@ namespace Hao.Core
                 item.CreateTime = timeNow;
                 item.IsDeleted = false;
             });
-            return await Task.Factory.StartNew(() => UnitOfWork.GetDbClient().GetSimpleClient<T>().InsertRange(entities));
+            return await UnitOfWork.GetDbClient().Insertable(entities).ExecuteCommandAsync() > 0;
         }
 
         /// <summary>
@@ -172,7 +172,9 @@ namespace Hao.Core
             entity.LastModifyUserId = CurrentUser.Id;
             entity.LastModifyTime = DateTime.Now;
             entity.IsDeleted = true;
-            return await UnitOfWork.GetDbClient().Updateable(entity).ExecuteCommandAsync() > 0;
+            var columns = new string[] { "LastModifyUserId", "LastModifyTime", "IsDeleted" };
+
+            return await UnitOfWork.GetDbClient().Updateable(entity).UpdateColumns(columns.ToArray()).ExecuteCommandAsync() > 0;
         }
 
         /// <summary>
@@ -212,7 +214,8 @@ namespace Hao.Core
                 item.LastModifyTime = timeNow;
                 item.IsDeleted = true;
             });
-            return await Task.Factory.StartNew(() => UnitOfWork.GetDbClient().GetSimpleClient<T>().UpdateRange(entities));
+            var columns = new string[] { "LastModifyUserId", "LastModifyTime", "IsDeleted" };
+            return await UnitOfWork.GetDbClient().Updateable(entities).UpdateColumns(columns).ExecuteCommandAsync() > 0;
         }
 
         /// <summary>
@@ -258,7 +261,7 @@ namespace Hao.Core
                 item.LastModifyUserId = CurrentUser.Id;
                 item.LastModifyTime = timeNow;
             });
-            return await Task.Factory.StartNew(() => UnitOfWork.GetDbClient().GetSimpleClient<T>().UpdateRange(entities));
+            return await UnitOfWork.GetDbClient().Updateable(entities).ExecuteCommandAsync() > 0;
         }
 
         /// <summary>

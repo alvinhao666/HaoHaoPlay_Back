@@ -136,7 +136,7 @@ namespace Hao.Core
                 else if (id != null) id.SetValue(item, IdWorker.NextId());
                 
             });
-            return await Task.Factory.StartNew(() => UnitOfWork.GetDbClient().GetSimpleClient<T>().InsertRange(entities));
+            return await UnitOfWork.GetDbClient().Insertable(entities).ExecuteCommandAsync() > 0;
         }
         
         /// <summary>
