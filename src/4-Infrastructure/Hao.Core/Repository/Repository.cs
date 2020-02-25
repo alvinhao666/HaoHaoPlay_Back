@@ -7,6 +7,7 @@ using System.Linq.Expressions;
 using Hao.Entity;
 using Hao.Snowflake;
 using Hao.Utility;
+using System.Linq;
 
 namespace Hao.Core
 {
@@ -227,6 +228,24 @@ namespace Hao.Core
         }
 
         /// <summary>
+        /// 异步更新数据（指定列名）
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        public virtual async Task<bool> UpdateAsync(T entity, Expression<Func<T, object>> columns)
+        {
+            entity.LastModifyUserId = CurrentUser.Id;
+            entity.LastModifyTime = DateTime.Now;
+
+            var properties = columns.Body.Type.GetProperties();
+            var updateColumns = properties.Select(a => a.Name).ToList();
+            updateColumns.Add(nameof(entity.LastModifyUserId));
+            updateColumns.Add(nameof(entity.LastModifyTime));
+
+            return await UnitOfWork.GetDbClient().Updateable(entity).UpdateColumns(updateColumns.ToArray()).ExecuteCommandAsync() > 0;
+        }
+
+        /// <summary>
         /// 异步更新数据(多条)
         /// </summary>
         /// <param name="entities">实体类</param>
@@ -240,6 +259,26 @@ namespace Hao.Core
                 item.LastModifyTime = timeNow;
             });
             return await Task.Factory.StartNew(() => UnitOfWork.GetDbClient().GetSimpleClient<T>().UpdateRange(entities));
+        }
+
+        /// <summary>
+        /// 异步更新数据(多条)（指定列名）
+        /// </summary>
+        /// <param name="entities">实体类</param>
+        /// <returns></returns>
+        public virtual async Task<bool> UpdateAsync(List<T> entities, Expression<Func<T, object>> columns)
+        {
+            var timeNow = DateTime.Now;
+            entities.ForEach(item =>
+            {
+                item.LastModifyUserId = CurrentUser.Id;
+                item.LastModifyTime = timeNow;
+            });
+            var properties = columns.Body.Type.GetProperties();
+            var updateColumns = properties.Select(a => a.Name).ToList();
+            updateColumns.Add("LastModifyUserId");
+            updateColumns.Add("LastModifyTime");
+            return await  UnitOfWork.GetDbClient().Updateable(entities).UpdateColumns(updateColumns.ToArray()).ExecuteCommandAsync() > 0;
         }
     }
 }

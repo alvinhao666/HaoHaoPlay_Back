@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Linq.Expressions;
 using Hao.Entity;
 using Hao.Snowflake;
+using System.Linq;
 
 namespace Hao.Core
 {
@@ -149,13 +150,37 @@ namespace Hao.Core
         }
 
         /// <summary>
+        /// 异步更新数据（指定列名）
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        public virtual async Task<bool> UpdateAsync(T entity, Expression<Func<T, object>> columns)
+        {
+            var properties = columns.Body.Type.GetProperties();
+            var updateColumns = properties.Select(a => a.Name);
+            return await UnitOfWork.GetDbClient().Updateable(entity).UpdateColumns(updateColumns.ToArray()).ExecuteCommandAsync() > 0;
+        }
+
+        /// <summary>
         /// 异步更新数据(多条)
         /// </summary>
         /// <param name="entities">实体类</param>
         /// <returns></returns>
         public virtual async Task<bool> UpdateAsync(List<T> entities)
         {
-            return await Task.Factory.StartNew(() => UnitOfWork.GetDbClient().GetSimpleClient<T>().UpdateRange(entities));
+            return await UnitOfWork.GetDbClient().Updateable(entities).ExecuteCommandAsync() > 0;
+        }
+
+        /// <summary>
+        /// 异步更新数据(多条)（指定列名）
+        /// </summary>
+        /// <param name="entities">实体类</param>
+        /// <returns></returns>
+        public virtual async Task<bool> UpdateAsync(List<T> entities, Expression<Func<T, object>> columns)
+        {
+            var properties = columns.Body.Type.GetProperties();
+            var updateColumns = properties.Select(a => a.Name);
+            return await UnitOfWork.GetDbClient().Updateable(entities).UpdateColumns(updateColumns.ToArray()).ExecuteCommandAsync() > 0;
         }
     }
 }

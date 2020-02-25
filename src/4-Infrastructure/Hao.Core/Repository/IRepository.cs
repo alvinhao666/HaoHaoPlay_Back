@@ -103,10 +103,24 @@ namespace Hao.Core
         Task<bool> UpdateAsync(T entity);
 
         /// <summary>
+        /// 异步更新实体数据（指定列）
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        Task<bool> UpdateAsync(T entity, Expression<Func<T, object>> columns);
+
+        /// <summary>
         /// 异步更新实体数据(多条)
         /// </summary>
         /// <param name="entities"></param>
         /// <returns></returns>
         Task<bool> UpdateAsync(List<T> entities);
+
+        /// <summary>
+        /// 异步更新实体数据(多条)（指定列）
+        /// </summary>
+        /// <param name="entities"></param>
+        /// <returns></returns>
+        Task<bool> UpdateAsync(List<T> entities, Expression<Func<T, object>> columns);
     }
 }

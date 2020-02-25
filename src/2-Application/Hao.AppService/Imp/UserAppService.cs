@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Hao.AppService
@@ -146,7 +147,8 @@ namespace Hao.AppService
             {
                 user.LastLoginTime = lastLoginTime;
                 user.LastLoginIP = ip;
-                await _userRep.UpdateAsync(user);
+
+                await _userRep.UpdateAsync(user, user => new { user.LastLoginTime, user.LastLoginIP });
                 await _recordRep.InsertAysnc(new SysLoginRecord() { UserId = user.Id, IP = ip, Time = lastLoginTime });
             }
         }
