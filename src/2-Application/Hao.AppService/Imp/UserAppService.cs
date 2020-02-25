@@ -179,7 +179,7 @@ namespace Hao.AppService
             if (user != null)
             {
                 user.Enabled = enabled;
-                await _userRep.UpdateAsync(user);
+                await _userRep.UpdateAsync(user, user => new {user.Enabled});
             }
         }
 
@@ -187,7 +187,7 @@ namespace Hao.AppService
         /// 编辑用户
         /// </summary>
         /// <param name="userId"></param>
-        /// <param name=""></param>
+        /// <param name="vm"></param>
         /// <returns></returns>
         public async Task EditUser(long userId, UserIn vm)
         {
@@ -200,7 +200,8 @@ namespace Hao.AppService
                 user.Phone = vm.Phone;
                 user.Email = vm.Email;
                 user.WeChat = vm.WeChat;
-                await _userRep.UpdateAsync(user);
+                await _userRep.UpdateAsync(user,
+                    user => new {user.Name, user.Age, user.Gender, user.Phone, user.Email, user.WeChat});
             }
         }
 
