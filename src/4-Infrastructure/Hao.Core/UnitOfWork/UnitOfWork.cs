@@ -1,10 +1,11 @@
-﻿using SqlSugar;
+﻿using System;
+using SqlSugar;
 
 namespace Hao.Core
 {
     public class UnitOfWork : IUnitOfWork
     {
-        public  ISqlSugarClient SqlSugarClient { get; set; }
+        public ISqlSugarClient SqlSugarClient { get; set; }
 
 
         /// <summary>
@@ -13,6 +14,11 @@ namespace Hao.Core
         /// <returns></returns>
         public ISqlSugarClient GetDbClient()
         {
+#if DEBUG
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(SqlSugarClient.ContextID);
+            Console.ForegroundColor = ConsoleColor.White;
+#endif
             return SqlSugarClient;
         }
 
@@ -31,7 +37,7 @@ namespace Hao.Core
         {
             try
             {
-                SqlSugarClient.Ado.CommitTran(); 
+                SqlSugarClient.Ado.CommitTran();
             }
             catch
             {
