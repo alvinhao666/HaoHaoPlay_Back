@@ -85,30 +85,27 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<PagedList<T>> GetPagedListAysnc(Query<T> query)
         {
-            var totalNumber = 0;
+            RefAsync<int> totalNumber = 10;
             var flag = string.IsNullOrWhiteSpace(query.OrderFileds);
             var q = UnitOfWork.GetDbClient().Queryable<T>();
             foreach (var item in query.QueryExpressions)
             {
                 q.Where(item);
             }
-            var items = q.Where(a => a.IsDeleted == false)
+            var items = await q.Where(a => a.IsDeleted == false)
                                             .OrderByIF(flag, a => a.CreateTime, OrderByType.Desc)
                                             .OrderByIF(!flag, query.OrderFileds)
-                                            .ToPageList(query.PageIndex, query.PageSize, ref totalNumber);
+                                            .ToPageListAsync(query.PageIndex, query.PageSize, totalNumber);
 
-            return await Task.Factory.StartNew(() =>
+            var pageList = new PagedList<T>()
             {
-                var pageList = new PagedList<T>()
-                {
-                    Items = items,
-                    TotalCount = totalNumber,
-                    PageIndex = query.PageIndex,
-                    PageSize = query.PageSize,
-                    TotalPagesCount = (totalNumber + query.PageSize - 1) / query.PageSize
-                };
-                return pageList;
-            }); 
+                Items = items,
+                TotalCount = totalNumber,
+                PageIndex = query.PageIndex,
+                PageSize = query.PageSize,
+                TotalPagesCount = (totalNumber.Value + query.PageSize - 1) / query.PageSize
+            };
+            return pageList;
         }
 
         /// <summary>
