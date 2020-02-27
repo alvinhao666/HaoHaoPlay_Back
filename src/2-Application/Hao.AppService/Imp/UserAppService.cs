@@ -152,8 +152,15 @@ namespace Hao.AppService
             {
                 user.LastLoginTime = lastLoginTime;
                 user.LastLoginIP = ip;
-                await _userRep.UpdateAsync(user, user => new { user.LastLoginTime, user.LastLoginIP });
-                await _recordRep.InsertAysnc(new SysLoginRecord() { UserId = user.Id, IP = ip, Time = lastLoginTime });
+                try
+                {
+                    await _userRep.UpdateAsync(user, user => new { user.LastLoginTime, user.LastLoginIP });
+                    await _recordRep.InsertAysnc(new SysLoginRecord() { UserId = user.Id, IP = ip, Time = lastLoginTime });
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
             }
         }
 
