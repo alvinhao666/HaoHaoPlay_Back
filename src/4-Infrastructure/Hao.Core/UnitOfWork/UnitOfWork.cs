@@ -39,10 +39,10 @@ namespace Hao.Core
             {
                 SqlSugarClient.Ado.CommitTran();
             }
-            catch
+            catch(Exception ex)
             {
                 SqlSugarClient.Ado.RollbackTran();
-                throw;
+                throw ex;
             }
         }
 

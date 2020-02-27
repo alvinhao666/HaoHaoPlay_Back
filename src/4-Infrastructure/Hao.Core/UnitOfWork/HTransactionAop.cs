@@ -1,4 +1,5 @@
 ﻿using Castle.DynamicProxy;
+using System;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -62,9 +63,10 @@ namespace Hao.Core
                     }
                     _unitOfWork.CommitTran();
                 }
-                catch
+                catch(Exception ex)
                 {
                     _unitOfWork.RollbackTran();
+                    throw ex;
                 }
             }
             else
