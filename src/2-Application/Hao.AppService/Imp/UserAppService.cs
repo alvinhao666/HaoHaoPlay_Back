@@ -139,28 +139,22 @@ namespace Hao.AppService
         /// <param name="lastLoginTime"></param>
         /// <param name="ip"></param>
         /// <returns></returns>
+
         public async Task UpdateLogin(long userId, DateTime lastLoginTime, string ip)
         {
             var user = await _userRep.GetAysnc(userId);
             await UpdateLogin(user, lastLoginTime, ip);
         }
-        
-        [UseTransaction] //注意，事务命令只能用于 insert、delete、update 操作，而其他命令，比如建表、删表，会被自动提交。
+
+        [UseTransaction]//注意，事务命令只能用于 insert、delete、update 操作，而其他命令，比如建表、删表，会被自动提交。
         private async Task UpdateLogin(SysUser user, DateTime lastLoginTime, string ip)
         {
             if (user != null)
             {
                 user.LastLoginTime = lastLoginTime;
                 user.LastLoginIP = ip;
-                try
-                {
-                    await _userRep.UpdateAsync(user, user => new { user.LastLoginTime, user.LastLoginIP });
-                    await _recordRep.InsertAysnc(new SysLoginRecord() { UserId = user.Id, IP = ip, Time = lastLoginTime });
-                }
-                catch (Exception ex)
-                {
-                    throw ex;
-                }
+                await _userRep.UpdateAsync(user, user => new { user.LastLoginTime, user.LastLoginIP });
+                await _recordRep.InsertAysnc(new SysLoginRecord() { UserId = user.Id, IP = ip, Time = lastLoginTime });
             }
         }
 
