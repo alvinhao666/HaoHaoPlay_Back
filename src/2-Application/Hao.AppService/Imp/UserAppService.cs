@@ -46,13 +46,6 @@ namespace Hao.AppService
             _currentUser = currentUser;
         }
 
-        public async Task<UserOut> GetByID(long? id)
-        {
-            var user = await GetUserDetail(id.Value);
-
-            return _mapper.Map<UserOut>(user);
-        }
-
         /// <summary>
         /// 登录
         /// </summary>
