@@ -48,7 +48,7 @@ namespace Hao.AppService
 
         public async Task<UserOut> GetByID(long? id)
         {
-            var user = await _userRep.GetAysnc(id.Value);
+            var user = await GetUserDetail(id.Value);
 
             return _mapper.Map<UserOut>(user);
         }
@@ -74,6 +74,14 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task<long> AddUser(UserIn vm)
         {
+            var users = await _userRep.GetListAysnc(new UserQuery()
+            {
+                LoginName = vm.LoginName
+            });
+            if (users.Count > 0)
+            {
+                throw new HException("账号已存在，请重新输入");
+            }
             var user = _mapper.Map<SysUser>(vm);
             user.FirstNameSpell = HSpell.GetFirstLetter(user.Name.ToCharArray()[0]);
             user.Password = EncryptProvider.HMACSHA256(user.Password, _appsettings.KeyInfo.Sha256Key);
@@ -166,22 +174,29 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task DeleteUser(long userId)
         {
+            if (userId == _currentUser.Id)
+            {
+                throw new HException("对当前用户操作无效");
+            }
             await _userRep.DeleteAysnc(userId);
+            await RedisHelper.DelAsync(_appsettings.RedisPrefixOptions.LoginInfo + userId);
         }
 
         /// <summary>
-        /// 注销/启用，用户
+        /// 注销/启用
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
         public async Task UpdateUserEnabled(long userId, bool enabled)
         {
-            var user = await _userRep.GetAysnc(userId);
-            if (user != null)
+            if (userId == _currentUser.Id)
             {
-                user.Enabled = enabled;
-                await _userRep.UpdateAsync(user, user => new {user.Enabled});
+                throw new HException("对当前用户操作无效");
             }
+            var user = await GetUserDetail(_currentUser.Id);
+            user.Enabled = enabled;
+            await _userRep.UpdateAsync(user, user => new { user.Enabled });
+            await RedisHelper.DelAsync(_appsettings.RedisPrefixOptions.LoginInfo + user.Id);
         }
 
         /// <summary>
@@ -192,18 +207,72 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task EditUser(long userId, UserIn vm)
         {
-            var user = await _userRep.GetAysnc(userId);
-            if (user != null)
-            {
-                user.Name = vm.Name;
-                user.Age = vm.Age;
-                user.Gender = vm.Gender;
-                user.Phone = vm.Phone;
-                user.Email = vm.Email;
-                user.WeChat = vm.WeChat;
-                await _userRep.UpdateAsync(user,
-                    user => new {user.Name, user.Age, user.Gender, user.Phone, user.Email, user.WeChat});
-            }
+            var user = await GetUserDetail(userId);
+            user.Name = vm.Name;
+            user.Age = vm.Age;
+            user.Gender = vm.Gender;
+            user.Phone = vm.Phone;
+            user.Email = vm.Email;
+            user.WeChat = vm.WeChat;
+            await _userRep.UpdateAsync(user,
+                user => new { user.Name, user.Age, user.Gender, user.Phone, user.Email, user.WeChat });
+        }
+
+        /// <summary>
+        /// 是否存在用户
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public async Task<bool> IsExistUser(UserQuery query)
+        {
+            var users = await _userRep.GetListAysnc(query);
+            return users.Count > 0;
+        }
+
+        /// <summary>
+        /// 更新头像地址
+        /// </summary>
+        /// <param name="imgUrl"></param>
+        /// <returns></returns>
+        public async Task UpdateHeadImg(string imgUrl)
+        {
+            var user = await GetUserDetail(_currentUser.Id);
+            user.HeadImgUrl = imgUrl;
+            await _userRep.UpdateAsync(user, user => new { user.HeadImgUrl });
+        }
+
+        /// <summary>
+        /// 更新当前用户基本信息
+        /// </summary>
+        /// <param name="vm"></param>
+        /// <returns></returns>
+        public async Task UpdateBaseInfo(UserIn vm)
+        {
+            var user = await GetUserDetail(_currentUser.Id);
+            user.Name = vm.Name;
+            user.Age = vm.Age;
+            user.Gender = vm.Gender;
+            user.NickName = vm.NickName;
+            user.Profile = vm.Profile;
+            user.HomeAddress = vm.HomeAddress;
+            await _userRep.UpdateAsync(user,
+                user => new { user.Name, user.Age, user.Gender, user.NickName, user.Profile, user.HomeAddress });
+        }
+
+        /// <summary>
+        /// 更新当前用户密码
+        /// </summary>
+        /// <param name="oldPassword"></param>
+        /// <param name="newPassword"></param>
+        /// <returns></returns>
+        public async Task UpdatePassword(string oldPassword, string newPassword)
+        {
+            var user = await GetUserDetail(_currentUser.Id);
+            oldPassword = EncryptProvider.HMACSHA256(oldPassword, _appsettings.KeyInfo.Sha256Key);
+            if (user.Password != oldPassword) throw new HException("旧密码错误，请重新输入");
+            newPassword = EncryptProvider.HMACSHA256(newPassword, _appsettings.KeyInfo.Sha256Key);
+            user.Password = newPassword;
+            await _userRep.UpdateAsync(user,user => new { user.Password });
         }
 
         /// <summary>
@@ -237,5 +306,17 @@ namespace Hao.AppService
 
             return fileName;
         }
+
+
+
+        #region private
+
+        private async Task<SysUser> GetUserDetail(long userId)
+        {
+            var user = await _userRep.GetAysnc(userId);
+            if (user == null || user.IsDeleted) throw new HException("用户不存在");
+            return user;
+        }
+        #endregion
     }
 }

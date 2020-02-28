@@ -16,7 +16,7 @@ namespace Hao.Core
         public long? LastModifyUserId { get; set; }
         public DateTime? LastModifyTime { get; set; }
 
-        public bool? IsDeleted { get; set; }
+        public bool IsDeleted { get; set; }
 
     }
 }

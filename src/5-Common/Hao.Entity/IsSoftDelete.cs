@@ -8,6 +8,6 @@
         /// <summary>
         /// 是否已被删除
         /// </summary>
-        bool? IsDeleted { get; set; }
+        bool IsDeleted { get; set; }
     }
 }

@@ -42,7 +42,7 @@ namespace Hao.Core
         Task<List<T>> GetAllAysnc();
 
         /// <summary>
-        /// 根据条件查询所有数据（未删除）（单表）
+        /// 根据条件查询所有数据（未删除）
         /// </summary>
         /// <returns></returns>
         Task<List<T>> GetListAysnc(Query<T> query);
@@ -61,7 +61,7 @@ namespace Hao.Core
         Task<TKey> InsertAysnc(T entity);
 
         /// <summary>
-        /// 异步写入实体数据(多条)
+        /// 异步写入实体数据（多条）
         /// </summary>
         /// <param name="entities"></param>
         /// <returns></returns>

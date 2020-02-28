@@ -72,7 +72,7 @@ namespace Hao.Model
         /// <summary>
         /// 昵称
         /// </summary>
-        public string NikeName { get; set; }
+        public string NickName { get; set; }
 
         /// <summary>
         /// 个人简介

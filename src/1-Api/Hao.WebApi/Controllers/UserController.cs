@@ -61,6 +61,7 @@ namespace Hao.WebApi
         /// <returns></returns>
         [HttpPut("{id}")]
         public async Task Modify(long? id, [FromBody]UserIn vm) => await _userAppService.EditUser(id.Value, vm);
+
         /// <summary>
         /// 根据id获取用户
         /// </summary>
@@ -100,6 +101,24 @@ namespace Hao.WebApi
         [HttpGet("Current")]
         public async Task<CurrentUserOut> GetCurrentUser() => await _userAppService.GetCurrentUser();
 
+        /// <summary>
+        /// 是否存在用户
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        [HttpGet("IsExistUser")]
+        public async Task<bool> IsExistUser([FromQuery]UserQueryInput query) => await _userAppService.IsExistUser(_mapper.Map<UserQuery>(query));
+
+        /// <summary>
+        /// 更新当前用户头像地址
+        /// </summary>
+        /// <returns></returns>
+        [HttpPut("UpdateHeadImg")]
+        public async Task UpdateHeadImg()
+        {
+            string imgUrl = "";
+            await _userAppService.UpdateHeadImg(imgUrl);
+        }
 
         /// <summary>
         /// 导出用户

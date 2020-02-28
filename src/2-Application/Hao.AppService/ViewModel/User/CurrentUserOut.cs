@@ -1,3 +1,5 @@
+using Hao.Enum;
+
 namespace Hao.AppService.ViewModel
 {
     public class CurrentUserOut
@@ -11,5 +13,30 @@ namespace Hao.AppService.ViewModel
         /// 头像地址
         /// </summary>
         public string HeadImgUrl { get; set; }
+
+        /// <summary>
+        /// 昵称
+        /// </summary>
+        public string NickName { get; set; }
+
+        /// <summary>
+        /// 个人简介
+        /// </summary>
+        public string Profile { get; set; }
+
+        /// <summary>
+        /// 地址
+        /// </summary>
+        public string HomeAddress { get; set; }
+
+        /// <summary>
+        /// 性别
+        /// </summary>
+        public Gender? Gender { get; set; }
+
+        /// <summary>
+        /// 年龄
+        /// </summary>
+        public int? Age { get; set; }
     }
 }
