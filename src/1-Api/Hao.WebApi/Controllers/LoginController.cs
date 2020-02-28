@@ -74,16 +74,6 @@ namespace Hao.WebApi
             );
             user.Jwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 
-
-            var ip = HttpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault();
-            if (string.IsNullOrWhiteSpace(ip))
-            {
-                ip = HttpContext.Connection.RemoteIpAddress.ToString();
-                if (ip == "::1") ip = "127.0.0.1";
-            }
-
-            await _publisher.PublishAsync(nameof(LoginEventData),new LoginEventData { UserId = user.Id.Value, LastLoginTime = timeNow, LastLoginIP = ip });
-
             //存入redis
             var userValue = new RedisCacheUserInfo
             {
@@ -92,6 +82,21 @@ namespace Hao.WebApi
                 LoginName = user.LoginName
             };
             await RedisHelper.SetAsync(_appsettings.RedisPrefixOptions.LoginInfo + user.Id, JsonSerializer.Serialize(userValue));
+
+
+            var ip = HttpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault();
+            if (string.IsNullOrWhiteSpace(ip))
+            {
+                ip = HttpContext.Connection.RemoteIpAddress.ToString();
+                if (ip == "::1") ip = "127.0.0.1";
+            }
+
+            await _publisher.PublishAsync(nameof(LoginEventData), new LoginEventData
+            {
+                UserId = user.Id.Value,
+                LastLoginTime = timeNow,
+                LastLoginIP = ip
+            });
 
             _logger.Info(new HLog() { Method = "Login", Argument = query.LoginName, Description = "登录成功" });
 
