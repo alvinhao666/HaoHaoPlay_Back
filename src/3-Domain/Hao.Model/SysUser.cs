@@ -69,5 +69,20 @@ namespace Hao.Model
         /// </summary>
         public string HeadImgUrl { get; set; }
 
+        /// <summary>
+        /// 昵称
+        /// </summary>
+        public string NikeName { get; set; }
+
+        /// <summary>
+        /// 个人简介
+        /// </summary>
+        public string Profile { get; set; }
+
+        /// <summary>
+        /// 家庭地址
+        /// </summary>
+        public string HomeAddress { get; set; }
+
     }
 }

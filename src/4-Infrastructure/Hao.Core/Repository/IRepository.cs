@@ -18,7 +18,7 @@ namespace Hao.Core
         /// <summary>
         /// 根据主键值查询单条数据
         /// </summary>
-        /// <param name="pkValue">主键值</param>
+        /// <param name="pkValue"></param>
         /// <returns>泛型实体</returns>
         Task<T> GetAysnc(TKey pkValue);
 
@@ -42,7 +42,7 @@ namespace Hao.Core
         Task<List<T>> GetAllAysnc();
 
         /// <summary>
-        /// 根据条件查询所有数据
+        /// 根据条件查询所有数据（未删除）（单表）
         /// </summary>
         /// <returns></returns>
         Task<List<T>> GetListAysnc(Query<T> query);
@@ -56,42 +56,42 @@ namespace Hao.Core
         /// <summary>
         /// 异步写入实体数据
         /// </summary>
-        /// <param name="entity">实体类</param>
+        /// <param name="entity"></param>
         /// <returns></returns>
         Task<TKey> InsertAysnc(T entity);
 
         /// <summary>
         /// 异步写入实体数据(多条)
         /// </summary>
-        /// <param name="entities">实体类</param>
+        /// <param name="entities"></param>
         /// <returns></returns>
         Task<bool> InsertAysnc(List<T> entities);
 
         /// <summary>
         /// 异步删除数据
         /// </summary>
-        /// <param name="entity">实体类</param>
+        /// <param name="entity"></param>
         /// <returns></returns>
         Task<bool> DeleteAysnc(T entity);
 
         /// <summary>
         /// 异步删除数据
         /// </summary>
-        /// <param name="pkValue">实体类</param>
+        /// <param name="pkValue"></param>
         /// <returns></returns>
         Task<bool> DeleteAysnc(TKey pkValue);
 
         /// <summary>
         /// 异步删除数据
         /// </summary>
-        /// <param name="pkValues">实体类</param>
+        /// <param name="pkValues"></param>
         /// <returns></returns>
         Task<bool> DeleteAysnc(List<TKey> pkValues);
 
         /// <summary>
         /// 异步删除数据(多条)
         /// </summary>
-        /// <param name="entities">实体类</param>
+        /// <param name="entities"></param>
         /// <returns></returns>
         Task<bool> DeleteAysnc(List<T> entities);
 
