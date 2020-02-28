@@ -168,7 +168,7 @@ namespace Hao.WebApi
 
             if (files == null || files.Count == 0) 
             {
-                throw new HException("请选择上传的Excel文件");
+                throw new HException("请选择Excel文件");
             }
 
             //格式限制
@@ -176,7 +176,7 @@ namespace Hao.WebApi
 
             if (files.Any(b => !allowType.Contains(b.ContentType)))
             {
-                throw new HException("只能上传Excel格式文件");
+                throw new HException("只能上传Excel文件");
             }
 
             ////大小限制
@@ -210,7 +210,7 @@ namespace Hao.WebApi
                     var worksheet = ep.Workbook.Worksheets[0];
                     if (worksheet != null && worksheet.Cells[1, 1].Text.Trim() != "姓名") 
                     {
-                        throw new HException("上传Excel数据列名有误，请检查");
+                        throw new HException("上传数据列名有误，请检查");
                     }
                     foreach (var ws in ep.Workbook.Worksheets)
                     {
