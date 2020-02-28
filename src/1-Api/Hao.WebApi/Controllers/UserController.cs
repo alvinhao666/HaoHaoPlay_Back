@@ -84,7 +84,7 @@ namespace Hao.WebApi
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpPut("Disable/{id}")]
-        public async Task Disable(long? id) => await _userAppService.UpdateUserEnabled(id.Value, false);
+        public async Task Disable(long? id) => await _userAppService.UpdateUserStatus(id.Value, false);
 
         /// <summary>
         /// 启用用户
@@ -92,14 +92,8 @@ namespace Hao.WebApi
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpPut("Enable/{id}")]
-        public async Task Enable(long? id) => await _userAppService.UpdateUserEnabled(id.Value, true);
+        public async Task Enable(long? id) => await _userAppService.UpdateUserStatus(id.Value, true);
 
-        /// <summary>
-        /// 获取当前用户信息
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet("Current")]
-        public async Task<CurrentUserOut> GetCurrentUser() => await _userAppService.GetCurrentUser();
 
         /// <summary>
         /// 是否存在用户
@@ -109,15 +103,44 @@ namespace Hao.WebApi
         [HttpGet("IsExistUser")]
         public async Task<bool> IsExistUser([FromQuery]UserQueryInput query) => await _userAppService.IsExistUser(_mapper.Map<UserQuery>(query));
 
+
+        /// <summary>
+        /// 获取当前用户信息
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("Current")]
+        public async Task<CurrentUserOut> GetCurrentUser() => await _userAppService.GetCurrentUser();
+
         /// <summary>
         /// 更新当前用户头像地址
         /// </summary>
         /// <returns></returns>
-        [HttpPut("UpdateHeadImg")]
-        public async Task UpdateHeadImg()
+        [HttpPut("UpdateCurrentUserHeadImg")]
+        public async Task UpdateCurrentUserHeadImg()
         {
             string imgUrl = "";
-            await _userAppService.UpdateHeadImg(imgUrl);
+            await _userAppService.UpdateCurrentUserHeadImg(imgUrl);
+        }
+
+        /// <summary>
+        /// 更新当前用户基本信息
+        /// </summary>
+        /// <returns></returns>
+        [HttpPut("UpdateCurrentUserBaseInfo")]
+        public async Task UpdateCurrentUserBaseInfo([FromBody]UserIn vm)
+        {
+            string imgUrl = "";
+            await _userAppService.UpdateCurrentUserBaseInfo(vm);
+        }
+
+        /// <summary>
+        /// 更新当前用户密码
+        /// </summary>
+        /// <returns></returns>
+        [HttpPut("UpdateCurrentUserPassword")]
+        public async Task UpdateCurrentUserPassword([FromBody]PasswordIn vm)
+        {
+            await _userAppService.UpdateCurrentUserPassword(vm.OldPassword, vm.NewPassword);
         }
 
         /// <summary>

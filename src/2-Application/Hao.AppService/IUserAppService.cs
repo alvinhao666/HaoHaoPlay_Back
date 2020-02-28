@@ -83,7 +83,7 @@ namespace Hao.AppService
         /// <param name="userId"></param>
         /// <param name="enabled"></param>
         /// <returns></returns>
-        Task UpdateUserEnabled(long userId,bool enabled);
+        Task UpdateUserStatus(long userId,bool enabled);
 
         /// <summary>
         /// 导出
@@ -104,14 +104,14 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="imgUrl"></param>
         /// <returns></returns>
-        Task UpdateHeadImg(string imgUrl);
+        Task UpdateCurrentUserHeadImg(string imgUrl);
 
         /// <summary>
         /// 更新当前用户基本信息
         /// </summary>
         /// <param name="vm"></param>
         /// <returns></returns>
-        Task UpdateBaseInfo(UserIn vm);
+        Task UpdateCurrentUserBaseInfo(UserIn vm);
 
         /// <summary>
         /// 更新当前用户密码
@@ -119,6 +119,6 @@ namespace Hao.AppService
         /// <param name="oldPassword"></param>
         /// <param name="newPassword"></param>
         /// <returns></returns>
-        Task UpdatePassword(string oldPassword, string newPassword);
+        Task UpdateCurrentUserPassword(string oldPassword, string newPassword);
     }
 }

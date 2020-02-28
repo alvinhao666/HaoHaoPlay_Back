@@ -176,7 +176,7 @@ namespace Hao.AppService
         {
             if (userId == _currentUser.Id)
             {
-                throw new HException("对当前用户操作无效");
+                throw new HException("无法操作当前登录用户");
             }
             await _userRep.DeleteAysnc(userId);
             await RedisHelper.DelAsync(_appsettings.RedisPrefixOptions.LoginInfo + userId);
@@ -187,11 +187,11 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public async Task UpdateUserEnabled(long userId, bool enabled)
+        public async Task UpdateUserStatus(long userId, bool enabled)
         {
             if (userId == _currentUser.Id)
             {
-                throw new HException("对当前用户操作无效");
+                throw new HException("无法操作当前登录用户");
             }
             var user = await GetUserDetail(_currentUser.Id);
             user.Enabled = enabled;
@@ -234,7 +234,7 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="imgUrl"></param>
         /// <returns></returns>
-        public async Task UpdateHeadImg(string imgUrl)
+        public async Task UpdateCurrentUserHeadImg(string imgUrl)
         {
             var user = await GetUserDetail(_currentUser.Id);
             user.HeadImgUrl = imgUrl;
@@ -246,7 +246,7 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="vm"></param>
         /// <returns></returns>
-        public async Task UpdateBaseInfo(UserIn vm)
+        public async Task UpdateCurrentUserBaseInfo(UserIn vm)
         {
             var user = await GetUserDetail(_currentUser.Id);
             user.Name = vm.Name;
@@ -265,7 +265,7 @@ namespace Hao.AppService
         /// <param name="oldPassword"></param>
         /// <param name="newPassword"></param>
         /// <returns></returns>
-        public async Task UpdatePassword(string oldPassword, string newPassword)
+        public async Task UpdateCurrentUserPassword(string oldPassword, string newPassword)
         {
             var user = await GetUserDetail(_currentUser.Id);
             oldPassword = EncryptProvider.HMACSHA256(oldPassword, _appsettings.KeyInfo.Sha256Key);
@@ -314,7 +314,7 @@ namespace Hao.AppService
         private async Task<SysUser> GetUserDetail(long userId)
         {
             var user = await _userRep.GetAysnc(userId);
-            if (user == null || user.IsDeleted) throw new HException("用户不存在");
+            if (user == null || user.IsDeleted) throw new HException("用户不存在或已删除");
             return user;
         }
         #endregion
