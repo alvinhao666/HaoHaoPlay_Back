@@ -9,5 +9,7 @@ namespace Hao.AppService.ViewModel
         public string OldPassword { get; set; }
 
         public string NewPassword { get; set; }
+
+        public string RePassword { get; set; }
     }
 }
