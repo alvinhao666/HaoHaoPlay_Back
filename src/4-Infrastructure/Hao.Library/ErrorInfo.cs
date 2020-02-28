@@ -4,19 +4,10 @@ namespace Hao.Library
 {
     public static class ErrorInfo
     {
-
         public const string E100001 = "认证失败，请重新登录";
         public const string E100002 = "未授权，请重新登录";
         public const string E100003 = "用户未登录，请重新登录";
-        //基础异常
-        public const string E005001 = "用户不存在";
-        public const string E005002 = "用户名已存在";
-        public const string E005003 = "附件不存在";
-        public const string E005004 = "两次输入的密码不相同";
-        public const string E005005 = "用户名或密码错误";
-        public const string E005006 = "用户未登录";
-        public const string E005007 = "请选择要上传的Excel文件";
-        public const string E005008 = "只能上传Excel格式文件";
+
     }
 
     public static class StringExtensions

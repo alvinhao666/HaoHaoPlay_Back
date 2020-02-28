@@ -62,7 +62,7 @@ namespace Hao.AppService
         {
             var users = await _userRep.GetListAysnc(query);
             if (users.Count == 0)
-                throw new HException(ErrorInfo.E005005, nameof(ErrorInfo.E005005).GetErrorCode());
+                throw new HException("用户名或密码错误");
             var user = users.FirstOrDefault();
             return _mapper.Map<LoginOut>(user);
         }
@@ -79,9 +79,7 @@ namespace Hao.AppService
                 LoginName = vm.LoginName
             });
             if (users.Count > 0)
-            {
                 throw new HException("账号已存在，请重新输入");
-            }
             var user = _mapper.Map<SysUser>(vm);
             user.FirstNameSpell = HSpell.GetFirstLetter(user.Name.ToCharArray()[0]);
             user.Password = EncryptProvider.HMACSHA256(user.Password, _appsettings.KeyInfo.Sha256Key);
@@ -175,9 +173,7 @@ namespace Hao.AppService
         public async Task DeleteUser(long userId)
         {
             if (userId == _currentUser.Id)
-            {
                 throw new HException("无法操作当前登录用户");
-            }
             await _userRep.DeleteAysnc(userId);
             await RedisHelper.DelAsync(_appsettings.RedisPrefixOptions.LoginInfo + userId);
         }
@@ -190,9 +186,7 @@ namespace Hao.AppService
         public async Task UpdateUserStatus(long userId, bool enabled)
         {
             if (userId == _currentUser.Id)
-            {
                 throw new HException("无法操作当前登录用户");
-            }
             var user = await GetUserDetail(_currentUser.Id);
             user.Enabled = enabled;
             await _userRep.UpdateAsync(user, user => new { user.Enabled });

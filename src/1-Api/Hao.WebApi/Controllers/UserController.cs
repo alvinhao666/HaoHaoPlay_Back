@@ -129,7 +129,6 @@ namespace Hao.WebApi
         [HttpPut("UpdateCurrentUserBaseInfo")]
         public async Task UpdateCurrentUserBaseInfo([FromBody]UserIn vm)
         {
-            string imgUrl = "";
             await _userAppService.UpdateCurrentUserBaseInfo(vm);
         }
 
@@ -160,7 +159,7 @@ namespace Hao.WebApi
         /// <summary>
         /// 导入用户
         /// </summary>
-        /// <param name="formCollection"></param>
+        /// <param></param>
         /// <returns></returns>
         [HttpPost("Import")]
         public async Task ImportUser()
@@ -169,7 +168,7 @@ namespace Hao.WebApi
 
             if (files == null || files.Count == 0) 
             {
-                throw new HException(ErrorInfo.E005007, nameof(ErrorInfo.E005007).GetErrorCode());
+                throw new HException("请选择上传的Excel文件");
             }
 
             //格式限制
@@ -177,7 +176,7 @@ namespace Hao.WebApi
 
             if (files.Any(b => !allowType.Contains(b.ContentType)))
             {
-                throw new HException(ErrorInfo.E005008, nameof(ErrorInfo.E005008).GetErrorCode());
+                throw new HException("只能上传Excel格式文件");
             }
 
             ////大小限制
