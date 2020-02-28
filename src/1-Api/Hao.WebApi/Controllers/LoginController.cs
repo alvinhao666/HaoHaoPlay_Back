@@ -88,7 +88,7 @@ namespace Hao.WebApi
             if (string.IsNullOrWhiteSpace(ip))
             {
                 ip = HttpContext.Connection.RemoteIpAddress.ToString();
-                if (ip == "::1") ip = "127.0.0.1";
+                if (ip == "::1"|| ip.Contains("127.0.0.1")) ip = "127.0.0.1";
             }
 
             await _publisher.PublishAsync(nameof(LoginEventData), new LoginEventData
