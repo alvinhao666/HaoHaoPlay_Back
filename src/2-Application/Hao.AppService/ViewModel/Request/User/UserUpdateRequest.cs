@@ -5,24 +5,17 @@ using System.Text;
 
 namespace Hao.AppService.ViewModel
 {
-    public class UserIn
+    public class UserUpdateRequest
     {
         /// <summary>
         /// 姓名
         /// </summary>
         public string Name { get; set; }
-        /// <summary>
-        /// 账号
-        /// </summary>
-        public string LoginName { get; set; }
-        /// <summary>
-        /// 密码
-        /// </summary>
-        public string Password { get; set; }
+
         /// <summary>
         /// 年龄
         /// </summary>
-        public int?  Age { get; set; }
+        public int? Age { get; set; }
         /// <summary>
         /// 性别
         /// </summary>

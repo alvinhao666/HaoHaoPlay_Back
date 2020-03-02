@@ -7,9 +7,9 @@ using System.Text;
 
 namespace Hao.WebApi
 {
-    public class UserInValidator : AbstractValidator<UserIn>
+    public class UserAddValidator : AbstractValidator<UserAddRequest>
     {
-        public UserInValidator()
+        public UserAddValidator()
         {
 
             RuleFor(x => x.Name).NotEmpty().WithMessage("姓名不能为空");

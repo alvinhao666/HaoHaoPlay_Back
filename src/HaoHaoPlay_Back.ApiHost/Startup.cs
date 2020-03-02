@@ -147,7 +147,7 @@ namespace HaoHaoPlay.ApiHost
             {
                 x.Filters.Add(typeof(HResultFilter));
             })
-            .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginInValidator>())
+            .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginValidator>())
             .AddJsonOptions(o =>
             {
                 //不加这个 接口接收参数 string类型的时间 转换 datetime类型报错 system.text.json不支持隐式转化

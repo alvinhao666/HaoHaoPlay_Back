@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Hao.AppService.ViewModel
 {
-    public class LoginIn
+    public class LoginRequest
     {
         /// <summary>
         /// 登录名

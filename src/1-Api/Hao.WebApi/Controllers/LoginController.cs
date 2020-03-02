@@ -45,7 +45,7 @@ namespace Hao.WebApi
         /// <param name="vm"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<LoginOut> Login(LoginIn vm) //apicontroller 1.参数绑定策略的自动推断,可以省略[FromBody]
+        public async Task<LoginVM> Login(LoginRequest vm) //apicontroller 1.参数绑定策略的自动推断,可以省略[FromBody]
         {
             string pwd = RSAHelper.Decrypt(_appsettings.KeyInfo.RsaPrivateKey, vm.Password); //解密
 

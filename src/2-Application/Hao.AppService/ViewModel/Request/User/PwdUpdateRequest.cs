@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Hao.AppService.ViewModel
 {
-    public class PasswordIn
+    public class PwdUpdateRequest
     {
         public string OldPassword { get; set; }
 

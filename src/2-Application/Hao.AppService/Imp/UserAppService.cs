@@ -51,13 +51,13 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        public async Task<LoginOut> Login(UserQuery query)
+        public async Task<LoginVM> Login(UserQuery query)
         {
             var users = await _userRep.GetListAysnc(query);
             if (users.Count == 0)
                 throw new HException("用户名或密码错误");
             var user = users.FirstOrDefault();
-            return _mapper.Map<LoginOut>(user);
+            return _mapper.Map<LoginVM>(user);
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="vm"></param>
         /// <returns></returns>
-        public async Task<long> AddUser(UserIn vm)
+        public async Task<long> AddUser(UserAddRequest vm)
         {
             var users = await _userRep.GetListAysnc(new UserQuery()
             {
@@ -86,7 +86,7 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="vm"></param>
         /// <returns></returns>
-        public async Task AddUsers(List<UserIn> vms)
+        public async Task AddUsers(List<UserAddRequest> vms)
         {
             var users = _mapper.Map<List<SysUser>>(vms);
             foreach (var user in users)
@@ -102,10 +102,10 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        public async Task<PagedList<UserOut>> GetUsers(UserQuery query)
+        public async Task<PagedList<UserListItemVM>> GetUsers(UserQuery query)
         {
             var users = await _userRep.GetPagedListAysnc(query);
-            var result = _mapper.Map<PagedList<UserOut>>(users);
+            var result = _mapper.Map<PagedList<UserListItemVM>>(users);
 
             return result;
         }
@@ -115,20 +115,20 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<UserOut> GetUser(long id)
+        public async Task<UserDetailVM> GetUser(long id)
         {
             var user = await _userRep.GetAysnc(id);
-            return _mapper.Map<UserOut>(user);
+            return _mapper.Map<UserDetailVM>(user);
         }
 
         /// <summary>
         /// 获取当前用户信息
         /// </summary>
         /// <returns></returns>
-        public async Task<CurrentUserOut> GetCurrentUser()
+        public async Task<CurrentUserVM> GetCurrentUser()
         {
             var user = await _userRep.GetAysnc(_currentUser.Id);
-            return _mapper.Map<CurrentUserOut>(user);
+            return _mapper.Map<CurrentUserVM>(user);
         }
 
         /// <summary>
@@ -192,7 +192,7 @@ namespace Hao.AppService
         /// <param name="userId"></param>
         /// <param name="vm"></param>
         /// <returns></returns>
-        public async Task EditUser(long userId, UserIn vm)
+        public async Task EditUser(long userId, UserUpdateRequest vm)
         {
             var user = await GetUserDetail(userId);
             user.Name = vm.Name;
@@ -233,7 +233,7 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="vm"></param>
         /// <returns></returns>
-        public async Task UpdateCurrentUserBaseInfo(UserIn vm)
+        public async Task UpdateCurrentUserBaseInfo(UserUpdateRequest vm)
         {
             var user = await GetUserDetail(_currentUser.Id);
             user.Name = vm.Name;
@@ -268,10 +268,10 @@ namespace Hao.AppService
         /// <param name="oldPassword"></param>
         /// <param name="newPassword"></param>
         /// <returns></returns>
-        public async Task<UserSecurityOut> GetCurrentUserSecurityInfo()
+        public async Task<UserSecurityVM> GetCurrentUserSecurityInfo()
         {
             var user = await GetUserDetail(_currentUser.Id);
-            var result =  _mapper.Map<UserSecurityOut>(user);
+            var result =  _mapper.Map<UserSecurityVM>(user);
             return result;
         }
 

@@ -6,9 +6,9 @@ using System.Text;
 
 namespace Hao.WebApi
 {
-    public class PasswordInValidator : AbstractValidator<PasswordIn>
+    public class PwdUpdateValidator : AbstractValidator<PwdUpdateRequest>
     {
-        public PasswordInValidator()
+        public PwdUpdateValidator()
         {
             RuleFor(x => x.OldPassword).NotEmpty().WithMessage("旧密码不能为空");
 

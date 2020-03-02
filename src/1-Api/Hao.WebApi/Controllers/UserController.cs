@@ -44,14 +44,14 @@ namespace Hao.WebApi
         /// <param name="vm"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task Add([FromBody]UserIn vm) => await _userAppService.AddUser(vm);
+        public async Task Add([FromBody]UserAddRequest vm) => await _userAppService.AddUser(vm);
 
         /// <summary>
         /// 查询用户列表
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<PagedList<UserOut>> GetPagedList([FromQuery]UserQueryInput query) => await _userAppService.GetUsers(_mapper.Map<UserQuery>(query));
+        public async Task<PagedList<UserListItemVM>> GetPagedList([FromQuery]UserQueryInput query) => await _userAppService.GetUsers(_mapper.Map<UserQuery>(query));
 
         /// <summary>
         /// 修改用户
@@ -60,7 +60,7 @@ namespace Hao.WebApi
         /// <param name="vm"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        public async Task Modify(long? id, [FromBody]UserIn vm) => await _userAppService.EditUser(id.Value, vm);
+        public async Task Update(long? id, [FromBody]UserUpdateRequest vm) => await _userAppService.EditUser(id.Value, vm);
 
         /// <summary>
         /// 根据id获取用户
@@ -68,7 +68,7 @@ namespace Hao.WebApi
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<UserOut> Get(long? id) => await _userAppService.GetUser(id.Value);
+        public async Task<UserDetailVM> Get(long? id) => await _userAppService.GetUser(id.Value);
 
         /// <summary>
         /// 删除用户
@@ -109,7 +109,7 @@ namespace Hao.WebApi
         /// </summary>
         /// <returns></returns>
         [HttpGet("Current")]
-        public async Task<CurrentUserOut> GetCurrentUser() => await _userAppService.GetCurrentUser();
+        public async Task<CurrentUserVM> GetCurrentUser() => await _userAppService.GetCurrentUser();
 
         /// <summary>
         /// 更新当前用户头像地址
@@ -127,7 +127,7 @@ namespace Hao.WebApi
         /// </summary>
         /// <returns></returns>
         [HttpPut("UpdateCurrentUserBaseInfo")]
-        public async Task UpdateCurrentUserBaseInfo([FromBody]UserIn vm)
+        public async Task UpdateCurrentUserBaseInfo([FromBody]UserUpdateRequest vm)
         {
             await _userAppService.UpdateCurrentUserBaseInfo(vm);
         }
@@ -137,7 +137,7 @@ namespace Hao.WebApi
         /// </summary>
         /// <returns></returns>
         [HttpGet("CurrentUserSecurityInfo")]
-        public async Task<UserSecurityOut> GetCurrentUserSecurityInfo()
+        public async Task<UserSecurityVM> GetCurrentUserSecurityInfo()
         {
             return await _userAppService.GetCurrentUserSecurityInfo();
         }
@@ -147,7 +147,7 @@ namespace Hao.WebApi
         /// </summary>
         /// <returns></returns>
         [HttpPut("UpdateCurrentUserPassword")]
-        public async Task UpdateCurrentUserPassword([FromBody]PasswordIn vm)
+        public async Task UpdateCurrentUserPassword([FromBody]PwdUpdateRequest vm)
         {
             await _userAppService.UpdateCurrentUserPassword(vm.OldPassword, vm.NewPassword);
         }
@@ -195,7 +195,7 @@ namespace Hao.WebApi
                
             //}
 
-            var users = new List<UserIn>();
+            var users = new List<UserAddRequest>();
             foreach (IFormFile file in files)
             {
                 var reader = new StreamReader(file.OpenReadStream());
@@ -231,7 +231,7 @@ namespace Hao.WebApi
 
                         for (int i = rowStart + 1; i <= rowEnd; i++) //第1行是列名,跳过
                         {
-                            var user = new UserIn();
+                            var user = new UserAddRequest();
                             user.Name = ws.Cells[i, colStart].Text;
                             users.Add(user);
                         }

@@ -17,21 +17,21 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        Task<LoginOut> Login(UserQuery query);
+        Task<LoginVM> Login(UserQuery query);
 
         /// <summary>
         /// 添加用户
         /// </summary>
         /// <param name="vm"></param>
         /// <returns></returns>
-        Task<long> AddUser(UserIn vm);
+        Task<long> AddUser(UserAddRequest vm);
         
         /// <summary>
         /// 批量添加用户
         /// </summary>
         /// <param name="vms"></param>
         /// <returns></returns>
-        Task AddUsers(List<UserIn> vms);
+        Task AddUsers(List<UserAddRequest> vms);
         
         /// <summary>
         /// 编辑用户
@@ -39,27 +39,27 @@ namespace Hao.AppService
         /// <param name="userId"></param>
         /// <param name="vm"></param>
         /// <returns></returns>
-        Task EditUser(long userId, UserIn vm);
+        Task EditUser(long userId, UserUpdateRequest vm);
 
         /// <summary>
         /// 查询用户列表
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        Task<PagedList<UserOut>> GetUsers(UserQuery query);
+        Task<PagedList<UserListItemVM>> GetUsers(UserQuery query);
 
         /// <summary>
         /// 用户详情
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<UserOut> GetUser(long id);
+        Task<UserDetailVM> GetUser(long id);
 
         /// <summary>
         /// 当前用户信息
         /// </summary>
         /// <returns></returns>
-        Task<CurrentUserOut> GetCurrentUser();
+        Task<CurrentUserVM> GetCurrentUser();
 
         /// <summary>
         /// 更新登录时间和ip
@@ -111,7 +111,7 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="vm"></param>
         /// <returns></returns>
-        Task UpdateCurrentUserBaseInfo(UserIn vm);
+        Task UpdateCurrentUserBaseInfo(UserUpdateRequest vm);
 
         /// <summary>
         /// 更新当前用户密码
@@ -125,6 +125,6 @@ namespace Hao.AppService
         /// 当前用户的安全信息
         /// </summary>
         /// <returns></returns>
-        Task<UserSecurityOut> GetCurrentUserSecurityInfo();
+        Task<UserSecurityVM> GetCurrentUserSecurityInfo();
     }
 }

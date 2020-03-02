@@ -7,9 +7,9 @@ using System.Text;
 
 namespace Hao.WebApi
 {
-    public class LoginInValidator : AbstractValidator<LoginIn>
+    public class LoginValidator : AbstractValidator<LoginRequest>
     {
-        public LoginInValidator()
+        public LoginValidator()
         {
             RuleFor(x => x.LoginName).NotEmpty().WithMessage("账号不能为空");
 
