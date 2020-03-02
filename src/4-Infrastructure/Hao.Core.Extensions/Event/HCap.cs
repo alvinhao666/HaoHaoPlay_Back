@@ -7,21 +7,21 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class HCap
     {
-        public static IServiceCollection AddCapService(this IServiceCollection services, HCapParam param )
+        public static IServiceCollection AddCapService(this IServiceCollection services, HCapConfig config )
         {
             services.AddCap(x =>
             {
                 x.UseDashboard(); 
 
-                x.UsePostgreSql(cfg => { cfg.ConnectionString = param.PostgreSqlConnection; });
+                x.UsePostgreSql(cfg => { cfg.ConnectionString = config.PostgreSqlConnection; });
 
                 x.UseRabbitMQ(cfg =>
                 {
-                    cfg.HostName = param.HostName;
-                    cfg.VirtualHost = param.VirtualHost; // 相当于数据库 可以在rabbitmq管理后台里面进行添加
-                    cfg.Port = param.Port;
-                    cfg.UserName = param.UserName;
-                    cfg.Password = param.Password;
+                    cfg.HostName = config.HostName;
+                    cfg.VirtualHost = config.VirtualHost; // 相当于数据库 可以在rabbitmq管理后台里面进行添加
+                    cfg.Port = config.Port;
+                    cfg.UserName = config.UserName;
+                    cfg.Password = config.Password;
                 });
 
                 x.FailedRetryCount = 2; //失败重试机会

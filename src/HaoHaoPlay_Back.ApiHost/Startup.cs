@@ -130,7 +130,7 @@ namespace HaoHaoPlay.ApiHost
             services.AddPostgreSQLService(appSettings.ConnectionStrings.PostgreSqlConnection);
 
             //CAP
-            services.AddCapService(new HCapParam() {
+            services.AddCapService(new HCapConfig() {
                 PostgreSqlConnection = appSettings.ConnectionStrings.PostgreSqlConnection,
                 HostName=appSettings.RabbitMQ.HostName,
                 VirtualHost=appSettings.RabbitMQ.VirtualHost,
