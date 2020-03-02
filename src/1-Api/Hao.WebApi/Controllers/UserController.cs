@@ -51,7 +51,7 @@ namespace Hao.WebApi
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<PagedList<UserListItemVM>> GetPagedList([FromQuery]UserQueryInput query) => await _userAppService.GetUsers(_mapper.Map<UserQuery>(query));
+        public async Task<PagedList<UserListItemVM>> GetPagedList([FromQuery]UserQueryInput query) => await _userAppService.GetUserPageList(_mapper.Map<UserQuery>(query));
 
         /// <summary>
         /// 修改用户
@@ -109,48 +109,42 @@ namespace Hao.WebApi
         /// </summary>
         /// <returns></returns>
         [HttpGet("Current")]
-        public async Task<CurrentUserVM> GetCurrentUser() => await _userAppService.GetCurrentUser();
+        public async Task<CurrentUserVM> GetCurrentUser() => await _userAppService.GetCurrent();
 
         /// <summary>
         /// 更新当前用户头像地址
         /// </summary>
         /// <returns></returns>
-        [HttpPut("UpdateCurrentUserHeadImg")]
-        public async Task UpdateCurrentUserHeadImg()
+        [HttpPut("UpdateCurrentHeadImg")]
+        public async Task UpdateCurrentHeadImg()
         {
             string imgUrl = "";
-            await _userAppService.UpdateCurrentUserHeadImg(imgUrl);
+            await _userAppService.UpdateCurrentHeadImg(imgUrl);
         }
 
         /// <summary>
         /// 更新当前用户基本信息
         /// </summary>
         /// <returns></returns>
-        [HttpPut("UpdateCurrentUserBaseInfo")]
-        public async Task UpdateCurrentUserBaseInfo([FromBody]UserUpdateRequest vm)
-        {
-            await _userAppService.UpdateCurrentUserBaseInfo(vm);
-        }
+        [HttpPut("UpdateCurrentBaseInfo")]
+        public async Task UpdateCurrentBaseInfo([FromBody]UserUpdateRequest vm) => await _userAppService.UpdateCurrentBaseInfo(vm);
+
 
         /// <summary>
         /// 当前用户安全信息
         /// </summary>
         /// <returns></returns>
-        [HttpGet("CurrentUserSecurityInfo")]
-        public async Task<UserSecurityVM> GetCurrentUserSecurityInfo()
-        {
-            return await _userAppService.GetCurrentUserSecurityInfo();
-        }
+        [HttpGet("CurrentSecurityInfo")]
+        public async Task<UserSecurityVM> GetCurrentSecurityInfo() => await _userAppService.GetCurrentSecurityInfo();
+
 
         /// <summary>
         /// 更新当前用户密码
         /// </summary>
         /// <returns></returns>
-        [HttpPut("UpdateCurrentUserPassword")]
-        public async Task UpdateCurrentUserPassword([FromBody]PwdUpdateRequest vm)
-        {
-            await _userAppService.UpdateCurrentUserPassword(vm.OldPassword, vm.NewPassword);
-        }
+        [HttpPut("UpdateCurrentPassword")]
+        public async Task UpdateCurrentPassword([FromBody]PwdUpdateRequest vm) => await _userAppService.UpdateCurrentPassword(vm.OldPassword, vm.NewPassword);
+
 
         /// <summary>
         /// 导出用户
@@ -176,7 +170,7 @@ namespace Hao.WebApi
         {
             var files = HttpContext.Request.Form.Files;
 
-            if (files == null || files.Count == 0) 
+            if (files == null || files.Count == 0)
             {
                 throw new HException("请选择Excel文件");
             }
@@ -192,7 +186,7 @@ namespace Hao.WebApi
             ////大小限制
             //if (files.Sum(b => b.Length) >= 1024 * 1024 * 4)
             //{
-               
+
             //}
 
             var users = new List<UserAddRequest>();
@@ -218,7 +212,7 @@ namespace Hao.WebApi
                 using (var ep = new ExcelPackage(new FileInfo(filePath)))
                 {
                     var worksheet = ep.Workbook.Worksheets[0];
-                    if (worksheet != null && worksheet.Cells[1, 1].Text.Trim() != "姓名") 
+                    if (worksheet != null && worksheet.Cells[1, 1].Text.Trim() != "姓名")
                     {
                         throw new HException("上传数据列名有误，请检查");
                     }

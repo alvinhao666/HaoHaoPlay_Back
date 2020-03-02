@@ -46,7 +46,7 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        Task<PagedList<UserListItemVM>> GetUsers(UserQuery query);
+        Task<PagedList<UserListItemVM>> GetUserPageList(UserQuery query);
 
         /// <summary>
         /// 用户详情
@@ -59,7 +59,7 @@ namespace Hao.AppService
         /// 当前用户信息
         /// </summary>
         /// <returns></returns>
-        Task<CurrentUserVM> GetCurrentUser();
+        Task<CurrentUserVM> GetCurrent();
 
         /// <summary>
         /// 更新登录时间和ip
@@ -104,14 +104,14 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="imgUrl"></param>
         /// <returns></returns>
-        Task UpdateCurrentUserHeadImg(string imgUrl);
+        Task UpdateCurrentHeadImg(string imgUrl);
 
         /// <summary>
         /// 更新当前用户基本信息
         /// </summary>
         /// <param name="vm"></param>
         /// <returns></returns>
-        Task UpdateCurrentUserBaseInfo(UserUpdateRequest vm);
+        Task UpdateCurrentBaseInfo(UserUpdateRequest vm);
 
         /// <summary>
         /// 更新当前用户密码
@@ -119,12 +119,12 @@ namespace Hao.AppService
         /// <param name="oldPassword"></param>
         /// <param name="newPassword"></param>
         /// <returns></returns>
-        Task UpdateCurrentUserPassword(string oldPassword, string newPassword);
+        Task UpdateCurrentPassword(string oldPassword, string newPassword);
 
         /// <summary>
         /// 当前用户的安全信息
         /// </summary>
         /// <returns></returns>
-        Task<UserSecurityVM> GetCurrentUserSecurityInfo();
+        Task<UserSecurityVM> GetCurrentSecurityInfo();
     }
 }

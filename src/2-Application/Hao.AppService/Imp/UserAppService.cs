@@ -102,7 +102,7 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        public async Task<PagedList<UserListItemVM>> GetUsers(UserQuery query)
+        public async Task<PagedList<UserListItemVM>> GetUserPageList(UserQuery query)
         {
             var users = await _userRep.GetPagedListAysnc(query);
             var result = _mapper.Map<PagedList<UserListItemVM>>(users);
@@ -125,7 +125,7 @@ namespace Hao.AppService
         /// 获取当前用户信息
         /// </summary>
         /// <returns></returns>
-        public async Task<CurrentUserVM> GetCurrentUser()
+        public async Task<CurrentUserVM> GetCurrent()
         {
             var user = await _userRep.GetAysnc(_currentUser.Id);
             return _mapper.Map<CurrentUserVM>(user);
@@ -221,7 +221,7 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="imgUrl"></param>
         /// <returns></returns>
-        public async Task UpdateCurrentUserHeadImg(string imgUrl)
+        public async Task UpdateCurrentHeadImg(string imgUrl)
         {
             var user = await GetUserDetail(_currentUser.Id);
             user.HeadImgUrl = imgUrl;
@@ -233,7 +233,7 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="vm"></param>
         /// <returns></returns>
-        public async Task UpdateCurrentUserBaseInfo(UserUpdateRequest vm)
+        public async Task UpdateCurrentBaseInfo(UserUpdateRequest vm)
         {
             var user = await GetUserDetail(_currentUser.Id);
             user.Name = vm.Name;
@@ -252,7 +252,7 @@ namespace Hao.AppService
         /// <param name="oldPassword"></param>
         /// <param name="newPassword"></param>
         /// <returns></returns>
-        public async Task UpdateCurrentUserPassword(string oldPassword, string newPassword)
+        public async Task UpdateCurrentPassword(string oldPassword, string newPassword)
         {
             var user = await GetUserDetail(_currentUser.Id);
             oldPassword = EncryptProvider.HMACSHA256(oldPassword, _appsettings.KeyInfo.Sha256Key);
@@ -268,7 +268,7 @@ namespace Hao.AppService
         /// <param name="oldPassword"></param>
         /// <param name="newPassword"></param>
         /// <returns></returns>
-        public async Task<UserSecurityVM> GetCurrentUserSecurityInfo()
+        public async Task<UserSecurityVM> GetCurrentSecurityInfo()
         {
             var user = await GetUserDetail(_currentUser.Id);
             var result =  _mapper.Map<UserSecurityVM>(user);
