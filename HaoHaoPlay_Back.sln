@@ -39,7 +39,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{24D9690F-D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.Enum", "src\3-Domain\Hao.Enum\Hao.Enum.csproj", "{25BCF8DF-2336-46B7-9662-C4F4D7980EB4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HaoHaoPlay.ApiHost", "src\HaoHaoPlay.ApiHost\HaoHaoPlay.ApiHost.csproj", "{FCC973D9-2A19-49EB-9DD5-96330EAEFE7B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HaoHaoPlay_Back.ApiHost", "src\HaoHaoPlay_Back.ApiHost\HaoHaoPlay_Back.ApiHost.csproj", "{FCC973D9-2A19-49EB-9DD5-96330EAEFE7B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.Dependency", "src\5-Common\Hao.Dependency\Hao.Dependency.csproj", "{1C605F38-7934-4F7D-8224-93DF5DBD5489}"
 EndProject
@@ -64,7 +64,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".global", ".global", "{4B99
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.Json", "src\5-Common\Hao.Json\Hao.Json.csproj", "{A21BC0AB-6C64-4DE4-AFF6-60153F790F9D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hao.Core.Extensions", "src\4-Infrastructure\Hao.Core.Extensions\Hao.Core.Extensions.csproj", "{8ED48A73-C61C-4C7D-8A01-47F564C9DBC1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.Core.Extensions", "src\4-Infrastructure\Hao.Core.Extensions\Hao.Core.Extensions.csproj", "{8ED48A73-C61C-4C7D-8A01-47F564C9DBC1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
