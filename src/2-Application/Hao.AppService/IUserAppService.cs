@@ -120,5 +120,11 @@ namespace Hao.AppService
         /// <param name="newPassword"></param>
         /// <returns></returns>
         Task UpdateCurrentUserPassword(string oldPassword, string newPassword);
+
+        /// <summary>
+        /// 当前用户的安全信息
+        /// </summary>
+        /// <returns></returns>
+        Task<UserSecurityOut> GetCurrentUserSecurityInfo();
     }
 }

@@ -263,6 +263,19 @@ namespace Hao.AppService
         }
 
         /// <summary>
+        /// 当前用户安全信息
+        /// </summary>
+        /// <param name="oldPassword"></param>
+        /// <param name="newPassword"></param>
+        /// <returns></returns>
+        public async Task<UserSecurityOut> GetCurrentUserSecurityInfo()
+        {
+            var user = await GetUserDetail(_currentUser.Id);
+            var result =  _mapper.Map<UserSecurityOut>(user);
+            return result;
+        }
+
+        /// <summary>
         /// 导出用户
         /// </summary>
         /// <param name="query"></param>

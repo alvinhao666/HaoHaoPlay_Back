@@ -84,5 +84,10 @@ namespace Hao.Model
         /// </summary>
         public string HomeAddress { get; set; }
 
+        /// <summary>
+        /// 密码强度
+        /// </summary>
+        public PasswordLevel? PasswordLevel { get; set; }
+
     }
 }

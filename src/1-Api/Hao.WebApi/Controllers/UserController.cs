@@ -133,6 +133,16 @@ namespace Hao.WebApi
         }
 
         /// <summary>
+        /// 当前用户安全信息
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("CurrentUserSecurityInfo")]
+        public async Task<UserSecurityOut> GetCurrentUserSecurityInfo()
+        {
+            return await _userAppService.GetCurrentUserSecurityInfo();
+        }
+
+        /// <summary>
         /// 更新当前用户密码
         /// </summary>
         /// <returns></returns>

@@ -3,6 +3,7 @@ using System.Dynamic;
 using System.IO;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Hao.Utility
 {
@@ -107,6 +108,44 @@ namespace Hao.Utility
                 }
             }
             return image;
+        }
+
+        ///// <summary>
+        ///// 检测密码强弱等级 0：弱，1：中，2：强
+        ///// </summary>
+        ///// <param name="password"></param>
+        ///// <returns></returns>
+        //public static int CheckPasswordLevel(string password)
+        //{
+        //    if (string.IsNullOrWhiteSpace(password)) return 0;
+        //    if (password.Length < 6) return 0;
+        //    string regexWeak = "^[0-9A-Za-z]{6,16}$";
+        //    string regexMedium = "^(?=.{6,16})[0-9A-Za-z]*[^0-9A-Za-z][0-9A-Za-z]*$";
+        //    string regexStrong = "^(?=.{6,16})([0-9A-Za-z]*[^0-9A-Za-z][0-9A-Za-z]*){2,}$";
+
+        //    if (Regex.IsMatch(password, regexWeak)) return 0;
+        //    if (Regex.IsMatch(password, regexMedium)) return 1;
+        //    if (Regex.IsMatch(password, regexStrong)) return 2;
+        //    return 2;
+        //}
+
+        /// <summary>
+        /// 隐藏手机号中间4位
+        /// </summary>
+        /// <param name="phone"></param>
+        /// <returns></returns>
+        public static string HidePhoneNumber(string phone)
+        {
+            if (string.IsNullOrWhiteSpace(phone)) return "";
+            phone = Regex.Replace(phone, "(\\d{3})\\d{4}(\\d{4})", "$1****$2");
+            return phone;
+        }
+
+        public static string HideEmailNumber(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email)) return "";
+            email = Regex.Replace(email, "(\\w?)(\\w+)(\\w)(@\\w+\\.[a-z]+(\\.[a-z]+)?)", "$1****$3$4");
+            return email;
         }
     }
 }
