@@ -44,7 +44,7 @@ namespace Hao.WebApi
         /// <param name="vm"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task Add([FromBody]UserAddRequest vm) => await _userAppService.AddUser(vm);
+        public async Task Add([FromBody]UserAddRequest request) => await _userAppService.AddUser(request);
 
         /// <summary>
         /// 查询用户列表
@@ -60,7 +60,7 @@ namespace Hao.WebApi
         /// <param name="vm"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        public async Task Update(long? id, [FromBody]UserUpdateRequest vm) => await _userAppService.EditUser(id.Value, vm);
+        public async Task Update(long? id, [FromBody]UserUpdateRequest request) => await _userAppService.EditUser(id.Value, request);
 
         /// <summary>
         /// 根据id获取用户
@@ -127,7 +127,7 @@ namespace Hao.WebApi
         /// </summary>
         /// <returns></returns>
         [HttpPut("UpdateCurrentBaseInfo")]
-        public async Task UpdateCurrentBaseInfo([FromBody]UserUpdateRequest vm) => await _userAppService.UpdateCurrentBaseInfo(vm);
+        public async Task UpdateCurrentBaseInfo([FromBody]UserUpdateRequest request) => await _userAppService.UpdateCurrentBaseInfo(request);
 
 
         /// <summary>
