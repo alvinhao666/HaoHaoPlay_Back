@@ -143,7 +143,7 @@ namespace Hao.WebApi
         /// </summary>
         /// <returns></returns>
         [HttpPut("UpdateCurrentPassword")]
-        public async Task UpdateCurrentPassword([FromBody]PwdUpdateRequest vm) => await _userAppService.UpdateCurrentPassword(vm.OldPassword, vm.NewPassword);
+        public async Task UpdateCurrentPassword([FromBody]PwdUpdateRequest request) => await _userAppService.UpdateCurrentPassword(request.OldPassword, request.NewPassword);
 
 
         /// <summary>
