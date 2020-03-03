@@ -41,7 +41,7 @@ namespace Hao.WebApi
         /// <summary>
         /// 添加用户
         /// </summary>
-        /// <param name="vm"></param>
+        /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
         public async Task Add([FromBody]UserAddRequest request) => await _userAppService.AddUser(request);
@@ -57,7 +57,7 @@ namespace Hao.WebApi
         /// 修改用户
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="vm"></param>
+        /// <param name="request"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
         public async Task Update(long? id, [FromBody]UserUpdateRequest request) => await _userAppService.EditUser(id.Value, request);
