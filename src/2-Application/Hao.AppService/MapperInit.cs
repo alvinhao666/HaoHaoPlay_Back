@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Hao.AppService.ViewModel;
 using Hao.Entity;
+using Hao.Enum;
 using Hao.Model;
 using Hao.Utility;
 
@@ -23,8 +24,10 @@ namespace Hao.AppService
 
             cfg.CreateMap<SysUser, UserDetailVM>();
 
-            cfg.CreateMap<UserAddRequest, SysUser>();
-            
+            cfg.CreateMap<UserAddRequest, SysUser>()
+            .ForMember(x => x.PasswordLevel, a => a.MapFrom(x =>(PasswordLevel)HUtil.CheckPasswordLevel(x.Password)));
+
+
             cfg.CreateMap<SysUser, CurrentUserVM>();
 
             cfg.CreateMap<SysUser, UserSecurityVM>()

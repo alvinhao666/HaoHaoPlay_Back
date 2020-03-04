@@ -40,19 +40,24 @@ namespace Hao.AppService.ViewModel
         /// </summary>
         public string WeChat { get; set; }
 
-        /// <summary>
-        /// 昵称
-        /// </summary>
-        public string NickName { get; set; }
+        ///// <summary>
+        ///// 昵称
+        ///// </summary>
+        //public string NickName { get; set; }
 
-        /// <summary>
-        /// 个人简介
-        /// </summary>
-        public string Profile { get; set; }
+        ///// <summary>
+        ///// 个人简介
+        ///// </summary>
+        //public string Profile { get; set; }
 
-        /// <summary>
-        /// 家庭地址
-        /// </summary>
-        public string HomeAddress { get; set; }
+        ///// <summary>
+        ///// 家庭地址
+        ///// </summary>
+        //public string HomeAddress { get; set; }
+
+        ///// <summary>
+        ///// 密码强度
+        ///// </summary>
+        //public PasswordLevel? PasswordLevel { get; set; }
     }
 }

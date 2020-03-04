@@ -110,24 +110,24 @@ namespace Hao.Utility
             return image;
         }
 
-        ///// <summary>
-        ///// 检测密码强弱等级 0：弱，1：中，2：强
-        ///// </summary>
-        ///// <param name="password"></param>
-        ///// <returns></returns>
-        //public static int CheckPasswordLevel(string password)
-        //{
-        //    if (string.IsNullOrWhiteSpace(password)) return 0;
-        //    if (password.Length < 6) return 0;
-        //    string regexWeak = "^[0-9A-Za-z]{6,16}$";
-        //    string regexMedium = "^(?=.{6,16})[0-9A-Za-z]*[^0-9A-Za-z][0-9A-Za-z]*$";
-        //    string regexStrong = "^(?=.{6,16})([0-9A-Za-z]*[^0-9A-Za-z][0-9A-Za-z]*){2,}$";
+        /// <summary>
+        /// 检测密码强弱等级 0：弱，1：中，2：强
+        /// </summary>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public static int CheckPasswordLevel(string password)
+        {
+            if (string.IsNullOrWhiteSpace(password)) return 0;
+            if (password.Length < 6) return 0;
+            string regexWeak = "^[0-9A-Za-z]{6,16}$";
+            string regexMedium = "^(?=.{6,16})[0-9A-Za-z]*[^0-9A-Za-z][0-9A-Za-z]*$";
+            string regexStrong = "^(?=.{6,16})([0-9A-Za-z]*[^0-9A-Za-z][0-9A-Za-z]*){2,}$";
 
-        //    if (Regex.IsMatch(password, regexWeak)) return 0;
-        //    if (Regex.IsMatch(password, regexMedium)) return 1;
-        //    if (Regex.IsMatch(password, regexStrong)) return 2;
-        //    return 2;
-        //}
+            if (Regex.IsMatch(password, regexWeak)) return 0;
+            if (Regex.IsMatch(password, regexMedium)) return 1;
+            if (Regex.IsMatch(password, regexStrong)) return 2;
+            return 2;
+        }
 
         /// <summary>
         /// 隐藏手机号中间4位
