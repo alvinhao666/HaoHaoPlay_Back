@@ -28,6 +28,7 @@ namespace Hao.AppService
             cfg.CreateMap<SysUser, CurrentUserVM>();
 
             cfg.CreateMap<SysUser, UserSecurityVM>()
+                .ForMember(x => x.PasswordLevel, a => a.MapFrom(x => x.PasswordLevel.GetDescription()))
                 .ForMember(x => x.Phone, a => a.MapFrom(x => HUtil.HidePhoneNumber(x.Phone)))
                 .ForMember(x => x.Email, a => a.MapFrom(x => HUtil.HideEmailNumber(x.Email)));
         }

@@ -12,7 +12,7 @@ namespace Hao.AppService.ViewModel
         /// <summary>
         /// 密码强度 0：弱，1：中，2：强
         /// </summary>
-        public int PasswordLevel { get; set; } 
+        public string PasswordLevel { get; set; } 
 
         /// <summary>
         /// 手机
