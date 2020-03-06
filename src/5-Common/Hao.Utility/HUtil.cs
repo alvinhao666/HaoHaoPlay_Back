@@ -66,7 +66,8 @@ namespace Hao.Utility
             DateTime startTime = TimeZoneInfo.ConvertTimeFromUtc(new DateTime(1970, 1, 1), TimeZoneInfo.Local);
             long mTime = long.Parse($"{timeStamp}0000000");
             TimeSpan toNow = new TimeSpan(mTime);
-            return startTime.Add(toNow);
+            var time = startTime.Add(toNow);
+            return time;
         }
 
         /// <summary>
