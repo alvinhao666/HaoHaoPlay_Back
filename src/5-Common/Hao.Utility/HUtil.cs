@@ -150,6 +150,11 @@ namespace Hao.Utility
             return phone;
         }
 
+        /// <summary>
+        /// 隐藏邮箱中间字符
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
         public static string HideEmailNumber(string email)
         {
             if (string.IsNullOrWhiteSpace(email)) return "";
