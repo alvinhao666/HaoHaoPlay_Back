@@ -24,8 +24,7 @@ namespace Hao.AppService
 
             cfg.CreateMap<SysUser, UserDetailVM>();
 
-            cfg.CreateMap<UserAddRequest, SysUser>()
-            .ForMember(x => x.PasswordLevel, a => a.MapFrom(x =>(PasswordLevel)HUtil.CheckPasswordLevel(x.Password)));
+            cfg.CreateMap<UserAddRequest, SysUser>();
 
 
             cfg.CreateMap<SysUser, CurrentUserVM>();

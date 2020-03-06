@@ -4,6 +4,7 @@ using Hao.AppService.ViewModel;
 using Hao.Core;
 using Hao.Encrypt;
 using Hao.Entity;
+using Hao.Enum;
 using Hao.EventData;
 using Hao.File;
 using Hao.Library;
@@ -75,6 +76,7 @@ namespace Hao.AppService
                 throw new HException("账号已存在，请重新输入");
             var user = _mapper.Map<SysUser>(vm);
             user.FirstNameSpell = HSpell.GetFirstLetter(user.Name.ToCharArray()[0]);
+            user.PasswordLevel = (PasswordLevel)HUtil.CheckPasswordLevel(user.Password);
             user.Password = EncryptProvider.HMACSHA256(user.Password, _appsettings.KeyInfo.Sha256Key);
             user.Enabled = true;
             return await _userRep.InsertAysnc(user);
