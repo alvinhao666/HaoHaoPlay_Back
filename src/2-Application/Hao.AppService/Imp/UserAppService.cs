@@ -258,18 +258,16 @@ namespace Hao.AppService
         {
             var user = await GetUserDetail(_currentUser.Id);
             oldPassword = EncryptProvider.HMACSHA256(oldPassword, _appsettings.KeyInfo.Sha256Key);
-            if (user.Password != oldPassword) throw new HException("旧密码错误，请重新输入");
+            if (user.Password != oldPassword) throw new HException("原密码错误");
+            user.PasswordLevel = (PasswordLevel)HUtil.CheckPasswordLevel(newPassword);
             newPassword = EncryptProvider.HMACSHA256(newPassword, _appsettings.KeyInfo.Sha256Key);
             user.Password = newPassword;
-            await _userRep.UpdateAsync(user,user => new { user.Password });
+            await _userRep.UpdateAsync(user, user => new {user.Password, user.PasswordLevel});
         }
 
         /// <summary>
         /// 当前用户安全信息
         /// </summary>
-        /// <param name="oldPassword"></param>
-        /// <param name="newPassword"></param>
-        /// <returns></returns>
         public async Task<UserSecurityVM> GetCurrentSecurityInfo()
         {
             var user = await GetUserDetail(_currentUser.Id);
