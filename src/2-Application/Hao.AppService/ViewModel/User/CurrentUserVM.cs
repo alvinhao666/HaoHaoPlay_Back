@@ -38,5 +38,10 @@ namespace Hao.AppService.ViewModel
         /// 年龄
         /// </summary>
         public int? Age { get; set; }
+        
+        /// <summary>
+        /// 姓的拼音首字母
+        /// </summary>
+        public string FirstNameSpell { get; set; }
     }
 }

@@ -244,8 +244,9 @@ namespace Hao.AppService
             user.NickName = vm.NickName;
             user.Profile = vm.Profile;
             user.HomeAddress = vm.HomeAddress;
+            user.FirstNameSpell = HSpell.GetFirstLetter(user.Name.ToCharArray()[0]);
             await _userRep.UpdateAsync(user,
-                user => new { user.Name, user.Age, user.Gender, user.NickName, user.Profile, user.HomeAddress });
+                user => new { user.Name, user.Age, user.Gender, user.NickName, user.Profile, user.HomeAddress,user.FirstNameSpell });
         }
 
         /// <summary>
