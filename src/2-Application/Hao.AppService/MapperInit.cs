@@ -22,7 +22,9 @@ namespace Hao.AppService
               .ForMember(x => x.GenderString, a => a.MapFrom(x => x.Gender.GetDescription()))
               .ForMember(x => x.EnabledString, a => a.MapFrom(x => x.Enabled.Value ? "启用" : "注销"));
 
-            cfg.CreateMap<SysUser, UserDetailVM>();
+            cfg.CreateMap<SysUser, UserDetailVM>()
+              .ForMember(x => x.GenderString, a => a.MapFrom(x => x.Gender.GetDescription()))
+              .ForMember(x => x.EnabledString, a => a.MapFrom(x => x.Enabled.Value ? "启用" : "注销"));
 
             cfg.CreateMap<UserAddRequest, SysUser>();
 
