@@ -182,10 +182,10 @@ namespace Hao.AppService
         {
             if (userId == _currentUser.Id)
                 throw new HException("无法操作当前登录用户");
-            var user = await GetUserDetail(_currentUser.Id);
+            var user = await GetUserDetail(userId);
             user.Enabled = enabled;
             await _userRep.UpdateAsync(user, user => new { user.Enabled });
-            await RedisHelper.DelAsync(_appsettings.RedisPrefixOptions.LoginInfo + user.Id);
+            if(!enabled) await RedisHelper.DelAsync(_appsettings.RedisPrefixOptions.LoginInfo + user.Id);
         }
 
         /// <summary>
