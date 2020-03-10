@@ -47,5 +47,10 @@ namespace Hao.AppService.ViewModel
         /// 家庭地址
         /// </summary>
         public string HomeAddress { get; set; }
+
+        /// <summary>
+        /// QQ
+        /// </summary>
+        public string QQ { get; set; }
     }
 }

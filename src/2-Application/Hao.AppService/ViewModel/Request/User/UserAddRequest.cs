@@ -40,6 +40,11 @@ namespace Hao.AppService.ViewModel
         /// </summary>
         public string WeChat { get; set; }
 
+        /// <summary>
+        /// QQ
+        /// </summary>
+        public string QQ { get; set; }
+
         ///// <summary>
         ///// 昵称
         ///// </summary>

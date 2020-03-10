@@ -203,8 +203,9 @@ namespace Hao.AppService
             user.Phone = vm.Phone;
             user.Email = vm.Email;
             user.WeChat = vm.WeChat;
+            user.QQ = vm.QQ;
             await _userRep.UpdateAsync(user,
-                user => new { user.Name, user.Age, user.Gender, user.Phone, user.Email, user.WeChat });
+                user => new { user.Name, user.Age, user.Gender, user.Phone, user.Email, user.WeChat, user.QQ });
         }
 
         /// <summary>
