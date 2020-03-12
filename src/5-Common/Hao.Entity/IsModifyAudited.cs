@@ -7,11 +7,11 @@ namespace Hao.Entity
         /// <summary>
         /// 最后一次修改人
         /// </summary>
-        long? LastModifyUserId { get; set; }
+        long? ModifierId { get; set; }
 
         /// <summary>
         /// 最后一次修改时间
         /// </summary>
-        DateTime? LastModifyTime { get; set; }
+        DateTime? ModifyTime { get; set; }
     }
 }

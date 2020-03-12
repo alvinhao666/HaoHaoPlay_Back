@@ -125,7 +125,7 @@ namespace Hao.Core
             }
             else if (id != null) id.SetValue(entity, IdWorker.NextId());
 
-            entity.CreaterId = CurrentUser.Id;
+            entity.CreatorId = CurrentUser.Id;
             entity.CreateTime = DateTime.Now;
             entity.IsDeleted = false;
 
@@ -152,7 +152,7 @@ namespace Hao.Core
                 }
                 else if (id != null) id.SetValue(item, IdWorker.NextId());
 
-                item.CreaterId = CurrentUser.Id;
+                item.CreatorId = CurrentUser.Id;
                 item.CreateTime = timeNow;
                 item.IsDeleted = false;
             });
@@ -166,8 +166,8 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<bool> DeleteAysnc(T entity)
         {
-            entity.LastModifyUserId = CurrentUser.Id;
-            entity.LastModifyTime = DateTime.Now;
+            entity.ModifierId = CurrentUser.Id;
+            entity.ModifyTime = DateTime.Now;
             entity.IsDeleted = true;
             var columns = new string[] { "LastModifyUserId", "LastModifyTime", "IsDeleted" };
 
@@ -207,8 +207,8 @@ namespace Hao.Core
             var timeNow = DateTime.Now;
             entities.ForEach(item =>
             {
-                item.LastModifyUserId = CurrentUser.Id;
-                item.LastModifyTime = timeNow;
+                item.ModifierId = CurrentUser.Id;
+                item.ModifyTime = timeNow;
                 item.IsDeleted = true;
             });
             var columns = new string[] { "LastModifyUserId", "LastModifyTime", "IsDeleted" };
@@ -222,8 +222,8 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<bool> UpdateAsync(T entity)
         {
-            entity.LastModifyUserId = CurrentUser.Id;
-            entity.LastModifyTime = DateTime.Now;
+            entity.ModifierId = CurrentUser.Id;
+            entity.ModifyTime = DateTime.Now;
             return await UnitOfWork.GetDbClient().Updateable(entity).ExecuteCommandAsync() > 0;
         }
 
@@ -234,13 +234,13 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<bool> UpdateAsync(T entity, Expression<Func<T, object>> columns)
         {
-            entity.LastModifyUserId = CurrentUser.Id;
-            entity.LastModifyTime = DateTime.Now;
+            entity.ModifierId = CurrentUser.Id;
+            entity.ModifyTime = DateTime.Now;
 
             var properties = columns.Body.Type.GetProperties();
             var updateColumns = properties.Select(a => a.Name).ToList();
-            updateColumns.Add(nameof(entity.LastModifyUserId));
-            updateColumns.Add(nameof(entity.LastModifyTime));
+            updateColumns.Add(nameof(entity.ModifierId));
+            updateColumns.Add(nameof(entity.ModifyTime));
 
             return await UnitOfWork.GetDbClient().Updateable(entity).UpdateColumns(updateColumns.ToArray()).ExecuteCommandAsync() > 0;
         }
@@ -255,8 +255,8 @@ namespace Hao.Core
             var timeNow = DateTime.Now;
             entities.ForEach(item =>
             {
-                item.LastModifyUserId = CurrentUser.Id;
-                item.LastModifyTime = timeNow;
+                item.ModifierId = CurrentUser.Id;
+                item.ModifyTime = timeNow;
             });
             return await UnitOfWork.GetDbClient().Updateable(entities).ExecuteCommandAsync() > 0;
         }
@@ -271,8 +271,8 @@ namespace Hao.Core
             var timeNow = DateTime.Now;
             entities.ForEach(item =>
             {
-                item.LastModifyUserId = CurrentUser.Id;
-                item.LastModifyTime = timeNow;
+                item.ModifierId = CurrentUser.Id;
+                item.ModifyTime = timeNow;
             });
             var properties = columns.Body.Type.GetProperties();
             var updateColumns = properties.Select(a => a.Name).ToList();

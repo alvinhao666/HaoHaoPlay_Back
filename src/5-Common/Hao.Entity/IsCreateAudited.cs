@@ -7,7 +7,7 @@ namespace Hao.Entity
         /// <summary>
         /// 创建人
         /// </summary>
-        long? CreaterId { get; set; }
+        long? CreatorId { get; set; }
 
         /// <summary>
         /// 创建时间
