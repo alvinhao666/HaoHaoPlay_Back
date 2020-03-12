@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Hao.AppService.ViewModel;
-using Hao.Entity;
-using Hao.Enum;
+using Hao.Core;
 using Hao.Model;
 using Hao.Utility;
 
