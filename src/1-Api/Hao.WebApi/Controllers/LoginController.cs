@@ -51,7 +51,7 @@ namespace Hao.WebApi
 
             pwd = EncryptProvider.HMACSHA256(pwd, _appsettings.KeyInfo.Sha256Key);
 
-            var query = new UserQuery() { LoginName = vm.LoginName, Password = pwd, Enabled = true };
+            var query = new UserQuery() { LoginName = vm.LoginName, Password = pwd};
             var user = await _userAppService.Login(query);
 
             var timeNow = DateTime.Now;

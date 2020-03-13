@@ -58,6 +58,8 @@ namespace Hao.AppService
             if (users.Count == 0)
                 throw new HException("用户名或密码错误");
             var user = users.FirstOrDefault();
+            if (user.Enabled.HasValue && !user.Enabled.Value) 
+                throw new HException("用户已注销");
             return _mapper.Map<LoginVM>(user);
         }
 
