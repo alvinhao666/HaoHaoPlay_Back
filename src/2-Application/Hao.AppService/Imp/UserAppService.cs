@@ -171,6 +171,8 @@ namespace Hao.AppService
         {
             if (userId == _currentUser.Id)
                 throw new HException("无法操作当前登录用户");
+            if (userId == -1) 
+                throw new HException("无法操作系统管理员账户");
             await _userRep.DeleteAysnc(userId);
             await RedisHelper.DelAsync(_appsettings.RedisPrefixOptions.LoginInfo + userId);
         }
@@ -184,6 +186,8 @@ namespace Hao.AppService
         {
             if (userId == _currentUser.Id)
                 throw new HException("无法操作当前登录用户");
+            if (userId == -1) 
+                throw new HException("无法操作系统管理员账户");
             var user = await GetUserDetail(userId);
             user.Enabled = enabled;
             await _userRep.UpdateAsync(user, user => new { user.Enabled });
@@ -198,6 +202,8 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task EditUser(long userId, UserUpdateRequest vm)
         {
+            if (userId == -1) 
+                throw new HException("无法操作系统管理员账户");
             var user = await GetUserDetail(userId);
             user.Name = vm.Name;
             user.Age = vm.Age;
