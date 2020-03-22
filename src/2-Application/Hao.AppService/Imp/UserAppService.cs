@@ -229,20 +229,25 @@ namespace Hao.AppService
         }
 
         /// <summary>
-        /// 更新头像地址
+        /// 更新头像地址 “Bitmap 对象或一个 图像 对象从一个文件, 构造时该文件仍保留锁定对于对象的生存期。 因此, 无法更改图像并将其保存回它产生相同的文件”
         /// </summary>
         /// <param name="imgUrl"></param>
         /// <returns></returns>
         public async Task UpdateCurrentHeadImg(byte[] imageBytes)
         {          
-            string imgPath = "";
+            string iname = HUtil.GetTimeStamp().ToString();
+            HFile.CreateDirectory(PathInfo.AvatarPath);
+            string imgPath=Path.Combine(PathInfo.AvatarPath, iname + ".png");
             using (MemoryStream ms = new MemoryStream(imageBytes, 0, imageBytes.Length))
             {
-                string iname = HUtil.GetTimeStamp().ToString();
-                imgPath =  Path.Combine(PathInfo.AvatarPath,iname + ".png");
-                HFile.CreateDirectory(imgPath);
-                Bitmap bpmTemp = new Bitmap(ms);
-                bpmTemp.Save(imgPath);
+     
+                var oldImg = new Bitmap(ms);
+                //Bitmap img = new Bitmap(oldImg);
+                //Graphics draw = Graphics.FromImage(img);
+                //draw.DrawImage(oldImg, 0, 0, oldImg.Width, oldImg.Height);
+                //oldImg.Dispose();
+                oldImg.Save(imgPath, System.Drawing.Imaging.ImageFormat.Png);
+                //img.Dispose();
             }
             var user = await GetUserDetail(_currentUser.Id);
             user.HeadImgUrl = imgPath;
