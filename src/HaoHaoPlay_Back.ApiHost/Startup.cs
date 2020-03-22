@@ -46,7 +46,8 @@ namespace HaoHaoPlay.ApiHost
             _pathInfo = new FilePathInfo
             {
                 ExportExcelPath = Path.Combine(_parentDir.FullName, "ExportFile/Excel"),
-                ImportExcelPath = Path.Combine(_parentDir.FullName, "ImportFile/Excel")
+                ImportExcelPath = Path.Combine(_parentDir.FullName, "ImportFile/Excel"),
+                AvatarPath = Path.Combine(_parentDir.FullName,"AvatarFile")
             };
         }
 

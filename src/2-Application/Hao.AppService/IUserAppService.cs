@@ -104,7 +104,7 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="imgUrl"></param>
         /// <returns></returns>
-        Task UpdateCurrentHeadImg(string imgUrl);
+        Task UpdateCurrentHeadImg(byte[] imageBytes);
 
         /// <summary>
         /// 更新当前用户基本信息

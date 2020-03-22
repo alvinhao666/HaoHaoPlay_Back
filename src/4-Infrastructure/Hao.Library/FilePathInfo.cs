@@ -15,5 +15,10 @@ namespace Hao.Library
         /// 导入Excel地址
         /// </summary>
         public string ImportExcelPath { get; set; }
+        
+        /// <summary>
+        /// 头像地址
+        /// </summary>
+        public string AvatarPath { get; set; }
     }
 }

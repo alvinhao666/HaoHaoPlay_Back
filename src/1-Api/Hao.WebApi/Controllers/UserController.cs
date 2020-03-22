@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Threading.Tasks;
 using Hao.AppService;
 using Hao.AppService.ViewModel;
@@ -16,6 +17,7 @@ using Hao.RunTimeException;
 using Microsoft.Extensions.Options;
 using Hao.Core.Extensions;
 using Hao.Core;
+using Hao.Utility;
 
 namespace Hao.WebApi
 {
@@ -112,14 +114,22 @@ namespace Hao.WebApi
         public async Task<CurrentUserVM> GetCurrentUser() => await _userAppService.GetCurrent();
 
         /// <summary>
-        /// 更新当前用户头像地址
+        /// 更新当前用户头像
         /// </summary>
+        /// <param name="base64str"></param>
         /// <returns></returns>
         [HttpPut("UpdateCurrentHeadImg")]
-        public async Task UpdateCurrentHeadImg()
+        public async Task UpdateCurrentHeadImg([FromBody]UpdateHeadImgRequest request)
         {
-            string imgUrl = "";
-            await _userAppService.UpdateCurrentHeadImg(imgUrl);
+            if (string.IsNullOrWhiteSpace(request.Base64Str)) return;
+            string[] str = request.Base64Str.Split(',');  //base64Str为base64完整的字符串，先处理一下得到我们所需要的字符串
+            byte[] imageBytes = Convert.FromBase64String(str[1]);
+  
+            await _userAppService.UpdateCurrentHeadImg(imageBytes);
+
+
+            // System.IO.File.WriteAllBytes(imgUrl, imageBytes);
+       
         }
 
         /// <summary>

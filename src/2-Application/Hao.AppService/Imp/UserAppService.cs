@@ -15,6 +15,7 @@ using Hao.Utility;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
@@ -232,10 +233,19 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="imgUrl"></param>
         /// <returns></returns>
-        public async Task UpdateCurrentHeadImg(string imgUrl)
-        {
+        public async Task UpdateCurrentHeadImg(byte[] imageBytes)
+        {          
+            string imgPath = "";
+            using (MemoryStream ms = new MemoryStream(imageBytes, 0, imageBytes.Length))
+            {
+                string iname = HUtil.GetTimeStamp().ToString();
+                imgPath =  Path.Combine(PathInfo.AvatarPath,iname + ".png");
+                HFile.CreateDirectory(imgPath);
+                Bitmap bpmTemp = new Bitmap(ms);
+                bpmTemp.Save(imgPath);
+            }
             var user = await GetUserDetail(_currentUser.Id);
-            user.HeadImgUrl = imgUrl;
+            user.HeadImgUrl = imgPath;
             await _userRep.UpdateAsync(user, user => new { user.HeadImgUrl });
         }
 
