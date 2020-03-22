@@ -27,6 +27,7 @@ namespace Hao.File
             {
                 using (Stream stream = new FileStream(filePath, FileMode.CreateNew)) //FileMode.CreateNew 当文件不存在时，创建新文件；如果文件存在，则引发异常。
                 {
+                    ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
                     using (ExcelPackage package = new ExcelPackage(stream))
                     {
                         ExcelWorksheet ws = package.Workbook.Worksheets.Add(string.IsNullOrWhiteSpace(tableTitle) ? "Sheet0" : tableTitle);
