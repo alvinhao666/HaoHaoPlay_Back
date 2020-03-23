@@ -255,7 +255,7 @@ namespace Hao.AppService
         //}
 
         /// <summary>
-        /// 更新头像地址 “Bitmap 对象或一个 图像 对象从一个文件, 构造时该文件仍保留锁定对于对象的生存期。 因此, 无法更改图像并将其保存回它产生相同的文件”
+        /// 更新头像地址 (ImageSharp)
         /// </summary>
         /// <param name="imgUrl"></param>
         /// <returns></returns>
