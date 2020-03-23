@@ -261,14 +261,14 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task UpdateCurrentHeadImg(byte[] imageBytes)
         {
-            string iname = HUtil.GetTimeStamp().ToString();
             HFile.CreateDirectory(PathInfo.AvatarPath);
-            string imgPath = Path.Combine(PathInfo.AvatarPath, iname + ".png");
+            string imgName = HUtil.GetTimeStamp().ToString() + ".png";
+            string imgPath = Path.Combine(PathInfo.AvatarPath, imgName);
             SixLabors.ImageSharp.Image image = SixLabors.ImageSharp.Image.Load(imageBytes);
 
             image.Save(imgPath);
             var user = await GetUserDetail(_currentUser.Id);
-            user.HeadImgUrl = imgPath;
+            user.HeadImgUrl = imgName;
             await _userRep.UpdateAsync(user, user => new { user.HeadImgUrl });
         }
 

@@ -208,7 +208,6 @@ namespace HaoHaoPlay.ApiHost
             app.UseStaticFiles();
             //导出excel路径
             var exportExcelPath = Path.Combine(_parentDir.FullName, "ExportFile/Excel");
-
             HFile.CreateDirectory(exportExcelPath);
 
             app.UseStaticFiles(new StaticFileOptions()
@@ -219,6 +218,15 @@ namespace HaoHaoPlay.ApiHost
                     {
                         { ".xlsx","application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}
                     })
+            });
+
+            //头像路径
+            var avatarPath = Path.Combine(_parentDir.FullName, "AavatarFile");
+            HFile.CreateDirectory(avatarPath);
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(exportExcelPath),
+                RequestPath = "/AavatarFile"
             });
             #endregion
 
