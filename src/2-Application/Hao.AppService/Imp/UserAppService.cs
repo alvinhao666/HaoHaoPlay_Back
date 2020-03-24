@@ -228,31 +228,6 @@ namespace Hao.AppService
             return users.Count > 0;
         }
 
-        ///// <summary>
-        ///// 更新头像地址 “Bitmap 对象或一个 图像 对象从一个文件, 构造时该文件仍保留锁定对于对象的生存期。 因此, 无法更改图像并将其保存回它产生相同的文件”
-        ///// </summary>
-        ///// <param name="imgUrl"></param>
-        ///// <returns></returns>
-        //public async Task UpdateCurrentHeadImg(byte[] imageBytes)
-        //{
-        //    string iname = HUtil.GetTimeStamp().ToString();
-        //    HFile.CreateDirectory(PathInfo.AvatarPath);
-        //    string imgPath = Path.Combine(PathInfo.AvatarPath, iname + ".png");
-        //    using (MemoryStream ms = new MemoryStream(imageBytes, 0, imageBytes.Length))
-        //    {
-
-        //        var oldImg = new Bitmap(ms);
-        //        //Bitmap img = new Bitmap(oldImg);
-        //        //Graphics draw = Graphics.FromImage(img);
-        //        //draw.DrawImage(oldImg, 0, 0, oldImg.Width, oldImg.Height);
-        //        //oldImg.Dispose();
-        //        oldImg.Save(imgPath, System.Drawing.Imaging.ImageFormat.Png);
-        //        //img.Dispose();
-        //    }
-        //    var user = await GetUserDetail(_currentUser.Id);
-        //    user.HeadImgUrl = imgPath;
-        //    await _userRep.UpdateAsync(user, user => new { user.HeadImgUrl });
-        //}
 
         /// <summary>
         /// 更新头像地址 (ImageSharp)
@@ -264,9 +239,11 @@ namespace Hao.AppService
             HFile.CreateDirectory(PathInfo.AvatarPath);
             string imgName = HUtil.GetTimeStamp().ToString() + ".png";
             string imgPath = Path.Combine(PathInfo.AvatarPath, imgName);
-            SixLabors.ImageSharp.Image image = SixLabors.ImageSharp.Image.Load(imageBytes);
 
-            image.Save(imgPath);
+            using (SixLabors.ImageSharp.Image image = SixLabors.ImageSharp.Image.Load(imageBytes)) 
+            {
+                image.Save(imgPath);
+            }  
             var user = await GetUserDetail(_currentUser.Id);
             user.HeadImgUrl = imgName;
             await _userRep.UpdateAsync(user, user => new { user.HeadImgUrl });
