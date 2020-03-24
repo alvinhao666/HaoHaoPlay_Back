@@ -237,7 +237,7 @@ namespace Hao.AppService
         public async Task UpdateCurrentHeadImg(byte[] imageBytes)
         {
             HFile.CreateDirectory(PathInfo.AvatarPath);
-            string imgName = HUtil.GetTimeStamp().ToString() + ".png";
+            string imgName = _currentUser.Id + HUtil.GetTimeStamp().ToString() + ".png";
             string imgPath = Path.Combine(PathInfo.AvatarPath, imgName);
 
             using (SixLabors.ImageSharp.Image image = SixLabors.ImageSharp.Image.Load(imageBytes)) 
