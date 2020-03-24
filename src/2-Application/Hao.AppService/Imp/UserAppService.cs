@@ -244,8 +244,14 @@ namespace Hao.AppService
                 image.Save(imgPath);
             }  
             var user = await GetUserDetail(_currentUser.Id);
+            string oldImgUrl = user.HeadImgUrl;
             user.HeadImgUrl = imgName;
             await _userRep.UpdateAsync(user, user => new { user.HeadImgUrl });
+            if (!string.IsNullOrWhiteSpace(oldImgUrl))
+            {
+                HFile.DeleteFile(Path.Combine(PathInfo.AvatarPath, oldImgUrl));
+            }
+
         }
 
         /// <summary>
