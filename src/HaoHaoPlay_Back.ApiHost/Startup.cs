@@ -221,12 +221,12 @@ namespace HaoHaoPlay.ApiHost
             });
 
             //头像路径
-            var avatarPath = Path.Combine(_parentDir.FullName, "AavatarFile");
+            var avatarPath = Path.Combine(_parentDir.FullName, "AvatarFile");
             HFile.CreateDirectory(avatarPath);
             app.UseStaticFiles(new StaticFileOptions()
             {
-                FileProvider = new PhysicalFileProvider(exportExcelPath),
-                RequestPath = "/AavatarFile"
+                FileProvider = new PhysicalFileProvider(avatarPath),
+                RequestPath = "/AvatarFile"
             });
             #endregion
 
