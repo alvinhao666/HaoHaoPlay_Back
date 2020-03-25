@@ -120,6 +120,7 @@ namespace Hao.AppService
             return _mapper.Map<CurrentUserVM>(user);
         }
 
+
         /// <summary>
         /// 更新用户登录信息
         /// </summary>

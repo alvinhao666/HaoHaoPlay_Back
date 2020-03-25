@@ -11,8 +11,8 @@ namespace Hao.AppService
         /// <summary>
         /// 添加模块
         /// </summary>
-        /// <param name="vm"></param>
+        /// <param name="request"></param>
         /// <returns></returns>
-        Task AddModule(ModuleAddRequest vm);
+        Task AddModule(ModuleAddRequest request);
     }
 }
