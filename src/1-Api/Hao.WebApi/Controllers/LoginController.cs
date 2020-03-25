@@ -19,7 +19,7 @@ using NLog;
 namespace Hao.WebApi
 {
     [ApiController]
-    [Route("[action]")]
+    [Route("[controller]")]
     //1.参数绑定策略的自动推断,可以省略[FromBody] 
     //2.行为自定义 像MVC框架的大部分组件一样，ApiControllerAttribute的行为是高度可自定义的。首先，上面说的大部分内容都是可以简单的用 on/off 来切换。具体的设置是在startup方法里面通过ApiBehaviorOptions来实现
     public class LoginController : ControllerBase
@@ -28,15 +28,15 @@ namespace Hao.WebApi
 
         private readonly AppSettingsInfo _appsettings;
 
-        private readonly IUserAppService _userAppService;
+        private readonly ILoginAppService _loginAppService;
 
         private readonly ICapPublisher _publisher;
 
-        public LoginController(IOptionsSnapshot<AppSettingsInfo> appsettingsOptions, IUserAppService userService, ICapPublisher publisher)
+        public LoginController(IOptionsSnapshot<AppSettingsInfo> appsettingsOptions, ILoginAppService loginService, ICapPublisher publisher)
         {
             _appsettings = appsettingsOptions.Value; //IOptionsSnapshot动态获取配置
             _publisher = publisher;
-            _userAppService = userService;
+            _loginAppService = loginService;
         }
 
         /// <summary>
@@ -51,8 +51,8 @@ namespace Hao.WebApi
 
             pwd = EncryptProvider.HMACSHA256(pwd, _appsettings.KeyInfo.Sha256Key);
 
-            var query = new UserQuery() { LoginName = vm.LoginName, Password = pwd};
-            var user = await _userAppService.Login(query);
+            var query = new LoginQuery() { LoginName = vm.LoginName, Password = pwd };
+            var user = await _loginAppService.Login(query);
 
             var timeNow = DateTime.Now;
             var validFrom = timeNow.Ticks;
@@ -98,7 +98,7 @@ namespace Hao.WebApi
                 LastLoginIP = ip
             });
 
-            _logger.Info(new HLog() { Method = "Login", Argument = query.LoginName, Description = "登录成功" });
+            _logger.Info(new HLog() { Method = "Login", Argument = user, Description = "登录成功" });
 
             return user;
         }

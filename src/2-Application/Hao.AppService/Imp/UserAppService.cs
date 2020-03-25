@@ -49,27 +49,11 @@ namespace Hao.AppService
         }
 
         /// <summary>
-        /// 登录
-        /// </summary>
-        /// <param name="query"></param>
-        /// <returns></returns>
-        public async Task<LoginVM> Login(UserQuery query)
-        {
-            var users = await _userRep.GetListAysnc(query);
-            if (users.Count == 0)
-                throw new HException("用户名或密码错误");
-            var user = users.FirstOrDefault();
-            if (user.Enabled.HasValue && !user.Enabled.Value) 
-                throw new HException("用户已注销");
-            return _mapper.Map<LoginVM>(user);
-        }
-
-        /// <summary>
         /// 添加用户
         /// </summary>
         /// <param name="vm"></param>
         /// <returns></returns>
-        public async Task<long> AddUser(UserAddRequest vm)
+        public async Task AddUser(UserAddRequest vm)
         {
             var users = await _userRep.GetListAysnc(new UserQuery()
             {
@@ -82,7 +66,7 @@ namespace Hao.AppService
             user.PasswordLevel = (PasswordLevel)HUtil.CheckPasswordLevel(user.Password);
             user.Password = EncryptProvider.HMACSHA256(user.Password, _appsettings.KeyInfo.Sha256Key);
             user.Enabled = true;
-            return await _userRep.InsertAysnc(user);
+            await _userRep.InsertAysnc(user);
         }
 
 

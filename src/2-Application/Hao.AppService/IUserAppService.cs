@@ -13,18 +13,11 @@ namespace Hao.AppService
     public interface IUserAppService 
     {
         /// <summary>
-        /// 登录
-        /// </summary>
-        /// <param name="query"></param>
-        /// <returns></returns>
-        Task<LoginVM> Login(UserQuery query);
-
-        /// <summary>
         /// 添加用户
         /// </summary>
         /// <param name="vm"></param>
         /// <returns></returns>
-        Task<long> AddUser(UserAddRequest vm);
+        Task AddUser(UserAddRequest vm);
         
         /// <summary>
         /// 批量添加用户
