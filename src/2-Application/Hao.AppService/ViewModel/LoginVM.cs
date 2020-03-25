@@ -9,7 +9,7 @@ namespace Hao.AppService.ViewModel
         /// <summary>
         /// 用户Id
         /// </summary>
-        public long? Id { get; set; }
+        public string Id { get; set; }
 
         /// <summary>
         /// 登录名

@@ -8,7 +8,7 @@ namespace Hao.Utility
 {
     public static class HConvert
     {
-        public static int? ToInt(object value)
+        public static int? ToInt(this object value)
         {
             if (value == null || value == DBNull.Value || string.IsNullOrWhiteSpace(value.ToString()) || !int.TryParse(value.ToString(), out var result)) 
                 return null;
@@ -16,7 +16,7 @@ namespace Hao.Utility
                 return result;
         }
 
-        public static int ToInt0(object value)
+        public static int ToInt0(this object value)
         {
             int result = 0;
             if (value != null && value != DBNull.Value)
@@ -24,7 +24,7 @@ namespace Hao.Utility
             return result;
         }
 
-        public static float? ToFloat(object value)
+        public static float? ToFloat(this object value)
         {
             if (value == null || value == DBNull.Value || string.IsNullOrWhiteSpace(value.ToString()) || !float.TryParse(value.ToString(), out var result))
                 return null;
@@ -32,7 +32,7 @@ namespace Hao.Utility
                 return result;
         }
 
-        public static float ToFloat0(object value)
+        public static float ToFloat0(this object value)
         {
             float result = 0f;
             if (value != null && value != DBNull.Value)
@@ -40,7 +40,7 @@ namespace Hao.Utility
             return result;
         }
 
-        public static decimal? ToDecimal(object value)
+        public static decimal? ToDecimal(this object value)
         {
             if (value == null || value == DBNull.Value || string.IsNullOrWhiteSpace(value.ToString()) || !decimal.TryParse(value.ToString(), out var result))
                 return null;
@@ -48,7 +48,7 @@ namespace Hao.Utility
                 return result;
         }
 
-        public static decimal ToDecimal0(object value)
+        public static decimal ToDecimal0(this object value)
         {
             decimal result = 0m;
             if (value != null && value != DBNull.Value)
@@ -56,7 +56,7 @@ namespace Hao.Utility
             return result;
         }
 
-        public static double? ToDouble(object value)
+        public static double? ToDouble(this object value)
         {
             if (value == null || value == DBNull.Value || string.IsNullOrWhiteSpace(value.ToString()) || !double.TryParse(value.ToString(), out var result))
                 return null;
@@ -64,7 +64,7 @@ namespace Hao.Utility
                 return result;
         }
 
-        public static double ToDouble0(object value)
+        public static double ToDouble0(this object value)
         {
             double result = 0d;
             if (value != null && value != DBNull.Value)
@@ -72,7 +72,7 @@ namespace Hao.Utility
             return result;
         }
 
-        public static long? ToLong(object value)
+        public static long? ToLong(this object value)
         {
             if (value == null || value == DBNull.Value || string.IsNullOrWhiteSpace(value.ToString()) || !long.TryParse(value.ToString(), out var result))
                 return null;
@@ -80,7 +80,7 @@ namespace Hao.Utility
                 return  result;
         }
 
-        public static long ToLong0(object value)
+        public static long ToLong0(this object value)
         {
             long result = 0L;
             if (value != null && value != DBNull.Value)
@@ -88,7 +88,7 @@ namespace Hao.Utility
             return result;
         }
 
-        public static bool? ToBool(object value)
+        public static bool? ToBool(this object value)
         {
             if (value == null || value == DBNull.Value || string.IsNullOrWhiteSpace(value.ToString()) || !bool.TryParse(value.ToString(), out var result))
                 return null;
@@ -96,14 +96,14 @@ namespace Hao.Utility
                 return result;
         }
 
-        public static bool ToBool0(object value)
+        public static bool ToBool0(this object value)
         {
             var a = value?.ToString().ToLower();
             var result = (a == "true" || a == "1");
             return result;
         }
 
-        public static Guid? ToGuid(object value)
+        public static Guid? ToGuid(this object value)
         {
             if (value == null || value == DBNull.Value || string.IsNullOrWhiteSpace(value.ToString()) || !Guid.TryParse(value.ToString(), out var result))
                 return null;
@@ -111,7 +111,7 @@ namespace Hao.Utility
                 return result;
         }
 
-        public static DateTime? ToDateTime(object value)
+        public static DateTime? ToDateTime(this object value)
         {
             if (value == null || value == DBNull.Value || string.IsNullOrWhiteSpace(value.ToString()) || !DateTime.TryParse(value.ToString(), out var result))
                 return null;
@@ -124,7 +124,7 @@ namespace Hao.Utility
         /// </summary>
         /// <param name="money"></param>
         /// <returns></returns>
-        public static string ToUpperRMB(double money)
+        public static string ToUpperRMB(this double money)
         {
             if (money < 0.01)
             {

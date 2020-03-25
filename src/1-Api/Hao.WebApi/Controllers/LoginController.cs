@@ -11,6 +11,7 @@ using Hao.Encrypt;
 using Hao.EventData;
 using Hao.Library;
 using Hao.Log;
+using Hao.Utility;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using NLog;
@@ -77,7 +78,7 @@ namespace Hao.WebApi
             //存入redis
             var userValue = new RedisCacheUserInfo
             {
-                Id = user.Id,
+                Id = user.Id.ToLong(),
                 Name = user.Name,
                 LoginName = user.LoginName
             };
@@ -93,7 +94,7 @@ namespace Hao.WebApi
 
             await _publisher.PublishAsync(nameof(LoginEventData), new LoginEventData
             {
-                UserId = user.Id.Value,
+                UserId = user.Id.ToLong(),
                 LastLoginTime = timeNow,
                 LastLoginIP = ip
             });

@@ -22,7 +22,7 @@ namespace Hao.Event
         [CapSubscribe(nameof(LoginEventData))]
         public async Task UpdateLogin(LoginEventData person)
         {
-            await _userService.UpdateLogin(person.UserId, person.LastLoginTime, person.LastLoginIP);
+            await _userService.UpdateLogin(person.UserId.Value, person.LastLoginTime, person.LastLoginIP);
         }
     }
 }
