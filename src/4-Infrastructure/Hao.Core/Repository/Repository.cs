@@ -231,6 +231,7 @@ namespace Hao.Core
         /// 异步更新数据（指定列名）
         /// </summary>
         /// <param name="entity"></param>
+        /// <param name="columns"></param>
         /// <returns></returns>
         public virtual async Task<bool> UpdateAsync(T entity, Expression<Func<T, object>> columns)
         {
@@ -248,7 +249,7 @@ namespace Hao.Core
         /// <summary>
         /// 异步更新数据(多条)
         /// </summary>
-        /// <param name="entities">实体类</param>
+        /// <param name="entities"></param>
         /// <returns></returns>
         public virtual async Task<bool> UpdateAsync(List<T> entities)
         {
@@ -264,7 +265,8 @@ namespace Hao.Core
         /// <summary>
         /// 异步更新数据(多条)（指定列名）
         /// </summary>
-        /// <param name="entities">实体类</param>
+        /// <param name="entities"></param>
+        /// <param name="columns"></param>
         /// <returns></returns>
         public virtual async Task<bool> UpdateAsync(List<T> entities, Expression<Func<T, object>> columns)
         {
