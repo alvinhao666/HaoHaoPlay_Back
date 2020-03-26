@@ -41,18 +41,18 @@ namespace Hao.WebApi
         }
 
         /// <summary>
-        /// 登录接口
+        /// 登录
         /// </summary>
-        /// <param name="vm"></param>
+        /// <param name="rq"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<LoginVM> Login(LoginRequest vm) //apicontroller 1.参数绑定策略的自动推断,可以省略[FromBody]
+        public async Task<LoginVM> Login(LoginRequest rq) //apicontroller 1.参数绑定策略的自动推断,可以省略[FromBody]
         {
-            string pwd = RSAHelper.Decrypt(_appsettings.KeyInfo.RsaPrivateKey, vm.Password); //解密
+            string pwd = RSAHelper.Decrypt(_appsettings.KeyInfo.RsaPrivateKey, rq.Password); //解密
 
             pwd = EncryptProvider.HMACSHA256(pwd, _appsettings.KeyInfo.Sha256Key);
 
-            var query = new LoginQuery() { LoginName = vm.LoginName, Password = pwd };
+            var query = new LoginQuery() { LoginName = rq.LoginName, Password = pwd };
             var user = await _loginAppService.Login(query);
 
             var timeNow = DateTime.Now;

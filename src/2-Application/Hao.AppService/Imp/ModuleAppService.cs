@@ -71,11 +71,15 @@ namespace Hao.AppService
         /// 更新模块信息
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="request"></param>
+        /// <param name="vm"></param>
         /// <returns></returns>
-        public async Task UpdateModule(long id, ModuleUpdateRequest request)
+        public async Task UpdateModule(long id, ModuleUpdateRequest vm)
         {
             var module = await GetModuleDetail(id);
+            module.Name = vm.Name;
+            module.Icon = vm.Icon;
+            module.RouterUrl = vm.RouterUrl;
+            await _moduleRep.UpdateAsync(module, user => new { module.Name, module.Icon, module.RouterUrl });
         }
 
 

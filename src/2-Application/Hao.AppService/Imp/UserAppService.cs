@@ -135,19 +135,6 @@ namespace Hao.AppService
             await UpdateLogin(user, lastLoginTime, ip);
         }
 
-        [UseTransaction]//注意，事务命令只能用于 insert、delete、update 操作，而其他命令，比如建表、删表，会被自动提交。
-        private async Task UpdateLogin(SysUser user, DateTime lastLoginTime, string ip)
-        {
-            if (user != null)
-            {
-                user.LastLoginTime = lastLoginTime;
-                user.LastLoginIP = ip;
-                await _userRep.UpdateAsync(user, user => new { user.LastLoginTime, user.LastLoginIP });
-                await _recordRep.InsertAysnc(new SysLoginRecord() { UserId = user.Id, IP = ip, Time = lastLoginTime });
-            }
-        }
-
-
         /// <summary>
         /// 删除用户
         /// </summary>
@@ -328,6 +315,18 @@ namespace Hao.AppService
             if (user.IsDeleted) throw new HException("用户不存在或已删除");
             if (!user.Enabled.IsTrue()) throw new HException("用户已注销");
             return user;
+        }
+
+        [UseTransaction]//注意，事务命令只能用于 insert、delete、update 操作，而其他命令，比如建表、删表，会被自动提交。
+        private async Task UpdateLogin(SysUser user, DateTime lastLoginTime, string ip)
+        {
+            if (user != null)
+            {
+                user.LastLoginTime = lastLoginTime;
+                user.LastLoginIP = ip;
+                await _userRep.UpdateAsync(user, user => new { user.LastLoginTime, user.LastLoginIP });
+                await _recordRep.InsertAysnc(new SysLoginRecord() { UserId = user.Id, IP = ip, Time = lastLoginTime });
+            }
         }
         #endregion
     }
