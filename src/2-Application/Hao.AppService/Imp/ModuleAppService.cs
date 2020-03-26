@@ -82,6 +82,16 @@ namespace Hao.AppService
             await _moduleRep.UpdateAsync(module, user => new { module.Name, module.Icon, module.RouterUrl });
         }
 
+        /// <summary>
+        /// 删除模块
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task Delete(long id)
+        {
+            await _moduleRep.DeleteAysnc(id);
+        }
+
 
 
         #region private

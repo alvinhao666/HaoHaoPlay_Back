@@ -37,5 +37,14 @@ namespace Hao.AppService
         /// <param name="request"></param>
         /// <returns></returns>
         Task UpdateModule(long id, ModuleUpdateRequest request);
+
+
+        /// <summary>
+        /// 删除模块
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task Delete(long id);
+
     }
 }
