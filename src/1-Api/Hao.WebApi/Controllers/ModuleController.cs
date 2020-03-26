@@ -59,6 +59,7 @@ namespace Hao.WebApi.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task Delete(long? id) => _moduleAppService.Delete(id.Value);
+        [HttpDelete("{id}")]
+        public async Task Delete(long? id) => await _moduleAppService.Delete(id.Value);
     }
 }
