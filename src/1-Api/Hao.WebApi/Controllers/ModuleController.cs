@@ -28,5 +28,21 @@ namespace Hao.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         public async Task Add([FromBody]ModuleAddRequest request) => await _moduleAppService.AddModule(request);
+
+        /// <summary>
+        /// 获取模块列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public async Task<List<ModuleVM>> GetList() => await _moduleAppService.GetList();
+
+        /// <summary>
+        /// 更新模块信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPut("{id}")]
+        public async Task Update(long? id, [FromBody]ModuleUpdateRequest request) => await _moduleAppService.UpdateModule(id.Value, request);
     }
 }

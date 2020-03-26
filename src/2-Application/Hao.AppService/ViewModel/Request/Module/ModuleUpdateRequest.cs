@@ -1,14 +1,10 @@
-﻿using Hao.Core;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Hao.Model
+namespace Hao.AppService.ViewModel
 {
-    /// <summary>
-    /// 系统模块
-    /// </summary>
-    public class SysModule : FullAuditedEntity<long>
+    public class ModuleUpdateRequest
     {
         /// <summary>
         /// 模块名称

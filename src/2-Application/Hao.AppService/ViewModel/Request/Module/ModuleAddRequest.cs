@@ -24,6 +24,6 @@ namespace Hao.AppService.ViewModel
         /// <summary>
         /// 父级id
         /// </summary>
-        public string ParentId { get; set; }
+        public long? ParentId { get; set; }
     }
 }

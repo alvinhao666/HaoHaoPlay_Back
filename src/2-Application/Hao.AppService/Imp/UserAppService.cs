@@ -106,7 +106,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task<UserDetailVM> GetUser(long id)
         {
-            var user = await _userRep.GetAysnc(id);
+            var user = await GetUserDetail(id);
             return _mapper.Map<UserDetailVM>(user);
         }
 
@@ -116,7 +116,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task<CurrentUserVM> GetCurrent()
         {
-            var user = await _userRep.GetAysnc(_currentUser.Id);
+            var user = await GetUserDetail(_currentUser.Id);
             return _mapper.Map<CurrentUserVM>(user);
         }
 
@@ -131,7 +131,7 @@ namespace Hao.AppService
 
         public async Task UpdateLogin(long userId, DateTime lastLoginTime, string ip)
         {
-            var user = await _userRep.GetAysnc(userId);
+            var user = await GetUserDetail(userId);
             await UpdateLogin(user, lastLoginTime, ip);
         }
 
@@ -324,7 +324,9 @@ namespace Hao.AppService
         private async Task<SysUser> GetUserDetail(long userId)
         {
             var user = await _userRep.GetAysnc(userId);
-            if (user == null || user.IsDeleted) throw new HException("用户不存在或已删除");
+            if (user == null) throw new HException("用户不存在");
+            if (user.IsDeleted) throw new HException("用户不存在或已删除");
+            if (!user.Enabled.IsTrue()) throw new HException("用户已注销");
             return user;
         }
         #endregion

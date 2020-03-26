@@ -49,7 +49,7 @@ namespace Hao.WebApi
         public async Task Add([FromBody]UserAddRequest request) => await _userAppService.AddUser(request);
 
         /// <summary>
-        /// 查询用户列表
+        /// 查询用户分页列表
         /// </summary>
         /// <returns></returns>
         [HttpGet]
