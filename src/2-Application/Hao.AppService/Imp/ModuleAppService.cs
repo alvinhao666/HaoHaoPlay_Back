@@ -109,15 +109,15 @@ namespace Hao.AppService
             {
                 var node = new ModuleVM()
                 {
-                    Id = item.Id.ToString(),
-                    Name = item.Name,
-                    Icon = item.Icon,
-                    RouterUrl = item.RouterUrl,
-                    ParentId = item.ParentId.ToString(),
-                    Modules = new List<ModuleVM>()
+                    key = item.Id.ToString(),
+                    title = item.Name,
+                    // Icon = item.Icon,
+                    // RouterUrl = item.RouterUrl,
+                    // ParentId = item.ParentId.ToString(),
+                    children = new List<ModuleVM>()
                 };
                 result.Add(node);
-                InitModuleTree(node.Modules, item.Id, sources);
+                InitModuleTree(node.children, item.Id, sources);
             }
         }
 
