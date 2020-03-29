@@ -114,6 +114,7 @@ namespace Hao.AppService
                     // Icon = item.Icon,
                     // RouterUrl = item.RouterUrl,
                     // ParentId = item.ParentId.ToString(),
+                    isLeaf = item.isLeaf,
                     children = new List<ModuleVM>()
                 };
                 result.Add(node);

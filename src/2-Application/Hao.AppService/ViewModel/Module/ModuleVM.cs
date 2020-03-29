@@ -33,9 +33,12 @@ namespace Hao.AppService.ViewModel
         /// </summary>
         public List<ModuleVM> children { get; set; }
 
-        public bool expanded => children.Count > 0;
-
-        public bool isLeaf => children.Count == 0;
+        // public bool expanded => children.Count > 0;
+        
+        /// <summary>
+        /// 是否叶子节点
+        /// </summary>
+        public bool isLeaf { get; set; }
     }
 
     public class ModuleDetailVM
@@ -61,6 +64,5 @@ namespace Hao.AppService.ViewModel
         /// 父级id
         /// </summary>
         public string ParentId { get; set; }
-
     }
 }

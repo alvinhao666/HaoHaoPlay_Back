@@ -29,5 +29,10 @@ namespace Hao.Model
         /// 父级id
         /// </summary>
         public long? ParentId { get; set; }
+        
+        /// <summary>
+        /// 是否叶子节点
+        /// </summary>
+        public bool isLeaf { get; set; }
     }
 }
