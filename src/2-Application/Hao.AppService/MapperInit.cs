@@ -37,7 +37,7 @@ namespace Hao.AppService
 
 
             #region 模块
-            cfg.CreateMap<SysUser, UserDetailVM>();
+            cfg.CreateMap<SysModule, ModuleDetailVM>();
             #endregion
 
         }
