@@ -9,12 +9,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Hao.Enum;
 
 namespace Hao.AppService
 {
     public class ModuleAppService : ApplicationService, IModuleAppService
     {
-
         private readonly IMapper _mapper;
 
         private readonly ISysModuleRepository _moduleRep;
@@ -79,7 +79,7 @@ namespace Hao.AppService
             module.Name = vm.Name;
             module.Icon = vm.Icon;
             module.RouterUrl = vm.RouterUrl;
-            await _moduleRep.UpdateAsync(module, user => new { module.Name, module.Icon, module.RouterUrl });
+            await _moduleRep.UpdateAsync(module, user => new {module.Name, module.Icon, module.RouterUrl});
         }
 
         /// <summary>
@@ -93,8 +93,8 @@ namespace Hao.AppService
         }
 
 
-
         #region private
+
         /// <summary>
         /// 递归初始化模块树
         /// </summary>
@@ -114,7 +114,7 @@ namespace Hao.AppService
                     // Icon = item.Icon,
                     // RouterUrl = item.RouterUrl,
                     // ParentId = item.ParentId.ToString(),
-                    isLeaf = item.isLeaf,
+                    isLeaf = item.Type == ModuleType.Sub,
                     children = new List<ModuleVM>()
                 };
                 result.Add(node);
@@ -134,8 +134,7 @@ namespace Hao.AppService
             if (module.IsDeleted) throw new HException("模块已删除");
             return module;
         }
+
         #endregion
-
-
     }
 }

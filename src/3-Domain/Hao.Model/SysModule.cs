@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Hao.Enum;
 
 namespace Hao.Model
 {
@@ -31,8 +32,8 @@ namespace Hao.Model
         public long? ParentId { get; set; }
         
         /// <summary>
-        /// 是否叶子节点
+        /// 模块类型
         /// </summary>
-        public bool isLeaf { get; set; }
+        public ModuleType? Type { get; set; }
     }
 }
