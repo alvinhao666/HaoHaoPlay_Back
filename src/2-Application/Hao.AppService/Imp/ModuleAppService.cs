@@ -101,10 +101,10 @@ namespace Hao.AppService
         /// <param name="result"></param>
         /// <param name="parentID"></param>
         /// <param name="sources"></param>
-        private void InitModuleTree(IList<ModuleVM> result, long? parentID, IList<SysModule> sources)
+        private void InitModuleTree(List<ModuleVM> result, long? parentID, List<SysModule> sources)
         {
             //递归寻找子节点  
-            var tempTree = sources.Where(item => item.ParentId == parentID).ToList();
+            var tempTree = sources.Where(item => item.ParentId == parentID).OrderBy(a=>a.Sort).ToList();
             foreach (var item in tempTree)
             {
                 var node = new ModuleVM()
