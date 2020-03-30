@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Hao.Enum;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -64,5 +65,10 @@ namespace Hao.AppService.ViewModel
         /// 父级id
         /// </summary>
         public string ParentId { get; set; }
+
+        /// <summary>
+        /// 类型
+        /// </summary>
+        public ModuleType? Type { get; set; }
     }
 }
