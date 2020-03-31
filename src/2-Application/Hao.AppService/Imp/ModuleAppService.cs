@@ -77,9 +77,17 @@ namespace Hao.AppService
         {
             var module = await GetModuleDetail(id);
             module.Name = vm.Name;
-            module.Icon = vm.Icon;
-            module.RouterUrl = vm.RouterUrl;
-            await _moduleRep.UpdateAsync(module, user => new {module.Name, module.Icon, module.RouterUrl});
+            module.Sort = vm.Sort;
+            if (vm.Type == ModuleType.Main)
+            {
+                module.Icon = vm.Icon;  
+                await _moduleRep.UpdateAsync(module, user => new { module.Name, module.Icon, module.Sort });
+            }
+            else if (vm.Type == ModuleType.Sub)
+            {
+                module.RouterUrl = vm.RouterUrl;
+                await _moduleRep.UpdateAsync(module, user => new { module.Name, module.RouterUrl, module.Sort });
+            }
         }
 
         /// <summary>

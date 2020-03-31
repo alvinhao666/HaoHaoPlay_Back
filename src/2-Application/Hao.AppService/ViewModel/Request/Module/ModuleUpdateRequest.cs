@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Hao.Enum;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -22,8 +23,13 @@ namespace Hao.AppService.ViewModel
         public string RouterUrl { get; set; }
 
         /// <summary>
-        /// 父级id
+        /// 模块类型
         /// </summary>
-        public long? ParentId { get; set; }
+        public ModuleType? Type { get; set; }
+
+        /// <summary>
+        /// 排序
+        /// </summary>
+        public int? Sort { get; set; }
     }
 }
