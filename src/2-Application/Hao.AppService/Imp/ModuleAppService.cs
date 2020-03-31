@@ -97,6 +97,16 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task Delete(long id)
         {
+            if (id == 0) throw new HException("无法删除系统根节点");
+            var module = await GetModuleDetail(id);
+            if (module.Type == ModuleType.Main)
+            {
+                var childs = await _moduleRep.GetListAysnc(new ModuleQuery()
+                {
+                    ParentId = module.ParentId
+                });
+                if (childs != null && childs.Count > 0) throw new HException("存在子节点无法删除");
+            }
             await _moduleRep.DeleteAysnc(id);
         }
 
