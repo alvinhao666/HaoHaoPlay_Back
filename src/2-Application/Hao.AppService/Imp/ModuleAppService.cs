@@ -75,6 +75,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task UpdateModule(long id, ModuleUpdateRequest vm)
         {
+            if (id == 0) throw new HException("无法操作系统根节点");
             var module = await GetModuleDetail(id);
             module.Name = vm.Name;
             module.Sort = vm.Sort;
@@ -97,7 +98,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task Delete(long id)
         {
-            if (id == 0) throw new HException("无法删除系统根节点");
+            if (id == 0) throw new HException("无法操作系统根节点");
             var module = await GetModuleDetail(id);
             if (module.Type == ModuleType.Main)
             {
