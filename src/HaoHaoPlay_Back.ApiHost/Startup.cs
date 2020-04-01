@@ -58,7 +58,7 @@ namespace HaoHaoPlay.ApiHost
             services.AddSwaggerGen(c =>
             {
                 //配置第一个Doc
-                c.SwaggerDoc("v1", new OpenApiInfo
+                c.SwaggerDoc("haohaoplay_back", new OpenApiInfo
                 {
                     Version = "v1",
                     Title = "接口文档",
@@ -189,7 +189,7 @@ namespace HaoHaoPlay.ApiHost
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("v1/swagger.json", "api");
+                c.SwaggerEndpoint("haohaoplay_back/swagger.json", "api");
                 c.InjectStylesheet("/css/swagger_ui.css");
             });
 
