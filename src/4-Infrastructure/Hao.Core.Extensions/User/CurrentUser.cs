@@ -1,4 +1,5 @@
-﻿using Hao.Utility;
+﻿using Hao.Library;
+using Hao.Utility;
 using Microsoft.AspNetCore.Http;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
@@ -28,7 +29,7 @@ namespace Hao.Core.Extensions
         /// </summary>
         public string Name
         {
-            get => _httpContext == null ? "系统" : _httpContext.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.GivenName)?.Value.ToString();
+            get => _httpContext == null ? "系统" : _httpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimsName.Name)?.Value.ToString();
         }
 
         ///// <summary>

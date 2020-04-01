@@ -63,14 +63,14 @@ namespace Hao.WebApi
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()), //针对当前 token 的唯一标识
                 new Claim(JwtRegisteredClaimNames.Sid, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Iat, validFrom.ToString(), ClaimValueTypes.Integer64), //token 创建时间
-                new Claim(JwtRegisteredClaimNames.GivenName, user.Name)
+                new Claim(ClaimsName.Name, user.Name)
             };
             var jwt = new JwtSecurityToken(
                 issuer: _appsettings.JwtOptions.Issuer,
                 audience: _appsettings.JwtOptions.Audience,
                 claims: claims,
                 notBefore: timeNow, //生效时间
-                expires: timeNow.AddDays(3),//过期时间
+                expires: timeNow.AddMinutes(1),//过期时间
                 signingCredentials: _appsettings.JwtOptions.SigningCredentials
             );
             user.Jwt = new JwtSecurityTokenHandler().WriteToken(jwt);
