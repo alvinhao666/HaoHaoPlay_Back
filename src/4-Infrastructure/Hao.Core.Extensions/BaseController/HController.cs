@@ -23,8 +23,6 @@ namespace Hao.Core.Extensions
     {
         private readonly ILogger _logger = LogManager.GetCurrentClassLogger();
 
-        public ICurrentUser CurrentUser { get; set; }
-
         public IOptionsSnapshot<AppSettingsInfo> AppsettingsOptions { get; set; }
 
         /// <summary>
