@@ -81,13 +81,13 @@ namespace Hao.AppService
             module.Sort = vm.Sort;
             if (vm.Type == ModuleType.Main)
             {
-                module.Icon = vm.Icon;  
-                await _moduleRep.UpdateAsync(module, user => new { module.Name, module.Icon, module.Sort });
+                module.Icon = vm.Icon;
+                await _moduleRep.UpdateAsync(module, user => new {module.Name, module.Icon, module.Sort});
             }
             else if (vm.Type == ModuleType.Sub)
             {
                 module.RouterUrl = vm.RouterUrl;
-                await _moduleRep.UpdateAsync(module, user => new { module.Name, module.RouterUrl, module.Sort });
+                await _moduleRep.UpdateAsync(module, user => new {module.Name, module.RouterUrl, module.Sort});
             }
         }
 
@@ -108,6 +108,7 @@ namespace Hao.AppService
                 });
                 if (childs != null && childs.Count > 0) throw new HException("存在子节点无法删除");
             }
+
             await _moduleRep.DeleteAysnc(id);
         }
 
@@ -123,7 +124,7 @@ namespace Hao.AppService
         private void InitModuleTree(List<ModuleVM> result, long? parentID, List<SysModule> sources)
         {
             //递归寻找子节点  
-            var tempTree = sources.Where(item => item.ParentId == parentID).OrderBy(a=>a.Sort).ToList();
+            var tempTree = sources.Where(item => item.ParentId == parentID).OrderBy(a => a.Sort).ToList();
             foreach (var item in tempTree)
             {
                 var node = new ModuleVM()
@@ -134,6 +135,7 @@ namespace Hao.AppService
                     // RouterUrl = item.RouterUrl,
                     // ParentId = item.ParentId.ToString(),
                     isLeaf = item.Type == ModuleType.Sub,
+                    type = item.Type,
                     children = new List<ModuleVM>()
                 };
                 result.Add(node);

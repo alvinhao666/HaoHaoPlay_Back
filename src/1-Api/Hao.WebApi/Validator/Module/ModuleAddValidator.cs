@@ -16,6 +16,8 @@ namespace Hao.WebApi
             RuleFor(x => x.Icon).NotEmpty().WithMessage("模块图标不能为空").When(a=> !a.ParentId.HasValue);
 
             RuleFor(x => x.RouterUrl).NotEmpty().WithMessage("子应用路由地址不能为空").When(a => a.ParentId.HasValue);
+            
+            RuleFor(x => x.Type).NotEmpty().WithMessage("模块类型不能为空");
         }
     }
 }
