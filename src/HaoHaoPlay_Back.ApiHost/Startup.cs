@@ -69,6 +69,7 @@ namespace HaoHaoPlay.ApiHost
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
                 c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "Hao.WebApi.xml"));
+                c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "Hao.AppService.xml"));
             });
 #endif
             #endregion
