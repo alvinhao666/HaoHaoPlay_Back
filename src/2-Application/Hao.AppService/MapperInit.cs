@@ -38,6 +38,8 @@ namespace Hao.AppService
 
             #region 模块
             cfg.CreateMap<SysModule, ModuleDetailVM>();
+
+            cfg.CreateMap<ModuleAddRequest, SysModule>();
             #endregion
 
         }

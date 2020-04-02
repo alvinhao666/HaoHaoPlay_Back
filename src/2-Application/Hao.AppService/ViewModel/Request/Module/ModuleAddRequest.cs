@@ -31,5 +31,10 @@ namespace Hao.AppService.ViewModel
         /// 模块类型
         /// </summary>
         public ModuleType? Type { get; set; }
+
+        /// <summary>
+        /// 排序值
+        /// </summary>
+        public int? Sort { get; set; }
     }
 }

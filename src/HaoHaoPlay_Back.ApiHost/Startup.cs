@@ -156,6 +156,7 @@ namespace HaoHaoPlay.ApiHost
                 o.JsonSerializerOptions.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
                 o.JsonSerializerOptions.PropertyNamingPolicy = null;
                 o.JsonSerializerOptions.Converters.Add(new DatetimeJsonConverter());
+                o.JsonSerializerOptions.Converters.Add(new LongJsonConvert());
             }); //.AddWebApiConventions()//处理HttpResponseMessage类型返回值的问题
 
 

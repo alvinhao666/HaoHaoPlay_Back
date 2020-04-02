@@ -8,7 +8,7 @@ namespace Hao.AppService.ViewModel
 {
     public class UserListItemVM
     {
-        public string Id { get; set; }
+        public long? Id { get; set; }
 
         public string LoginName { get; set; }
 

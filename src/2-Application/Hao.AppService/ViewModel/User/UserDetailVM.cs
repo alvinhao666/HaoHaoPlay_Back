@@ -7,7 +7,7 @@ namespace Hao.AppService.ViewModel
 {
     public class UserDetailVM
     {
-        public string Id { get; set; }
+        public long? Id { get; set; }
 
         /// <summary>
         /// 姓名

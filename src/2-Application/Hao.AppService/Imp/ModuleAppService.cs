@@ -33,6 +33,8 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task AddModule(ModuleAddRequest request)
         {
+            var parentNode = await GetModuleDetail(request.ParentId.Value);
+            if (parentNode.Type == ModuleType.Sub) throw new HException("叶子节点无法继续添加节点");
             var modules = await _moduleRep.GetListAysnc(new ModuleQuery()
             {
                 Name = request.Name,
