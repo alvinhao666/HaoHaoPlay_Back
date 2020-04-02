@@ -40,8 +40,7 @@ namespace Hao.AppService
                 Name = request.Name,
                 ParentId = request.ParentId
             });
-            if (modules.Count > 0)
-                throw new HException("模块名称已存在，请重新输入");
+            if (modules.Count > 0) throw new HException("模块名称已存在，请重新输入");
             var module = _mapper.Map<SysModule>(request);
             await _moduleRep.InsertAysnc(module);
         }
@@ -133,11 +132,7 @@ namespace Hao.AppService
                 {
                     key = item.Id.ToString(),
                     title = item.Name,
-                    // Icon = item.Icon,
-                    // RouterUrl = item.RouterUrl,
-                    // ParentId = item.ParentId.ToString(),
                     isLeaf = item.Type == ModuleType.Sub,
-                    type = item.Type,
                     children = new List<ModuleVM>()
                 };
                 result.Add(node);

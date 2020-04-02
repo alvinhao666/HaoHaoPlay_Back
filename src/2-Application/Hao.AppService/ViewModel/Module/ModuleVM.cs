@@ -40,11 +40,6 @@ namespace Hao.AppService.ViewModel
         /// 是否叶子节点
         /// </summary>
         public bool isLeaf { get; set; }
-        
-        /// <summary>
-        /// 模块类型
-        /// </summary>
-        public ModuleType? type { get; set; }
     }
 
     public class ModuleDetailVM
