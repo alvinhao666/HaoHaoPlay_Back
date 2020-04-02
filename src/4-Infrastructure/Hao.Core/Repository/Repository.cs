@@ -87,7 +87,7 @@ namespace Hao.Core
         {
             RefAsync<int> totalNumber = 10;
             var flag = string.IsNullOrWhiteSpace(query.OrderFileds);
-            var q = UnitOfWork.GetDbClient().Queryable<T>();
+            var q = UnitOfWork.GetDbClient().Queryable<T>(); //.WithCache() 使用缓存取数据
             foreach (var item in query.QueryExpressions)
             {
                 q.Where(item);
