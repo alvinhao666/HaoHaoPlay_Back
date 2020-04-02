@@ -169,7 +169,7 @@ namespace Hao.Core
             entity.ModifierId = CurrentUser.Id;
             entity.ModifyTime = DateTime.Now;
             entity.IsDeleted = true;
-            var columns = new string[] { "LastModifyUserId", "LastModifyTime", "IsDeleted" };
+            var columns = new string[] { "ModifierId", "ModifyTime", "IsDeleted" };
 
             return await UnitOfWork.GetDbClient().Updateable(entity).UpdateColumns(columns.ToArray()).ExecuteCommandAsync() > 0;
         }
@@ -211,7 +211,7 @@ namespace Hao.Core
                 item.ModifyTime = timeNow;
                 item.IsDeleted = true;
             });
-            var columns = new string[] { "LastModifyUserId", "LastModifyTime", "IsDeleted" };
+            var columns = new string[] { "ModifierId", "ModifyTime", "IsDeleted" };
             return await UnitOfWork.GetDbClient().Updateable(entities).UpdateColumns(columns).ExecuteCommandAsync() > 0;
         }
 
@@ -278,8 +278,8 @@ namespace Hao.Core
             });
             var properties = columns.Body.Type.GetProperties();
             var updateColumns = properties.Select(a => a.Name).ToList();
-            updateColumns.Add("LastModifyUserId");
-            updateColumns.Add("LastModifyTime");
+            updateColumns.Add("ModifierId");
+            updateColumns.Add("ModifyTime");
             return await  UnitOfWork.GetDbClient().Updateable(entities).UpdateColumns(updateColumns.ToArray()).ExecuteCommandAsync() > 0;
         }
     }
