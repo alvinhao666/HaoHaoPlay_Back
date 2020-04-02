@@ -14,5 +14,10 @@ namespace Hao.AppService.ViewModel
         /// 密码
         /// </summary>
         public string Password { get; set; }
+
+        /// <summary>
+        /// 是否选择十天免登录
+        /// </summary>
+        public bool IsRememberLogin { get; set; }
     }
 }
