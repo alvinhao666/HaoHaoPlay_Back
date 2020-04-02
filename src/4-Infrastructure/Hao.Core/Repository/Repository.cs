@@ -87,7 +87,7 @@ namespace Hao.Core
         {
             RefAsync<int> totalNumber = 10;
             var flag = string.IsNullOrWhiteSpace(query.OrderFileds);
-            var q = UnitOfWork.GetDbClient().Queryable<T>(); //.WithCache() 使用缓存取数据
+            var q = UnitOfWork.GetDbClient().Queryable<T>(); //.WithCache(int cacheDurationInSeconds = int.MaxValue) 使用缓存取数据 
             foreach (var item in query.QueryExpressions)
             {
                 q.Where(item);
@@ -134,7 +134,7 @@ namespace Hao.Core
         }
 
         /// <summary>
-        /// 异步写入实体数据(多条)
+        /// 异步写入实体数据（批量）
         /// </summary>
         /// <param name="entities">实体类</param>
         /// <returns></returns>
@@ -187,7 +187,7 @@ namespace Hao.Core
         }
 
         /// <summary>
-        /// 异步删除数据(多条)
+        /// 异步删除数据（批量）
         /// </summary>
         /// <param name="pkValues">实体类</param>
         /// <returns></returns>
@@ -198,7 +198,7 @@ namespace Hao.Core
         }
 
         /// <summary>
-        /// 异步删除数据(多条)
+        /// 异步删除数据（批量）
         /// </summary>
         /// <param name="entities">实体类</param>
         /// <returns></returns>
@@ -247,7 +247,7 @@ namespace Hao.Core
         }
 
         /// <summary>
-        /// 异步更新数据(多条)
+        /// 异步更新数据（批量）
         /// </summary>
         /// <param name="entities"></param>
         /// <returns></returns>
@@ -263,7 +263,7 @@ namespace Hao.Core
         }
 
         /// <summary>
-        /// 异步更新数据(多条)（指定列名）
+        /// 异步更新数据（批量）（指定列名）
         /// </summary>
         /// <param name="entities"></param>
         /// <param name="columns"></param>

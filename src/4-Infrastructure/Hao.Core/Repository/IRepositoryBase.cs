@@ -55,7 +55,7 @@ namespace Hao.Core
         Task<TKey> InsertAysnc(T entity);
 
         /// <summary>
-        /// 异步写入实体数据(多条)
+        /// 异步写入实体数据（批量）
         /// </summary>
         /// <param name="entities">实体类</param>
         /// <returns></returns>
@@ -78,7 +78,7 @@ namespace Hao.Core
         Task<bool> UpdateAsync(T entity, Expression<Func<T, object>> columns);
 
         /// <summary>
-        /// 异步更新实体数据(多条)
+        /// 异步更新实体数据（批量）
         /// </summary>
         /// <param name="entities"></param>
         /// <returns></returns>
@@ -86,7 +86,7 @@ namespace Hao.Core
 
 
         /// <summary>
-        /// 异步更新实体数据(多条)（指定列）
+        /// 异步更新实体数据（批量）（指定列）
         /// </summary>
         /// <param name="entities"></param>
         /// <returns></returns>
