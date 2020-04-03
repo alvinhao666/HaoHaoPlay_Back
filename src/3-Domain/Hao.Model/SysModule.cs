@@ -40,5 +40,15 @@ namespace Hao.Model
         /// 排序值
         /// </summary>
         public int? Sort { get; set; }
+
+        /// <summary>
+        /// 层级（一层64个)
+        /// </summary>
+        public int? Layer { get; set; }
+
+        /// <summary>
+        /// 权限数字
+        /// </summary>
+        public string Number { get; set; }
     }
 }

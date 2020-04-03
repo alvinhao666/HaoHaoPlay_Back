@@ -181,5 +181,25 @@ namespace Hao.Core
             var updateColumns = properties.Select(a => a.Name);
             return await UnitOfWork.GetDbClient().Updateable(entities).UpdateColumns(updateColumns.ToArray()).ExecuteCommandAsync() > 0;
         }
+
+        /// <summary>
+        /// 异步删除数据
+        /// </summary>
+        /// <param name="pkValue"></param>
+        /// <returns></returns>
+        public virtual async Task<bool> DeleteAysnc(TKey pkValue)
+        {
+            return await UnitOfWork.GetDbClient().Deleteable<T>().In(pkValue).ExecuteCommandAsync() > 0;
+        }
+
+        /// <summary>
+        /// 异步删除数据
+        /// </summary>
+        /// <param name="pkValues"></param>
+        /// <returns></returns>
+        public virtual async Task<bool> DeleteAysnc(List<TKey> pkValues)
+        {
+            return await UnitOfWork.GetDbClient().Deleteable<T>().In(pkValues).ExecuteCommandAsync() > 0;
+        }
     }
 }

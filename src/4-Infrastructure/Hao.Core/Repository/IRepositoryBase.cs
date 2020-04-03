@@ -91,5 +91,19 @@ namespace Hao.Core
         /// <param name="entities"></param>
         /// <returns></returns>
         Task<bool> UpdateAsync(List<T> entities, Expression<Func<T, object>> columns);
+
+        /// <summary>
+        /// 异步删除数据
+        /// </summary>
+        /// <param name="pkValue"></param>
+        /// <returns></returns>
+        Task<bool> DeleteAysnc(TKey pkValue);
+
+        /// <summary>
+        /// 异步删除数据
+        /// </summary>
+        /// <param name="pkValues"></param>
+        /// <returns></returns>
+        Task<bool> DeleteAysnc(List<TKey> pkValues);
     }
 }

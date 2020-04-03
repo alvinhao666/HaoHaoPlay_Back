@@ -19,6 +19,7 @@ namespace Hao.AppService
 
         private readonly ISysModuleRepository _moduleRep;
 
+
         public ModuleAppService(IMapper mapper, ISysModuleRepository moduleRep)
         {
             _mapper = mapper;
@@ -35,13 +36,20 @@ namespace Hao.AppService
         {
             var parentNode = await GetModuleDetail(request.ParentId.Value);
             if (parentNode.Type == ModuleType.Sub) throw new HException("叶子节点无法继续添加节点");
-            var modules = await _moduleRep.GetListAysnc(new ModuleQuery()
-            {
-                Name = request.Name,
-                ParentId = request.ParentId
-            });
-            if (modules.Count > 0) throw new HException("模块名称已存在，请重新输入");
             var module = _mapper.Map<SysModule>(request);
+
+            var max = await _moduleRep.GetLayerCount();
+            if (max.Count == 64)
+            {
+                module.Layer = ++max.Layer;
+                module.Number = Convert.ToUInt64(Math.Pow(2, 0)).ToString();
+            }
+            else if (max.Count < 64)
+            {
+                module.Layer = max.Layer;
+                module.Number = Convert.ToUInt64(Math.Pow(2, max.Count.Value)).ToString();
+            }
+
             await _moduleRep.InsertAysnc(module);
         }
 
@@ -51,7 +59,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task<List<ModuleVM>> GetList()
         {
-            var modules = await _moduleRep.GetListAysnc();
+            var modules = await _moduleRep.GetListAysnc(new ModuleQuery() { IncludeResource = false });
             var result = new List<ModuleVM>();
             InitModuleTree(result, null, modules);
             return result;
@@ -100,15 +108,13 @@ namespace Hao.AppService
         public async Task Delete(long id)
         {
             if (id == 0) throw new HException("无法操作系统根节点");
-            var module = await GetModuleDetail(id);
-            if (module.Type == ModuleType.Main)
+            //var module = await GetModuleDetail(id);
+
+            var childs = await _moduleRep.GetListAysnc(new ModuleQuery()
             {
-                var childs = await _moduleRep.GetListAysnc(new ModuleQuery()
-                {
-                    ParentId = module.ParentId
-                });
-                if (childs != null && childs.Count > 0) throw new HException("存在子节点无法删除");
-            }
+                ParentId = id
+            });
+            if (childs != null && childs.Count > 0) throw new HException("存在子节点无法删除");
 
             await _moduleRep.DeleteAysnc(id);
         }

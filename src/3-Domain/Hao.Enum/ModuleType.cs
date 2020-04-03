@@ -13,6 +13,10 @@ namespace Hao.Enum
         /// <summary>
         /// 子菜单
         /// </summary>
-        Sub
+        Sub,
+        /// <summary>
+        /// 资源
+        /// </summary>
+        Resource
     }
 }
