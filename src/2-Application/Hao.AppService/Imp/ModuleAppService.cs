@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Hao.Enum;
+using Npgsql;
 
 namespace Hao.AppService
 {
@@ -39,18 +40,29 @@ namespace Hao.AppService
             var module = _mapper.Map<SysModule>(request);
 
             var max = await _moduleRep.GetLayerCount();
-            if (max.Count == 64)
+            if (max.Count < 64)
+            {
+                module.Layer = 1;
+                module.Number = Convert.ToUInt64(Math.Pow(2, max.Count.Value)).ToString();
+            }
+            else if (max.Count == 64)
             {
                 module.Layer = ++max.Layer;
                 module.Number = Convert.ToUInt64(Math.Pow(2, 0)).ToString();
             }
-            else if (max.Count < 64)
+            else
             {
-                module.Layer = max.Layer;
-                module.Number = Convert.ToUInt64(Math.Pow(2, max.Count.Value)).ToString();
+                throw new HException("数据库数据异常，请检查");
             }
 
-            await _moduleRep.InsertAysnc(module);
+            try
+            {
+                await _moduleRep.InsertAysnc(module);
+            }
+            catch (PostgresException ex)
+            {
+                if (ex.SqlState == "23505") throw new HException("添加失败，请重新添加");//违反唯一键
+            }
         }
 
         /// <summary>
@@ -158,6 +170,7 @@ namespace Hao.AppService
             if (module.IsDeleted) throw new HException("模块已删除");
             return module;
         }
+
 
         #endregion
     }
