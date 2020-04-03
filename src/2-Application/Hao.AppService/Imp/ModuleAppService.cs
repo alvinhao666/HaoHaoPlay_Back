@@ -39,6 +39,7 @@ namespace Hao.AppService
             if (parentNode.Type == ModuleType.Sub) throw new HException("叶子节点无法继续添加节点");
             var module = _mapper.Map<SysModule>(request);
 
+            
             var max = await _moduleRep.GetLayerCount();
             if (max.Count < 64)
             {
