@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 
 namespace Hao.WebApi.Controllers
 {
+    [ApiController]
+    [Route("[controller]")]
     public class ResourceController:HController
     {
         private readonly IModuleAppService _moduleAppService;
@@ -40,8 +42,8 @@ namespace Hao.WebApi.Controllers
         /// 查询资源分页列表
         /// </summary>
         /// <returns></returns>
-        [HttpGet("GetPagedList/{parentId}")]
-        public async Task<PagedList<ResourceItemVM>> GetPagedList(long? parentId) => await _moduleAppService.GetResourcePagedList(parentId.Value);
+        [HttpGet("GetList/{parentId}")]
+        public async Task<List<ResourceItemVM>> GetPagedList(long? parentId) => await _moduleAppService.GetResourceList(parentId.Value);
 
 
         /// <summary>

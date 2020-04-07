@@ -25,7 +25,8 @@ namespace Hao.AppService
             var parentNode = await GetModuleDetail(request.ParentId.Value);
             if (parentNode.Type != ModuleType.Sub) throw new HException("非子菜单无法添加资源");
             var module = _mapper.Map<SysModule>(request);
-
+            module.Type = ModuleType.Resource;
+            module.Sort = 0; 
             await AddModule(module);
         }
 
@@ -48,14 +49,14 @@ namespace Hao.AppService
         /// 资源列表
         /// </summary>
         /// <returns></returns>
-        public async Task<PagedList<ResourceItemVM>> GetResourcePagedList(long parentId)
+        public async Task<List<ResourceItemVM>> GetResourceList(long parentId)
         {
-            var resources = await _moduleRep.GetPagedListAysnc(new ModuleQuery()
+            var resources = await _moduleRep.GetListAysnc(new ModuleQuery()
             {
                 ParentId = parentId
             });
 
-            var result = _mapper.Map<PagedList<ResourceItemVM>>(resources);
+            var result = _mapper.Map<List<ResourceItemVM>>(resources);
             return result;
         }
 

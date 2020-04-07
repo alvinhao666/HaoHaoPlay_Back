@@ -67,7 +67,7 @@ namespace Hao.AppService
         /// 获取资源列表
         /// </summary>
         /// <returns></returns>
-        Task<PagedList<ResourceItemVM>> GetResourcePagedList(long parentId);
+        Task<List<ResourceItemVM>> GetResourceList(long parentId);
 
         /// <summary>
         /// 更新资源信息
