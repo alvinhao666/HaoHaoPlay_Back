@@ -15,9 +15,9 @@ namespace Hao.AppService
             cfg.CreateMap<SysUser, LoginVM>();
 
 
-            cfg.CreateMap<PagedList<SysUser>, PagedList<UserListItemVM>>();
+            cfg.CreateMap<PagedList<SysUser>, PagedList<UserItemVM>>();
 
-            cfg.CreateMap<SysUser, UserListItemVM>()
+            cfg.CreateMap<SysUser, UserItemVM>()
               .ForMember(x => x.GenderString, a => a.MapFrom(x => x.Gender.GetDescription()))
               .ForMember(x => x.EnabledString, a => a.MapFrom(x => x.Enabled.Value ? "启用" : "注销"));
 
@@ -40,6 +40,12 @@ namespace Hao.AppService
             cfg.CreateMap<SysModule, ModuleDetailVM>();
 
             cfg.CreateMap<ModuleAddRequest, SysModule>();
+            #endregion
+
+            #region 资源
+            cfg.CreateMap<ResourceAddRequest, SysModule>();
+
+            cfg.CreateMap<PagedList<SysModule>, PagedList<ResourceItemVM>>();
             #endregion
 
         }

@@ -91,10 +91,10 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        public async Task<PagedList<UserListItemVM>> GetUserPageList(UserQuery query)
+        public async Task<PagedList<UserItemVM>> GetUserPageList(UserQuery query)
         {
             var users = await _userRep.GetPagedListAysnc(query);
-            var result = _mapper.Map<PagedList<UserListItemVM>>(users);
+            var result = _mapper.Map<PagedList<UserItemVM>>(users);
 
             return result;
         }

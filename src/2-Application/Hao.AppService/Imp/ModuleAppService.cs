@@ -14,7 +14,7 @@ using Npgsql;
 
 namespace Hao.AppService
 {
-    public class ModuleAppService : ApplicationService, IModuleAppService
+    public partial class ModuleAppService : ApplicationService, IModuleAppService
     {
         private readonly IMapper _mapper;
 
@@ -39,31 +39,7 @@ namespace Hao.AppService
             if (parentNode.Type == ModuleType.Sub) throw new HException("叶子节点无法继续添加节点");
             var module = _mapper.Map<SysModule>(request);
 
-            
-            var max = await _moduleRep.GetLayerCount();
-            if (max.Count < 64)
-            {
-                module.Layer = 1;
-                module.Number = Convert.ToUInt64(Math.Pow(2, max.Count.Value)).ToString();
-            }
-            else if (max.Count == 64)
-            {
-                module.Layer = ++max.Layer;
-                module.Number = Convert.ToUInt64(Math.Pow(2, 0)).ToString();
-            }
-            else
-            {
-                throw new HException("数据库数据异常，请检查");
-            }
-
-            try
-            {
-                await _moduleRep.InsertAysnc(module);
-            }
-            catch (PostgresException ex)
-            {
-                if (ex.SqlState == "23505") throw new HException("添加失败，请重新添加");//违反唯一键
-            }
+            await AddModule(module);
         }
 
         /// <summary>
@@ -101,12 +77,12 @@ namespace Hao.AppService
             var module = await GetModuleDetail(id);
             module.Name = vm.Name;
             module.Sort = vm.Sort;
-            if (vm.Type == ModuleType.Main)
+            if (module.Type == ModuleType.Main)
             {
                 module.Icon = vm.Icon;
                 await _moduleRep.UpdateAsync(module, user => new {module.Name, module.Icon, module.Sort});
             }
-            else if (vm.Type == ModuleType.Sub)
+            else if (module.Type == ModuleType.Sub)
             {
                 module.RouterUrl = vm.RouterUrl;
                 await _moduleRep.UpdateAsync(module, user => new {module.Name, module.RouterUrl, module.Sort});
@@ -134,6 +110,34 @@ namespace Hao.AppService
 
 
         #region private
+
+        private async Task AddModule(SysModule module)
+        {
+            var max = await _moduleRep.GetLayerCount();
+            if (max.Count < 64)
+            {
+                module.Layer = 1;
+                module.Number = Convert.ToUInt64(Math.Pow(2, max.Count.Value)).ToString();
+            }
+            else if (max.Count == 64)
+            {
+                module.Layer = ++max.Layer;
+                module.Number = Convert.ToUInt64(Math.Pow(2, 0)).ToString();
+            }
+            else
+            {
+                throw new HException("数据库数据异常，请检查");
+            }
+
+            try
+            {
+                await _moduleRep.InsertAysnc(module);
+            }
+            catch (PostgresException ex)
+            {
+                if (ex.SqlState == "23505") throw new HException("添加失败，请重新添加");//违反唯一键
+            }
+        }
 
         /// <summary>
         /// 递归初始化模块树
@@ -171,7 +175,6 @@ namespace Hao.AppService
             if (module.IsDeleted) throw new HException("模块已删除");
             return module;
         }
-
 
         #endregion
     }

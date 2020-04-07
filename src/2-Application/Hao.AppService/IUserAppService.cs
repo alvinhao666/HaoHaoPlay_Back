@@ -39,7 +39,7 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        Task<PagedList<UserListItemVM>> GetUserPageList(UserQuery query);
+        Task<PagedList<UserItemVM>> GetUserPageList(UserQuery query);
 
         /// <summary>
         /// 用户详情

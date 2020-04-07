@@ -10,5 +10,10 @@ namespace Hao.Utility
         {
             return value.HasValue && value.Value;
         }
+
+        public static bool IsFalse(this bool? value)
+        {
+            return value.HasValue && !value.Value;
+        }
     }
 }

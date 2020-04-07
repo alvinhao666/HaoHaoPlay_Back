@@ -52,7 +52,7 @@ namespace Hao.Core
         /// </summary>
         /// <param name="entity">实体类</param>
         /// <returns></returns>
-        Task<TKey> InsertAysnc(T entity);
+        Task<T> InsertAysnc(T entity);
 
         /// <summary>
         /// 异步写入实体数据（批量）

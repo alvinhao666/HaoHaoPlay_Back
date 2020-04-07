@@ -113,7 +113,7 @@ namespace Hao.Core
         /// </summary>
         /// <param name="entity">实体类</param>
         /// <returns></returns>
-        public virtual async Task<TKey> InsertAysnc(T entity)
+        public virtual async Task<T> InsertAysnc(T entity)
         {
             var type = typeof(T);
             var isGuid = typeof(TKey) == HUtil.GuidType;
@@ -130,7 +130,7 @@ namespace Hao.Core
             entity.IsDeleted = false;
 
             var obj = await UnitOfWork.GetDbClient().Insertable(entity).ExecuteReturnEntityAsync();
-            return obj.Id;
+            return obj;
         }
 
         /// <summary>
