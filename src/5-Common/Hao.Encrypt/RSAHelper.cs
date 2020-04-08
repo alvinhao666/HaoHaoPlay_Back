@@ -73,7 +73,7 @@ namespace Hao.Encrypt
 
         #region 加密
 
-        public string Encrypt(string publicKey,string text)
+        public static string Encrypt(string publicKey,string text)
         {
             byte[] dataBytes = Encoding.UTF8.GetBytes(text); //对普通的文字操作，用Encoding.UTF8.GetBytes()
             using (RSA publicKeyRsaProvider = CreateRsaProviderFromPublicKey(publicKey))

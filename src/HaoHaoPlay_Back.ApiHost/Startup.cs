@@ -201,8 +201,6 @@ namespace HaoHaoPlay.ApiHost
 
             app.UseExceptionMiddleware();
 
-            app.UseMiddleware<JwtMiddleware>();
-
             #region 文件
             //文件访问权限
             app.UseWhen(a => a.Request.Path.Value.Contains("ExportExcel") || a.Request.Path.Value.Contains("template"), b => b.UseMiddleware<StaticFileMiddleware>());
