@@ -7,7 +7,12 @@ namespace Hao.AppService.ViewModel
     public class ResourceItemVM
     {
         /// <summary>
-        /// 模块名称
+        /// 资源id
+        /// </summary>
+        public long? Id { get; set; }
+
+        /// <summary>
+        /// 资源名称
         /// </summary>
         public string Name { get; set; }
 

@@ -8,6 +8,7 @@ using Hao.RunTimeException;
 using Npgsql;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -53,7 +54,8 @@ namespace Hao.AppService
         {
             var resources = await _moduleRep.GetListAysnc(new ModuleQuery()
             {
-                ParentId = parentId
+                ParentId = parentId,
+                OrderFileds= "sort,createtime desc"
             });
 
             var result = _mapper.Map<List<ResourceItemVM>>(resources);
