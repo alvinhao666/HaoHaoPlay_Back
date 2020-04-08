@@ -43,7 +43,7 @@ namespace Hao.WebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("GetList/{parentId}")]
-        public async Task<List<ResourceItemVM>> GetPagedList(long? parentId) => await _moduleAppService.GetResourceList(parentId.Value);
+        public async Task<List<ResourceItemVM>> GetList(long? parentId) => await _moduleAppService.GetResourceList(parentId.Value);
 
 
         /// <summary>
