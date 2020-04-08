@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="DotNetCore.NPOI" Version="1.2.2" />
-    <PackageReference Include="EPPlus" Version="5.0.4" />
+    <PackageReference Include="EPPlus" Version="5.1.0" />
   </ItemGroup>
 
 </Project>
