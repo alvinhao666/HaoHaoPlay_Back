@@ -70,7 +70,7 @@ namespace Hao.WebApi
                 audience: _appsettings.JwtOptions.Audience,
                 claims: claims,
                 notBefore: timeNow, //生效时间
-                expires: timeNow.AddDays(rq.IsRememberLogin ? 10 : 1),//过期时间
+                expires: timeNow.AddDays(rq.IsRememberLogin ? 3 : 1),//过期时间
                 signingCredentials: _appsettings.JwtOptions.SigningCredentials
             );
             user.Jwt = new JwtSecurityTokenHandler().WriteToken(jwt);
