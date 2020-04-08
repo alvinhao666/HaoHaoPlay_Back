@@ -171,8 +171,8 @@ namespace Hao.AppService
         private async Task<SysModule> GetModuleDetail(long id)
         {
             var module = await _moduleRep.GetAysnc(id);
-            if (module == null) throw new HException("模块不存在");
-            if (module.IsDeleted) throw new HException("模块已删除");
+            if (module == null) throw new HException("节点不存在");
+            if (module.IsDeleted) throw new HException("节点已删除");
             return module;
         }
 

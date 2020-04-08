@@ -44,9 +44,9 @@ namespace Hao.AppService
 
             #region 资源
             cfg.CreateMap<ResourceAddRequest, SysModule>();
-            
-            
-            cfg.CreateMap<SysModule, ResourceItemVM>();
+
+            cfg.CreateMap<SysModule, ResourceItemVM>()
+                .ForMember(x => x.ResourceCode, a => a.MapFrom(x => x.Layer + "_" + x.Number));
             #endregion
 
         }
