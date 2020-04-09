@@ -1,4 +1,5 @@
-﻿using Hao.Core;
+﻿using Hao.AppService;
+using Hao.Core;
 using Hao.Core.Extensions;
 using Hao.Library;
 using Microsoft.AspNetCore.Mvc;
@@ -16,11 +17,14 @@ namespace Hao.WebApi.Controllers
 
         private readonly AppSettingsInfo _appsettings;
 
+        private readonly ILogoutAppService _logoutAppService;
+
         public ICurrentUser CurrentUser { get; set; }
 
-        public LogoutController(IOptionsSnapshot<AppSettingsInfo> appsettingsOptions)
+        public LogoutController(IOptionsSnapshot<AppSettingsInfo> appsettingsOptions, ILogoutAppService logoutAppService)
         {
             _appsettings = appsettingsOptions.Value;
+            _logoutAppService = logoutAppService;
         }
 
         /// <summary>
@@ -30,7 +34,7 @@ namespace Hao.WebApi.Controllers
         [HttpPost]
         public async Task Logout()
         {
-            await RedisHelper.DelAsync(_appsettings.RedisPrefixOptions.LoginInfo + CurrentUser.Id);
+            await _logoutAppService.Logout(CurrentUser.Id);
         }
     }
 }

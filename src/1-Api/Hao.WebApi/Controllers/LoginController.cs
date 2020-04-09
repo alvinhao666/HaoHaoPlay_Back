@@ -80,7 +80,8 @@ namespace Hao.WebApi
             {
                 Id = user.Id.ToLong(),
                 Name = user.Name,
-                LoginName = user.LoginName
+                LoginName = user.LoginName,
+                //存权限值 hcontroller里面判断有无权限
             };
             await RedisHelper.SetAsync(_appsettings.RedisPrefixOptions.LoginInfo + user.Id, JsonSerializer.Serialize(userValue));
 
