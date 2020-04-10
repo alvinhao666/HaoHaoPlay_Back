@@ -62,7 +62,19 @@ namespace Hao.AppService
         public async Task<ModuleDetailVM> Get(long id)
         {
             var module = await GetModuleDetail(id);
-            return _mapper.Map<ModuleDetailVM>(module);
+            var result = _mapper.Map<ModuleDetailVM>(module);
+
+            if (result.Type == ModuleType.Sub)
+            {
+                var resources = await _moduleRep.GetListAysnc(new ModuleQuery()
+                {
+                    ParentId = id,
+                    OrderFileds = "sort,createtime"
+                });
+                result.Resources = _mapper.Map<List<ResourceItemVM>>(resources);
+            }
+
+            return result;
         }
 
         /// <summary>

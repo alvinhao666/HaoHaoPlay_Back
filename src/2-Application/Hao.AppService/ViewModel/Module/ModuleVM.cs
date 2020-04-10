@@ -75,5 +75,10 @@ namespace Hao.AppService.ViewModel
         /// 排序值
         /// </summary>
         public int? Sort { get; set; }
+
+        /// <summary>
+        /// 资源项
+        /// </summary>
+        public List<ResourceItemVM> Resources { get; set; }
     }
 }
