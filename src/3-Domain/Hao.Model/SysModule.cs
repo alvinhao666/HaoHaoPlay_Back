@@ -49,6 +49,6 @@ namespace Hao.Model
         /// <summary>
         /// 权限数字
         /// </summary>
-        public string Number { get; set; }
+        public long Number { get; set; }
     }
 }

@@ -46,7 +46,7 @@ namespace Hao.AppService
             cfg.CreateMap<ResourceAddRequest, SysModule>();
 
             cfg.CreateMap<SysModule, ResourceItemVM>()
-                .ForMember(x => x.ResourceCode, a => a.MapFrom(x => x.Layer + "_" + x.Number));
+                .ForMember(x => x.ResourceCode, a => a.MapFrom(x => string.Format("{0}_{1}", x.Layer, x.Number)));
             #endregion
 
         }
