@@ -126,12 +126,12 @@ namespace Hao.AppService
         private async Task AddModule(SysModule module)
         {
             var max = await _moduleRep.GetLayerCount();
-            if (max.Count < 31)
+            if (max.Count < 53)
             {
                 module.Layer = 1;
                 module.Number = Convert.ToUInt64(Math.Pow(2, max.Count.Value)).ToString();
             }
-            else if (max.Count == 31) //js 位运算 支持到2的0次方加到2的30次方
+            else if (max.Count == 53) //js  &运算 支持 2的53次方-1 & 某个数  ；     |运算 支持到2的0次方 | 到2的30次方
             {
                 module.Layer = ++max.Layer;
                 module.Number = Convert.ToUInt64(Math.Pow(2, 0)).ToString();
