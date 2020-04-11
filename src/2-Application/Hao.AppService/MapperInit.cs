@@ -49,6 +49,12 @@ namespace Hao.AppService
                 .ForMember(x => x.ResourceCode, a => a.MapFrom(x => string.Format("{0}_{1}", x.Layer, x.Number)));
             #endregion
 
+
+            #region 角色
+            cfg.CreateMap<SysRole, RoleVM>();
+            
+            #endregion
+
         }
     }
 }

@@ -46,6 +46,12 @@ namespace Hao.Core
         /// </summary>
         /// <returns></returns>
         Task<List<T>> GetListAysnc(Query<T> query);
+        
+        /// <summary>
+        /// 根据条件查询所有数据数量（未删除）
+        /// </summary>
+        /// <returns></returns>
+        Task<int> GetCountAysnc(Query<T> query);
 
         /// <summary>
         /// 根据条件查询所有分页数据

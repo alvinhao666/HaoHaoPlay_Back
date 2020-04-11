@@ -12,9 +12,9 @@ namespace Hao.AppService
         /// <summary>
         /// 添加模块
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="vm"></param>
         /// <returns></returns>
-        Task AddModule(ModuleAddRequest request);
+        Task AddModule(ModuleAddRequest vm);
 
         /// <summary>
         /// 获取模块列表
@@ -35,9 +35,9 @@ namespace Hao.AppService
         /// 更新模块信息
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="request"></param>
+        /// <param name="vm"></param>
         /// <returns></returns>
-        Task UpdateModule(long id, ModuleUpdateRequest request);
+        Task UpdateModule(long id, ModuleUpdateRequest vm);
 
 
         /// <summary>
@@ -52,9 +52,9 @@ namespace Hao.AppService
         /// <summary>
         /// 添加资源
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="vm"></param>
         /// <returns></returns>
-        Task AddResource(ResourceAddRequest request);
+        Task AddResource(ResourceAddRequest vm);
 
         /// <summary>
         /// 删除资源
@@ -73,9 +73,9 @@ namespace Hao.AppService
         /// 更新资源信息
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="request"></param>
+        /// <param name="vm"></param>
         /// <returns></returns>
-        Task UpdateResource(long id, ResourceUpdateRequest request);
+        Task UpdateResource(long id, ResourceUpdateRequest vm);
         #endregion
 
     }

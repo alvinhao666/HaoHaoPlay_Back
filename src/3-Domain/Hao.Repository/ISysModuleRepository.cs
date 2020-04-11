@@ -13,6 +13,6 @@ namespace Hao.Repository
         /// 获取每一层的数量，包括已删除的，最多64个
         /// </summary>
         /// <returns></returns>
-        Task<ModuleLayerCountInfo> GetLayerCount();
+        Task<ModuleLayerCountDto> GetLayerCount();
     }
 }

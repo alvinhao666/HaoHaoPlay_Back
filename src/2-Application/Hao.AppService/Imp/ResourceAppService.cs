@@ -19,13 +19,13 @@ namespace Hao.AppService
         /// <summary>
         /// 添加资源
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="vm"></param>
         /// <returns></returns>
-        public async Task AddResource(ResourceAddRequest request)
+        public async Task AddResource(ResourceAddRequest vm)
         {
-            var parentNode = await GetModuleDetail(request.ParentId.Value);
+            var parentNode = await GetModuleDetail(vm.ParentId.Value);
             if (parentNode.Type != ModuleType.Sub) throw new HException("非子菜单无法添加资源");
-            var module = _mapper.Map<SysModule>(request);
+            var module = _mapper.Map<SysModule>(vm);
             module.Type = ModuleType.Resource;
             module.Sort = 0; 
             await AddModule(module);
@@ -66,14 +66,14 @@ namespace Hao.AppService
         /// 更新资源
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="request"></param>
+        /// <param name="vm"></param>
         /// <returns></returns>
-        public async Task UpdateResource(long id, ResourceUpdateRequest request)
+        public async Task UpdateResource(long id, ResourceUpdateRequest vm)
         {
             if (id == 0) throw new HException("无法操作系统根节点");
             var module = await GetModuleDetail(id);
-            module.Name = request.Name;
-            module.Sort = request.Sort;
+            module.Name = vm.Name;
+            module.Sort = vm.Sort;
             if (module.Type != ModuleType.Resource) throw new HException("非资源项无法更新");
             await _moduleRep.UpdateAsync(module, user => new { module.Name, module.Sort });
         }

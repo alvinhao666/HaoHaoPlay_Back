@@ -36,14 +36,14 @@ namespace Hao.WebApi.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
-        public async Task Delete(long? id) => await _moduleAppService.DeleteResource(id.Value);
+        public async Task Delete(long id) => await _moduleAppService.DeleteResource(id);
 
         /// <summary>
         /// 查询资源分页列表
         /// </summary>
         /// <returns></returns>
         [HttpGet("GetList/{parentId}")]
-        public async Task<List<ResourceItemVM>> GetList(long? parentId) => await _moduleAppService.GetResourceList(parentId.Value);
+        public async Task<List<ResourceItemVM>> GetList(long parentId) => await _moduleAppService.GetResourceList(parentId);
 
 
         /// <summary>
@@ -53,6 +53,6 @@ namespace Hao.WebApi.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        public async Task Update(long? id, [FromBody]ResourceUpdateRequest request) => await _moduleAppService.UpdateResource(id.Value, request);
+        public async Task Update(long id, [FromBody]ResourceUpdateRequest request) => await _moduleAppService.UpdateResource(id, request);
     }
 }

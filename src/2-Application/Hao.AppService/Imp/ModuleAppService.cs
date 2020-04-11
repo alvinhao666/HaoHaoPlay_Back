@@ -31,13 +31,13 @@ namespace Hao.AppService
         /// <summary>
         /// 添加模块
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="vm"></param>
         /// <returns></returns>
-        public async Task AddModule(ModuleAddRequest request)
+        public async Task AddModule(ModuleAddRequest vm)
         {
-            var parentNode = await GetModuleDetail(request.ParentId.Value);
+            var parentNode = await GetModuleDetail(vm.ParentId.Value);
             if (parentNode.Type == ModuleType.Sub) throw new HException("叶子节点无法继续添加节点");
-            var module = _mapper.Map<SysModule>(request);
+            var module = _mapper.Map<SysModule>(vm);
 
             await AddModule(module);
         }

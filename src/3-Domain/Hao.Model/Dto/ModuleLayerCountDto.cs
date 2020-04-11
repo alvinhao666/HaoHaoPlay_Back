@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Hao.Model
 {
-    public class ModuleLayerCountInfo
+    public class ModuleLayerCountDto
     {
         /// <summary>
         /// 层

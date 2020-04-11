@@ -62,7 +62,7 @@ namespace Hao.WebApi
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        public async Task Update(long? id, [FromBody]UserUpdateRequest request) => await _userAppService.EditUser(id.Value, request);
+        public async Task Update(long id, [FromBody]UserUpdateRequest request) => await _userAppService.EditUser(id, request);
 
         /// <summary>
         /// 根据id获取用户
@@ -70,7 +70,7 @@ namespace Hao.WebApi
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public async Task<UserDetailVM> Get(long? id) => await _userAppService.GetUser(id.Value);
+        public async Task<UserDetailVM> Get(long id) => await _userAppService.GetUser(id);
 
         /// <summary>
         /// 删除用户
@@ -78,7 +78,7 @@ namespace Hao.WebApi
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
-        public async Task Delete(long? id) => await _userAppService.DeleteUser(id.Value);
+        public async Task Delete(long id) => await _userAppService.DeleteUser(id);
 
         /// <summary>
         /// 注销用户
@@ -86,7 +86,7 @@ namespace Hao.WebApi
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpPut("Disable/{id}")]
-        public async Task Disable(long? id) => await _userAppService.UpdateUserStatus(id.Value, false);
+        public async Task Disable(long id) => await _userAppService.UpdateUserStatus(id, false);
 
         /// <summary>
         /// 启用用户
@@ -94,7 +94,7 @@ namespace Hao.WebApi
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpPut("Enable/{id}")]
-        public async Task Enable(long? id) => await _userAppService.UpdateUserStatus(id.Value, true);
+        public async Task Enable(long id) => await _userAppService.UpdateUserStatus(id, true);
 
 
         /// <summary>

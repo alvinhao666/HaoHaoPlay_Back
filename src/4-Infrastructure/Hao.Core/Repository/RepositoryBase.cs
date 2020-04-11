@@ -64,6 +64,21 @@ namespace Hao.Core
             }
             return await q.OrderByIF(!flag, query.OrderFileds).ToListAsync();
         }
+        
+        /// <summary>
+        /// 根据条件查询所有数据数量（未删除）（单表）
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public virtual async Task<int> GetCountAysnc(Query<T> query)
+        {
+            var q = UnitOfWork.GetDbClient().Queryable<T>();
+            foreach (var item in query.QueryExpressions)
+            {
+                q.Where(item);
+            }
+            return await q.CountAsync();
+        }
 
         /// <summary>
         /// 根据条件查询所有分页数据（未删除）（单表）
