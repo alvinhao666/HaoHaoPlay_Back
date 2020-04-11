@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Hao.WebApi
+namespace Hao.AppService
 {
     public class LoginValidator : AbstractValidator<LoginRequest>
     {

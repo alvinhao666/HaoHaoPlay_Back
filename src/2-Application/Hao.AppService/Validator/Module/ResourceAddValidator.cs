@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Hao.WebApi
+namespace Hao.AppService
 {
     public class ResourceAddValidator : AbstractValidator<ResourceAddRequest>
     {
