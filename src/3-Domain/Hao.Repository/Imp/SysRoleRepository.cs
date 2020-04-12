@@ -13,7 +13,8 @@ namespace Hao.Repository
         /// <returns></returns>
         public async Task<List<RoleUserCountDto>> GetRoleUserCount()
         {
-            var result = await UnitOfWork.GetDbClient().SqlQueryable<RoleUserCountDto>("select roleid,count(*) as usercount from sysuser group by roleid ").ToListAsync();
+            string sql = "select roleid,count(*) as usercount from sysuser where isdeleted=false group by roleid ";
+            var result = await UnitOfWork.GetDbClient().SqlQueryable<RoleUserCountDto>(sql).ToListAsync();
             return result;
         }
     }
