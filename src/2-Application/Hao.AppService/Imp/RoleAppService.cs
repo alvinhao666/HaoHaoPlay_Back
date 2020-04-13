@@ -19,16 +19,16 @@ namespace Hao.AppService
 
         private readonly ISysModuleRepository _moduleRep;
 
-        private readonly ISysUserRepository _userRep;
+        private readonly IRoleService _roleService;
 
         private readonly IMapper _mapper;
 
-        public RoleAppService(ISysRoleRepository roleRep, ISysModuleRepository moduleRep, ISysUserRepository userRep, IMapper mapper)
+        public RoleAppService(ISysRoleRepository roleRep, ISysModuleRepository moduleRep, IRoleService roleService, IMapper mapper)
         {
             _roleRep = roleRep;
             _mapper = mapper;
             _moduleRep = moduleRep;
-            _userRep = userRep;
+            _roleService = roleService;
         }
 
 
@@ -91,7 +91,7 @@ namespace Hao.AppService
             }
 
             role.AuthNumbers = JsonConvert.SerializeObject(authNumbers);
-            await UpdateAuth(role);
+            await _roleService.UpdateAuth(role);
         }
 
         /// <summary>
@@ -105,16 +105,6 @@ namespace Hao.AppService
         }
 
 
-
-        #region private
-
-        [UseTransaction]//注意，事务命令只能用于 insert、delete、update 操作，而其他命令，比如建表、删表，会被自动提交。
-        private async Task UpdateAuth(SysRole role)
-        {
-            await _roleRep.UpdateAsync(role, a => new { a.AuthNumbers });
-            await _userRep.UpdateAuth(role.Id, role.AuthNumbers);
-        }
-        #endregion
     }
 }
 

@@ -31,7 +31,7 @@ namespace Hao.AppService
         private readonly ISysUserRepository _userRep;
 
 
-        private readonly ISysLoginRecordRepository _recordRep;
+        private readonly IUserService _userService;
 
         private readonly AppSettingsInfo _appsettings;
 
@@ -39,10 +39,10 @@ namespace Hao.AppService
 
         private readonly ICurrentUser _currentUser;
 
-        public UserAppService(IOptionsSnapshot<AppSettingsInfo> appsettingsOptions, ISysUserRepository userRepository, ISysLoginRecordRepository recordRep, IMapper mapper,ICurrentUser currentUser)
+        public UserAppService(IOptionsSnapshot<AppSettingsInfo> appsettingsOptions, ISysUserRepository userRepository, IUserService userService, IMapper mapper,ICurrentUser currentUser)
         {
             _userRep = userRepository;
-            _recordRep = recordRep;
+            _userService = userService;
             _mapper = mapper;
             _appsettings = appsettingsOptions.Value;
             _currentUser = currentUser;
@@ -134,27 +134,9 @@ namespace Hao.AppService
             var user = await GetUserDetail(userId);
             user.LastLoginTime = lastLoginTime;
             user.LastLoginIP = ip;
-            await UpdateLoginWithTransacition(user, lastLoginTime, ip);
+            await _userService.UpdateLoginWithTransacition(user, lastLoginTime, ip);
         }
 
-
-        /// <summary>
-        /// //注意，事务命令只能用于 insert、delete、update 操作，而其他命令，比如建表、删表，会被自动提交。
-        /// </summary>
-        /// <param name="user"></param>
-        /// <param name="lastLoginTime"></param>
-        /// <param name="ip"></param>
-        /// <returns></returns>
-        [UseTransaction]
-        private async Task UpdateLoginWithTransacition(SysUser user, DateTime lastLoginTime, string ip)
-        {
-            if (user != null)
-            {
-
-                await _userRep.UpdateAsync(user, user => new { user.LastLoginTime, user.LastLoginIP });
-                await _recordRep.InsertAysnc(new SysLoginRecord() { UserId = user.Id, IP = ip, Time = lastLoginTime });
-            }
-        }
 
         /// <summary>
         /// 删除用户
