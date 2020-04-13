@@ -21,11 +21,15 @@ namespace Hao.AppService
             _userRep = userRep;
         }
 
+        /// <summary>
+        /// 更新权限
+        /// </summary>
+        /// <param name="role"></param>
         [UseTransaction]//注意，事务命令只能用于 insert、delete、update 操作，而其他命令，比如建表、删表，会被自动提交。
-        public async Task UpdateAuth(SysRole role)
+        public void UpdateAuth(SysRole role)
         {
-            await _roleRep.UpdateAsync(role, a => new { a.AuthNumbers });
-            await _userRep.UpdateAuth(role.Id, role.AuthNumbers);
+             _roleRep.Update(role, a => new { a.AuthNumbers });
+             _userRep.UpdateAuth(role.Id, role.AuthNumbers);
         }
     }
 }

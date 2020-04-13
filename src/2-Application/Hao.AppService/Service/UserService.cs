@@ -20,22 +20,18 @@ namespace Hao.AppService
             _userRep = userRepository;
             _recordRep = recordRep;
         }
+
+
         /// <summary>
-        /// //注意，事务命令只能用于 insert、delete、update 操作，而其他命令，比如建表、删表，会被自动提交。
+        /// 更新登录信息    //注意，事务命令只能用于 insert、delete、update 操作，而其他命令，比如建表、删表，会被自动提交。//如果多个线程共享一个数据库连接，您必须同步它们，以便只有一个线程同时使用该连接。在 PostgreSQL 数据库会话中，一次只能运行一个语句。
         /// </summary>
         /// <param name="user"></param>
-        /// <param name="lastLoginTime"></param>
-        /// <param name="ip"></param>
         /// <returns></returns>
         [UseTransaction]
-        public async Task UpdateLoginWithTransacition(SysUser user, DateTime lastLoginTime, string ip)
+        public void UpdateLogin(SysUser user)
         {
-            if (user != null)
-            {
-
-                await _userRep.UpdateAsync(user, user => new { user.LastLoginTime, user.LastLoginIP });
-                await _recordRep.InsertAysnc(new SysLoginRecord() { UserId = user.Id, IP = ip, Time = lastLoginTime });
-            }
+            _userRep.Update(user, user => new { user.LastLoginTime, user.LastLoginIP });
+            _recordRep.Insert(new SysLoginRecord() { UserId = user.Id, IP = user.LastLoginIP, Time = user.LastLoginTime });
         }
     }
 }

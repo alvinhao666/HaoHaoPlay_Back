@@ -12,6 +12,6 @@ namespace Hao.Repository
         /// <param name="roleId"></param>
         /// <param name="authNumbers"></param>
         /// <returns></returns>
-        Task UpdateAuth(long roleId, string authNumbers);
+        void UpdateAuth(long roleId, string authNumbers);
     }
 }

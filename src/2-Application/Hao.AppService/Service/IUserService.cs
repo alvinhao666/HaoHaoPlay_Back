@@ -8,6 +8,11 @@ namespace Hao.AppService
 {
     public interface IUserService
     {
-        Task UpdateLoginWithTransacition(SysUser user, DateTime lastLoginTime, string ip);
+        /// <summary>
+        /// 更新登录信息
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        void UpdateLogin(SysUser user);
     }
 }

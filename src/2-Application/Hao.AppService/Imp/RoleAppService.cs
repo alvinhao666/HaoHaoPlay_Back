@@ -91,7 +91,7 @@ namespace Hao.AppService
             }
 
             role.AuthNumbers = JsonConvert.SerializeObject(authNumbers);
-            await _roleService.UpdateAuth(role);
+            _roleService.UpdateAuth(role);
         }
 
         /// <summary>

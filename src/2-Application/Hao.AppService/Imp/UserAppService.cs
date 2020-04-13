@@ -134,7 +134,7 @@ namespace Hao.AppService
             var user = await GetUserDetail(userId);
             user.LastLoginTime = lastLoginTime;
             user.LastLoginIP = ip;
-            await _userService.UpdateLoginWithTransacition(user, lastLoginTime, ip);
+            _userService.UpdateLogin(user);
         }
 
 

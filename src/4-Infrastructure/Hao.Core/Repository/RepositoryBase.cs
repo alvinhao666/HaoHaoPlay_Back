@@ -129,6 +129,27 @@ namespace Hao.Core
         }
 
         /// <summary>
+        /// 异步写入实体数据
+        /// </summary>
+        /// <param name="entity">实体类</param>
+        /// <returns></returns>
+        public virtual T Insert(T entity)
+        {
+            var type = typeof(T);
+            var isGuid = typeof(TKey) == typeof(Guid);
+            var id = type.GetProperty("Id");
+
+            if (isGuid)
+            {
+                if (id != null) id.SetValue(entity, Guid.NewGuid());
+            }
+            else if (id != null) id.SetValue(entity, IdWorker.NextId());
+
+            var obj =  UnitOfWork.GetDbClient().Insertable(entity).ExecuteReturnEntity();
+            return obj;
+        }
+
+        /// <summary>
         /// 异步写入实体数据（批量）
         /// </summary>
         /// <param name="entities">实体类</param>
@@ -150,7 +171,30 @@ namespace Hao.Core
             });
             return await UnitOfWork.GetDbClient().Insertable(entities).ExecuteCommandAsync() > 0;
         }
-        
+
+        /// <summary>
+        /// 写入实体数据（批量）
+        /// </summary>
+        /// <param name="entities">实体类</param>
+        /// <returns></returns>
+        public virtual bool Insert(List<T> entities)
+        {
+            var isGuid = typeof(TKey) == typeof(Guid);
+            var type = typeof(T);
+            var id = type.GetProperty("Id");
+            var timeNow = DateTime.Now;
+            entities.ForEach(item =>
+            {
+                if (isGuid)
+                {
+                    if (id != null) id.SetValue(item, Guid.NewGuid());
+                }
+                else if (id != null) id.SetValue(item, IdWorker.NextId());
+
+            });
+            return UnitOfWork.GetDbClient().Insertable(entities).ExecuteCommand() > 0;
+        }
+
         /// <summary>
         /// 异步更新数据
         /// </summary>
@@ -159,6 +203,16 @@ namespace Hao.Core
         public virtual async Task<bool> UpdateAsync(T entity)
         {
             return await UnitOfWork.GetDbClient().Updateable(entity).ExecuteCommandAsync() > 0;
+        }
+
+        /// <summary>
+        /// 更新数据
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        public virtual bool Update(T entity)
+        {
+            return UnitOfWork.GetDbClient().Updateable(entity).ExecuteCommand() > 0;
         }
 
         /// <summary>
@@ -175,6 +229,19 @@ namespace Hao.Core
         }
 
         /// <summary>
+        /// 异步更新数据（指定列名）
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="columns"></param>
+        /// <returns></returns>
+        public virtual bool Update(T entity, Expression<Func<T, object>> columns)
+        {
+            var properties = columns.Body.Type.GetProperties();
+            var updateColumns = properties.Select(a => a.Name);
+            return UnitOfWork.GetDbClient().Updateable(entity).UpdateColumns(updateColumns.ToArray()).ExecuteCommand() > 0;
+        }
+
+        /// <summary>
         /// 异步更新数据（批量）
         /// </summary>
         /// <param name="entities">实体类</param>
@@ -182,6 +249,16 @@ namespace Hao.Core
         public virtual async Task<bool> UpdateAsync(List<T> entities)
         {
             return await UnitOfWork.GetDbClient().Updateable(entities).ExecuteCommandAsync() > 0;
+        }
+
+        /// <summary>
+        /// 更新数据（批量）
+        /// </summary>
+        /// <param name="entities">实体类</param>
+        /// <returns></returns>
+        public virtual bool Update(List<T> entities)
+        {
+            return UnitOfWork.GetDbClient().Updateable(entities).ExecuteCommand() > 0;
         }
 
         /// <summary>
@@ -198,6 +275,19 @@ namespace Hao.Core
         }
 
         /// <summary>
+        /// 更新数据（批量）（指定列名）
+        /// </summary>
+        /// <param name="entities"></param>
+        /// <param name="columns"></param>
+        /// <returns></returns>
+        public virtual bool Update(List<T> entities, Expression<Func<T, object>> columns)
+        {
+            var properties = columns.Body.Type.GetProperties();
+            var updateColumns = properties.Select(a => a.Name);
+            return UnitOfWork.GetDbClient().Updateable(entities).UpdateColumns(updateColumns.ToArray()).ExecuteCommand() > 0;
+        }
+
+        /// <summary>
         /// 异步删除数据
         /// </summary>
         /// <param name="pkValue"></param>
@@ -208,6 +298,16 @@ namespace Hao.Core
         }
 
         /// <summary>
+        /// 删除数据
+        /// </summary>
+        /// <param name="pkValue"></param>
+        /// <returns></returns>
+        public virtual bool Delete(TKey pkValue)
+        {
+            return UnitOfWork.GetDbClient().Deleteable<T>().In(pkValue).ExecuteCommand() > 0;
+        }
+
+        /// <summary>
         /// 异步删除数据
         /// </summary>
         /// <param name="pkValues"></param>
@@ -215,6 +315,16 @@ namespace Hao.Core
         public virtual async Task<bool> DeleteAysnc(List<TKey> pkValues)
         {
             return await UnitOfWork.GetDbClient().Deleteable<T>().In(pkValues).ExecuteCommandAsync() > 0;
+        }
+
+        /// <summary>
+        /// 删除数据
+        /// </summary>
+        /// <param name="pkValues"></param>
+        /// <returns></returns>
+        public virtual bool Delete(List<TKey> pkValues)
+        {
+            return UnitOfWork.GetDbClient().Deleteable<T>().In(pkValues).ExecuteCommand() > 0;
         }
     }
 }

@@ -8,6 +8,10 @@ namespace Hao.AppService
 {
     public interface IRoleService
     {
-        Task UpdateAuth(SysRole role);
+        /// <summary>
+        /// 更新权限
+        /// </summary>
+        /// <param name="role"></param>
+        void UpdateAuth(SysRole role);
     }
 }

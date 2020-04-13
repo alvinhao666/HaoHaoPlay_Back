@@ -1,5 +1,7 @@
 ﻿using Hao.Core;
 using Hao.Model;
+using SqlSugar;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Hao.Repository
@@ -60,14 +62,16 @@ namespace Hao.Repository
         /// <param name="roleId"></param>
         /// <param name="authNumbers"></param>
         /// <returns></returns>
-        public async Task UpdateAuth(long roleId, string authNumbers)
+        public void UpdateAuth(long roleId, string authNumbers)
         {
-            await UnitOfWork.GetDbClient()
-                            .Updateable<SysUser>()
-                            .UpdateColumns(a => new { a.AuthNumbers })
-                            .ReSetValue(a => a.AuthNumbers == authNumbers)
-                            .WhereColumns(it => new { it.RoleId })
-                            .ExecuteCommandAsync();
+
+            string sql = "update  sysuser set authNumbers=@authNumbers where roleid=@roleid";
+
+            List<SugarParameter> param = new List<SugarParameter>();
+            param.Add(new SugarParameter("@authNumbers", authNumbers));
+            param.Add(new SugarParameter("@roleid", roleId));
+
+            UnitOfWork.GetDbClient().Ado.ExecuteCommand(sql, param);
         }
 
     }
