@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Hao.AppService
 {
-    public interface IRoleService
+    public interface IRoleUowService
     {
         /// <summary>
         /// 更新权限

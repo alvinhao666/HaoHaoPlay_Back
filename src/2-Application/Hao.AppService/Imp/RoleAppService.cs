@@ -19,16 +19,16 @@ namespace Hao.AppService
 
         private readonly ISysModuleRepository _moduleRep;
 
-        private readonly IRoleService _roleService;
+        private readonly IRoleUowService _roleUow;
 
         private readonly IMapper _mapper;
 
-        public RoleAppService(ISysRoleRepository roleRep, ISysModuleRepository moduleRep, IRoleService roleService, IMapper mapper)
+        public RoleAppService(ISysRoleRepository roleRep, ISysModuleRepository moduleRep, IRoleUowService roleUow, IMapper mapper)
         {
             _roleRep = roleRep;
             _mapper = mapper;
             _moduleRep = moduleRep;
-            _roleService = roleService;
+            _roleUow = roleUow;
         }
 
 
@@ -91,7 +91,7 @@ namespace Hao.AppService
             }
 
             role.AuthNumbers = JsonConvert.SerializeObject(authNumbers);
-            _roleService.UpdateAuth(role);
+            _roleUow.UpdateAuth(role);
         }
 
         /// <summary>

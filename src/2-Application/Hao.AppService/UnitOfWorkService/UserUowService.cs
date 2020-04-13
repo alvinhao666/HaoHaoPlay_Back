@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace Hao.AppService
 {
-    internal class UserService : ApplicationService, IUserService
+    internal class UserUowService : UnitOfWorkService, IUserUowService
     {
 
         private readonly ISysUserRepository _userRep;
 
         private readonly ISysLoginRecordRepository _recordRep;
 
-        public UserService( ISysUserRepository userRepository, ISysLoginRecordRepository recordRep)
+        public UserUowService( ISysUserRepository userRepository, ISysLoginRecordRepository recordRep)
         {
             _userRep = userRepository;
             _recordRep = recordRep;

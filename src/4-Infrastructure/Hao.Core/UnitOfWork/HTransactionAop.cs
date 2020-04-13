@@ -28,7 +28,7 @@ namespace Hao.Core
             //如果需要验证
             //true 布尔值，指示特性能否被派生类和重写成员继承
 
-            if (method.GetCustomAttributes(typeof(ApplicationService.UseTransactionAttribute), true).FirstOrDefault() is ApplicationService.UseTransactionAttribute)
+            if (method.GetCustomAttributes(typeof(UnitOfWorkService.UseTransactionAttribute), true).FirstOrDefault() is UnitOfWorkService.UseTransactionAttribute)
             {
                 try
                 {

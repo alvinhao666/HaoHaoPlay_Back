@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace Hao.AppService
 {
-    public class RoleService : ApplicationService, IRoleService
+    public class RoleUowService : UnitOfWorkService, IRoleUowService
     {
         private readonly ISysRoleRepository _roleRep;
 
 
         private readonly ISysUserRepository _userRep;
 
-        public RoleService(ISysRoleRepository roleRep,ISysUserRepository userRep)
+        public RoleUowService(ISysRoleRepository roleRep,ISysUserRepository userRep)
         {
             _roleRep = roleRep;
             _userRep = userRep;

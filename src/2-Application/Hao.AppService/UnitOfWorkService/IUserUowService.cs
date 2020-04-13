@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Hao.AppService
 {
-    public interface IUserService
+    public interface IUserUowService
     {
         /// <summary>
         /// 更新登录信息

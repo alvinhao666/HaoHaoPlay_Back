@@ -31,7 +31,7 @@ namespace Hao.AppService
         private readonly ISysUserRepository _userRep;
 
 
-        private readonly IUserService _userService;
+        private readonly IUserUowService _userUow;
 
         private readonly AppSettingsInfo _appsettings;
 
@@ -39,10 +39,10 @@ namespace Hao.AppService
 
         private readonly ICurrentUser _currentUser;
 
-        public UserAppService(IOptionsSnapshot<AppSettingsInfo> appsettingsOptions, ISysUserRepository userRepository, IUserService userService, IMapper mapper,ICurrentUser currentUser)
+        public UserAppService(IOptionsSnapshot<AppSettingsInfo> appsettingsOptions, ISysUserRepository userRepository, IUserUowService userUow, IMapper mapper,ICurrentUser currentUser)
         {
             _userRep = userRepository;
-            _userService = userService;
+            _userUow = userUow;
             _mapper = mapper;
             _appsettings = appsettingsOptions.Value;
             _currentUser = currentUser;
@@ -134,7 +134,7 @@ namespace Hao.AppService
             var user = await GetUserDetail(userId);
             user.LastLoginTime = lastLoginTime;
             user.LastLoginIP = ip;
-            _userService.UpdateLogin(user);
+            _userUow.UpdateLogin(user);
         }
 
 
