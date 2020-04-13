@@ -2,17 +2,18 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Hao.AppService;
 using Hao.AppService.ViewModel;
+using Hao.Core.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hao.WebApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class RoleController
+    public class RoleController:HController
     {
-        private readonly RoleAppService _roleAppService;
+        private readonly IRoleAppService _roleAppService;
         
-        public RoleController(RoleAppService roleAppService)
+        public RoleController(IRoleAppService roleAppService)
         {
             _roleAppService = roleAppService;
         }
@@ -36,11 +37,11 @@ namespace Hao.WebApi.Controllers
         /// 更新角色权限
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="modueIds"></param>
+        /// <param name="request"></param>
         /// <returns></returns>
         [HttpPut("UpdateRoleAuth/{id}")]
-        public async Task UpdateRoleAuth(long id, [FromBody] List<long> modueIds) =>
-            await _roleAppService.UpdateRoleAuth(id, modueIds);
+        public async Task UpdateRoleAuth(long id, [FromBody]RoleUpdateRequest request) =>
+            await _roleAppService.UpdateRoleAuth(id, request);
 
         /// <summary>
         /// 删除橘色

@@ -8,24 +8,30 @@ using Hao.Core;
 using Hao.Model;
 using Hao.Repository;
 using Hao.RunTimeException;
+using Newtonsoft.Json;
 using Npgsql;
-using NPOI.OpenXmlFormats.Wordprocessing;
 
 namespace Hao.AppService
 {
     public class RoleAppService : ApplicationService, IRoleAppService
     {
         private readonly ISysRoleRepository _roleRep;
-        
+
+        private readonly ISysModuleRepository _moduleRep;
+
+        private readonly ISysUserRepository _userRep;
+
         private readonly IMapper _mapper;
-        
-        public RoleAppService(ISysRoleRepository roleRep,IMapper mapper)
+
+        public RoleAppService(ISysRoleRepository roleRep, ISysModuleRepository moduleRep, ISysUserRepository userRep, IMapper mapper)
         {
             _roleRep = roleRep;
             _mapper = mapper;
+            _moduleRep = moduleRep;
+            _userRep = userRep;
         }
-        
-        
+
+
         /// <summary>
         /// 添加角色
         /// </summary>
@@ -33,7 +39,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task AddRole(RoleAddRequest vm)
         {
-            var role = new SysRole() {Name = vm.Name};
+            var role = new SysRole() { Name = vm.Name };
             try
             {
                 await _roleRep.InsertAysnc(role);
@@ -64,13 +70,28 @@ namespace Hao.AppService
         /// 更新角色权限
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="moduleIds"></param>
+        /// <param name="vm"></param>
         /// <returns></returns>
-        public async Task UpdateRoleAuth(long id, List<long> moduleIds)
+        public async Task UpdateRoleAuth(long id, RoleUpdateRequest vm)
         {
             var role = await _roleRep.GetAysnc(id);
-            // role.AuthNumber = authNumber;
-            await _roleRep.UpdateAsync(role, a => new {a.AuthNumber});
+            var modules = await _moduleRep.GetListAysnc(vm.ModuleIds);
+            var maxLayer = modules.Max(a => a.Layer);
+
+            List<long> authNumbers = new List<long>();
+            for (int i = 1; i <= maxLayer; i++)
+            {
+                var authNumber = 0L;
+                var items = modules.Where(a => a.Layer == i);
+                foreach (var x in items)
+                {
+                    authNumber = authNumber | x.Number;
+                }
+                authNumbers.Add(authNumber);
+            }
+
+            role.AuthNumbers = JsonConvert.SerializeObject(authNumbers);
+            await UpdateAuth(role);
         }
 
         /// <summary>
@@ -82,5 +103,18 @@ namespace Hao.AppService
         {
             await _roleRep.DeleteAysnc(id);
         }
+
+
+
+        #region private
+
+        [UseTransaction]//注意，事务命令只能用于 insert、delete、update 操作，而其他命令，比如建表、删表，会被自动提交。
+        private async Task UpdateAuth(SysRole role)
+        {
+            await _roleRep.UpdateAsync(role, a => new { a.AuthNumbers });
+            await _userRep.UpdateAuth(role.Id, role.AuthNumbers);
+        }
+        #endregion
     }
 }
+

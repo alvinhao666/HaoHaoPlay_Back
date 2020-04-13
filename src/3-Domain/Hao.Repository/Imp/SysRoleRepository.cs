@@ -7,6 +7,13 @@ namespace Hao.Repository
 {
     public class SysRoleRepository: Repository<SysRole, long>, ISysRoleRepository
     {
+        private readonly ISysUserRepository _userRep;
+
+        public SysRoleRepository(ISysUserRepository userRep)
+        {
+            _userRep = userRep;
+        }
+
         /// <summary>
         /// 获取角色对应的角色数量
         /// </summary>
@@ -17,5 +24,6 @@ namespace Hao.Repository
             var result = await UnitOfWork.GetDbClient().SqlQueryable<RoleUserCountDto>(sql).ToListAsync();
             return result;
         }
+
     }
 }

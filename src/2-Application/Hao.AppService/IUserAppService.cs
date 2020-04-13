@@ -2,6 +2,7 @@
 using Hao.AppService.ViewModel;
 using Hao.Core;
 using Hao.Entity;
+using Hao.Model;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -95,7 +96,7 @@ namespace Hao.AppService
         /// <summary>
         /// 更新头像
         /// </summary>
-        /// <param name="imgUrl"></param>
+        /// <param name="imageBytes"></param>
         /// <returns></returns>
         Task UpdateCurrentHeadImg(byte[] imageBytes);
 
@@ -119,5 +120,6 @@ namespace Hao.AppService
         /// </summary>
         /// <returns></returns>
         Task<UserSecurityVM> GetCurrentSecurityInfo();
+
     }
 }

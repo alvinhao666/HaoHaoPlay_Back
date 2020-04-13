@@ -13,6 +13,6 @@ namespace Hao.Model
         /// <summary>
         /// 所拥有的权限
         /// </summary>
-        public List<long> AuthNumber { get; set; }
+        public string AuthNumbers { get; set; }
     }
 }

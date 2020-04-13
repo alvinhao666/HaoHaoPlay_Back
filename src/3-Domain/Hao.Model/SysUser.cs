@@ -1,11 +1,9 @@
 ﻿using System;
 using Hao.Core;
 using Hao.Enum;
-using SqlSugar;
 
 namespace Hao.Model
 {
-    [SugarTable("sysuser")]
     public class SysUser : FullAuditedEntity<long>
     {
         /// <summary>
@@ -88,6 +86,13 @@ namespace Hao.Model
         /// 密码强度
         /// </summary>
         public PasswordLevel? PasswordLevel { get; set; }
+
+
+        public long? RoleId { get; set; }
+
+        public string RoleName { get; set; }
+
+        public string AuthNumbers { get; set; }
 
     }
 }

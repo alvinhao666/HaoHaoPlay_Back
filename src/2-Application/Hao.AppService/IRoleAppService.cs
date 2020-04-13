@@ -23,9 +23,9 @@ namespace Hao.AppService
         /// 更新角色权限
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="moduleIds"></param>
+        /// <param name="vm"></param>
         /// <returns></returns>
-        Task UpdateRoleAuth(long id, List<long> moduleIds);
+        Task UpdateRoleAuth(long id, RoleUpdateRequest vm);
 
         /// <summary>
         /// 删除角色
