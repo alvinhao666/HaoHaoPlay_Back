@@ -22,7 +22,7 @@ namespace Hao.AppService
         }
 
         /// <summary>
-        /// 更新权限 //postgresql 事务操作放一个线程中；否则会报错
+        /// 更新权限 //postgresql 事务操作放一个线程中；否则会报错 a command is already in progress
         /// </summary>
         /// <param name="role"></param>
         [UseTransaction]
