@@ -22,10 +22,10 @@ namespace Hao.AppService
         }
 
         /// <summary>
-        /// 更新权限
+        /// 更新权限 //postgresql 事务操作放一个线程中；否则会报错
         /// </summary>
         /// <param name="role"></param>
-        [UseTransaction]//注意，事务命令只能用于 insert、delete、update 操作，而其他命令，比如建表、删表，会被自动提交。
+        [UseTransaction]
         public void UpdateAuth(SysRole role)
         {
              _roleRep.Update(role, a => new { a.AuthNumbers });
