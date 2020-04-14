@@ -19,16 +19,16 @@ namespace Hao.AppService
 
         private readonly ISysModuleRepository _moduleRep;
 
-        private readonly IRoleUowService _roleUow;
+        private readonly ISysUserRepository _userRep;
 
         private readonly IMapper _mapper;
 
-        public RoleAppService(ISysRoleRepository roleRep, ISysModuleRepository moduleRep, IRoleUowService roleUow, IMapper mapper)
+        public RoleAppService(ISysRoleRepository roleRep, ISysModuleRepository moduleRep, ISysUserRepository userRep, IMapper mapper)
         {
             _roleRep = roleRep;
             _mapper = mapper;
             _moduleRep = moduleRep;
-            _roleUow = roleUow;
+            _userRep = userRep;
         }
 
 
@@ -72,6 +72,7 @@ namespace Hao.AppService
         /// <param name="id"></param>
         /// <param name="vm"></param>
         /// <returns></returns>
+        [UseTransaction]
         public async Task UpdateRoleAuth(long id, RoleUpdateRequest vm)
         {
             var role = await _roleRep.GetAysnc(id);
@@ -91,7 +92,8 @@ namespace Hao.AppService
             }
 
             role.AuthNumbers = JsonConvert.SerializeObject(authNumbers);
-            await _roleUow.UpdateAuth(role);
+            await _roleRep.UpdateAsync(role, a => new { a.AuthNumbers });
+            await _userRep.UpdateAuth(role.Id, role.AuthNumbers);
         }
 
         /// <summary>

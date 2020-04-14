@@ -57,12 +57,13 @@ namespace Hao.Repository
         //    return pageList;
         //}
 
+        /// <summary>
         /// 更新角色权限
         /// </summary>
         /// <param name="roleId"></param>
         /// <param name="authNumbers"></param>
         /// <returns></returns>
-        public void UpdateAuth(long roleId, string authNumbers)
+        public async Task UpdateAuth(long roleId, string authNumbers)
         {
 
             string sql = "update  sysuser set authNumbers=@authNumbers where roleid=@roleid";
@@ -71,7 +72,7 @@ namespace Hao.Repository
             param.Add(new SugarParameter("@authNumbers", authNumbers));
             param.Add(new SugarParameter("@roleid", roleId));
 
-            UnitOfWork.GetDbClient().Ado.ExecuteCommand(sql, param);
+            await Db.Ado.ExecuteCommandAsync(sql, param);
         }
 
     }

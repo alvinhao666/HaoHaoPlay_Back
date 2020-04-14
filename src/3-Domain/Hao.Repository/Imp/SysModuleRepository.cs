@@ -15,7 +15,7 @@ namespace Hao.Repository
         /// <returns></returns>
         public async Task<ModuleLayerCountDto> GetLayerCount()
         {
-            var result = await UnitOfWork.GetDbClient().SqlQueryable<ModuleLayerCountDto>("select layer,count(*) from sysmodule group by layer order by layer desc limit 1").FirstAsync();
+            var result = await Db.SqlQueryable<ModuleLayerCountDto>("select layer,count(*) from sysmodule group by layer order by layer desc limit 1").FirstAsync();
             return result;
         }
     }

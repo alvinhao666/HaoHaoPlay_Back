@@ -27,9 +27,9 @@ using Hao.Event;
 using Hao.Snowflake;
 using Hao.Json;
 using Hao.Core.Extensions;
+using Hao.Model;
+using Hao.Repository;
 using Hao.Utility;
-using AspectCore.Extensions.DependencyInjection;
-using AspectCore.Configuration;
 
 namespace HaoHaoPlay.ApiHost
 {
@@ -177,6 +177,7 @@ namespace HaoHaoPlay.ApiHost
             services.AutoDependency(typeof(ILoginEventHandler));
 
 
+      
             #region AutoMapper
             services.AddSingleton<IMapper>(new Mapper(new MapperConfiguration(cfg =>
             {
@@ -184,6 +185,8 @@ namespace HaoHaoPlay.ApiHost
                 Hao.AppService.MapperInit.Map(cfg);
             })));
             #endregion
+            
+            // services.BuildServiceContextProvider();
         }
 
 

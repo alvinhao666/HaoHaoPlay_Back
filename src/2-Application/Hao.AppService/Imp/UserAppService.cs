@@ -31,7 +31,7 @@ namespace Hao.AppService
         private readonly ISysUserRepository _userRep;
 
 
-        private readonly IUserUowService _userUow;
+        private readonly ISysLoginRecordRepository _recordRep;
 
         private readonly AppSettingsInfo _appsettings;
 
@@ -39,10 +39,10 @@ namespace Hao.AppService
 
         private readonly ICurrentUser _currentUser;
 
-        public UserAppService(IOptionsSnapshot<AppSettingsInfo> appsettingsOptions, ISysUserRepository userRepository, IUserUowService userUow, IMapper mapper,ICurrentUser currentUser)
+        public UserAppService(IOptionsSnapshot<AppSettingsInfo> appsettingsOptions, ISysUserRepository userRepository, ISysLoginRecordRepository recordRep, IMapper mapper,ICurrentUser currentUser)
         {
             _userRep = userRepository;
-            _userUow = userUow;
+            _recordRep = recordRep;
             _mapper = mapper;
             _appsettings = appsettingsOptions.Value;
             _currentUser = currentUser;
@@ -129,12 +129,15 @@ namespace Hao.AppService
         /// <param name="ip"></param>
         /// <returns></returns>
 
+        [UseTransaction]
         public async Task UpdateLogin(long userId, DateTime lastLoginTime, string ip)
         {
             var user = await GetUserDetail(userId);
             user.LastLoginTime = lastLoginTime;
             user.LastLoginIP = ip;
-            _userUow.UpdateLogin(user);
+
+            await _userRep.UpdateAsync(user, user => new { user.LastLoginTime, user.LastLoginIP });
+            await _recordRep.InsertAysnc(new SysLoginRecord() { UserId = user.Id, IP = user.LastLoginIP, Time = user.LastLoginTime });
         }
 
 

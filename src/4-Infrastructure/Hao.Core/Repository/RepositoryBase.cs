@@ -1,10 +1,9 @@
-using Hao.Dependency;
 using SqlSugar;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq.Expressions;
-using Hao.Entity;
+
 using Hao.Snowflake;
 using System.Linq;
 
@@ -12,10 +11,8 @@ namespace Hao.Core
 {
     public abstract class RepositoryBase<T, TKey> : IRepositoryBase<T, TKey>  where T : BaseEntity<TKey>, new() where TKey : struct
     {
-        public ICurrentUser CurrentUser { get; set; }
+        public ISqlSugarClient Db { get; set; }
 
-        public IUnitOfWork UnitOfWork { get; set; }
-        
         public IdWorker IdWorker { get; set; }
 
         /// <summary>
@@ -25,7 +22,7 @@ namespace Hao.Core
         /// <returns>泛型实体</returns>
         public virtual async Task<T> GetAysnc(TKey pkValue)
         {
-            var entity = await UnitOfWork.GetDbClient().Queryable<T>().InSingleAsync(pkValue);
+            var entity = await Db.Queryable<T>().InSingleAsync(pkValue);
             return entity;
         }
 
@@ -37,7 +34,7 @@ namespace Hao.Core
         public virtual async Task<List<T>> GetListAysnc(List<TKey> pkValues)
         {
             //Type type = typeof(T); 类型判断，主要包括 is 和 typeof 两个操作符及对象实例上的 GetType 调用。这是最轻型的消耗，可以无需考虑优化问题。注意 typeof 运算符比对象实例上的 GetType 方法要快，只要可能则优先使用 typeof 运算符。 
-            return await UnitOfWork.GetDbClient().Queryable<T>().In(pkValues).ToListAsync();
+            return await Db.Queryable<T>().In(pkValues).ToListAsync();
         }
 
         /// <summary>
@@ -46,7 +43,7 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<List<T>> GetAllAysnc()
         {
-            return await UnitOfWork.GetDbClient().Queryable<T>().ToListAsync();
+            return await Db.Queryable<T>().ToListAsync();
         }
 
         /// <summary>
@@ -57,7 +54,7 @@ namespace Hao.Core
         public virtual async Task<List<T>> GetListAysnc(Query<T> query)
         {
             var flag = string.IsNullOrWhiteSpace(query.OrderFileds);
-            var q = UnitOfWork.GetDbClient().Queryable<T>();
+            var q = Db.Queryable<T>();
             foreach (var item in query.QueryExpressions)
             {
                 q.Where(item);
@@ -72,7 +69,7 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<int> GetCountAysnc(Query<T> query)
         {
-            var q = UnitOfWork.GetDbClient().Queryable<T>();
+            var q = Db.Queryable<T>();
             foreach (var item in query.QueryExpressions)
             {
                 q.Where(item);
@@ -89,7 +86,7 @@ namespace Hao.Core
         {
             RefAsync<int> totalNumber = 0;
             var flag = string.IsNullOrWhiteSpace(query.OrderFileds);
-            var q = UnitOfWork.GetDbClient().Queryable<T>();
+            var q = Db.Queryable<T>();
             foreach (var item in query.QueryExpressions)
             {
                 q.Where(item);
@@ -124,7 +121,7 @@ namespace Hao.Core
             }
             else if (id != null) id.SetValue(entity, IdWorker.NextId());
             
-            var obj = await UnitOfWork.GetDbClient().Insertable(entity).ExecuteReturnEntityAsync();
+            var obj = await Db.Insertable(entity).ExecuteReturnEntityAsync();
             return obj;
         }
 
@@ -145,7 +142,7 @@ namespace Hao.Core
             }
             else if (id != null) id.SetValue(entity, IdWorker.NextId());
 
-            var obj =  UnitOfWork.GetDbClient().Insertable(entity).ExecuteReturnEntity();
+            var obj =  Db.Insertable(entity).ExecuteReturnEntity();
             return obj;
         }
 
@@ -169,7 +166,7 @@ namespace Hao.Core
                 else if (id != null) id.SetValue(item, IdWorker.NextId());
                 
             });
-            return await UnitOfWork.GetDbClient().Insertable(entities).ExecuteCommandAsync() > 0;
+            return await Db.Insertable(entities).ExecuteCommandAsync() > 0;
         }
 
         /// <summary>
@@ -192,7 +189,7 @@ namespace Hao.Core
                 else if (id != null) id.SetValue(item, IdWorker.NextId());
 
             });
-            return UnitOfWork.GetDbClient().Insertable(entities).ExecuteCommand() > 0;
+            return Db.Insertable(entities).ExecuteCommand() > 0;
         }
 
         /// <summary>
@@ -202,7 +199,7 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<bool> UpdateAsync(T entity)
         {
-            return await UnitOfWork.GetDbClient().Updateable(entity).ExecuteCommandAsync() > 0;
+            return await Db.Updateable(entity).ExecuteCommandAsync() > 0;
         }
 
         /// <summary>
@@ -212,7 +209,7 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual bool Update(T entity)
         {
-            return UnitOfWork.GetDbClient().Updateable(entity).ExecuteCommand() > 0;
+            return Db.Updateable(entity).ExecuteCommand() > 0;
         }
 
         /// <summary>
@@ -225,7 +222,7 @@ namespace Hao.Core
         {
             var properties = columns.Body.Type.GetProperties();
             var updateColumns = properties.Select(a => a.Name);
-            return await UnitOfWork.GetDbClient().Updateable(entity).UpdateColumns(updateColumns.ToArray()).ExecuteCommandAsync() > 0;
+            return await Db.Updateable(entity).UpdateColumns(updateColumns.ToArray()).ExecuteCommandAsync() > 0;
         }
 
         /// <summary>
@@ -238,7 +235,7 @@ namespace Hao.Core
         {
             var properties = columns.Body.Type.GetProperties();
             var updateColumns = properties.Select(a => a.Name);
-            return UnitOfWork.GetDbClient().Updateable(entity).UpdateColumns(updateColumns.ToArray()).ExecuteCommand() > 0;
+            return Db.Updateable(entity).UpdateColumns(updateColumns.ToArray()).ExecuteCommand() > 0;
         }
 
         /// <summary>
@@ -248,7 +245,7 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<bool> UpdateAsync(List<T> entities)
         {
-            return await UnitOfWork.GetDbClient().Updateable(entities).ExecuteCommandAsync() > 0;
+            return await Db.Updateable(entities).ExecuteCommandAsync() > 0;
         }
 
         /// <summary>
@@ -258,7 +255,7 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual bool Update(List<T> entities)
         {
-            return UnitOfWork.GetDbClient().Updateable(entities).ExecuteCommand() > 0;
+            return Db.Updateable(entities).ExecuteCommand() > 0;
         }
 
         /// <summary>
@@ -271,7 +268,7 @@ namespace Hao.Core
         {
             var properties = columns.Body.Type.GetProperties();
             var updateColumns = properties.Select(a => a.Name);
-            return await UnitOfWork.GetDbClient().Updateable(entities).UpdateColumns(updateColumns.ToArray()).ExecuteCommandAsync() > 0;
+            return await Db.Updateable(entities).UpdateColumns(updateColumns.ToArray()).ExecuteCommandAsync() > 0;
         }
 
         /// <summary>
@@ -284,7 +281,7 @@ namespace Hao.Core
         {
             var properties = columns.Body.Type.GetProperties();
             var updateColumns = properties.Select(a => a.Name);
-            return UnitOfWork.GetDbClient().Updateable(entities).UpdateColumns(updateColumns.ToArray()).ExecuteCommand() > 0;
+            return Db.Updateable(entities).UpdateColumns(updateColumns.ToArray()).ExecuteCommand() > 0;
         }
 
         /// <summary>
@@ -294,7 +291,7 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<bool> DeleteAysnc(TKey pkValue)
         {
-            return await UnitOfWork.GetDbClient().Deleteable<T>().In(pkValue).ExecuteCommandAsync() > 0;
+            return await Db.Deleteable<T>().In(pkValue).ExecuteCommandAsync() > 0;
         }
 
         /// <summary>
@@ -304,7 +301,7 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual bool Delete(TKey pkValue)
         {
-            return UnitOfWork.GetDbClient().Deleteable<T>().In(pkValue).ExecuteCommand() > 0;
+            return Db.Deleteable<T>().In(pkValue).ExecuteCommand() > 0;
         }
 
         /// <summary>
@@ -314,7 +311,7 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<bool> DeleteAysnc(List<TKey> pkValues)
         {
-            return await UnitOfWork.GetDbClient().Deleteable<T>().In(pkValues).ExecuteCommandAsync() > 0;
+            return await Db.Deleteable<T>().In(pkValues).ExecuteCommandAsync() > 0;
         }
 
         /// <summary>
@@ -324,7 +321,7 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual bool Delete(List<TKey> pkValues)
         {
-            return UnitOfWork.GetDbClient().Deleteable<T>().In(pkValues).ExecuteCommand() > 0;
+            return Db.Deleteable<T>().In(pkValues).ExecuteCommand() > 0;
         }
     }
 }

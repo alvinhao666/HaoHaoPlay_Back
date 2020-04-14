@@ -1,20 +1,13 @@
-﻿using Hao.Core;
-using Hao.Library;
+﻿using Hao.Library;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using NLog;
 using System.IdentityModel.Tokens.Jwt;
-using System.IO;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authorization;
 using Hao.RunTimeException;
-using System.Text.Json;
-using System.Security.Claims;
+
 
 namespace Hao.Core.Extensions
 {
@@ -22,7 +15,7 @@ namespace Hao.Core.Extensions
     public class HController : Controller
     {
         private readonly ILogger _logger = LogManager.GetCurrentClassLogger();
-
+        
         public IOptionsSnapshot<AppSettingsInfo> AppsettingsOptions { get; set; }
 
         /// <summary>

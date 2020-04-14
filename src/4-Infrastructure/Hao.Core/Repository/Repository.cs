@@ -1,21 +1,20 @@
-﻿using Hao.Dependency;
-using SqlSugar;
+﻿using SqlSugar;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq.Expressions;
-using Hao.Entity;
 using Hao.Snowflake;
 using Hao.Utility;
 using System.Linq;
+
 
 namespace Hao.Core
 {
     public abstract class Repository<T, TKey> : IRepository<T, TKey>  where T : FullAuditedEntity<TKey>, new() where TKey : struct
     {
         public ICurrentUser CurrentUser { get; set; }
-
-        public IUnitOfWork UnitOfWork { get; set; }
+        
+        public ISqlSugarClient Db { get; set; }
         
         public IdWorker IdWorker { get; set; }
 
@@ -26,7 +25,7 @@ namespace Hao.Core
         /// <returns>泛型实体</returns>
         public virtual async Task<T> GetAysnc(TKey pkValue)
         {
-            var entity = await UnitOfWork.GetDbClient().Queryable<T>().InSingleAsync(pkValue);
+            var entity = await Db.Queryable<T>().InSingleAsync(pkValue);
             return entity;
         }
 
@@ -38,7 +37,7 @@ namespace Hao.Core
         public virtual async Task<List<T>> GetListAysnc(List<TKey> pkValues)
         {
             //Type type = typeof(T); 类型判断，主要包括 is 和 typeof 两个操作符及对象实例上的 GetType 调用。这是最轻型的消耗，可以无需考虑优化问题。注意 typeof 运算符比对象实例上的 GetType 方法要快，只要可能则优先使用 typeof 运算符。 
-            return await UnitOfWork.GetDbClient().Queryable<T>().In(pkValues).ToListAsync();
+            return await Db.Queryable<T>().In(pkValues).ToListAsync();
         }
 
         /// <summary>
@@ -47,7 +46,7 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<List<T>> GetListAysnc()
         {
-            return await UnitOfWork.GetDbClient().Queryable<T>().Where(a => a.IsDeleted == false).ToListAsync();
+            return await Db.Queryable<T>().Where(a => a.IsDeleted == false).ToListAsync();
         }
 
         /// <summary>
@@ -56,7 +55,7 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<List<T>> GetAllAysnc()
         {
-            return await UnitOfWork.GetDbClient().Queryable<T>().ToListAsync();
+            return await Db.Queryable<T>().ToListAsync();
         }
 
         /// <summary>
@@ -67,7 +66,7 @@ namespace Hao.Core
         public virtual async Task<List<T>> GetListAysnc(Query<T> query)
         {
             var flag = string.IsNullOrWhiteSpace(query.OrderFileds);
-            var q = UnitOfWork.GetDbClient().Queryable<T>();
+            var q = Db.Queryable<T>();
             foreach (var item in query.QueryExpressions)
             {
                 q.Where(item);
@@ -85,7 +84,7 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<int> GetCountAysnc(Query<T> query)
         {
-            var q = UnitOfWork.GetDbClient().Queryable<T>();
+            var q = Db.Queryable<T>();
             foreach (var item in query.QueryExpressions)
             {
                 q.Where(item);
@@ -102,7 +101,7 @@ namespace Hao.Core
         {
             RefAsync<int> totalNumber = 10;
             var flag = string.IsNullOrWhiteSpace(query.OrderFileds);
-            var q = UnitOfWork.GetDbClient().Queryable<T>(); //.WithCache(int cacheDurationInSeconds = int.MaxValue) 使用缓存取数据 
+            var q = Db.Queryable<T>(); //.WithCache(int cacheDurationInSeconds = int.MaxValue) 使用缓存取数据 
             foreach (var item in query.QueryExpressions)
             {
                 q.Where(item);
@@ -144,7 +143,7 @@ namespace Hao.Core
             entity.CreateTime = DateTime.Now;
             entity.IsDeleted = false;
 
-            var obj = await UnitOfWork.GetDbClient().Insertable(entity).ExecuteReturnEntityAsync();
+            var obj = await Db.Insertable(entity).ExecuteReturnEntityAsync();
             return obj;
         }
 
@@ -169,7 +168,7 @@ namespace Hao.Core
             entity.CreateTime = DateTime.Now;
             entity.IsDeleted = false;
 
-            var obj =  UnitOfWork.GetDbClient().Insertable(entity).ExecuteReturnEntity();
+            var obj =  Db.Insertable(entity).ExecuteReturnEntity();
             return obj;
         }
 
@@ -196,7 +195,7 @@ namespace Hao.Core
                 item.CreateTime = timeNow;
                 item.IsDeleted = false;
             });
-            return await UnitOfWork.GetDbClient().Insertable(entities).ExecuteCommandAsync() > 0;
+            return await Db.Insertable(entities).ExecuteCommandAsync() > 0;
         }
 
         /// <summary>
@@ -222,7 +221,7 @@ namespace Hao.Core
                 item.CreateTime = timeNow;
                 item.IsDeleted = false;
             });
-            return UnitOfWork.GetDbClient().Insertable(entities).ExecuteCommand() > 0;
+            return Db.Insertable(entities).ExecuteCommand() > 0;
         }
 
         /// <summary>
@@ -237,7 +236,7 @@ namespace Hao.Core
             entity.IsDeleted = true;
             var columns = new string[] { "ModifierId", "ModifyTime", "IsDeleted" };
 
-            return await UnitOfWork.GetDbClient().Updateable(entity).UpdateColumns(columns.ToArray()).ExecuteCommandAsync() > 0;
+            return await Db.Updateable(entity).UpdateColumns(columns.ToArray()).ExecuteCommandAsync() > 0;
         }
 
         /// <summary>
@@ -252,7 +251,7 @@ namespace Hao.Core
             entity.IsDeleted = true;
             var columns = new string[] { "ModifierId", "ModifyTime", "IsDeleted" };
 
-            return  UnitOfWork.GetDbClient().Updateable(entity).UpdateColumns(columns.ToArray()).ExecuteCommand() > 0;
+            return  Db.Updateable(entity).UpdateColumns(columns.ToArray()).ExecuteCommand() > 0;
         }
 
         /// <summary>
@@ -262,7 +261,7 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<bool> DeleteAysnc(TKey pkValue)
         {
-            return await UnitOfWork.GetDbClient().Updateable<T>(new { LastModifyTime = DateTime.Now, LastModifyUserId = CurrentUser.Id, IsDeleted = true })
+            return await Db.Updateable<T>(new { LastModifyTime = DateTime.Now, LastModifyUserId = CurrentUser.Id, IsDeleted = true })
                         .Where($"Id='{pkValue}'").ExecuteCommandAsync() > 0;
         }
 
@@ -273,7 +272,7 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual bool Delete(TKey pkValue)
         {
-            return UnitOfWork.GetDbClient().Updateable<T>(new { LastModifyTime = DateTime.Now, LastModifyUserId = CurrentUser.Id, IsDeleted = true })
+            return Db.Updateable<T>(new { LastModifyTime = DateTime.Now, LastModifyUserId = CurrentUser.Id, IsDeleted = true })
                         .Where($"Id='{pkValue}'").ExecuteCommand() > 0;
         }
 
@@ -284,7 +283,7 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<bool> DeleteAysnc(List<TKey> pkValues)
         {
-            return await UnitOfWork.GetDbClient().Updateable<T>(new { LastModifyTime = DateTime.Now, LastModifyUserId = CurrentUser.Id, IsDeleted = true })
+            return await Db.Updateable<T>(new { LastModifyTime = DateTime.Now, LastModifyUserId = CurrentUser.Id, IsDeleted = true })
                     .Where(it => pkValues.Contains(it.Id)).ExecuteCommandAsync() > 0;
         }
 
@@ -295,7 +294,7 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual bool Delete(List<TKey> pkValues)
         {
-            return UnitOfWork.GetDbClient().Updateable<T>(new { LastModifyTime = DateTime.Now, LastModifyUserId = CurrentUser.Id, IsDeleted = true })
+            return Db.Updateable<T>(new { LastModifyTime = DateTime.Now, LastModifyUserId = CurrentUser.Id, IsDeleted = true })
                     .Where(it => pkValues.Contains(it.Id)).ExecuteCommand() > 0;
         }
 
@@ -314,7 +313,7 @@ namespace Hao.Core
                 item.IsDeleted = true;
             });
             var columns = new string[] { "ModifierId", "ModifyTime", "IsDeleted" };
-            return await UnitOfWork.GetDbClient().Updateable(entities).UpdateColumns(columns).ExecuteCommandAsync() > 0;
+            return await Db.Updateable(entities).UpdateColumns(columns).ExecuteCommandAsync() > 0;
         }
 
         /// <summary>
@@ -332,7 +331,7 @@ namespace Hao.Core
                 item.IsDeleted = true;
             });
             var columns = new string[] { "ModifierId", "ModifyTime", "IsDeleted" };
-            return UnitOfWork.GetDbClient().Updateable(entities).UpdateColumns(columns).ExecuteCommand() > 0;
+            return Db.Updateable(entities).UpdateColumns(columns).ExecuteCommand() > 0;
         }
 
         /// <summary>
@@ -344,7 +343,7 @@ namespace Hao.Core
         {
             entity.ModifierId = CurrentUser.Id;
             entity.ModifyTime = DateTime.Now;
-            return await UnitOfWork.GetDbClient().Updateable(entity).ExecuteCommandAsync() > 0;
+            return await Db.Updateable(entity).ExecuteCommandAsync() > 0;
         }
 
         /// <summary>
@@ -356,7 +355,7 @@ namespace Hao.Core
         {
             entity.ModifierId = CurrentUser.Id;
             entity.ModifyTime = DateTime.Now;
-            return UnitOfWork.GetDbClient().Updateable(entity).ExecuteCommand() > 0;
+            return Db.Updateable(entity).ExecuteCommand() > 0;
         }
 
         /// <summary>
@@ -375,7 +374,7 @@ namespace Hao.Core
             updateColumns.Add(nameof(entity.ModifierId));
             updateColumns.Add(nameof(entity.ModifyTime));
 
-            return await UnitOfWork.GetDbClient().Updateable(entity).UpdateColumns(updateColumns.ToArray()).ExecuteCommandAsync() > 0;
+            return await Db.Updateable(entity).UpdateColumns(updateColumns.ToArray()).ExecuteCommandAsync() > 0;
         }
 
         /// <summary>
@@ -394,7 +393,7 @@ namespace Hao.Core
             updateColumns.Add(nameof(entity.ModifierId));
             updateColumns.Add(nameof(entity.ModifyTime));
 
-            return  UnitOfWork.GetDbClient().Updateable(entity).UpdateColumns(updateColumns.ToArray()).ExecuteCommand() > 0;
+            return  Db.Updateable(entity).UpdateColumns(updateColumns.ToArray()).ExecuteCommand() > 0;
         }
 
         /// <summary>
@@ -410,7 +409,7 @@ namespace Hao.Core
                 item.ModifierId = CurrentUser.Id;
                 item.ModifyTime = timeNow;
             });
-            return await UnitOfWork.GetDbClient().Updateable(entities).ExecuteCommandAsync() > 0;
+            return await Db.Updateable(entities).ExecuteCommandAsync() > 0;
         }
 
         /// <summary>
@@ -426,7 +425,7 @@ namespace Hao.Core
                 item.ModifierId = CurrentUser.Id;
                 item.ModifyTime = timeNow;
             });
-            return UnitOfWork.GetDbClient().Updateable(entities).ExecuteCommand() > 0;
+            return Db.Updateable(entities).ExecuteCommand() > 0;
         }
 
         /// <summary>
@@ -447,7 +446,7 @@ namespace Hao.Core
             var updateColumns = properties.Select(a => a.Name).ToList();
             updateColumns.Add("ModifierId");
             updateColumns.Add("ModifyTime");
-            return await  UnitOfWork.GetDbClient().Updateable(entities).UpdateColumns(updateColumns.ToArray()).ExecuteCommandAsync() > 0;
+            return await  Db.Updateable(entities).UpdateColumns(updateColumns.ToArray()).ExecuteCommandAsync() > 0;
         }
 
         /// <summary>
@@ -468,7 +467,7 @@ namespace Hao.Core
             var updateColumns = properties.Select(a => a.Name).ToList();
             updateColumns.Add("ModifierId");
             updateColumns.Add("ModifyTime");
-            return UnitOfWork.GetDbClient().Updateable(entities).UpdateColumns(updateColumns.ToArray()).ExecuteCommand() > 0;
+            return Db.Updateable(entities).UpdateColumns(updateColumns.ToArray()).ExecuteCommand() > 0;
         }
     }
 }

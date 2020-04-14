@@ -21,7 +21,7 @@ namespace Hao.Repository
         public async Task<List<RoleUserCountDto>> GetRoleUserCount()
         {
             string sql = "select roleid,count(*) as usercount from sysuser where isdeleted=false group by roleid ";
-            var result = await UnitOfWork.GetDbClient().SqlQueryable<RoleUserCountDto>(sql).ToListAsync();
+            var result = await Db.SqlQueryable<RoleUserCountDto>(sql).ToListAsync();
             return result;
         }
 
