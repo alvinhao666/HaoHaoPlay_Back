@@ -22,7 +22,9 @@ namespace Hao.AppService
         }
 
         /// <summary>
-        /// 更新权限 //postgresql 事务操作放一个线程中；否则会报错 a command is already in progress
+        /// 更新权限 
+        /// postgresql 事务操作中不能出现异步线程操作数据库；否则会报错 a command is already in progress  
+        /// 但连接仍忙于第一个查询（演示实体）的结果。您实际上正在尝试在同一连接上同时执行两个数据库命令，该功能有时称为多个活动结果集，Npgsql/PostgreSQL 不支持此功能。
         /// </summary>
         /// <param name="role"></param>
         [UseTransaction]
@@ -31,5 +33,6 @@ namespace Hao.AppService
              _roleRep.Update(role, a => new { a.AuthNumbers });
              _userRep.UpdateAuth(role.Id, role.AuthNumbers);
         }
+
     }
 }
