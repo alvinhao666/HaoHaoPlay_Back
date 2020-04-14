@@ -23,56 +23,56 @@ namespace Hao.Core
         /// <param name="invocation">包含被拦截方法的信息</param>
         public void Intercept(IInvocation invocation)
         {
-            var method = invocation.MethodInvocationTarget ?? invocation.Method;
-            //对当前方法的特性验证
-            //如果需要验证
-            //true 布尔值，指示特性能否被派生类和重写成员继承
+            //var method = invocation.MethodInvocationTarget ?? invocation.Method;
+            ////对当前方法的特性验证
+            ////如果需要验证
+            ////true 布尔值，指示特性能否被派生类和重写成员继承
 
-            if (method.GetCustomAttributes(typeof(UnitOfWorkService.UseTransactionAttribute), true).FirstOrDefault() is UnitOfWorkService.UseTransactionAttribute)
-            {
-                try
-                {
-                    _unitOfWork.BeginTran();
+            //if (method.GetCustomAttributes(typeof(UnitOfWorkService.UseTransactionAttribute), true).FirstOrDefault() is UnitOfWorkService.UseTransactionAttribute)
+            //{
+            //    try
+            //    {
+            //        _unitOfWork.BeginTran();
 
-                    invocation.Proceed();
+            //        invocation.Proceed();
 
-                    // 异步获取异常，普通的 try catch 外层不能达到目的，毕竟是异步的
-                    if (IsAsyncMethod(invocation.Method))
-                    {
-                        if (invocation.Method.ReturnType == typeof(Task))
-                        {
-                            invocation.ReturnValue = InternalAsyncHelper.AwaitTaskWithPostActionAndFinally(
-                                (Task)invocation.ReturnValue,
-                                async () => await TestActionAsync(invocation),
-                                ex =>
-                                {
-                                    _unitOfWork.RollbackTran();
-                                });
-                        }
-                        else //Task<TResult>
-                        {
-                            invocation.ReturnValue = InternalAsyncHelper.CallAwaitTaskWithPostActionAndFinallyAndGetResult(
-                             invocation.Method.ReturnType.GenericTypeArguments[0],
-                             invocation.ReturnValue,
-                             async () => await TestActionAsync(invocation),
-                             ex =>
-                             {
-                                 _unitOfWork.RollbackTran();
-                             });
-                        }
-                    }
-                    _unitOfWork.CommitTran();
-                }
-                catch(Exception ex)
-                {
-                    _unitOfWork.RollbackTran();
-                    throw ex;
-                }
-            }
-            else
-            {
-                invocation.Proceed();//直接执行被拦截方法
-            }
+            //        // 异步获取异常，普通的 try catch 外层不能达到目的，毕竟是异步的
+            //        if (IsAsyncMethod(invocation.Method))
+            //        {
+            //            if (invocation.Method.ReturnType == typeof(Task))
+            //            {
+            //                invocation.ReturnValue = InternalAsyncHelper.AwaitTaskWithPostActionAndFinally(
+            //                    (Task)invocation.ReturnValue,
+            //                    async () => await TestActionAsync(invocation),
+            //                    ex =>
+            //                    {
+            //                        _unitOfWork.RollbackTran();
+            //                    });
+            //            }
+            //            else //Task<TResult>
+            //            {
+            //                invocation.ReturnValue = InternalAsyncHelper.CallAwaitTaskWithPostActionAndFinallyAndGetResult(
+            //                 invocation.Method.ReturnType.GenericTypeArguments[0],
+            //                 invocation.ReturnValue,
+            //                 async () => await TestActionAsync(invocation),
+            //                 ex =>
+            //                 {
+            //                     _unitOfWork.RollbackTran();
+            //                 });
+            //            }
+            //        }
+            //        _unitOfWork.CommitTran();
+            //    }
+            //    catch(Exception ex)
+            //    {
+            //        _unitOfWork.RollbackTran();
+            //        throw ex;
+            //    }
+            //}
+            //else
+            //{
+            //    invocation.Proceed();//直接执行被拦截方法
+            //}
         }
 
         /// <summary>

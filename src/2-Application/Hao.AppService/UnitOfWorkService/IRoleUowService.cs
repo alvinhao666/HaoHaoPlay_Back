@@ -1,4 +1,5 @@
-﻿using Hao.Model;
+﻿using Hao.Core;
+using Hao.Model;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,6 +13,7 @@ namespace Hao.AppService
         /// 更新权限
         /// </summary>
         /// <param name="role"></param>
-        void UpdateAuth(SysRole role);
+        [UseTransaction]
+        Task UpdateAuth(SysRole role);
     }
 }

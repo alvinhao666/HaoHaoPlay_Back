@@ -28,6 +28,8 @@ using Hao.Snowflake;
 using Hao.Json;
 using Hao.Core.Extensions;
 using Hao.Utility;
+using AspectCore.Extensions.DependencyInjection;
+using AspectCore.Configuration;
 
 namespace HaoHaoPlay.ApiHost
 {
@@ -173,6 +175,7 @@ namespace HaoHaoPlay.ApiHost
             services.AddScoped<ICurrentUser, CurrentUser>();
             services.AddScoped<IHttpHelper, HttpHelper>();
             services.AutoDependency(typeof(ILoginEventHandler));
+
 
             #region AutoMapper
             services.AddSingleton<IMapper>(new Mapper(new MapperConfiguration(cfg =>

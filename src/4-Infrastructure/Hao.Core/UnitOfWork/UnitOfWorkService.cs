@@ -6,9 +6,9 @@ namespace Hao.Core
 {
     public class UnitOfWorkService: IUnitOfWorkService
     {
-        [AttributeUsage(AttributeTargets.Method)]
-        protected internal class UseTransactionAttribute : Attribute
-        {
-        }
+        //[AttributeUsage(AttributeTargets.Method)]
+        //protected internal class UseTransactionAttribute : Attribute
+        //{
+        //}
     }
 }

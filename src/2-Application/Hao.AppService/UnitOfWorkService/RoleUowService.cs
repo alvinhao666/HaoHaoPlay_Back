@@ -31,10 +31,12 @@ namespace Hao.AppService
         /// 虽然不支持并发事务，但PostgreSQL支持保存点的概念-您可以在事务中设置命名的保存点，然后回滚到它们，而不回滚整个事务。保存点可以通过NpgsqlTransaction.Save（name）创建、回滚到并释放
         /// </summary>
         /// <param name="role"></param>
-        [UseTransaction]
-        public void UpdateAuth(SysRole role)
+    
+        public async Task UpdateAuth(SysRole role)
         {
+            var list = await _userRep.GetListAysnc();
              _roleRep.Update(role, a => new { a.AuthNumbers });
+            throw new Exception("2313");
              _userRep.UpdateAuth(role.Id, role.AuthNumbers);
         }
 
