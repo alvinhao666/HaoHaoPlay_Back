@@ -71,8 +71,8 @@ namespace HaoHaoPlay.ApiHost
             var response = new HResponse()
             {
                 Success = false,
-                ErrorCode = nameof(ErrorInfo.E100002).GetErrorCode(),
-                ErrorMsg = ErrorInfo.E100002
+                ErrorCode = nameof(ErrorInfo.E100001).GetErrorCode(),
+                ErrorMsg = ErrorInfo.E100001
             };
             await context.Response.WriteAsync(JsonSerializer.Serialize(response));
         }
