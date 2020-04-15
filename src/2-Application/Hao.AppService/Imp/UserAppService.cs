@@ -1,11 +1,8 @@
 ﻿using AutoMapper;
-using DotNetCore.CAP;
 using Hao.AppService.ViewModel;
 using Hao.Core;
 using Hao.Encrypt;
-using Hao.Entity;
 using Hao.Enum;
-using Hao.EventData;
 using Hao.File;
 using Hao.Library;
 using Hao.Model;
@@ -18,7 +15,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Hao.AppService

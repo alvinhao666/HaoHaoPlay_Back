@@ -22,14 +22,12 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Hao.File;
 using Microsoft.OpenApi.Models;
 using System.Text.Encodings.Web;
-using Hao.AppService;
 using Hao.Event;
 using Hao.Snowflake;
 using Hao.Json;
 using Hao.Core.Extensions;
-using Hao.Model;
-using Hao.Repository;
 using Hao.Utility;
+using Hao.AppService.ViewModel;
 
 namespace HaoHaoPlay.ApiHost
 {

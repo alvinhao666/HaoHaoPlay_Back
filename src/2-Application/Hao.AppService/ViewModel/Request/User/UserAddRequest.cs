@@ -1,4 +1,5 @@
-﻿using Hao.Enum;
+﻿using FluentValidation;
+using Hao.Enum;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -45,24 +46,20 @@ namespace Hao.AppService.ViewModel
         /// </summary>
         public string QQ { get; set; }
 
-        ///// <summary>
-        ///// 昵称
-        ///// </summary>
-        //public string NickName { get; set; }
 
-        ///// <summary>
-        ///// 个人简介
-        ///// </summary>
-        //public string Profile { get; set; }
+    }
 
-        ///// <summary>
-        ///// 家庭地址
-        ///// </summary>
-        //public string HomeAddress { get; set; }
+    public class UserAddValidator : AbstractValidator<UserAddRequest>
+    {
+        public UserAddValidator()
+        {
 
-        ///// <summary>
-        ///// 密码强度
-        ///// </summary>
-        //public PasswordLevel? PasswordLevel { get; set; }
+            RuleFor(x => x.Name).NotEmpty().WithMessage("姓名不能为空");
+
+            RuleFor(x => x.Password).NotEmpty().WithMessage("密码不能为空").Length(6, 16).WithMessage("密码长度应在6~16个字符");
+
+            RuleFor(x => x.Gender).NotEmpty().WithMessage("性别不能为空").IsInEnum().WithMessage("性别数据有误");
+
+        }
     }
 }

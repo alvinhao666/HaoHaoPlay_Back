@@ -1,15 +1,8 @@
-﻿using AutoMapper;
-using Hao.AppService.ViewModel;
-using Hao.Core;
+﻿using Hao.AppService.ViewModel;
 using Hao.Enum;
 using Hao.Model;
-using Hao.Repository;
 using Hao.RunTimeException;
-using Npgsql;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Hao.AppService

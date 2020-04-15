@@ -4,10 +4,7 @@ using Hao.Core;
 using Hao.Repository;
 using Hao.RunTimeException;
 using Hao.Utility;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Hao.AppService

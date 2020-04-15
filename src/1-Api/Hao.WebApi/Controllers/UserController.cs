@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Threading.Tasks;
 using Hao.AppService;
 using Hao.AppService.ViewModel;
@@ -17,7 +16,6 @@ using Hao.RunTimeException;
 using Microsoft.Extensions.Options;
 using Hao.Core.Extensions;
 using Hao.Core;
-using Hao.Utility;
 
 namespace Hao.WebApi
 {
