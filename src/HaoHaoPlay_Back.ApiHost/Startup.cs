@@ -27,7 +27,7 @@ using Hao.Snowflake;
 using Hao.Json;
 using Hao.Core.Extensions;
 using Hao.Utility;
-using Hao.AppService.ViewModel;
+using Hao.AppService;
 
 namespace HaoHaoPlay.ApiHost
 {
