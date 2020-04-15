@@ -16,14 +16,14 @@ namespace Hao.Core
                 try
                 {
 #if DEBUG
-                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.ForegroundColor = ConsoleColor.Magenta;
                     Console.WriteLine("开始事务");
                     Console.WriteLine("事务" + sqlSugarClient.ContextID);
 #endif
                     sqlSugarClient.Ado.BeginTran();
                     await next(context);
 #if DEBUG
-                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.ForegroundColor = ConsoleColor.Magenta;
                     Console.WriteLine("提交事务");
                     Console.WriteLine("事务" + sqlSugarClient.ContextID);
 #endif
