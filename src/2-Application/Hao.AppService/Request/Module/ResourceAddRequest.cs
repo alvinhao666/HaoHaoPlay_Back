@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace Hao.AppService.ViewModel
+namespace Hao.AppService
 {
     public class ResourceAddRequest
     {
