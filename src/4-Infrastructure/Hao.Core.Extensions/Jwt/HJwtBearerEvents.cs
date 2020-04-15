@@ -59,7 +59,7 @@ namespace HaoHaoPlay.ApiHost
 
 
         /// <summary>
-        /// Challenge:未授权时调用 ：服务器可以用来针对客户端的请求发送质询(challenge)。 触发场景：1.token值为空（一定） 2.token过期（一定） 2.token值有误 (一定)。 使用时一定要在 Controller或方法名上加[Authorize]
+        /// Challenge: 服务器可以用来针对客户端的请求发送质询(challenge)。 触发场景：1.token值为空（一定） 2.token过期（一定） 2.token值有误 (一定)。 使用时一定要在 Controller或方法名上加[Authorize]
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
