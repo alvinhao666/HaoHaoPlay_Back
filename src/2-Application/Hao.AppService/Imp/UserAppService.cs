@@ -129,7 +129,7 @@ namespace Hao.AppService
         /// <param name="ip"></param>
         /// <returns></returns>
 
-        [UseTransaction]
+        [UnitOfWork]
         public async Task UpdateLogin(long userId, DateTime lastLoginTime, string ip)
         {
             var user = await GetUserDetail(userId);
