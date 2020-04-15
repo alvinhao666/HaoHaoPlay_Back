@@ -19,7 +19,6 @@ namespace HaoHaoPlay.ApiHost
         public static void Main(string[] args)
         {
             Host.CreateDefaultBuilder(args)
-
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory())
                 .ConfigureContainer<ContainerBuilder>(builder =>
                 {
