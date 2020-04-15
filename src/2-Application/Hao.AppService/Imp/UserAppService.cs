@@ -73,7 +73,7 @@ namespace Hao.AppService
         /// <summary>
         /// 添加用户
         /// </summary>
-        /// <param name="vm"></param>
+        /// <param name="vms"></param>
         /// <returns></returns>
         public async Task AddUsers(List<UserAddRequest> vms)
         {
@@ -318,7 +318,7 @@ namespace Hao.AppService
         {
             var user = await _userRep.GetAysnc(userId);
             if (user == null) throw new HException("用户不存在");
-            if (user.IsDeleted) throw new HException("用户不存在或已删除");
+            if (user.IsDeleted) throw new HException("用户已删除");
             if (!user.Enabled.IsTrue()) throw new HException("用户已注销");
             return user;
         }

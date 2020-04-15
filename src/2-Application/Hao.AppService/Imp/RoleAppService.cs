@@ -75,7 +75,7 @@ namespace Hao.AppService
         [UnitOfWork]
         public async Task UpdateRoleAuth(long id, RoleUpdateRequest vm)
         {
-            var role = await _roleRep.GetAysnc(id);
+            var role = await GetRoleDetail(id);
             var modules = await _moduleRep.GetListAysnc(vm.ModuleIds);
             var maxLayer = modules.Max(a => a.Layer);
 
@@ -107,6 +107,15 @@ namespace Hao.AppService
         }
 
 
+        #region private
+        private async Task<SysRole> GetRoleDetail(long userId)
+        {
+            var item = await _roleRep.GetAysnc(userId);
+            if (item == null) throw new HException("角色不存在");
+            if (item.IsDeleted) throw new HException("角色已删除");
+            return item;
+        }
+        #endregion
     }
 }
 
