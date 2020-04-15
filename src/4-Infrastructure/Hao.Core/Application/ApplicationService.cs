@@ -15,11 +15,9 @@ namespace Hao.Core
                 var sqlSugarClient = context.ServiceProvider.GetService(typeof(ISqlSugarClient)) as ISqlSugarClient;
                 try
                 {
-
 #if DEBUG
                     Console.ForegroundColor = ConsoleColor.Blue;
                     Console.WriteLine("开始事务");
-                    Console.ForegroundColor = ConsoleColor.Blue;
                     Console.WriteLine("事务" + sqlSugarClient.ContextID);
 #endif
                     sqlSugarClient.Ado.BeginTran();
@@ -27,7 +25,6 @@ namespace Hao.Core
 #if DEBUG
                     Console.ForegroundColor = ConsoleColor.Blue;
                     Console.WriteLine("提交事务");
-                    Console.ForegroundColor = ConsoleColor.Blue;
                     Console.WriteLine("事务" + sqlSugarClient.ContextID);
 #endif
                     sqlSugarClient.Ado.CommitTran();
@@ -37,7 +34,6 @@ namespace Hao.Core
 #if DEBUG
                     Console.ForegroundColor = ConsoleColor.Blue;
                     Console.WriteLine("回滚事务");
-                    Console.ForegroundColor = ConsoleColor.Blue;
                     Console.WriteLine("事务" + sqlSugarClient.ContextID);
 #endif
                     sqlSugarClient.Ado.RollbackTran();
