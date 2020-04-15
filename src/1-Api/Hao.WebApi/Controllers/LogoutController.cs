@@ -14,16 +14,12 @@ namespace Hao.WebApi.Controllers
     [Route("[controller]")]
     public class LogoutController : HController
     {
-
-        private readonly AppSettingsInfo _appsettings;
-
         private readonly ILogoutAppService _logoutAppService;
 
         public ICurrentUser CurrentUser { get; set; }
 
-        public LogoutController(IOptionsSnapshot<AppSettingsInfo> appsettingsOptions, ILogoutAppService logoutAppService)
+        public LogoutController(ILogoutAppService logoutAppService)
         {
-            _appsettings = appsettingsOptions.Value;
             _logoutAppService = logoutAppService;
         }
 
