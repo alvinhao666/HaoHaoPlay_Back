@@ -32,7 +32,7 @@ namespace Hao.AppService
 
         private readonly HttpContext _httpContext;
 
-        public LoginAppService(IHttpContextAccessor httpContextAccessor,ISysUserRepository userRep, IMapper mapper, IOptionsSnapshot<AppSettingsInfo> appsettingsOptions,  ICapPublisher publisher)
+        public LoginAppService(IHttpContextAccessor httpContextAccessor, ISysUserRepository userRep, IMapper mapper, IOptionsSnapshot<AppSettingsInfo> appsettingsOptions, ICapPublisher publisher)
         {
             _userRep = userRep;
             _mapper = mapper;
@@ -60,11 +60,10 @@ namespace Hao.AppService
                 Password = password,
             });
 
-            if (users.Count == 0)
-                throw new HException("用户名或密码错误");
-            var user = users.FirstOrDefault();
-            if (!user.Enabled.IsTrue())
-                throw new HException("用户已注销");
+            if (users.Count == 0) throw new HException("用户名或密码错误");
+            if (users.Count > 1) throw new HException("用户数据异常，存在相同用户");
+            var user = users.First();
+            if (!user.Enabled.IsTrue()) throw new HException("用户已注销");
 
             var timeNow = DateTime.Now;
             var validFrom = timeNow.Ticks;
