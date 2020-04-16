@@ -44,7 +44,7 @@ namespace Hao.WebApi.Controllers
             await _roleAppService.UpdateRoleAuth(id, request);
 
         /// <summary>
-        /// 删除橘色
+        /// 删除角色
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>

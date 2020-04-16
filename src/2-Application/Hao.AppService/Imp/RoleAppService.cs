@@ -102,6 +102,8 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task DeleteRole(long id)
         {
+            var users = await _userRep.GetListAysnc(new UserQuery() { RoleId = id });
+            if (users.Count > 0) throw new HException("该角色下存在用户，暂时无法删除");
             await _roleRep.DeleteAysnc(id);
         }
 

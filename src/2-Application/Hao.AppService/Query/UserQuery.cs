@@ -28,6 +28,8 @@ namespace Hao.AppService
 
         public DateTime? LastLoginTimeEnd { get; set; }
 
+        public long? RoleId { get; set; }
+
         public override List<Expression<Func<SysUser, bool>>> QueryExpressions
         {
             get
@@ -41,6 +43,7 @@ namespace Hao.AppService
                 if (Enabled.HasValue) expressions.Add(x => x.Enabled == Enabled);
                 if (LastLoginTimeStart.HasValue) expressions.Add(x => x.LastLoginTime >= LastLoginTimeStart);
                 if (LastLoginTimeEnd.HasValue) expressions.Add(x => x.LastLoginTime <= LastLoginTimeEnd);
+                if (RoleId.HasValue) expressions.Add(x => x.RoleId == RoleId);
                 return expressions;
             }
         }
