@@ -7,7 +7,11 @@ using System.Linq;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authorization;
 using Hao.RunTimeException;
-
+using System;
+using SqlSugar;
+using Microsoft.AspNetCore.Mvc.Controllers;
+using System.Reflection;
+using System.Collections.Generic;
 
 namespace Hao.Core.Extensions
 {
@@ -49,35 +53,49 @@ namespace Hao.Core.Extensions
 
             //var cacheUser = JsonSerializer.Deserialize<RedisCacheUserInfo>(value);
 
+            var descriptor = context.ActionDescriptor as ControllerActionDescriptor;
+            var attribute = descriptor.MethodInfo.CustomAttributes.FirstOrDefault(x => x.AttributeType == typeof(AuthCodeAttribute));
+            var authCode = attribute.ConstructorArguments.FirstOrDefault().Value;
+
             base.OnActionExecuting(context);
         }
 
 
+        [AttributeUsage(AttributeTargets.Method)]
+        protected class AuthCodeAttribute : Attribute
+        {         
+            public AuthCodeAttribute(string code)
+            {
 
-//        protected async Task<HttpResponseMessage> DownFile(string filePath, string fileName)
-//        {
-//            return await Task.Factory.StartNew(() =>
-//            {
-//                HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
-//#if DEBUG
+            }
+        }
 
-//                Stream stream = new FileStream(filePath, FileMode.Open);
-//                response.Content = new StreamContent(stream);
-//#else
-//                response.Content = new StringContent("");
-//#endif
-//                response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
-//                response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
-//                response.Content.Headers.ContentDisposition.FileName = fileName;
 
-//#if DEBUG
-//#else
-//                response.Content.Headers.Add("X-Accel-Redirect", $"/Api/ExportExcel/{fileName}");
-//#endif
-//                return response;
-//            });
 
-//        }
+        //        protected async Task<HttpResponseMessage> DownFile(string filePath, string fileName)
+        //        {
+        //            return await Task.Factory.StartNew(() =>
+        //            {
+        //                HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
+        //#if DEBUG
+
+        //                Stream stream = new FileStream(filePath, FileMode.Open);
+        //                response.Content = new StreamContent(stream);
+        //#else
+        //                response.Content = new StringContent("");
+        //#endif
+        //                response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+        //                response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
+        //                response.Content.Headers.ContentDisposition.FileName = fileName;
+
+        //#if DEBUG
+        //#else
+        //                response.Content.Headers.Add("X-Accel-Redirect", $"/Api/ExportExcel/{fileName}");
+        //#endif
+        //                return response;
+        //            });
+
+        //        }
 
         ///// <summary>
         ///// 读取body参数    （.net core 3.0 system.text.json不支持隐式转换   转换不通过会报错  不需要此方法验证)
@@ -113,5 +131,7 @@ namespace Hao.Core.Extensions
         //    }
         //    return null;
         //}
+
+
     }
 }

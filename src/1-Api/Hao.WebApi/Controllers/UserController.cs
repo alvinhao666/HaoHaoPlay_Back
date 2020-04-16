@@ -51,6 +51,7 @@ namespace Hao.WebApi
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+        [AuthCode("1_159")]
         public async Task<PagedList<UserItemVM>> GetPagedList([FromQuery]UserQueryInput query) => await _userAppService.GetUserPageList(_mapper.Map<UserQuery>(query));
 
         /// <summary>
