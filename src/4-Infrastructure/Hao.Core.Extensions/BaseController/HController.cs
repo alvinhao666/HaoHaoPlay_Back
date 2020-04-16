@@ -12,6 +12,7 @@ using SqlSugar;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using System.Reflection;
 using System.Collections.Generic;
+using System.Text.Json;
 
 namespace Hao.Core.Extensions
 {
@@ -35,7 +36,7 @@ namespace Hao.Core.Extensions
             var traceId = context.HttpContext.TraceIdentifier;
             var path = context.HttpContext.Request.Path.Value;
 
-            _logger.Info(new
+            _logger.Info(new 
             {
                 Method = path,
                 Argument = new
@@ -51,13 +52,38 @@ namespace Hao.Core.Extensions
 
             if (value == null) throw new HException(ErrorInfo.E100002, nameof(ErrorInfo.E100002).GetErrorCode());
 
-            //var cacheUser = JsonSerializer.Deserialize<RedisCacheUserInfo>(value);
+            var cacheUser = JsonSerializer.Deserialize<RedisCacheUserInfo>(value);
 
             var descriptor = context.ActionDescriptor as ControllerActionDescriptor;
             var attribute = descriptor.MethodInfo.CustomAttributes.FirstOrDefault(x => x.AttributeType == typeof(AuthCodeAttribute));
-            var authCode = attribute.ConstructorArguments.FirstOrDefault().Value;
+
+            if (attribute != null)
+            {
+                var authInfos = attribute.ConstructorArguments.FirstOrDefault().ToString().Split('_');
+
+                if (authInfos.Length != 2) throw new HException("权限值有误，请重新配置");
+
+                var layer = int.Parse(authInfos[0]);
+                var authCode = long.Parse(authInfos[1]);
+
+                if (cacheUser.AuthNumbers != null && cacheUser.AuthNumbers.Count > 0 && ((cacheUser.AuthNumbers[layer] & authCode) != authCode)) throw new HException("没有权限");
+            }
+
 
             base.OnActionExecuting(context);
+        }
+
+        public override void OnActionExecuted(ActionExecutedContext context)
+        {
+            //输出日志
+            var param = new
+            {
+                context.HttpContext.TraceIdentifier,
+                UserId = context.HttpContext.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sid)?.Value,
+                context.Result
+            };
+            _logger.Info(new  { Method = HttpContext.Request.Path.Value, Argument = param, Description = "HaoHaoPlay_Back_Response" });
+            base.OnActionExecuted(context);
         }
 
 

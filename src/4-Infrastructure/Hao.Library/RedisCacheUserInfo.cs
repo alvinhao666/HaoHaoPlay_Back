@@ -9,10 +9,13 @@ namespace Hao.Library
     /// </summary>
     public class RedisCacheUserInfo
     {
-        public  long? Id { get; set; }
-
-        public string LoginName { get; set; }
+        public long? Id { get; set; }
 
         public string Name { get; set; }
+
+        /// <summary>
+        /// 权限
+        /// </summary>
+        public List<long> AuthNumbers { get; set; }
     }
 }

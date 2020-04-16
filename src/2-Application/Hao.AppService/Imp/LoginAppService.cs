@@ -11,6 +11,7 @@ using Hao.Utility;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -89,8 +90,7 @@ namespace Hao.AppService
             {
                 Id = user.Id.ToLong(),
                 Name = user.Name,
-                LoginName = user.LoginName,
-                //存权限值 hcontroller里面判断有无权限
+                AuthNumbers = string.IsNullOrWhiteSpace(user.AuthNumbers) ? null : JsonSerializer.Deserialize<List<long>>(user.AuthNumbers)
             };
             await RedisHelper.SetAsync(_appsettings.RedisPrefixOptions.LoginInfo + user.Id, JsonSerializer.Serialize(userValue));
 
