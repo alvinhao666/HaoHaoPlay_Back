@@ -87,11 +87,19 @@ namespace Hao.Model
         /// </summary>
         public PasswordLevel? PasswordLevel { get; set; }
 
-
+        /// <summary>
+        /// 角色id
+        /// </summary>
         public long? RoleId { get; set; }
 
+        /// <summary>
+        /// 角色名称
+        /// </summary>
         public string RoleName { get; set; }
 
+        /// <summary>
+        /// 拥有的权限数字
+        /// </summary>
         public string AuthNumbers { get; set; }
 
     }

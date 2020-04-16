@@ -142,8 +142,8 @@ namespace HaoHaoPlay.ApiHost
             });
 
 
-            //替换控制器所有者,详见有道笔记,放AddMvc前面
-            services.Replace(ServiceDescriptor.Transient<IControllerActivator, ServiceBasedControllerActivator>());
+            ////替换控制器所有者,详见有道笔记,放AddMvc前面
+            //services.Replace(ServiceDescriptor.Transient<IControllerActivator, ServiceBasedControllerActivator>());
 
             services.AddControllers(x =>
             {

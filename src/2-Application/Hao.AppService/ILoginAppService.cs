@@ -11,8 +11,10 @@ namespace Hao.AppService
         /// <summary>
         /// 登录
         /// </summary>
-        /// <param name="query"></param>
+        /// <param name="loginName"></param>
+        /// <param name="password"></param>
+        /// <param name="isRememberLogin"></param>
         /// <returns></returns>
-        Task<LoginVM> Login(LoginQuery query);
+        Task<LoginVM> Login(string loginName, string password, bool isRememberLogin);
     }
 }

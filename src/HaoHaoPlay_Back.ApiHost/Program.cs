@@ -35,8 +35,8 @@ namespace HaoHaoPlay.ApiHost
                     //一定要在你注入的服务后面加上EnableInterfaceInterceptors来开启你的拦截(aop)
                 
                 
-                    var types = typeof(LoginController).Assembly.GetExportedTypes().Where(type => typeof(ControllerBase).IsAssignableFrom(type)).ToArray();
-                    builder.RegisterTypes(types).PropertiesAutowired();
+                    //var types = typeof(LoginController).Assembly.GetExportedTypes().Where(type => typeof(ControllerBase).IsAssignableFrom(type)).ToArray();
+                    //builder.RegisterTypes(types).PropertiesAutowired();
                     
                     //调用RegisterDynamicProxy扩展方法在Autofac中注册动态代理服务和动态代理配置 aop
                     builder.RegisterDynamicProxy(); 
