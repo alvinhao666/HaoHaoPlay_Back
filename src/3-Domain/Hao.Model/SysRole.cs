@@ -14,5 +14,7 @@ namespace Hao.Model
         /// 所拥有的权限
         /// </summary>
         public string AuthNumbers { get; set; }
+        
+        public  int Sort { get; set; }
     }
 }

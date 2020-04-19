@@ -56,11 +56,12 @@ namespace Hao.AppService
         public async Task<List<RoleVM>> GetRoleList()
         {
             var roles = await _roleRep.GetListAysnc();
+            roles = roles.OrderBy(a => a.Sort).ToList();
             var result = _mapper.Map<List<RoleVM>>(roles);
             var roleUsers = await _roleRep.GetRoleUserCount();
             foreach (var item in result)
             {
-                item.UserCount = roleUsers.FirstOrDefault(a => a.RoleId == item.Id)?.UserCount;
+                item.UserCount = roleUsers.FirstOrDefault(a => a.RoleId == item.Id)?.UserCount ?? 0;
             }
             return result;
         }

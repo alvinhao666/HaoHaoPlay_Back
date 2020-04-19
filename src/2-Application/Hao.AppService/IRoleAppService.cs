@@ -17,7 +17,7 @@ namespace Hao.AppService
         /// 获取角色列表
         /// </summary>
         /// <returns></returns>
-        Task<List<RoleVM>> GetRoleList();
+        Task<List<RoleVM>>  GetRoleList();
 
         /// <summary>
         /// 更新角色权限

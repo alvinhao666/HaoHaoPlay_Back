@@ -18,19 +18,19 @@ namespace Hao.WebApi.Controllers
             _roleAppService = roleAppService;
         }
 
-        /// <summary>
-        /// 添加角色
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        [HttpPost]
-        public async Task Add([FromBody] RoleAddRequest request) => await _roleAppService.AddRole(request);
+        // /// <summary>
+        // /// 添加角色
+        // /// </summary>
+        // /// <param name="request"></param>
+        // /// <returns></returns>
+        // [HttpPost]
+        // public async Task Add([FromBody] RoleAddRequest request) => await _roleAppService.AddRole(request);
 
         /// <summary>
         /// 获取角色列表
         /// </summary>
         /// <returns></returns>
-        [HttpGet("GetRoleList")]
+        [HttpGet]
         public async Task<List<RoleVM>> GetRoleList() => await _roleAppService.GetRoleList();
 
         /// <summary>
@@ -43,12 +43,12 @@ namespace Hao.WebApi.Controllers
         public async Task UpdateRoleAuth(long id, [FromBody]RoleUpdateRequest request) =>
             await _roleAppService.UpdateRoleAuth(id, request);
 
-        /// <summary>
-        /// 删除角色
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [HttpDelete("{id}")]
-        public async Task DeleteRole(long id) => await _roleAppService.DeleteRole(id);
+        // /// <summary>
+        // /// 删除角色
+        // /// </summary>
+        // /// <param name="id"></param>
+        // /// <returns></returns>
+        // [HttpDelete("{id}")]
+        // public async Task DeleteRole(long id) => await _roleAppService.DeleteRole(id);
     }
 }
