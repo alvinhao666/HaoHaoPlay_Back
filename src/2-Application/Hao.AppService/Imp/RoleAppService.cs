@@ -78,7 +78,7 @@ namespace Hao.AppService
         public async Task UpdateRoleAuth(long id, RoleUpdateRequest vm)
         {
             var role = await GetRoleDetail(id);
-            var modules = await _moduleRep.GetListAysnc(vm.ModuleIds.Select(a=>Convert.ToInt64(a)).ToList());
+            var modules = await _moduleRep.GetListAysnc(vm.ModuleIds.Select(a=>long.Parse(a)).ToList());
             var maxLayer = modules.Max(a => a.Layer);
 
             var authNumbers = new List<long>();
