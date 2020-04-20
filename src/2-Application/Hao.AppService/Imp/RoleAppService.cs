@@ -102,14 +102,14 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<RoleModuleVM> GetRoleModule(long id)
+        public async Task<List<RoleModuleVM>> GetRoleModule(long id)
         {
             var role = await GetRoleDetail(id);
             var authNumbers = string.IsNullOrWhiteSpace(role.AuthNumbers) ? null : JsonConvert.DeserializeObject<List<long>>(role.AuthNumbers);
             var modules = await _moduleRep.GetListAysnc();
             var result = new List<RoleModuleVM>();
             InitModuleTree(result, null, modules, authNumbers);
-            return null;
+            return result;
         }
 
         /// <summary>
@@ -154,9 +154,9 @@ namespace Hao.AppService
                     isLeaf = item.Type == ModuleType.Sub,
                     children = new List<RoleModuleVM>()
                 };
-                if (authNumbers?.Count > 0)
+                if (authNumbers?.Count > 0 && item.Layer.Value <= authNumbers.Count)
                 {
-                    node.selected= (authNumbers[item.Layer.Value] & item.Number) == item.Number;
+                    node.@checked = (authNumbers[item.Layer.Value - 1] & item.Number) == item.Number;
                 }
                 result.Add(node);
                 InitModuleTree(node.children, item.Id, sources, authNumbers);

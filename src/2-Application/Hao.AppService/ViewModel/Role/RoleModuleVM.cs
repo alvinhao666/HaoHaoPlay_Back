@@ -43,6 +43,6 @@ namespace Hao.AppService.ViewModel
         /// <summary>
         /// 设置节点本身是否选中
         /// </summary>
-        public bool selected { get; set; }
+        public bool @checked { get; set; }
     }
 }

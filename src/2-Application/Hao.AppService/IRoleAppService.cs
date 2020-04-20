@@ -32,7 +32,7 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<RoleModuleVM> GetRoleModule(long id);
+        Task<List<RoleModuleVM>> GetRoleModule(long id);
 
         /// <summary>
         /// 删除角色

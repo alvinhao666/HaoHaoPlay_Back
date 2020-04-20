@@ -49,8 +49,8 @@ namespace Hao.WebApi.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpPut("GetRoleModule/{id}")]
-        public async Task<RoleModuleVM> GetRoleModule(long id) => await _roleAppService.GetRoleModule(id); 
+        [HttpGet("GetRoleModule/{id}")]
+        public async Task<List<RoleModuleVM>> GetRoleModule(long id) => await _roleAppService.GetRoleModule(id); 
 
         // /// <summary>
         // /// 删除角色
