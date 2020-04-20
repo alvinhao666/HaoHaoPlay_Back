@@ -28,6 +28,13 @@ namespace Hao.AppService
         Task UpdateRoleAuth(long id, RoleUpdateRequest vm);
 
         /// <summary>
+        /// 获取角色拥有的模块
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<RoleModuleVM> GetRoleModule(long id);
+
+        /// <summary>
         /// 删除角色
         /// </summary>
         /// <param name="id"></param>

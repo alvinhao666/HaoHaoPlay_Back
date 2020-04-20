@@ -43,6 +43,15 @@ namespace Hao.WebApi.Controllers
         public async Task UpdateRoleAuth(long id, [FromBody]RoleUpdateRequest request) =>
             await _roleAppService.UpdateRoleAuth(id, request);
 
+
+        /// <summary>
+        /// 获取角色用户的模块
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPut("GetRoleModule/{id}")]
+        public async Task<RoleModuleVM> GetRoleModule(long id) => await _roleAppService.GetRoleModule(id); 
+
         // /// <summary>
         // /// 删除角色
         // /// </summary>
