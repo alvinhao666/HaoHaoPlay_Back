@@ -6,6 +6,13 @@ namespace Hao.AppService.ViewModel
 {
     public class RoleModuleVM
     {
+        public List<RoleModuleItemVM> Nodes { get; set; }
+
+        public List<string> CheckedKeys { get; set; }
+    }
+
+    public class RoleModuleItemVM
+    {
         public string key { get; set; }
 
         /// <summary>
@@ -31,18 +38,21 @@ namespace Hao.AppService.ViewModel
         /// <summary>
         /// 子模块
         /// </summary>
-        public List<RoleModuleVM> children { get; set; }
+        public List<RoleModuleItemVM> children { get; set; }
 
-        // public bool expanded => children.Count > 0;
+        /// <summary>
+        /// 展开
+        /// </summary>
+        public bool expanded { get; set; } = true;
 
         /// <summary>
         /// 是否叶子节点
         /// </summary>
         public bool isLeaf { get; set; }
 
-        /// <summary>
-        /// 设置节点本身是否选中
-        /// </summary>
-        public bool @checked { get; set; }
+        ///// <summary>
+        ///// 设置节点本身是否选中
+        ///// </summary>
+        //public bool @checked { get; set; }
     }
 }

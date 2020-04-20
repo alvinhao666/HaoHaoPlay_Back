@@ -102,13 +102,15 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<List<RoleModuleVM>> GetRoleModule(long id)
+        public async Task<RoleModuleVM> GetRoleModule(long id)
         {
             var role = await GetRoleDetail(id);
             var authNumbers = string.IsNullOrWhiteSpace(role.AuthNumbers) ? null : JsonConvert.DeserializeObject<List<long>>(role.AuthNumbers);
             var modules = await _moduleRep.GetListAysnc();
-            var result = new List<RoleModuleVM>();
-            InitModuleTree(result, null, modules, authNumbers);
+            var result = new RoleModuleVM();
+            result.Nodes = new List<RoleModuleItemVM>();
+            result.CheckedKeys = new List<string>();
+            InitModuleTree(result.Nodes, null, modules, authNumbers, result.CheckedKeys);
             return result;
         }
 
@@ -141,25 +143,29 @@ namespace Hao.AppService
         /// <param name="parentID"></param>
         /// <param name="sources"></param>
         /// <param name="authNumbers"></param>
-        private void InitModuleTree(List<RoleModuleVM> result, long? parentID, List<SysModule> sources, List<long> authNumbers)
+        /// <param name="checkedKeys"></param>
+        private void InitModuleTree(List<RoleModuleItemVM> result, long? parentID, List<SysModule> sources, List<long> authNumbers, List<string> checkedKeys)
         {
             //递归寻找子节点  
             var tempTree = sources.Where(item => item.ParentId == parentID).OrderBy(a => a.Sort).ToList();
             foreach (var item in tempTree)
             {
-                var node = new RoleModuleVM()
+                var node = new RoleModuleItemVM()
                 {
                     key = item.Id.ToString(),
                     title = item.Name,
-                    isLeaf = item.Type == ModuleType.Sub,
-                    children = new List<RoleModuleVM>()
+                    isLeaf = item.Type == ModuleType.Resource,
+                    children = new List<RoleModuleItemVM>()
                 };
-                if (authNumbers?.Count > 0 && item.Layer.Value <= authNumbers.Count)
+                if (node.isLeaf && authNumbers?.Count > 0 && item.Layer.Value <= authNumbers.Count ) 
                 {
-                    node.@checked = (authNumbers[item.Layer.Value - 1] & item.Number) == item.Number;
+                    if((authNumbers[item.Layer.Value - 1] & item.Number) == item.Number)
+                    {
+                        checkedKeys.Add(node.key);
+                    }    
                 }
                 result.Add(node);
-                InitModuleTree(node.children, item.Id, sources, authNumbers);
+                InitModuleTree(node.children, item.Id, sources, authNumbers,checkedKeys);
             }
         }
         #endregion
