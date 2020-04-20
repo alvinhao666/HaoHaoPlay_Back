@@ -43,8 +43,8 @@ namespace Hao.AppService.ViewModel
         /// <summary>
         /// 展开
         /// </summary>
-        public bool expanded { get; set; } = true;
-
+        public bool expanded { get; set; }
+ 
         /// <summary>
         /// 是否叶子节点
         /// </summary>
