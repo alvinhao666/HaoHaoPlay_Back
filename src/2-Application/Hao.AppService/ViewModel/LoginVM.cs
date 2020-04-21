@@ -20,5 +20,23 @@ namespace Hao.AppService.ViewModel
         /// 令牌
         /// </summary>
         public string Jwt { get; set; }
+
+
+        public List<MenuVM> Menus { get; set; }
+    }
+
+
+    public class MenuVM
+    {
+        public string Name { get; set; }
+
+
+        public string Icon { get; set; }
+
+
+        public string RouterUrl { get; set; }
+
+
+        public List<MenuVM> ChildMenus { get; set; }
     }
 }

@@ -5,6 +5,7 @@ using Hao.Core;
 using Hao.Encrypt;
 using Hao.EventData;
 using Hao.Library;
+using Hao.Model;
 using Hao.Repository;
 using Hao.RunTimeException;
 using Hao.Utility;
@@ -26,19 +27,27 @@ namespace Hao.AppService
 
         private readonly ISysUserRepository _userRep;
 
+        private readonly ISysModuleRepository _moduleRep;
+
         private readonly AppSettingsInfo _appsettings;
 
         private readonly ICapPublisher _publisher;
 
         private readonly HttpContext _httpContext;
 
-        public LoginAppService(IHttpContextAccessor httpContextAccessor, ISysUserRepository userRep, IMapper mapper, IOptionsSnapshot<AppSettingsInfo> appsettingsOptions, ICapPublisher publisher)
+        public LoginAppService(IHttpContextAccessor httpContextAccessor,
+            ISysUserRepository userRep,
+            ISysModuleRepository moduleRep,
+            IMapper mapper, 
+            IOptionsSnapshot<AppSettingsInfo> appsettingsOptions,
+            ICapPublisher publisher)
         {
             _userRep = userRep;
             _mapper = mapper;
             _appsettings = appsettingsOptions.Value; //IOptionsSnapshot动态获取配置
             _httpContext = httpContextAccessor.HttpContext;
             _publisher = publisher;
+            _moduleRep = moduleRep;
         }
 
         /// <summary>
@@ -84,15 +93,25 @@ namespace Hao.AppService
                 signingCredentials: _appsettings.JwtOptions.SigningCredentials
             ));
 
+            if (string.IsNullOrWhiteSpace(user.AuthNumbers)) throw new HException("没有系统权限，暂时无法登录");
+
+            var authNums = JsonSerializer.Deserialize<List<long>>(user.AuthNumbers);
+
+            var modules = await _moduleRep.GetListAysnc(new ModuleQuery() { IncludeResource = false });
+            var menus = new List<MenuVM>();
+            InitMenuTree(menus, 0, modules, authNums); //找主菜单一级 parentId=0
+
+            if (menus.Count == 0) throw new HException("没有系统权限，暂时无法登录");
+
             //存入redis
             var userValue = new RedisCacheUserInfo
             {
                 Id = user.Id.ToLong(),
                 Name = user.Name,
-                AuthNumbers = string.IsNullOrWhiteSpace(user.AuthNumbers) ? null : JsonSerializer.Deserialize<List<long>>(user.AuthNumbers)
+                AuthNumbers = authNums
             };
-            await RedisHelper.SetAsync(_appsettings.RedisPrefixOptions.LoginInfo + user.Id, JsonSerializer.Serialize(userValue));
 
+            await RedisHelper.SetAsync(_appsettings.RedisPrefixOptions.LoginInfo + user.Id, JsonSerializer.Serialize(userValue));
 
             var ip = _httpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault();
             if (string.IsNullOrWhiteSpace(ip))
@@ -108,7 +127,37 @@ namespace Hao.AppService
                 LastLoginIP = ip
             });
 
-            return new LoginVM() { Id = user.Id, Name = user.Name, Jwt = jwt };
+            return new LoginVM() { Id = user.Id, Name = user.Name, Jwt = jwt, Menus = menus };
+        }
+
+
+        /// <summary>
+        /// 递归初始化菜单树
+        /// </summary>
+        /// <param name="result"></param>
+        /// <param name="parentID"></param>
+        /// <param name="sources"></param>
+        /// <param name="authNums"></param>
+        private void InitMenuTree(List<MenuVM> result, long? parentID, List<SysModule> sources, List<long> authNums)
+        {
+            //递归寻找子节点  
+            var tempTree = sources.Where(item => item.ParentId == parentID).OrderBy(a => a.Sort).ToList();
+            foreach (var item in tempTree)
+            {
+                if (authNums?.Count < 1 || item.Layer.Value > authNums.Count) continue;
+
+                if ((authNums[item.Layer.Value - 1] & item.Number) != item.Number) continue;
+
+                var node = new MenuVM()
+                {
+                    Name = item.Name,
+                    Icon = item.Icon,
+                    RouterUrl = item.RouterUrl,
+                    ChildMenus = new List<MenuVM>()
+                };
+                result.Add(node);
+                InitMenuTree(node.ChildMenus, item.Id, sources, authNums);
+            }
         }
     }
 }
