@@ -133,6 +133,7 @@ namespace Hao.AppService
                 FirstNameSpell = user.FirstNameSpell,
                 HeadImgUrl = user.HeadImgUrl,
                 Jwt = jwt, 
+                AuthNums = authNums,
                 Menus = menus 
             };
         }
