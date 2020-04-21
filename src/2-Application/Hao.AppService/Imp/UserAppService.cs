@@ -29,19 +29,28 @@ namespace Hao.AppService
 
         private readonly ISysLoginRecordRepository _recordRep;
 
+
+        private readonly ISysRoleRepository _roleRep;
+
         private readonly AppSettingsInfo _appsettings;
 
         public FilePathInfo PathInfo { get; set; }
 
         private readonly ICurrentUser _currentUser;
 
-        public UserAppService(IOptionsSnapshot<AppSettingsInfo> appsettingsOptions, ISysUserRepository userRepository, ISysLoginRecordRepository recordRep, IMapper mapper,ICurrentUser currentUser)
+        public UserAppService(ISysRoleRepository roleRep,
+            IOptionsSnapshot<AppSettingsInfo> appsettingsOptions, 
+            ISysUserRepository userRepository,
+            ISysLoginRecordRepository recordRep, 
+            IMapper mapper,
+            ICurrentUser currentUser)
         {
             _userRep = userRepository;
             _recordRep = recordRep;
             _mapper = mapper;
             _appsettings = appsettingsOptions.Value;
             _currentUser = currentUser;
+            _roleRep = roleRep;
         }
 
         /// <summary>
@@ -187,8 +196,10 @@ namespace Hao.AppService
             user.Email = vm.Email;
             user.WeChat = vm.WeChat;
             user.QQ = vm.QQ;
+            user.RoleId = vm.RoleId;
+            user.RoleName = vm.RoleName;
             await _userRep.UpdateAsync(user,
-                user => new { user.Name, user.Age, user.Gender, user.Phone, user.Email, user.WeChat, user.QQ });
+                user => new { user.Name, user.Age, user.Gender, user.Phone, user.Email, user.WeChat, user.QQ, user.RoleId, user.RoleName });
         }
 
         /// <summary>
@@ -236,7 +247,7 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="vm"></param>
         /// <returns></returns>
-        public async Task UpdateCurrentBaseInfo(UserUpdateRequest vm)
+        public async Task UpdateCurrentBaseInfo(CurrentUserUpdateRequest vm)
         {
             var user = await GetUserDetail(_currentUser.Id);
             user.Name = vm.Name;

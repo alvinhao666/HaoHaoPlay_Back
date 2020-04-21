@@ -128,7 +128,7 @@ namespace Hao.WebApi
         /// </summary>
         /// <returns></returns>
         [HttpPut("UpdateCurrentBaseInfo")]
-        public async Task UpdateCurrentBaseInfo([FromBody]UserUpdateRequest request) => await _userAppService.UpdateCurrentBaseInfo(request);
+        public async Task UpdateCurrentBaseInfo([FromBody]CurrentUserUpdateRequest request) => await _userAppService.UpdateCurrentBaseInfo(request);
 
 
         /// <summary>

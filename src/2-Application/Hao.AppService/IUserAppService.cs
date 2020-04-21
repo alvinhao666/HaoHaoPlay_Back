@@ -105,7 +105,7 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="vm"></param>
         /// <returns></returns>
-        Task UpdateCurrentBaseInfo(UserUpdateRequest vm);
+        Task UpdateCurrentBaseInfo(CurrentUserUpdateRequest vm);
 
         /// <summary>
         /// 更新当前用户密码
