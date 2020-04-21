@@ -99,7 +99,7 @@ namespace Hao.AppService
 
             var modules = await _moduleRep.GetListAysnc(new ModuleQuery() { IncludeResource = false });
             var menus = new List<MenuVM>();
-            InitMenuTree(menus, 0, modules, authNums); //找主菜单一级 parentId=0
+            InitMenuTree(menus, 0, modules, authNums, user.Id); //找主菜单一级 parentId=0
 
             if (menus.Count == 0) throw new HException("没有系统权限，暂时无法登录");
 
@@ -145,15 +145,19 @@ namespace Hao.AppService
         /// <param name="parentID"></param>
         /// <param name="sources"></param>
         /// <param name="authNums"></param>
-        private void InitMenuTree(List<MenuVM> result, long? parentID, List<SysModule> sources, List<long> authNums)
+        /// <param name="userId"></param>
+        private void InitMenuTree(List<MenuVM> result, long? parentID, List<SysModule> sources, List<long> authNums, long userId)
         {
             //递归寻找子节点  
             var tempTree = sources.Where(item => item.ParentId == parentID).OrderBy(a => a.Sort).ToList();
             foreach (var item in tempTree)
             {
-                if (authNums?.Count < 1 || item.Layer.Value > authNums.Count) continue;
+                if (userId != -1)
+                {
+                    if (authNums?.Count < 1 || item.Layer.Value > authNums.Count) continue;
 
-                if ((authNums[item.Layer.Value - 1] & item.Number) != item.Number) continue;
+                    if ((authNums[item.Layer.Value - 1] & item.Number) != item.Number) continue;
+                }
 
                 var node = new MenuVM()
                 {
@@ -163,7 +167,7 @@ namespace Hao.AppService
                     ChildMenus = new List<MenuVM>()
                 };
                 result.Add(node);
-                InitMenuTree(node.ChildMenus, item.Id, sources, authNums);
+                InitMenuTree(node.ChildMenus, item.Id, sources, authNums, userId);
             }
         }
     }
