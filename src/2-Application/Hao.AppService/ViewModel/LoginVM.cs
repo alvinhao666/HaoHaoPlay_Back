@@ -17,6 +17,11 @@ namespace Hao.AppService.ViewModel
         public string Name { get; set; }
 
         /// <summary>
+        /// 姓的拼音首字母
+        /// </summary>
+        public string FirstNameSpell { get; set; }
+
+        /// <summary>
         /// 头像地址
         /// </summary>
         public string HeadImgUrl { get; set; }
