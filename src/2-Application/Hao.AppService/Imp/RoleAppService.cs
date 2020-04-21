@@ -156,7 +156,8 @@ namespace Hao.AppService
                     key = item.Id.ToString(),
                     title = item.Name,
                     isLeaf = item.Type == ModuleType.Resource,
-                    expanded = (int) item.Type.Value < (int) ModuleType.Sub,
+                    //expanded = (int) item.Type.Value < (int) ModuleType.Sub,
+                    expanded = true,
                     children = new List<RoleModuleItemVM>()
                 };
                 if (node.isLeaf && authNumbers?.Count > 0 && item.Layer.Value <= authNumbers.Count ) 
