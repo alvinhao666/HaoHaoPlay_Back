@@ -206,10 +206,13 @@ namespace Hao.AppService
         /// <summary>
         /// 更新头像地址 (ImageSharp)
         /// </summary>
-        /// <param name="imgUrl"></param>
+        /// <param name="request"></param>
         /// <returns></returns>
-        public async Task UpdateCurrentHeadImg(byte[] imageBytes)
+        public async Task UpdateCurrentHeadImg(UpdateHeadImgRequest request)
         {
+            string[] str = request.Base64Str.Split(',');  //base64Str为base64完整的字符串，先处理一下得到我们所需要的字符串
+            byte[] imageBytes = Convert.FromBase64String(str[1]);
+
             HFile.CreateDirectory(PathInfo.AvatarPath);
             string imgName = $"{_currentUser.Id}_{HUtil.GetTimeStamp()}.png";
             string imgPath = Path.Combine(PathInfo.AvatarPath, imgName);

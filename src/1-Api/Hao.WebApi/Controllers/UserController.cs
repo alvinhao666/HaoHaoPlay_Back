@@ -120,10 +120,7 @@ namespace Hao.WebApi
         [HttpPut("UpdateCurrentHeadImg")]
         public async Task UpdateCurrentHeadImg([FromBody]UpdateHeadImgRequest request)
         {
-            string[] str = request.Base64Str.Split(',');  //base64Str为base64完整的字符串，先处理一下得到我们所需要的字符串
-            byte[] imageBytes = Convert.FromBase64String(str[1]);
-  
-            await _userAppService.UpdateCurrentHeadImg(imageBytes);
+            await _userAppService.UpdateCurrentHeadImg(request);
         }
 
         /// <summary>

@@ -96,9 +96,9 @@ namespace Hao.AppService
         /// <summary>
         /// 更新头像
         /// </summary>
-        /// <param name="imageBytes"></param>
+        /// <param name="request"></param>
         /// <returns></returns>
-        Task UpdateCurrentHeadImg(byte[] imageBytes);
+        Task UpdateCurrentHeadImg(UpdateHeadImgRequest request);
 
         /// <summary>
         /// 更新当前用户基本信息
