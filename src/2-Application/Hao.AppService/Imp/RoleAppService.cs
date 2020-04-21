@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using DotNetCore.CAP;
 using Hao.AppService.ViewModel;
 using Hao.Core;
 using Hao.Enum;
+using Hao.EventData;
 using Hao.Model;
 using Hao.Repository;
 using Hao.RunTimeException;
@@ -24,12 +26,15 @@ namespace Hao.AppService
 
         private readonly IMapper _mapper;
 
-        public RoleAppService(ISysRoleRepository roleRep, ISysModuleRepository moduleRep, ISysUserRepository userRep, IMapper mapper)
+        private readonly ICapPublisher _publisher;
+
+        public RoleAppService(ICapPublisher publisher,ISysRoleRepository roleRep, ISysModuleRepository moduleRep, ISysUserRepository userRep, IMapper mapper)
         {
             _roleRep = roleRep;
             _mapper = mapper;
             _moduleRep = moduleRep;
             _userRep = userRep;
+            _publisher = publisher;
         }
 
 
@@ -96,6 +101,13 @@ namespace Hao.AppService
             role.AuthNumbers = JsonConvert.SerializeObject(authNumbers);
             await _roleRep.UpdateAsync(role, a => new { a.AuthNumbers });
             await _userRep.UpdateAuth(role.Id, role.AuthNumbers);
+
+            //注销该角色下用户的登录信息
+            var users = await _userRep.GetListAysnc(new UserQuery() { RoleId = role.Id });
+            await _publisher.PublishAsync(nameof(LogoutEventData), new LogoutEventData
+            {
+                UserIds = users.Select(a => a.Id).ToList()
+            });
         }
 
         /// <summary>
