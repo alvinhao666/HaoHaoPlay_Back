@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Dynamic;
 using System.IO;
 using System.Net;
@@ -160,6 +161,51 @@ namespace Hao.Utility
             if (string.IsNullOrWhiteSpace(email)) return "";
             email = Regex.Replace(email, "(\\w?)(\\w+)(\\w)(@\\w+\\.[a-z]+(\\.[a-z]+)?)", "$1****$3$4");
             return email;
+        }
+
+        /// <summary>
+        /// 获取img的路径
+        /// </summary>
+        /// <param name="htmlText">Html字符串文本</param>
+        /// <returns>以数组形式返回图片路径</returns>
+        public static List<string> GetHtmlImageUrlList(string htmlText)
+        {
+            Regex regImg = new Regex(@"<img\b[^<>]*?\bsrc[\s\t\r\n]*=[\s\t\r\n]*[""']?[\s\t\r\n]*(?<imgUrl>[^\s\t\r\n""'<>]*)[^<>]*?/?[\s\t\r\n]*>", RegexOptions.IgnoreCase);
+    
+            MatchCollection matches = regImg.Matches(htmlText);
+
+            List<string> urlList = new List<string>();
+            //遍历所有的img标签对象
+            foreach (Match match in matches)
+            {
+                urlList.Add(match.Groups["imgUrl"].Value);
+            }
+            return urlList;
+        }
+
+        /// <summary>
+        /// 地址拆分
+        /// </summary>
+        /// <param name="address"></param>
+        /// <returns></returns>
+        public static List<string> GetAddress(string address)
+        {
+            string province = "";
+
+            string city = "";
+
+            string district = "";
+
+            string regex = "(?<province>[^省]+省|[^自治区]+自治区|.+市)(?<city>[^自治州]+自治州|.+区划|[^市]+市|[^盟]+盟|[^地区]+地区)?(?<county>[^市]+市|[^县]+县|[^旗]+旗|.+区)?(?<town>[^区]+区|.+镇)?(?<village>.*)";
+
+            foreach (Match match in Regex.Matches(address, regex))
+            {
+                province = match.Groups[1].Value;
+                city = match.Groups[2].Value;
+                district = match.Groups[3].Value;
+            }
+
+            return new List<string>() { province, city, district };
         }
     }
 }
