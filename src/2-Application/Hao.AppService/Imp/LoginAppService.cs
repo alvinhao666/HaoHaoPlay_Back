@@ -127,7 +127,13 @@ namespace Hao.AppService
                 LastLoginIP = ip
             });
 
-            return new LoginVM() { Id = user.Id, Name = user.Name, Jwt = jwt, Menus = menus };
+            return new LoginVM() {
+                Id = user.Id,
+                Name = user.Name,
+                HeadImgUrl = user.HeadImgUrl,
+                Jwt = jwt, 
+                Menus = menus 
+            };
         }
 
 
