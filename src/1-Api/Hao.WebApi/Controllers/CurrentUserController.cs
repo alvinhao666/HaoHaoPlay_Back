@@ -28,10 +28,8 @@ namespace Hao.WebApi.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPut("UpdateCurrentHeadImg")]
-        public async Task UpdateCurrentHeadImg([FromBody]UpdateHeadImgRequest request)
-        {
-            await _userAppService.UpdateCurrentHeadImg(request);
-        }
+        public async Task UpdateCurrentHeadImg([FromBody]UpdateHeadImgRequest request) => await _userAppService.UpdateCurrentHeadImg(request);
+
 
         /// <summary>
         /// 更新当前用户基本信息
