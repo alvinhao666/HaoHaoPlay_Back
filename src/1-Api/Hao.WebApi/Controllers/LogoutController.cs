@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Hao.WebApi.Controllers
 {
+    /// <summary>
+    /// 注销
+    /// </summary>
     [Route("[controller]")]
     public class LogoutController : HController
     {

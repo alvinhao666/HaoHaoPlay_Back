@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace Hao.WebApi.Controllers
 {
+    /// <summary>
+    /// 应用模块
+    /// </summary>
     [ApiController]
     [Route("[controller]")]
     public class ModuleController:HController

@@ -19,6 +19,9 @@ using Hao.Core;
 
 namespace Hao.WebApi.Controllers
 {
+    /// <summary>
+    /// 用户
+    /// </summary>
     [ApiController]
     [Route("[controller]")]
     public partial class UserController : HController

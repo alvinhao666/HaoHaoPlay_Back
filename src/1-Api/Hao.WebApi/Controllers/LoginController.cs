@@ -7,6 +7,9 @@ using NLog;
 
 namespace Hao.WebApi.Controllers
 {
+    /// <summary>
+    /// 登录
+    /// </summary>
     [ApiController]
     [Route("[controller]")]
     //1.参数绑定策略的自动推断,可以省略[FromBody] 

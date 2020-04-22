@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace Hao.WebApi.Controllers
 {
+    /// <summary>
+    /// 应用资源
+    /// </summary>
     [ApiController]
     [Route("[controller]")]
     public class ResourceController:HController

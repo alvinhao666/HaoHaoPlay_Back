@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Hao.WebApi.Controllers
 {
+    /// <summary>
+    /// 角色
+    /// </summary>
     [ApiController]
     [Route("[controller]")]
     public class RoleController:HController

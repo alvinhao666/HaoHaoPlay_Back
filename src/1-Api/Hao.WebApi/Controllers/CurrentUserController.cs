@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace Hao.WebApi.Controllers
 {
+    /// <summary>
+    /// 当前用户
+    /// </summary>
     public partial class UserController : HController
     {
         /// <summary>
