@@ -104,9 +104,11 @@ namespace Hao.AppService
 
             //注销该角色下用户的登录信息
             var users = await _userRep.GetListAysnc(new UserQuery() { RoleId = role.Id });
+            var ids = users.Where(a => a.AuthNumbers != role.AuthNumbers).Select(a => a.Id).ToList();
+            if (ids.Count < 1) return;
             await _publisher.PublishAsync(nameof(LogoutEventData), new LogoutEventData
             {
-                UserIds = users.Select(a => a.Id).ToList()
+                UserIds = ids
             });
         }
 

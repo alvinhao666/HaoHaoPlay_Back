@@ -31,6 +31,8 @@ namespace Hao.AppService.ViewModel
         /// </summary>
         public string Jwt { get; set; }
 
+        
+        public List<long> AuthNums { get; set; }
 
         public List<MenuVM> Menus { get; set; }
     }
