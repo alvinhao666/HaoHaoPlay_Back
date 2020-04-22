@@ -66,7 +66,7 @@ namespace Hao.Core.Extensions
                 var layer = int.Parse(authInfos[0]) - 1;
                 var authCode = long.Parse(authInfos[1]);
 
-                if (cacheUser.AuthNumbers != null && cacheUser.AuthNumbers.Count > 0 && ((cacheUser.AuthNumbers[layer] & authCode) != authCode)) throw new HException("没有权限");
+                if (cacheUser.AuthNumbers != null && cacheUser.AuthNumbers.Count > 0 && ((cacheUser.AuthNumbers[layer] & authCode) != authCode)) throw new HException("没有接口权限，请检查");
             }
 
 

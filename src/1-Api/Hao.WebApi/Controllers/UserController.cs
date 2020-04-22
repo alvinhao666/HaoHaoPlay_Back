@@ -108,6 +108,7 @@ namespace Hao.WebApi.Controllers
         /// <param name="query"></param>
         /// <returns></returns>
         [HttpGet("IsExistUser")]
+        [AuthCode("1_32")]
         public async Task<bool> IsExistUser([FromQuery]UserQueryInput query) => await _userAppService.IsExistUser(_mapper.Map<UserQuery>(query));
 
 
@@ -124,7 +125,6 @@ namespace Hao.WebApi.Controllers
 
             return new { FileName = fileName, FileId = _protector.Protect(fileName.Split('.')[0], TimeSpan.FromSeconds(5)) };
         }
-
 
         /// <summary>
         /// 导入用户

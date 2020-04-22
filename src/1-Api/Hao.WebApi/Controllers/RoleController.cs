@@ -18,19 +18,20 @@ namespace Hao.WebApi.Controllers
             _roleAppService = roleAppService;
         }
 
-        // /// <summary>
-        // /// 添加角色
-        // /// </summary>
-        // /// <param name="request"></param>
-        // /// <returns></returns>
-        // [HttpPost]
-        // public async Task Add([FromBody] RoleAddRequest request) => await _roleAppService.AddRole(request);
+        ///// <summary>
+        ///// 添加角色
+        ///// </summary>
+        ///// <param name="request"></param>
+        ///// <returns></returns>
+        //[HttpPost]
+        //public async Task Add([FromBody] RoleAddRequest request) => await _roleAppService.AddRole(request);
 
         /// <summary>
         /// 获取角色列表
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+        [AuthCode("1_262144")]
         public async Task<List<RoleVM>> GetRoleList() => await _roleAppService.GetRoleList();
 
         /// <summary>
@@ -40,6 +41,7 @@ namespace Hao.WebApi.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPut("UpdateRoleAuth/{id}")]
+        [AuthCode("1_524288")]
         public async Task UpdateRoleAuth(long id, [FromBody]RoleUpdateRequest request) =>
             await _roleAppService.UpdateRoleAuth(id, request);
 
@@ -50,14 +52,15 @@ namespace Hao.WebApi.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("GetRoleModule/{id}")]
-        public async Task<RoleModuleVM> GetRoleModule(long id) => await _roleAppService.GetRoleModule(id); 
+        [AuthCode("1_262144")]
+        public async Task<RoleModuleVM> GetRoleModule(long id) => await _roleAppService.GetRoleModule(id);
 
-        // /// <summary>
-        // /// 删除角色
-        // /// </summary>
-        // /// <param name="id"></param>
-        // /// <returns></returns>
-        // [HttpDelete("{id}")]
-        // public async Task DeleteRole(long id) => await _roleAppService.DeleteRole(id);
+        ///// <summary>
+        ///// 删除角色
+        ///// </summary>
+        ///// <param name="id"></param>
+        ///// <returns></returns>
+        //[HttpDelete("{id}")]
+        //public async Task DeleteRole(long id) => await _roleAppService.DeleteRole(id);
     }
 }
