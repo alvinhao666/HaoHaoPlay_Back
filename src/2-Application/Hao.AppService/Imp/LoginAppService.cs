@@ -138,13 +138,12 @@ namespace Hao.AppService
         /// <returns></returns>
         private string CreateJwt(DateTime timeNow, SysUser user, bool isRememberLogin)
         {
-            var validFrom = timeNow.Ticks;
             var claims = new Claim[]
             {
                 new Claim(JwtRegisteredClaimNames.Sub, _appsettings.JwtOptions.Subject), //主题
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()), //针对当前 token 的唯一标识
                 new Claim(JwtRegisteredClaimNames.Sid, user.Id.ToString()),
-                new Claim(JwtRegisteredClaimNames.Iat, validFrom.ToString(), ClaimValueTypes.Integer64), //token 创建时间
+                new Claim(JwtRegisteredClaimNames.Iat, timeNow.Ticks.ToString(), ClaimValueTypes.Integer64), //token 创建时间
                 new Claim(ClaimsName.Name, user.Name)
             };
 
