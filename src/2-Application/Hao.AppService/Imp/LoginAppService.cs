@@ -108,7 +108,8 @@ namespace Hao.AppService
             {
                 Id = user.Id.ToLong(),
                 Name = user.Name,
-                AuthNumbers = authNums
+                AuthNumbers = authNums,
+                Jwt = jwt
             };
 
             await RedisHelper.SetAsync(_appsettings.RedisPrefixOptions.LoginInfo + user.Id, JsonSerializer.Serialize(userValue));

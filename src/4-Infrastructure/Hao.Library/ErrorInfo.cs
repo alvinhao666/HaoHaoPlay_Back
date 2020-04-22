@@ -6,6 +6,7 @@ namespace Hao.Library
     {
         public const string E100001 = "认证失败，请重新登录";
         public const string E100002 = "用户未登录或权限值已变更，请重新登录";
+        public const string E100003 = "用户已在异地登录或权限值已变更，请重新登录";
     }
 
     public static class StringExtensions

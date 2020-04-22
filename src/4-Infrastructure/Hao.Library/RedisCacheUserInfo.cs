@@ -17,5 +17,10 @@ namespace Hao.Library
         /// 权限
         /// </summary>
         public List<long> AuthNumbers { get; set; }
+
+        /// <summary>
+        /// token值
+        /// </summary>
+        public string Jwt { get; set; }
     }
 }

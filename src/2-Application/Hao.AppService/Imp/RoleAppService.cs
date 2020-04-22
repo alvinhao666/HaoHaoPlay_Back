@@ -99,12 +99,14 @@ namespace Hao.AppService
             }
 
             role.AuthNumbers = JsonConvert.SerializeObject(authNumbers);
+            var users = await _userRep.GetListAysnc(new UserQuery() { RoleId = role.Id });
+            var ids = users.Where(a => a.AuthNumbers != role.AuthNumbers).Select(a => a.Id).ToList();
+
             await _roleRep.UpdateAsync(role, a => new { a.AuthNumbers });
             await _userRep.UpdateAuth(role.Id, role.AuthNumbers);
 
             //注销该角色下用户的登录信息
-            var users = await _userRep.GetListAysnc(new UserQuery() { RoleId = role.Id });
-            var ids = users.Where(a => a.AuthNumbers != role.AuthNumbers).Select(a => a.Id).ToList();
+
             if (ids.Count < 1) return;
             await _publisher.PublishAsync(nameof(LogoutEventData), new LogoutEventData
             {

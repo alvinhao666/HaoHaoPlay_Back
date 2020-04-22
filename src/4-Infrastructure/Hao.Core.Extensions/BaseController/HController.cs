@@ -50,9 +50,14 @@ namespace Hao.Core.Extensions
 
             var value = RedisHelper.Get(AppsettingsOptions.Value.RedisPrefixOptions.LoginInfo + userId);
 
-            if (value == null) throw new HException(ErrorInfo.E100002, nameof(ErrorInfo.E100002).GetErrorCode());
+            if (value == null) throw new HException(ErrorInfo.E100002, nameof(ErrorInfo.E100002).GetErrorCode());        
 
             var cacheUser = JsonSerializer.Deserialize<RedisCacheUserInfo>(value);
+
+            var strToken = context.HttpContext.Request.Headers["Authorization"].ToString();
+            if (!strToken.StartsWith("Bearer ")) throw new HException("http请求头部信息Authorization参数有误");
+            var jwt = strToken.Remove(0, 7);
+            if (cacheUser.Jwt != jwt) throw new HException(ErrorInfo.E100003, nameof(ErrorInfo.E100003).GetErrorCode());
 
             var descriptor = context.ActionDescriptor as ControllerActionDescriptor;
             var attribute = descriptor.MethodInfo.CustomAttributes.FirstOrDefault(x => x.AttributeType == typeof(AuthCodeAttribute));
