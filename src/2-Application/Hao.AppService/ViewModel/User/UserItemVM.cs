@@ -33,5 +33,10 @@ namespace Hao.AppService.ViewModel
         public DateTime? LastLoginTime { get; set; }
 
         public string LastLoginIP { get; set; }
+
+        /// <summary>
+        /// 角色名称
+        /// </summary>
+        public string RoleName { get; set; }
     }
 }
