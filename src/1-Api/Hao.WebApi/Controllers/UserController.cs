@@ -17,11 +17,11 @@ using Microsoft.Extensions.Options;
 using Hao.Core.Extensions;
 using Hao.Core;
 
-namespace Hao.WebApi
+namespace Hao.WebApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class UserController : HController
+    public partial class UserController : HController
     {
         private readonly IUserAppService _userAppService;
 
@@ -44,6 +44,7 @@ namespace Hao.WebApi
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
+        [AuthCode("1_32")]
         public async Task Add([FromBody]UserAddRequest request) => await _userAppService.AddUser(request);
 
         /// <summary>
@@ -61,6 +62,7 @@ namespace Hao.WebApi
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
+        [AuthCode("1_256")]
         public async Task Update(long id, [FromBody]UserUpdateRequest request) => await _userAppService.EditUser(id, request);
 
         /// <summary>
@@ -69,6 +71,7 @@ namespace Hao.WebApi
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
+        [AuthCode("1_128")]
         public async Task<UserDetailVM> Get(long id) => await _userAppService.GetUser(id);
 
         /// <summary>
@@ -77,6 +80,7 @@ namespace Hao.WebApi
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
+        [AuthCode("1_2048")]
         public async Task Delete(long id) => await _userAppService.DeleteUser(id);
 
         /// <summary>
@@ -85,6 +89,7 @@ namespace Hao.WebApi
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpPut("Disable/{id}")]
+        [AuthCode("1_512")]
         public async Task Disable(long id) => await _userAppService.UpdateUserStatus(id, false);
 
         /// <summary>
@@ -93,6 +98,7 @@ namespace Hao.WebApi
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpPut("Enable/{id}")]
+        [AuthCode("1_1024")]
         public async Task Enable(long id) => await _userAppService.UpdateUserStatus(id, true);
 
 
@@ -106,53 +112,12 @@ namespace Hao.WebApi
 
 
         /// <summary>
-        /// 获取当前用户信息
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet("Current")]
-        public async Task<CurrentUserVM> GetCurrentUser() => await _userAppService.GetCurrent();
-
-        /// <summary>
-        /// 更新当前用户头像
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        [HttpPut("UpdateCurrentHeadImg")]
-        public async Task UpdateCurrentHeadImg([FromBody]UpdateHeadImgRequest request)
-        {
-            await _userAppService.UpdateCurrentHeadImg(request);
-        }
-
-        /// <summary>
-        /// 更新当前用户基本信息
-        /// </summary>
-        /// <returns></returns>
-        [HttpPut("UpdateCurrentBaseInfo")]
-        public async Task UpdateCurrentBaseInfo([FromBody]CurrentUserUpdateRequest request) => await _userAppService.UpdateCurrentBaseInfo(request);
-
-
-        /// <summary>
-        /// 当前用户安全信息
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet("CurrentSecurityInfo")]
-        public async Task<UserSecurityVM> GetCurrentSecurityInfo() => await _userAppService.GetCurrentSecurityInfo();
-
-
-        /// <summary>
-        /// 更新当前用户密码
-        /// </summary>
-        /// <returns></returns>
-        [HttpPut("UpdateCurrentPassword")]
-        public async Task UpdateCurrentPassword([FromBody]PwdUpdateRequest request) => await _userAppService.UpdateCurrentPassword(request.OldPassword, request.NewPassword);
-
-
-        /// <summary>
         /// 导出用户
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
         [HttpGet("Export")]
+        [AuthCode("1_4096")]
         public async Task<object> ExportUser([FromQuery]UserQueryInput query)
         {
             string fileName = await _userAppService.ExportUsers(_mapper.Map<UserQuery>(query));
@@ -167,6 +132,7 @@ namespace Hao.WebApi
         /// <param></param>
         /// <returns></returns>
         [HttpPost("Import")]
+        [AuthCode("1_1048576")]
         public async Task ImportUser()
         {
             var files = HttpContext.Request.Form.Files;

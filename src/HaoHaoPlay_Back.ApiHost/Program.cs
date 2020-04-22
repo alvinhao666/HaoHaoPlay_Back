@@ -1,7 +1,6 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Hao.Dependency;
-using Hao.WebApi;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
@@ -10,6 +9,7 @@ using NLog.Web;
 using System.Linq;
 using System.Reflection;
 using AspectCore.Extensions.Autofac;
+using Hao.WebApi.Controllers;
 
 namespace HaoHaoPlay.ApiHost
 {

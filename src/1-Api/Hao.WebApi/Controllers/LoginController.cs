@@ -5,7 +5,7 @@ using Hao.Log;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
 
-namespace Hao.WebApi
+namespace Hao.WebApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
