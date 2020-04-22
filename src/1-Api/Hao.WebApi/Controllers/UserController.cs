@@ -76,16 +76,6 @@ namespace Hao.WebApi.Controllers
         public async Task<PagedList<UserItemVM>> GetPagedList([FromQuery]UserQueryInput query) => await _userAppService.GetUserPageList(_mapper.Map<UserQuery>(query));
 
         /// <summary>
-        /// 修改用户
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        [HttpPut("{id}")]
-        [AuthCode("1_256")]
-        public async Task Update(long id, [FromBody]UserUpdateRequest request) => await _userAppService.EditUser(id, request);
-
-        /// <summary>
         /// 根据id获取用户
         /// </summary>
         /// <param name="id"></param>
@@ -95,13 +85,14 @@ namespace Hao.WebApi.Controllers
         public async Task<UserDetailVM> Get(long id) => await _userAppService.GetUser(id);
 
         /// <summary>
-        /// 删除用户
+        /// 修改用户
         /// </summary>
         /// <param name="id"></param>
+        /// <param name="request"></param>
         /// <returns></returns>
-        [HttpDelete("{id}")]
-        [AuthCode("1_2048")]
-        public async Task Delete(long id) => await _userAppService.DeleteUser(id);
+        [HttpPut("{id}")]
+        [AuthCode("1_256")]
+        public async Task Update(long id, [FromBody]UserUpdateRequest request) => await _userAppService.EditUser(id, request);
 
         /// <summary>
         /// 注销用户
@@ -120,6 +111,15 @@ namespace Hao.WebApi.Controllers
         [HttpPut("Enable/{id}")]
         [AuthCode("1_1024")]
         public async Task Enable(long id) => await _userAppService.UpdateUserStatus(id, true);
+
+        /// <summary>
+        /// 删除用户
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete("{id}")]
+        [AuthCode("1_2048")]
+        public async Task Delete(long id) => await _userAppService.DeleteUser(id);
 
 
         /// <summary>
