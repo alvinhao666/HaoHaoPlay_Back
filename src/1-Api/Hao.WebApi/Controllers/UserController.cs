@@ -25,15 +25,18 @@ namespace Hao.WebApi.Controllers
     {
         private readonly IUserAppService _userAppService;
 
+        private readonly IRoleAppService _roleAppService;
+
         private readonly IMapper _mapper;
 
         private readonly ITimeLimitedDataProtector _protector;
 
         public FilePathInfo PathInfo { get; set; }
 
-        public UserController(IOptionsSnapshot<AppSettingsInfo> appsettingsOptions, IDataProtectionProvider provider, IMapper mapper, IUserAppService userService)
+        public UserController(IOptionsSnapshot<AppSettingsInfo> appsettingsOptions, IDataProtectionProvider provider, IMapper mapper, IUserAppService userService, IRoleAppService roleAppService)
         {
             _userAppService = userService;
+            _roleAppService = roleAppService;
             _mapper = mapper;
             _protector = provider.CreateProtector(appsettingsOptions.Value.DataProtectorPurpose.FileDownload).ToTimeLimitedDataProtector();
         }
@@ -46,6 +49,23 @@ namespace Hao.WebApi.Controllers
         [HttpPost]
         [AuthCode("1_32")]
         public async Task Add([FromBody]UserAddRequest request) => await _userAppService.AddUser(request);
+
+        /// <summary>
+        /// 获取角色列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("GetRole")]
+        [AuthCode("1_32")]
+        public async Task<List<RoleVM>> GetRoleList() => await _roleAppService.GetRoleList();
+
+        /// <summary>
+        /// 是否存在用户
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        [HttpGet("IsExistUser")]
+        [AuthCode("1_32")]
+        public async Task<bool> IsExistUser([FromQuery]UserQueryInput query) => await _userAppService.IsExistUser(_mapper.Map<UserQuery>(query));
 
         /// <summary>
         /// 查询用户分页列表
@@ -100,16 +120,6 @@ namespace Hao.WebApi.Controllers
         [HttpPut("Enable/{id}")]
         [AuthCode("1_1024")]
         public async Task Enable(long id) => await _userAppService.UpdateUserStatus(id, true);
-
-
-        /// <summary>
-        /// 是否存在用户
-        /// </summary>
-        /// <param name="query"></param>
-        /// <returns></returns>
-        [HttpGet("IsExistUser")]
-        [AuthCode("1_32")]
-        public async Task<bool> IsExistUser([FromQuery]UserQueryInput query) => await _userAppService.IsExistUser(_mapper.Map<UserQuery>(query));
 
 
         /// <summary>
