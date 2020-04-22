@@ -21,6 +21,9 @@ using System.Threading.Tasks;
 
 namespace Hao.AppService
 {
+    /// <summary>
+    /// 登录应用服务
+    /// </summary>
     public class LoginAppService : ApplicationService, ILoginAppService
     {
         private readonly IMapper _mapper;
@@ -38,7 +41,7 @@ namespace Hao.AppService
         public LoginAppService(IHttpContextAccessor httpContextAccessor,
             ISysUserRepository userRep,
             ISysModuleRepository moduleRep,
-            IMapper mapper, 
+            IMapper mapper,
             IOptionsSnapshot<AppSettingsInfo> appsettingsOptions,
             ICapPublisher publisher)
         {
@@ -59,39 +62,15 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task<LoginVM> Login(string loginName, string password, bool isRememberLogin)
         {
+            var timeNow = DateTime.Now;
+
             password = RSAHelper.Decrypt(_appsettings.KeyInfo.RsaPrivateKey, password); //解密
 
             password = EncryptProvider.HMACSHA256(password, _appsettings.KeyInfo.Sha256Key);
 
-            var users = await _userRep.GetListAysnc(new LoginQuery()
-            {
-                LoginName = loginName,
-                Password = password,
-            });
+            var user = await GetUser(loginName, password);
 
-            if (users.Count == 0) throw new HException("用户名或密码错误");
-            if (users.Count > 1) throw new HException("用户数据异常，存在相同用户");
-            var user = users.First();
-            if (!user.Enabled.IsTrue()) throw new HException("用户已注销");
-
-            var timeNow = DateTime.Now;
-            var validFrom = timeNow.Ticks;
-            var claims = new Claim[]
-            {
-                new Claim(JwtRegisteredClaimNames.Sub, _appsettings.JwtOptions.Subject), //主题
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()), //针对当前 token 的唯一标识
-                new Claim(JwtRegisteredClaimNames.Sid, user.Id.ToString()),
-                new Claim(JwtRegisteredClaimNames.Iat, validFrom.ToString(), ClaimValueTypes.Integer64), //token 创建时间
-                new Claim(ClaimsName.Name, user.Name)
-            };
-            var jwt = new JwtSecurityTokenHandler().WriteToken(new JwtSecurityToken(
-                issuer: _appsettings.JwtOptions.Issuer,
-                audience: _appsettings.JwtOptions.Audience,
-                claims: claims,
-                notBefore: timeNow, //生效时间
-                expires: timeNow.AddDays(isRememberLogin ? 3 : 1),//过期时间
-                signingCredentials: _appsettings.JwtOptions.SigningCredentials
-            ));
+            var jwt = CreateJwt(timeNow, user, isRememberLogin);
 
             if (string.IsNullOrWhiteSpace(user.AuthNumbers)) throw new HException("没有系统权限，暂时无法登录");
 
@@ -106,7 +85,7 @@ namespace Hao.AppService
             //存入redis
             var userValue = new RedisCacheUserInfo
             {
-                Id = user.Id.ToLong(),
+                Id = user.Id,
                 Name = user.Name,
                 AuthNumbers = authNums,
                 Jwt = jwt
@@ -114,6 +93,79 @@ namespace Hao.AppService
 
             await RedisHelper.SetAsync(_appsettings.RedisPrefixOptions.LoginInfo + user.Id, JsonSerializer.Serialize(userValue));
 
+            await AsyncLoginInfo(user.Id, timeNow);
+
+            return new LoginVM()
+            {
+                Id = user.Id,
+                Name = user.Name,
+                FirstNameSpell = user.FirstNameSpell,
+                HeadImgUrl = user.HeadImgUrl,
+                Jwt = jwt,
+                AuthNums = authNums,
+                Menus = menus
+            };
+        }
+
+
+        /// <summary>
+        /// 获取用户
+        /// </summary>
+        /// <param name="loginName"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        private async Task<SysUser> GetUser(string loginName, string password)
+        {
+            var users = await _userRep.GetListAysnc(new LoginQuery()
+            {
+                LoginName = loginName,
+                Password = password,
+            });
+
+            if (users.Count == 0) throw new HException("用户名或密码错误");
+            if (users.Count > 1) throw new HException("用户数据异常，存在相同用户");
+            var user = users.First();
+            if (!user.Enabled.IsTrue()) throw new HException("用户已注销");
+            return user;
+        }
+
+        /// <summary>
+        /// 生成Jwt
+        /// </summary>
+        /// <param name="timeNow"></param>
+        /// <param name="user"></param>
+        /// <param name="isRememberLogin"></param>
+        /// <returns></returns>
+        private string CreateJwt(DateTime timeNow, SysUser user, bool isRememberLogin)
+        {
+            var validFrom = timeNow.Ticks;
+            var claims = new Claim[]
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, _appsettings.JwtOptions.Subject), //主题
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()), //针对当前 token 的唯一标识
+                new Claim(JwtRegisteredClaimNames.Sid, user.Id.ToString()),
+                new Claim(JwtRegisteredClaimNames.Iat, validFrom.ToString(), ClaimValueTypes.Integer64), //token 创建时间
+                new Claim(ClaimsName.Name, user.Name)
+            };
+
+            var jwt = new JwtSecurityTokenHandler().WriteToken(new JwtSecurityToken(
+                issuer: _appsettings.JwtOptions.Issuer,
+                audience: _appsettings.JwtOptions.Audience,
+                claims: claims,
+                notBefore: timeNow, //生效时间
+                expires: timeNow.AddDays(isRememberLogin ? 3 : 1),//过期时间
+                signingCredentials: _appsettings.JwtOptions.SigningCredentials
+            ));
+
+            return jwt;
+        }
+
+        /// <summary>
+        /// 同步登录信息
+        /// </summary>
+        /// <returns></returns>
+        private async Task AsyncLoginInfo(long userId, DateTime loginTime)
+        {
             var ip = _httpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault();
             if (string.IsNullOrWhiteSpace(ip))
             {
@@ -123,22 +175,11 @@ namespace Hao.AppService
 
             await _publisher.PublishAsync(nameof(LoginEventData), new LoginEventData
             {
-                UserId = user.Id.ToLong(),
-                LastLoginTime = timeNow,
+                UserId = userId,
+                LastLoginTime = loginTime,
                 LastLoginIP = ip
             });
-
-            return new LoginVM() {
-                Id = user.Id,
-                Name = user.Name,
-                FirstNameSpell = user.FirstNameSpell,
-                HeadImgUrl = user.HeadImgUrl,
-                Jwt = jwt, 
-                AuthNums = authNums,
-                Menus = menus 
-            };
         }
-
 
         /// <summary>
         /// 递归初始化菜单树
