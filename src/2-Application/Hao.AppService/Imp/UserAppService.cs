@@ -64,10 +64,10 @@ namespace Hao.AppService
             {
                 LoginName = vm.LoginName
             });
-            if (users.Count > 0)
-                throw new HException("账号已存在，请重新输入");
+            if (users.Count > 0) throw new HException("账号已存在，请重新输入");
 
             var role = await _roleRep.GetAysnc(vm.RoleId.Value);
+            if (role == null) throw new HException("角色不存在，请重新添加");
             if (role.IsDeleted) throw new HException("角色已删除，请重新添加");
 
             var user = _mapper.Map<SysUser>(vm);
@@ -159,10 +159,8 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task DeleteUser(long userId)
         {
-            if (userId == _currentUser.Id)
-                throw new HException("无法操作当前登录用户");
-            if (userId == -1) 
-                throw new HException("无法操作系统管理员账户");
+            if (userId == _currentUser.Id) throw new HException("无法操作当前登录用户");
+            if (userId == -1) throw new HException("无法操作系统管理员账户");
             await _userRep.DeleteAysnc(userId);
             await RedisHelper.DelAsync(_appsettings.RedisPrefixOptions.LoginInfo + userId);
         }
@@ -171,13 +169,12 @@ namespace Hao.AppService
         /// 注销/启用
         /// </summary>
         /// <param name="userId"></param>
+        /// <param name="enabled"></param>
         /// <returns></returns>
         public async Task UpdateUserStatus(long userId, bool enabled)
         {
-            if (userId == _currentUser.Id)
-                throw new HException("无法操作当前登录用户");
-            if (userId == -1) 
-                throw new HException("无法操作系统管理员账户");
+            if (userId == _currentUser.Id) throw new HException("无法操作当前登录用户");
+            if (userId == -1) throw new HException("无法操作系统管理员账户");
             var user = await GetUserDetail(userId);
             user.Enabled = enabled;
             await _userRep.UpdateAsync(user, user => new { user.Enabled });
@@ -192,8 +189,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task EditUser(long userId, UserUpdateRequest vm)
         {
-            if (userId == -1) 
-                throw new HException("无法操作系统管理员账户");
+            if (userId == -1) throw new HException("无法操作系统管理员账户");
             var user = await GetUserDetail(userId);
             user.Name = vm.Name;
             user.Age = vm.Age;
@@ -202,8 +198,6 @@ namespace Hao.AppService
             user.Email = vm.Email;
             user.WeChat = vm.WeChat;
             user.QQ = vm.QQ;
-            user.RoleId = vm.RoleId;
-            user.RoleName = vm.RoleName;
             await _userRep.UpdateAsync(user,
                 user => new { user.Name, user.Age, user.Gender, user.Phone, user.Email, user.WeChat, user.QQ, user.RoleId, user.RoleName });
         }
