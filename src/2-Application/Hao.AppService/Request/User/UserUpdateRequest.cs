@@ -37,16 +37,6 @@ namespace Hao.AppService
         /// QQ
         /// </summary>
         public string QQ { get; set; }
-
-        /// <summary>
-        /// 角色id
-        /// </summary>
-        public long? RoleId { get; set; }
-
-        /// <summary>
-        /// 角色名称
-        /// </summary>
-        public string RoleName { get; set; }
     }
 
     public class UserUpdateRequestValidator : AbstractValidator<UserUpdateRequest>
@@ -58,11 +48,7 @@ namespace Hao.AppService
 
             RuleFor(x => x.Gender).NotEmpty().WithMessage("性别不能为空").IsInEnum().WithMessage("性别数据有误");
 
-            RuleFor(x => x.RoleId).NotEmpty().WithMessage("角色Id不能为空");
-
             RuleFor(x => x.Age).NotEmpty().WithMessage("年龄不能为空");
-
-            RuleFor(x => x.RoleName).NotEmpty().WithMessage("角色名称不能为空");
         }
     }
 }

@@ -66,11 +66,17 @@ namespace Hao.AppService
             });
             if (users.Count > 0)
                 throw new HException("账号已存在，请重新输入");
+
+            var role = await _roleRep.GetAysnc(vm.RoleId.Value);
+            if (role.IsDeleted) throw new HException("角色已删除，请重新添加");
+
             var user = _mapper.Map<SysUser>(vm);
             user.FirstNameSpell = HSpell.GetFirstLetter(user.Name.ToCharArray()[0]);
             user.PasswordLevel = (PasswordLevel)HUtil.CheckPasswordLevel(user.Password);
             user.Password = EncryptProvider.HMACSHA256(user.Password, _appsettings.KeyInfo.Sha256Key);
             user.Enabled = true;
+            user.RoleId = role.Id;
+            user.RoleName = role.Name;
             await _userRep.InsertAysnc(user);
         }
 
