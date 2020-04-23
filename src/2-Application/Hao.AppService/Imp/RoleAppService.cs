@@ -1,6 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using AutoMapper;
 using DotNetCore.CAP;
@@ -11,7 +11,6 @@ using Hao.EventData;
 using Hao.Model;
 using Hao.Repository;
 using Hao.RunTimeException;
-using Newtonsoft.Json;
 using Npgsql;
 
 namespace Hao.AppService
@@ -98,7 +97,7 @@ namespace Hao.AppService
                 authNumbers.Add(authNumber);
             }
 
-            role.AuthNumbers = JsonConvert.SerializeObject(authNumbers);
+            role.AuthNumbers = JsonSerializer.Serialize(authNumbers);
             var users = await _userRep.GetListAysnc(new UserQuery() { RoleId = role.Id });
             var ids = users.Where(a => a.AuthNumbers != role.AuthNumbers).Select(a => a.Id).ToList();
 
@@ -122,7 +121,7 @@ namespace Hao.AppService
         public async Task<RoleModuleVM> GetRoleModule(long id)
         {
             var role = await GetRoleDetail(id);
-            var authNumbers = string.IsNullOrWhiteSpace(role.AuthNumbers) ? null : JsonConvert.DeserializeObject<List<long>>(role.AuthNumbers);
+            var authNumbers = string.IsNullOrWhiteSpace(role.AuthNumbers) ? null : JsonSerializer.Deserialize<List<long>>(role.AuthNumbers);
             var modules = await _moduleRep.GetListAysnc();
             var result = new RoleModuleVM();
             result.Nodes = new List<RoleModuleItemVM>();
