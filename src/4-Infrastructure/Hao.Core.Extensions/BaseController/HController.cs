@@ -57,10 +57,12 @@ namespace Hao.Core.Extensions
 
             var cacheUser = JsonSerializer.Deserialize<RedisCacheUserInfo>(value);
 
-            if (cacheUser.LoginStatus == LoginStatus.Offline && cacheUser.IsAuthUpdate.HasValue && cacheUser.IsAuthUpdate.Value) 
-                throw new HException(ErrorInfo.E100003, nameof(ErrorInfo.E100003).GetErrorCode());
+            if (cacheUser.LoginStatus.HasValue
+                && cacheUser.LoginStatus == LoginStatus.Offline 
+                && cacheUser.IsAuthUpdate.HasValue 
+                && cacheUser.IsAuthUpdate.Value) throw new HException(ErrorInfo.E100003, nameof(ErrorInfo.E100003).GetErrorCode());
 
-            if (cacheUser.LoginStatus == LoginStatus.Offline) throw new HException(ErrorInfo.E100002, nameof(ErrorInfo.E100002).GetErrorCode());
+            if (!cacheUser.LoginStatus.HasValue || cacheUser.LoginStatus == LoginStatus.Offline) throw new HException(ErrorInfo.E100002, nameof(ErrorInfo.E100002).GetErrorCode());
 
 
             var descriptor = context.ActionDescriptor as ControllerActionDescriptor;
