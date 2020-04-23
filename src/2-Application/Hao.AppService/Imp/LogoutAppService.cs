@@ -36,7 +36,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task LogoutByUpdateAuth(long userId)
         {
-            var keys = RedisHelper.Keys($"{_appsettings.RedisPrefixOptions.LoginInfo}{userId}_*");
+            var keys = await RedisHelper.KeysAsync($"{_appsettings.RedisPrefixOptions.LoginInfo}{userId}_*");
             foreach(var key in keys)
             {
                 var value = await RedisHelper.GetAsync(key);
