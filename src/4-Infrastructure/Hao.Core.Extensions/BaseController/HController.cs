@@ -70,7 +70,7 @@ namespace Hao.Core.Extensions
             {
                 var authInfos = attribute.ConstructorArguments.FirstOrDefault().Value.ToString().Split('_');
 
-                if (authInfos.Length != 2) throw new HException("权限值有误，请重新配置");
+                if (authInfos.Length != 2) throw new HException("接口权限值有误，请重新配置");
 
                 var layer = int.Parse(authInfos[0]) - 1;
                 var authCode = long.Parse(authInfos[1]);
