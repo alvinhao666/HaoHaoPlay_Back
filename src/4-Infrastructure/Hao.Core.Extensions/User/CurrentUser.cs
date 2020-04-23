@@ -32,6 +32,16 @@ namespace Hao.Core.Extensions
             get => _httpContext == null ? "系统" : _httpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimsName.Name)?.Value.ToString();
         }
 
+        public string Jti 
+        {
+            get
+            {
+                if (_httpContext == null) return "";
+                var jti = _httpContext.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti)?.Value;
+                return jti;
+            }
+        }
+
         ///// <summary>
         /////用户编号 
         ///// </summary>

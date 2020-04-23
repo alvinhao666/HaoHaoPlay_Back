@@ -2,8 +2,10 @@
 {
     public interface ICurrentUser
     {
-        long Id { get; }
+        public long Id { get; }
 
-        string Name { get; }
+        public string Name { get; }
+
+        public string Jti { get; }
     }
 }

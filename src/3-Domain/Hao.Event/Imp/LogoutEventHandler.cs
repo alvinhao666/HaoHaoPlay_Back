@@ -24,7 +24,7 @@ namespace Hao.Event
         {
             foreach(var id in person.UserIds)
             {
-                await _logoutService.Logout(id);
+                await _logoutService.LogoutByUpdateAuth(id);
             }
         }
     }

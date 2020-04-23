@@ -22,5 +22,30 @@ namespace Hao.Library
         /// token值
         /// </summary>
         public string Jwt { get; set; }
+
+        /// <summary>
+        /// 登录状态
+        /// </summary>
+        public LoginStatus? LoginStatus { get; set; }
+
+        /// <summary>
+        /// 是否权限更新
+        /// </summary>
+        public bool? IsAuthUpdate { get; set; }
+    }
+
+    /// <summary>
+    /// 登录状态
+    /// </summary>
+    public enum LoginStatus
+    {
+        /// <summary>
+        /// 未登录
+        /// </summary>
+        Offline,
+        /// <summary>
+        /// 登录
+        /// </summary>
+        Online
     }
 }

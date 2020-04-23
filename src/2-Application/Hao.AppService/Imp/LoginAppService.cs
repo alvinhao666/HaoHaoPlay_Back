@@ -38,6 +38,8 @@ namespace Hao.AppService
 
         private readonly HttpContext _httpContext;
 
+        private const string _noAuthTip= "没有系统权限，暂时无法登录，请联系管理员";
+
         public LoginAppService(IHttpContextAccessor httpContextAccessor,
             ISysUserRepository userRep,
             ISysModuleRepository moduleRep,
@@ -63,24 +65,28 @@ namespace Hao.AppService
         public async Task<LoginVM> Login(string loginName, string password, bool isRememberLogin)
         {
             var timeNow = DateTime.Now;
+            var expireTime = timeNow.AddDays(isRememberLogin ? 3 : 1);
 
-            password = RSAHelper.Decrypt(_appsettings.KeyInfo.RsaPrivateKey, password); //解密
+            password = RSAHelper.Decrypt(_appsettings.KeyInfo.RsaPrivateKey, password); //rsa解密
 
-            password = EncryptProvider.HMACSHA256(password, _appsettings.KeyInfo.Sha256Key);
+            password = EncryptProvider.HMACSHA256(password, _appsettings.KeyInfo.Sha256Key); //sha256加密
 
             var user = await GetUser(loginName, password);
 
-            var jwt = CreateJwt(timeNow, user, isRememberLogin);
-
-            if (string.IsNullOrWhiteSpace(user.AuthNumbers)) throw new HException("没有系统权限，暂时无法登录");
+            if (string.IsNullOrWhiteSpace(user.AuthNumbers)) throw new HException(_noAuthTip);
 
             var authNums = JsonSerializer.Deserialize<List<long>>(user.AuthNumbers);
+
+            if (authNums.Count == 0) throw new HException(_noAuthTip);
 
             var modules = await _moduleRep.GetListAysnc(new ModuleQuery() { IncludeResource = false });
             var menus = new List<MenuVM>();
             InitMenuTree(menus, 0, modules, authNums, user.Id); //找主菜单一级 parentId=0
 
-            if (menus.Count == 0) throw new HException("没有系统权限，暂时无法登录");
+            if (menus.Count == 0) throw new HException(_noAuthTip);
+
+            var jti = Guid.NewGuid().ToString();//jwt的唯一身份标识，避免重复
+            var jwt = CreateJwt(timeNow, expireTime, jti, user); //生成jwt
 
             //存入redis
             var userValue = new RedisCacheUserInfo
@@ -88,11 +94,14 @@ namespace Hao.AppService
                 Id = user.Id,
                 Name = user.Name,
                 AuthNumbers = authNums,
-                Jwt = jwt
+                Jwt = jwt,
+                LoginStatus = LoginStatus.Online
             };
 
-            await RedisHelper.SetAsync(_appsettings.RedisPrefixOptions.LoginInfo + user.Id, JsonSerializer.Serialize(userValue));
+            int expireSeconds = (int)expireTime.Subtract(timeNow).Duration().TotalSeconds + 1;
+            await RedisHelper.SetAsync($"{_appsettings.RedisPrefixOptions.LoginInfo}{user.Id}_{jti}", JsonSerializer.Serialize(userValue), expireSeconds);
 
+            //同步登录信息，例如ip等等
             await AsyncLoginInfo(user.Id, timeNow);
 
             return new LoginVM()
@@ -133,15 +142,16 @@ namespace Hao.AppService
         /// 生成Jwt
         /// </summary>
         /// <param name="timeNow"></param>
+        /// <param name="expireTime"></param>
+        /// <param name="jti"></param>
         /// <param name="user"></param>
-        /// <param name="isRememberLogin"></param>
         /// <returns></returns>
-        private string CreateJwt(DateTime timeNow, SysUser user, bool isRememberLogin)
+        private string CreateJwt(DateTime timeNow, DateTime expireTime,string jti, SysUser user)
         {
             var claims = new Claim[]
             {
                 new Claim(JwtRegisteredClaimNames.Sub, _appsettings.JwtOptions.Subject), //主题
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()), //针对当前 token 的唯一标识
+                new Claim(JwtRegisteredClaimNames.Jti, jti), //针对当前 token 的唯一标识 jwt的唯一身份标识，避免重复
                 new Claim(JwtRegisteredClaimNames.Sid, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Iat, timeNow.Ticks.ToString(), ClaimValueTypes.Integer64), //token 创建时间
                 new Claim(ClaimsName.Name, user.Name)
@@ -152,7 +162,7 @@ namespace Hao.AppService
                 audience: _appsettings.JwtOptions.Audience,
                 claims: claims,
                 notBefore: timeNow, //生效时间
-                expires: timeNow.AddDays(isRememberLogin ? 3 : 1),//过期时间
+                expires: expireTime,//过期时间
                 signingCredentials: _appsettings.JwtOptions.SigningCredentials
             ));
 

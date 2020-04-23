@@ -31,7 +31,10 @@ namespace Hao.Core.Extensions
         {
 
             var userId = User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sid)?.Value; //Security Identifiers安全标识符
-            if (userId == null) throw new HException(ErrorInfo.E100002, nameof(ErrorInfo.E100002).GetErrorCode());
+
+            var jti = User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti)?.Value;
+
+            if (string.IsNullOrWhiteSpace(userId) || string.IsNullOrWhiteSpace(jti)) throw new HException(ErrorInfo.E100002, nameof(ErrorInfo.E100002).GetErrorCode());
 
             var traceId = context.HttpContext.TraceIdentifier;
             var path = context.HttpContext.Request.Path.Value;
@@ -48,16 +51,17 @@ namespace Hao.Core.Extensions
                 Description = "请求信息"
             });
 
-            var value = RedisHelper.Get(AppsettingsOptions.Value.RedisPrefixOptions.LoginInfo + userId);
+            var value = RedisHelper.Get($"{AppsettingsOptions.Value.RedisPrefixOptions.LoginInfo}{userId}_{jti}");
 
             if (value == null) throw new HException(ErrorInfo.E100002, nameof(ErrorInfo.E100002).GetErrorCode());        
 
             var cacheUser = JsonSerializer.Deserialize<RedisCacheUserInfo>(value);
 
-            var strToken = context.HttpContext.Request.Headers["Authorization"].ToString();
-            if (!strToken.StartsWith("Bearer ")) throw new HException("http请求头部信息Authorization参数有误");
-            var jwt = strToken.Remove(0, 7);
-            if (cacheUser.Jwt != jwt) throw new HException(ErrorInfo.E100003, nameof(ErrorInfo.E100003).GetErrorCode());
+            if (cacheUser.LoginStatus == LoginStatus.Offline && cacheUser.IsAuthUpdate.HasValue && cacheUser.IsAuthUpdate.Value) 
+                throw new HException(ErrorInfo.E100003, nameof(ErrorInfo.E100003).GetErrorCode());
+
+            if (cacheUser.LoginStatus == LoginStatus.Offline) throw new HException(ErrorInfo.E100002, nameof(ErrorInfo.E100002).GetErrorCode());
+
 
             var descriptor = context.ActionDescriptor as ControllerActionDescriptor;
             var attribute = descriptor.MethodInfo.CustomAttributes.FirstOrDefault(x => x.AttributeType == typeof(AuthCodeAttribute));
