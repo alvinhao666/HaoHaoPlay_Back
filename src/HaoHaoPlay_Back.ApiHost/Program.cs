@@ -28,6 +28,7 @@ namespace HaoHaoPlay.ApiHost
                     builder.RegisterAssemblyTypes(
                         Assembly.Load("Hao.Core"), 
                         Assembly.Load("Hao.Repository"),
+                        Assembly.Load("Hao.Event"),
                         Assembly.Load("Hao.AppService"))
                         .Where(m => typeof(ITransientDependency).IsAssignableFrom(m) && m != typeof(ITransientDependency)) //直接或间接实现了ITransientDependency
                         .AsImplementedInterfaces().InstancePerDependency().PropertiesAutowired();

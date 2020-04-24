@@ -132,8 +132,8 @@ namespace HaoHaoPlay.ApiHost
             services.AddPostgreSQLService(appSettings.ConnectionStrings.PostgreSqlConnection);
 
             //Note: The injection of services needs before of `services.AddCap()`
-            services.AutoDependency(typeof(ILoginEventHandler));
-
+            services.AddTransient<ILoginSubscribe, LoginSubscribe>();
+            services.AddTransient<ILogoutSubscribe, LogoutSubscribe>();
             //CAP
             services.AddCapService(new HCapConfig() {
                 PostgreSqlConnection = appSettings.ConnectionStrings.PostgreSqlConnection,

@@ -11,15 +11,8 @@ namespace Hao.AppService
         /// 注销当前登录
         /// </summary>
         /// <param name="userId"></param>
-        /// <param name="jwt"></param>
+        /// <param name="jti"></param>
         /// <returns></returns>
         Task Logout(long userId, string jti);
-
-        /// <summary>
-        /// 更新权限后,该账户所有登录注销
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <returns></returns>
-        Task LogoutByUpdateAuth(long userId);
     }
 }

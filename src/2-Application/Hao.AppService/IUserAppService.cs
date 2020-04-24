@@ -50,15 +50,6 @@ namespace Hao.AppService
         Task<UserDetailVM> GetUser(long id);
 
         /// <summary>
-        /// 更新登录时间和ip
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="lastLoginTime"></param>
-        /// <param name="ip"></param>
-        /// <returns></returns>
-        Task UpdateLogin(long userId, DateTime lastLoginTime, string ip);
-
-        /// <summary>
         /// 删除用户
         /// </summary>
         /// <param name="userId"></param>

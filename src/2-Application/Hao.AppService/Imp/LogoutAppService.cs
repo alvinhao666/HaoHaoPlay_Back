@@ -28,23 +28,5 @@ namespace Hao.AppService
             cacheUser.LoginStatus = LoginStatus.Offline;
             await RedisHelper.SetAsync($"{_appsettings.RedisPrefixOptions.LoginInfo}{userId}_{jwt}",JsonSerializer.Serialize(cacheUser));
         }
-
-        /// <summary>
-        /// 更新权限后,该账户所有登录注销
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <returns></returns>
-        public async Task LogoutByUpdateAuth(long userId)
-        {
-            var keys = await RedisHelper.KeysAsync($"{_appsettings.RedisPrefixOptions.LoginInfo}{userId}_*");
-            foreach(var key in keys)
-            {
-                var value = await RedisHelper.GetAsync(key);
-                var cacheUser = JsonSerializer.Deserialize<RedisCacheUserInfo>(value);
-                cacheUser.IsAuthUpdate = true;
-                cacheUser.LoginStatus = LoginStatus.Offline;
-                await RedisHelper.SetAsync(key, JsonSerializer.Serialize(cacheUser));
-            }
-        }
     }
 }
