@@ -28,6 +28,7 @@ using Hao.Json;
 using Hao.Core.Extensions;
 using Hao.Utility;
 using Hao.AppService;
+using DotNetCore.CAP;
 
 namespace HaoHaoPlay.ApiHost
 {
@@ -132,8 +133,13 @@ namespace HaoHaoPlay.ApiHost
             services.AddPostgreSQLService(appSettings.ConnectionStrings.PostgreSqlConnection);
 
             //Note: The injection of services needs before of `services.AddCap()`
-            services.AddTransient<ILoginSubscribe, LoginSubscribe>();
-            services.AddTransient<ILogoutSubscribe, LogoutSubscribe>();
+            services.Scan(a => {
+                a.FromAssembliesOf(typeof(LoginSubscribe))
+                    .AddClasses()
+                    .AsMatchingInterface((x, p) => typeof(ICapSubscribe).IsAssignableFrom(p.GetType())) //直接或间接实现了ICapSubscribe
+                    .WithTransientLifetime();
+            });
+
             //CAP
             services.AddCapService(new HCapConfig() {
                 PostgreSqlConnection = appSettings.ConnectionStrings.PostgreSqlConnection,
