@@ -30,6 +30,11 @@ namespace Hao.AppService
 
         public long? RoleId { get; set; }
 
+        /// <summary>
+        /// 当前用户角色等级
+        /// </summary>
+        public int? CurrentRoleLevel { get; set; }
+
         public override List<Expression<Func<SysUser, bool>>> QueryExpressions
         {
             get
@@ -44,6 +49,8 @@ namespace Hao.AppService
                 if (LastLoginTimeStart.HasValue) expressions.Add(x => x.LastLoginTime >= LastLoginTimeStart);
                 if (LastLoginTimeEnd.HasValue) expressions.Add(x => x.LastLoginTime <= LastLoginTimeEnd);
                 if (RoleId.HasValue) expressions.Add(x => x.RoleId == RoleId);
+
+                if (CurrentRoleLevel.HasValue) expressions.Add(x => x.RoleLevel > CurrentRoleLevel);
                 return expressions;
             }
         }

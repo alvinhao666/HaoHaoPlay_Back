@@ -69,6 +69,7 @@ namespace Hao.AppService
             var role = await _roleRep.GetAysnc(vm.RoleId.Value);
             if (role == null) throw new HException("角色不存在，请重新添加");
             if (role.IsDeleted) throw new HException("角色已删除，请重新添加");
+            if (role.Level <= _currentUser.RoleLevel) throw new HException("无法添加同级及高级角色用户");
 
             var user = _mapper.Map<SysUser>(vm);
             user.FirstNameSpell = HSpell.GetFirstLetter(user.Name.ToCharArray()[0]);
@@ -105,6 +106,8 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task<PagedList<UserItemVM>> GetUserPageList(UserQuery query)
         {
+            query.CurrentRoleLevel = _currentUser.RoleLevel; //只能获取角色等级低用户
+
             var users = await _userRep.GetPagedListAysnc(query);
             var result = _mapper.Map<PagedList<UserItemVM>>(users);
 
@@ -330,6 +333,7 @@ namespace Hao.AppService
             var user = await _userRep.GetAysnc(userId);
             if (user == null) throw new HException("用户不存在");
             if (user.IsDeleted) throw new HException("用户已删除");
+            if (user.RoleLevel <= _currentUser.RoleLevel) throw new HException("无法操作同级及高级角色用户");
             return user;
         }
 
