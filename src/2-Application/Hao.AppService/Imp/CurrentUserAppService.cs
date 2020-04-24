@@ -13,6 +13,9 @@ using System.Threading.Tasks;
 
 namespace Hao.AppService
 {
+    /// <summary>
+    /// 处理当前用户的服务
+    /// </summary>
     public partial class UserAppService
     {
         /// <summary>

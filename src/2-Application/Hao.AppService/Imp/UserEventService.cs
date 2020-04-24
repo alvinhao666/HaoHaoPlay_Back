@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Hao.AppService
 {
+    /// <summary>
+    /// 处理用户消息事件的服务
+    /// </summary>
     public partial class UserAppService
     {
         /// <summary>
@@ -19,6 +22,7 @@ namespace Hao.AppService
         public async Task UpdateLogin(long userId, DateTime lastLoginTime, string ip)
         {
             var user = await _userRep.GetAysnc(userId);
+            if (user == null) return;
             user.LastLoginTime = lastLoginTime;
             user.LastLoginIP = ip;
 
