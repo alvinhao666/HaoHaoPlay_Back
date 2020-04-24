@@ -19,9 +19,9 @@ namespace Hao.Core.Extensions
         /// <summary>
         ///用户编号 
         /// </summary>
-        public long Id
+        public long? Id
         {
-            get => _httpContext == null ? -1 : HConvert.ToLong0(_httpContext.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sid)?.Value);
+            get => _httpContext == null ? null : HConvert.ToLong(_httpContext.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sid)?.Value);
         }
 
         /// <summary>
@@ -29,22 +29,22 @@ namespace Hao.Core.Extensions
         /// </summary>
         public string Name
         {
-            get => _httpContext == null ? "系统" : _httpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimsName.Name)?.Value.ToString();
+            get => _httpContext == null ? null : _httpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimsName.Name)?.Value.ToString();
         }
 
         /// <summary>
         /// 用户角色等级
         /// </summary>
-        public int RoleLevel
+        public int? RoleLevel
         {
-            get => _httpContext == null ? 1 : HConvert.ToInt0(_httpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimsName.RoleLevel)?.Value);
+            get => _httpContext == null ? null : HConvert.ToInt(_httpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimsName.RoleLevel)?.Value);
         }
 
         public string Jti 
         {
             get
             {
-                if (_httpContext == null) return "";
+                if (_httpContext == null) return null;
                 var jti = _httpContext.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti)?.Value;
                 return jti;
             }

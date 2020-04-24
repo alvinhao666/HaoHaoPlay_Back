@@ -50,12 +50,6 @@ namespace Hao.AppService
         Task<UserDetailVM> GetUser(long id);
 
         /// <summary>
-        /// 当前用户信息
-        /// </summary>
-        /// <returns></returns>
-        Task<CurrentUserVM> GetCurrent();
-
-        /// <summary>
         /// 更新登录时间和ip
         /// </summary>
         /// <param name="userId"></param>
@@ -93,6 +87,14 @@ namespace Hao.AppService
         /// <returns></returns>
         Task<bool> IsExistUser(UserQuery query);
 
+
+        #region 当前用户
+        /// <summary>
+        /// 当前用户信息
+        /// </summary>
+        /// <returns></returns>
+        Task<CurrentUserVM> GetCurrent();
+
         /// <summary>
         /// 更新头像
         /// </summary>
@@ -120,6 +122,6 @@ namespace Hao.AppService
         /// </summary>
         /// <returns></returns>
         Task<UserSecurityVM> GetCurrentSecurityInfo();
-
+        #endregion
     }
 }

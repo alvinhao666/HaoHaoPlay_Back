@@ -10,7 +10,6 @@ using Hao.Repository;
 using Hao.RunTimeException;
 using Hao.Utility;
 using Microsoft.Extensions.Options;
-using SixLabors.ImageSharp;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -19,13 +18,12 @@ using System.Threading.Tasks;
 
 namespace Hao.AppService
 {
-    public class UserAppService : ApplicationService, IUserAppService
+    public partial class UserAppService : ApplicationService, IUserAppService
     {
 
         private readonly IMapper _mapper;
 
         private readonly ISysUserRepository _userRep;
-
 
         private readonly ISysLoginRecordRepository _recordRep;
 
@@ -125,36 +123,6 @@ namespace Hao.AppService
             return _mapper.Map<UserDetailVM>(user);
         }
 
-        /// <summary>
-        /// 获取当前用户信息
-        /// </summary>
-        /// <returns></returns>
-        public async Task<CurrentUserVM> GetCurrent()
-        {
-            var user = await GetUserDetail(_currentUser.Id);
-            return _mapper.Map<CurrentUserVM>(user);
-        }
-
-
-        /// <summary>
-        /// 更新用户登录信息
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="lastLoginTime"></param>
-        /// <param name="ip"></param>
-        /// <returns></returns>
-
-        [UnitOfWork]
-        public async Task UpdateLogin(long userId, DateTime lastLoginTime, string ip)
-        {
-            var user = await GetUserDetail(userId);
-            user.LastLoginTime = lastLoginTime;
-            user.LastLoginIP = ip;
-
-            await _userRep.UpdateAsync(user, user => new { user.LastLoginTime, user.LastLoginIP });
-            await _recordRep.InsertAysnc(new SysLoginRecord() { UserId = user.Id, IP = user.LastLoginIP, Time = user.LastLoginTime });
-        }
-
 
         /// <summary>
         /// 删除用户
@@ -163,9 +131,9 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task DeleteUser(long userId)
         {
-            if (userId == _currentUser.Id) throw new HException("无法操作当前登录用户");
-            if (userId == -1) throw new HException("无法操作系统管理员账户");
-            await _userRep.DeleteAysnc(userId);
+            CheckUser(userId);
+            var user = await GetUserDetail(userId);
+            await _userRep.DeleteAysnc(user.Id);
             await RedisHelper.DelAsync(_appsettings.RedisPrefixOptions.LoginInfo + userId);
         }
 
@@ -177,8 +145,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task UpdateUserStatus(long userId, bool enabled)
         {
-            if (userId == _currentUser.Id) throw new HException("无法操作当前登录用户");
-            if (userId == -1) throw new HException("无法操作系统管理员账户");
+            CheckUser(userId);
             var user = await GetUserDetail(userId);
             user.Enabled = enabled;
             await _userRep.UpdateAsync(user, user => new { user.Enabled });
@@ -194,7 +161,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task EditUser(long userId, UserUpdateRequest vm)
         {
-            if (userId == -1) throw new HException("无法操作系统管理员账户");
+            CheckUser(userId);
             var user = await GetUserDetail(userId);
             user.Name = vm.Name;
             user.Age = vm.Age;
@@ -218,80 +185,6 @@ namespace Hao.AppService
             return users.Count > 0;
         }
 
-
-        /// <summary>
-        /// 更新头像地址 (ImageSharp)
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        public async Task UpdateCurrentHeadImg(UpdateHeadImgRequest request)
-        {
-            string[] str = request.Base64Str.Split(',');  //base64Str为base64完整的字符串，先处理一下得到我们所需要的字符串
-            byte[] imageBytes = Convert.FromBase64String(str[1]);
-
-            HFile.CreateDirectory(PathInfo.AvatarPath);
-            string imgName = $"{_currentUser.Id}_{HUtil.GetTimeStamp()}.png";
-            string imgPath = Path.Combine(PathInfo.AvatarPath, imgName);
-            using (SixLabors.ImageSharp.Image image = SixLabors.ImageSharp.Image.Load(imageBytes)) 
-            {
-                image.Save(imgPath);
-            }  
-            var user = await GetUserDetail(_currentUser.Id);
-            string oldImgUrl = user.HeadImgUrl;
-            user.HeadImgUrl = imgName;
-            await _userRep.UpdateAsync(user, user => new { user.HeadImgUrl });
-            if (!string.IsNullOrWhiteSpace(oldImgUrl))
-            {
-                HFile.DeleteFile(Path.Combine(PathInfo.AvatarPath, oldImgUrl));
-            }
-
-        }
-
-        /// <summary>
-        /// 更新当前用户基本信息
-        /// </summary>
-        /// <param name="vm"></param>
-        /// <returns></returns>
-        public async Task UpdateCurrentBaseInfo(CurrentUserUpdateRequest vm)
-        {
-            var user = await GetUserDetail(_currentUser.Id);
-            user.Name = vm.Name;
-            user.Age = vm.Age;
-            user.Gender = vm.Gender;
-            user.NickName = vm.NickName;
-            user.Profile = vm.Profile;
-            user.HomeAddress = vm.HomeAddress;
-            user.FirstNameSpell = HSpell.GetFirstLetter(user.Name.ToCharArray()[0]);
-            await _userRep.UpdateAsync(user,
-                user => new { user.Name, user.Age, user.Gender, user.NickName, user.Profile, user.HomeAddress,user.FirstNameSpell });
-        }
-
-        /// <summary>
-        /// 更新当前用户密码
-        /// </summary>
-        /// <param name="oldPassword"></param>
-        /// <param name="newPassword"></param>
-        /// <returns></returns>
-        public async Task UpdateCurrentPassword(string oldPassword, string newPassword)
-        {
-            var user = await GetUserDetail(_currentUser.Id);
-            oldPassword = EncryptProvider.HMACSHA256(oldPassword, _appsettings.KeyInfo.Sha256Key);
-            if (user.Password != oldPassword) throw new HException("原密码错误");
-            user.PasswordLevel = (PasswordLevel)HUtil.CheckPasswordLevel(newPassword);
-            newPassword = EncryptProvider.HMACSHA256(newPassword, _appsettings.KeyInfo.Sha256Key);
-            user.Password = newPassword;
-            await _userRep.UpdateAsync(user, user => new {user.Password, user.PasswordLevel});
-        }
-
-        /// <summary>
-        /// 当前用户安全信息
-        /// </summary>
-        public async Task<UserSecurityVM> GetCurrentSecurityInfo()
-        {
-            var user = await GetUserDetail(_currentUser.Id);
-            var result =  _mapper.Map<UserSecurityVM>(user);
-            return result;
-        }
 
         /// <summary>
         /// 导出用户
@@ -325,10 +218,22 @@ namespace Hao.AppService
             return fileName;
         }
 
-
-
         #region private
+        /// <summary>
+        /// 检测用户
+        /// </summary>
+        /// <param name="userId"></param>
+        private void CheckUser(long userId)
+        {
+            if (userId == _currentUser.Id) throw new HException("无法操作当前登录用户");
+            if (userId == -1) throw new HException("无法操作系统管理员账户");
+        }
 
+        /// <summary>
+        /// 获取用户详情
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         private async Task<SysUser> GetUserDetail(long userId)
         {
             var user = await _userRep.GetAysnc(userId);
@@ -337,8 +242,6 @@ namespace Hao.AppService
             if (user.RoleLevel <= _currentUser.RoleLevel) throw new HException("无法操作同级及高级角色用户");
             return user;
         }
-
-
         #endregion
     }
 }
