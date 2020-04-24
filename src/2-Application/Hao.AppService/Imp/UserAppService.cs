@@ -182,6 +182,7 @@ namespace Hao.AppService
             var user = await GetUserDetail(userId);
             user.Enabled = enabled;
             await _userRep.UpdateAsync(user, user => new { user.Enabled });
+            // 注销用户，删除登录缓存
             if(!enabled) await RedisHelper.DelAsync(_appsettings.RedisPrefixOptions.LoginInfo + user.Id);
         }
 
