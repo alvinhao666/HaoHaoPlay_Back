@@ -3,8 +3,6 @@ using DotNetCore.CAP;
 using Hao.AppService;
 using Hao.Core;
 using Hao.EventData;
-using Hao.Model;
-using Hao.Repository;
 
 namespace Hao.Event
 {

@@ -19,28 +19,25 @@ namespace HaoHaoPlay.ApiHost
         public static void Main(string[] args)
         {
             Host.CreateDefaultBuilder(args)
-                .UseServiceProviderFactory(new AutofacServiceProviderFactory())
-                .ConfigureContainer<ContainerBuilder>(builder =>
+                .UseServiceProviderFactory(new AutofacServiceProviderFactory(builder=>
                 {
                     //InstancePerLifetimeScope：同一个Lifetime生成的对象是同一个实例；
                     //SingleInstance：单例模式，每次调用，都会使用同一个实例化的对象；每次都用同一个对象；
                     //InstancePerDependency：默认模式，每次调用，都会重新实例化对象；每次请求都创建一个新的对象；
-                    builder.RegisterAssemblyTypes(Assembly.Load("Hao.Repository"), Assembly.Load("Hao.Core"))
-                        .Where(m => typeof(ITransientDependency).IsAssignableFrom(m) && m != typeof(ITransientDependency)) //直接或间接实现了ITransientDependency
-                        .AsImplementedInterfaces().InstancePerLifetimeScope().PropertiesAutowired();
-                
-                    builder.RegisterAssemblyTypes(Assembly.Load("Hao.AppService"), Assembly.Load("Hao.Event"))
-                            .Where(m => typeof(ITransientDependency).IsAssignableFrom(m) && m != typeof(ITransientDependency))
-                            .AsImplementedInterfaces().InstancePerLifetimeScope().PropertiesAutowired();
-                    //一定要在你注入的服务后面加上EnableInterfaceInterceptors来开启你的拦截(aop)
 
+                    builder.RegisterAssemblyTypes(
+                        Assembly.Load("Hao.Core"), 
+                        Assembly.Load("Hao.Repository"),
+                        Assembly.Load("Hao.AppService"))
+                        .Where(m => typeof(ITransientDependency).IsAssignableFrom(m) && m != typeof(ITransientDependency)) //直接或间接实现了ITransientDependency
+                        .AsImplementedInterfaces().InstancePerDependency().PropertiesAutowired();
 
                     var types = typeof(LoginController).Assembly.GetExportedTypes().Where(type => typeof(ControllerBase).IsAssignableFrom(type)).ToArray();
                     builder.RegisterTypes(types).PropertiesAutowired();
 
                     //调用RegisterDynamicProxy扩展方法在Autofac中注册动态代理服务和动态代理配置 aop
-                    builder.RegisterDynamicProxy(); 
-                })
+                    builder.RegisterDynamicProxy();
+                }))
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.ConfigureLogging((hostingContext, logging) =>

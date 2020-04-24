@@ -175,16 +175,13 @@ namespace HaoHaoPlay.ApiHost
             services.AutoDependency(typeof(ILoginEventHandler));
 
 
-      
             #region AutoMapper
             services.AddSingleton<IMapper>(new Mapper(new MapperConfiguration(cfg =>
             {
                 Hao.WebApi.MapperInit.Map(cfg);
                 Hao.AppService.MapperInit.Map(cfg);
             })));
-            #endregion
-            
-            // services.BuildServiceContextProvider();
+            #endregion 
         }
 
 
