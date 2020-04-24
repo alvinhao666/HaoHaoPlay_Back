@@ -15,6 +15,9 @@ namespace Hao.Model
         /// </summary>
         public string AuthNumbers { get; set; }
         
-        public  int Sort { get; set; }
+        /// <summary>
+        /// 角色等级
+        /// </summary>
+        public int? Level { get; set; }
     }
 }

@@ -68,7 +68,7 @@ namespace Hao.AppService
                 var resources = await _moduleRep.GetListAysnc(new ModuleQuery()
                 {
                     ParentId = id,
-                    OrderFileds = "sort,createtime"
+                    OrderFileds = $"{nameof(SysModule.Sort)},{nameof(SysModule.CreateTime)}"
                 });
                 result.Resources = _mapper.Map<List<ResourceItemVM>>(resources);
             }

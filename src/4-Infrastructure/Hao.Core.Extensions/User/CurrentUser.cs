@@ -32,6 +32,14 @@ namespace Hao.Core.Extensions
             get => _httpContext == null ? "系统" : _httpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimsName.Name)?.Value.ToString();
         }
 
+        /// <summary>
+        /// 用户角色等级
+        /// </summary>
+        public int RoleLevel
+        {
+            get => _httpContext == null ? 1 : HConvert.ToInt0(_httpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimsName.RoleLevel)?.Value);
+        }
+
         public string Jti 
         {
             get

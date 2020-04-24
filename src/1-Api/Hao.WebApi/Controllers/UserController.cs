@@ -59,7 +59,7 @@ namespace Hao.WebApi.Controllers
         /// <returns></returns>
         [HttpGet("GetRole")]
         [AuthCode("1_32")]
-        public async Task<List<RoleVM>> GetRoleList() => await _roleAppService.GetRoleList();
+        public async Task<List<RoleSelectVM>> GetRoleList() => await _roleAppService.GetRoleListByCurrentRole();
 
         /// <summary>
         /// 是否存在用户

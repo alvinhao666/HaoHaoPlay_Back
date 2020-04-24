@@ -125,11 +125,7 @@ namespace Hao.AppService
         /// <returns></returns>
         private async Task<SysUser> GetUser(string loginName, string password)
         {
-            var users = await _userRep.GetListAysnc(new LoginQuery()
-            {
-                LoginName = loginName,
-                Password = password,
-            });
+            var users = await _userRep.GetUserByLoginName(loginName, password);
 
             if (users.Count == 0) throw new HException("用户名或密码错误");
             if (users.Count > 1) throw new HException("用户数据异常，存在相同用户");
@@ -154,7 +150,8 @@ namespace Hao.AppService
                 new Claim(JwtRegisteredClaimNames.Jti, jti), //针对当前 token 的唯一标识 jwt的唯一身份标识，避免重复
                 new Claim(JwtRegisteredClaimNames.Sid, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Iat, timeNow.Ticks.ToString(), ClaimValueTypes.Integer64), //token 创建时间
-                new Claim(ClaimsName.Name, user.Name)
+                new Claim(ClaimsName.Name, user.Name),
+                new Claim(ClaimsName.RoleLevel, user.RoleLevel.ToString())
             };
 
             var jwt = new JwtSecurityTokenHandler().WriteToken(new JwtSecurityToken(

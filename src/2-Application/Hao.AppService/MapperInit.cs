@@ -52,7 +52,8 @@ namespace Hao.AppService
 
             #region 角色
             cfg.CreateMap<SysRole, RoleVM>();
-            
+
+            cfg.CreateMap<SysRole, RoleSelectVM>();
             #endregion
 
         }

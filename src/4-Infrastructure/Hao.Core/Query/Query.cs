@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using SqlSugar;
 
 namespace Hao.Core
 {
@@ -22,6 +21,6 @@ namespace Hao.Core
 
         public virtual string OrderFileds { get; set; }
 
-        public OrderByType? OrderByType { get; set; }
+        //public OrderByType? OrderByType { get; set; }
     }
 }

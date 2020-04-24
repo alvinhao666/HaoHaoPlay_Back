@@ -13,6 +13,6 @@ namespace Hao.Core
 
         string OrderFileds { get; set; }
 
-        OrderByType? OrderByType { get; set; }
+        //OrderByType? OrderByType { get; set; }
     }
 }

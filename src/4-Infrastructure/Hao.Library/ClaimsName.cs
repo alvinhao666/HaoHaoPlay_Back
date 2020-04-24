@@ -10,14 +10,13 @@ namespace Hao.Library
     public static class ClaimsName
     {
         /// <summary>
-        /// 用户唯一码
-        /// </summary>
-
-        public const string UniqueKey = "yhuniquekey";
-
-        /// <summary>
         /// 用户姓名
         /// </summary>
         public const string Name = "yhxm";
+
+        /// <summary>
+        /// 用户角色等级
+        /// </summary>
+        public const string RoleLevel = "yhjsdj";
     }
 }

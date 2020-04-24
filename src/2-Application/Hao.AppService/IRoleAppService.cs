@@ -14,10 +14,16 @@ namespace Hao.AppService
         Task AddRole(RoleAddRequest vm);
 
         /// <summary>
-        /// 获取角色列表
+        /// 获取所有角色列表
         /// </summary>
         /// <returns></returns>
         Task<List<RoleVM>>  GetRoleList();
+
+        /// <summary>
+        /// 根据当前用户角色，获取可以操作得角色列表
+        /// </summary>
+        /// <returns></returns>
+        Task<List<RoleSelectVM>> GetRoleListByCurrentRole();
 
         /// <summary>
         /// 更新角色权限

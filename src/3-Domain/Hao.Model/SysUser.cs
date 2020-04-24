@@ -102,5 +102,9 @@ namespace Hao.Model
         /// </summary>
         public string AuthNumbers { get; set; }
 
+        /// <summary>
+        /// 角色等级
+        /// </summary>
+        public int? RoleLevel { get; set; }
     }
 }

@@ -15,6 +15,41 @@ namespace Hao.Repository
             _loginRecordRep = loginRecordRep;
         }
 
+        /// <summary>
+        /// 根据登录名密码查询用户
+        /// </summary>
+        /// <param name="loginName"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public async Task<List<SysUser>> GetUserByLoginName(string loginName, string password)
+        {
+            string sql = "select * from  sysuser where loginname=@loginName and password=@password";
+
+            List<SugarParameter> param = new List<SugarParameter>();
+            param.Add(new SugarParameter("@loginName", loginName));
+            param.Add(new SugarParameter("@password", password));
+
+            return await Db.Ado.SqlQueryAsync<SysUser>(sql, param);
+        }
+
+        /// <summary>
+        /// 更新角色权限
+        /// </summary>
+        /// <param name="roleId"></param>
+        /// <param name="authNumbers"></param>
+        /// <returns></returns>
+        public async Task UpdateAuth(long roleId, string authNumbers)
+        {
+
+            string sql = "update  sysuser set authNumbers=@authNumbers where roleid=@roleid";
+
+            List<SugarParameter> param = new List<SugarParameter>();
+            param.Add(new SugarParameter("@authNumbers", authNumbers));
+            param.Add(new SugarParameter("@roleid", roleId));
+
+            await Db.Ado.ExecuteCommandAsync(sql, param);
+        }
+
         //public override async Task<PagedList<Student>> GetPagedListAysnc(Query<Student> query)
         //{
         //    int totalNumber = 0;
@@ -56,24 +91,6 @@ namespace Hao.Repository
         //    };
         //    return pageList;
         //}
-
-        /// <summary>
-        /// 更新角色权限
-        /// </summary>
-        /// <param name="roleId"></param>
-        /// <param name="authNumbers"></param>
-        /// <returns></returns>
-        public async Task UpdateAuth(long roleId, string authNumbers)
-        {
-
-            string sql = "update  sysuser set authNumbers=@authNumbers where roleid=@roleid";
-
-            List<SugarParameter> param = new List<SugarParameter>();
-            param.Add(new SugarParameter("@authNumbers", authNumbers));
-            param.Add(new SugarParameter("@roleid", roleId));
-
-            await Db.Ado.ExecuteCommandAsync(sql, param);
-        }
 
     }
 }

@@ -27,13 +27,16 @@ namespace Hao.AppService
 
         private readonly ICapPublisher _publisher;
 
-        public RoleAppService(ICapPublisher publisher,ISysRoleRepository roleRep, ISysModuleRepository moduleRep, ISysUserRepository userRep, IMapper mapper)
+        private readonly ICurrentUser _currentUser;
+
+        public RoleAppService(ICurrentUser currentUser,ICapPublisher publisher,ISysRoleRepository roleRep, ISysModuleRepository moduleRep, ISysUserRepository userRep, IMapper mapper)
         {
             _roleRep = roleRep;
             _mapper = mapper;
             _moduleRep = moduleRep;
             _userRep = userRep;
             _publisher = publisher;
+            _currentUser = currentUser;
         }
 
 
@@ -56,19 +59,36 @@ namespace Hao.AppService
         }
 
         /// <summary>
-        /// 获取权限列表
+        /// 获取所有角色列表
         /// </summary>
         /// <returns></returns>
         public async Task<List<RoleVM>> GetRoleList()
         {
-            var roles = await _roleRep.GetListAysnc();
-            roles = roles.OrderBy(a => a.Sort).ToList();
+            var roles = await _roleRep.GetListAysnc(new RoleQuery()
+            {
+                OrderFileds = nameof(SysRole.Level)
+            });
             var result = _mapper.Map<List<RoleVM>>(roles);
             var roleUsers = await _roleRep.GetRoleUserCount();
             foreach (var item in result)
             {
                 item.UserCount = roleUsers.FirstOrDefault(a => a.RoleId == item.Id)?.UserCount ?? 0;
             }
+            return result;
+        }
+
+        /// <summary>
+        /// 根据当前用户角色，获取可以操作得角色列表
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<RoleSelectVM>> GetRoleListByCurrentRole()
+        {
+            var roles = await _roleRep.GetListAysnc(new RoleQuery()
+            {
+                CurrentRoleLevel = _currentUser.RoleLevel,
+                OrderFileds = nameof(SysRole.Level)
+            });
+            var result = _mapper.Map<List<RoleSelectVM>>(roles);
             return result;
         }
 
