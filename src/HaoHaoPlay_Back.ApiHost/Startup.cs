@@ -131,6 +131,9 @@ namespace HaoHaoPlay.ApiHost
             //ORM
             services.AddPostgreSQLService(appSettings.ConnectionStrings.PostgreSqlConnection);
 
+            //Note: The injection of services needs before of `services.AddCap()`
+            services.AutoDependency(typeof(ILoginEventHandler));
+
             //CAP
             services.AddCapService(new HCapConfig() {
                 PostgreSqlConnection = appSettings.ConnectionStrings.PostgreSqlConnection,
@@ -172,7 +175,6 @@ namespace HaoHaoPlay.ApiHost
 
             services.AddScoped<ICurrentUser, CurrentUser>();
             services.AddScoped<IHttpHelper, HttpHelper>();
-            services.AutoDependency(typeof(ILoginEventHandler));
 
 
             #region AutoMapper
