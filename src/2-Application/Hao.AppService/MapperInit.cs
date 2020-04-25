@@ -37,7 +37,9 @@ namespace Hao.AppService
 
 
             #region 模块
-            cfg.CreateMap<SysModule, ModuleDetailVM>();
+
+            cfg.CreateMap<SysModule, ModuleDetailVM>()
+                .ForMember(x => x.Code, a => a.MapFrom(x => string.Format("{0}_{1}", x.Layer, x.Number)));
 
             cfg.CreateMap<ModuleAddRequest, SysModule>();
             #endregion
