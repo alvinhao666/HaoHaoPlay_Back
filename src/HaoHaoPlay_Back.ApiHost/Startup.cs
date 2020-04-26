@@ -134,7 +134,7 @@ namespace HaoHaoPlay.ApiHost
 
             //Note: The injection of services needs before of `services.AddCap()`
             services.Scan(a => {
-                a.FromAssembliesOf(typeof(LoginSubscribe))
+                a.FromAssembliesOf(typeof(LoginEventDataSubscribe))
                     .AddClasses()
                     .AsMatchingInterface((x, p) => typeof(ICapSubscribe).IsAssignableFrom(p.GetType())) //直接或间接实现了ICapSubscribe
                     .WithTransientLifetime();

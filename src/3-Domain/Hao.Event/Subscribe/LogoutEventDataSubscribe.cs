@@ -9,18 +9,20 @@ using System.Threading.Tasks;
 
 namespace Hao.Event
 {
-
-    public interface ILogoutSubscribe
+    /// <summary>
+    /// 注销
+    /// </summary>
+    public interface ILogoutEventDataSubscribe
     {
         Task Logout(LogoutEventData data);
     }
 
-    public class LogoutSubscribe : ILogoutSubscribe, ICapSubscribe
+    public class LogoutEventDataSubscribe : ILogoutEventDataSubscribe, ICapSubscribe
     {
 
         private readonly ILogoutEventDataHandler _handler;
 
-        public LogoutSubscribe(ILogoutEventDataHandler handler)
+        public LogoutEventDataSubscribe(ILogoutEventDataHandler handler)
         {
             _handler = handler;
         }
