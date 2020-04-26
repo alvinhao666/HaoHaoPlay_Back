@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace Hao.Core
 {
-    public abstract class RepositoryBase<T, TKey> : IRepositoryBase<T, TKey>  where T : BaseEntity<TKey>, new() where TKey : struct
+    public abstract class BaseRepository<T, TKey> : IBaseRepository<T, TKey>  where T : BaseEntity<TKey>, new() where TKey : struct
     {
         public ISqlSugarClient Db { get; set; }
 

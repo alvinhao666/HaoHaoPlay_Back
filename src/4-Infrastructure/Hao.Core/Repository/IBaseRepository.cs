@@ -12,7 +12,7 @@ namespace Hao.Core
     /// </summary>
     /// <typeparam name="T">泛型实体类</typeparam>
     /// <typeparam name="TKey"></typeparam>
-    public interface IRepositoryBase<T, TKey> : ITransientDependency where T :IEntity<TKey>, new() where TKey : struct
+    public interface IBaseRepository<T, TKey> : ITransientDependency where T :IEntity<TKey>, new() where TKey : struct
     {
         /// <summary>
         /// 根据主键值查询单条数据
