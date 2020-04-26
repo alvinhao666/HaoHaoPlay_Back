@@ -24,7 +24,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task<CurrentUserVM> GetCurrent()
         {
-            var user = await GetUserDetail(_currentUser.Id.Value);
+            var user = await _userRep.GetAysnc(_currentUser.Id.Value);
             return _mapper.Map<CurrentUserVM>(user);
         }
 
@@ -45,7 +45,7 @@ namespace Hao.AppService
             {
                 image.Save(imgPath);
             }
-            var user = await GetUserDetail(_currentUser.Id.Value);
+            var user = await _userRep.GetAysnc(_currentUser.Id.Value);
             string oldImgUrl = user.HeadImgUrl;
             user.HeadImgUrl = imgName;
             await _userRep.UpdateAsync(user, user => new { user.HeadImgUrl });
@@ -63,7 +63,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task UpdateCurrentBaseInfo(CurrentUserUpdateRequest vm)
         {
-            var user = await GetUserDetail(_currentUser.Id.Value);
+            var user = await _userRep.GetAysnc(_currentUser.Id.Value);
             user.Name = vm.Name;
             user.Age = vm.Age;
             user.Gender = vm.Gender;
@@ -83,7 +83,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task UpdateCurrentPassword(string oldPassword, string newPassword)
         {
-            var user = await GetUserDetail(_currentUser.Id.Value);
+            var user = await _userRep.GetAysnc(_currentUser.Id.Value);
             oldPassword = EncryptProvider.HMACSHA256(oldPassword, _appsettings.KeyInfo.Sha256Key);
             if (user.Password != oldPassword) throw new HException("原密码错误");
             user.PasswordLevel = (PasswordLevel)HUtil.CheckPasswordLevel(newPassword);
@@ -97,7 +97,7 @@ namespace Hao.AppService
         /// </summary>
         public async Task<UserSecurityVM> GetCurrentSecurityInfo()
         {
-            var user = await GetUserDetail(_currentUser.Id.Value);
+            var user = await _userRep.GetAysnc(_currentUser.Id.Value);
             var result = _mapper.Map<UserSecurityVM>(user);
             return result;
         }
