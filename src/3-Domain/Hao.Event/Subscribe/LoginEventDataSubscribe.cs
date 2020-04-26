@@ -1,6 +1,5 @@
 ﻿using System.Threading.Tasks;
 using DotNetCore.CAP;
-using Hao.AppService;
 using Hao.EventData;
 
 namespace Hao.Event

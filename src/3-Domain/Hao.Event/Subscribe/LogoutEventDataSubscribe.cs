@@ -1,10 +1,5 @@
 ﻿using DotNetCore.CAP;
-using Hao.AppService;
-using Hao.Core;
 using Hao.EventData;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Hao.Event
