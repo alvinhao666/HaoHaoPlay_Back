@@ -15,17 +15,17 @@ namespace Hao.Event
     public class LogoutEventDataSubscribe : ILogoutEventDataSubscribe, ICapSubscribe
     {
 
-        private readonly ILogoutEventDataHandler _handler;
+        private readonly ILogoutEventDataConsumer _consumer;
 
-        public LogoutEventDataSubscribe(ILogoutEventDataHandler handler)
+        public LogoutEventDataSubscribe(ILogoutEventDataConsumer consumer)
         {
-            _handler = handler;
+            _consumer = consumer;
         }
 
         [CapSubscribe(nameof(LogoutEventData))]
         public async Task Logout(LogoutEventData data)
         {
-            await _handler.Logout(data);
+            await _consumer.Logout(data);
         }
     }
 }

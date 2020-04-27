@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace Hao.Event
 {
-    public class LogoutEventDataHandler : HEventHandler, ILogoutEventDataHandler
+    public class LogoutEventDataConsumer : HEventConsumer, ILogoutEventDataConsumer
     {
         private readonly AppSettingsInfo _appsettings;
 
-        public LogoutEventDataHandler(IOptionsSnapshot<AppSettingsInfo> appsettingsOptions)
+        public LogoutEventDataConsumer(IOptionsSnapshot<AppSettingsInfo> appsettingsOptions)
         {
             _appsettings = appsettingsOptions.Value;
         }

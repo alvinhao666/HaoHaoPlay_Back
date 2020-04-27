@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Hao.Event
 {
-    public interface ILoginEventDataHandler
+    public interface ILogoutEventDataConsumer
     {
-        Task UpdateLogin(LoginEventData person);
+        Task Logout(LogoutEventData data);
     }
 }

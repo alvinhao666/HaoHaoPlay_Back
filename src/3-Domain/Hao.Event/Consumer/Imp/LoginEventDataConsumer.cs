@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace Hao.Event
 {
-    public class LoginEventDataHandler : HEventHandler, ILoginEventDataHandler
+    public class LoginEventDataConsumer : HEventConsumer, ILoginEventDataConsumer
     {
         private readonly ISysUserRepository _userRep;
 
         private readonly ISysLoginRecordRepository _recordRep;
 
-        public LoginEventDataHandler(ISysUserRepository userRep, ISysLoginRecordRepository recordRep)
+        public LoginEventDataConsumer(ISysUserRepository userRep, ISysLoginRecordRepository recordRep)
         {
             _userRep = userRep;
             _recordRep = recordRep;

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Hao.Core
 {
-    public abstract class HEventHandler:IHEventHanlder
+    public abstract class HEventConsumer:IHEventConsumer
     {
         [AttributeUsage(AttributeTargets.Method)]
         protected class UnitOfWorkAttribute : AbstractInterceptorAttribute

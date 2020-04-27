@@ -15,18 +15,18 @@ namespace Hao.Event
     public class LoginEventDataSubscribe : ILoginEventDataSubscribe, ICapSubscribe
     {
 
-        private readonly ILoginEventDataHandler _handler;
+        private readonly ILoginEventDataConsumer _consumer;
 
 
-        public LoginEventDataSubscribe(ILoginEventDataHandler handler)
+        public LoginEventDataSubscribe(ILoginEventDataConsumer consumer)
         {
-            _handler = handler;
+            _consumer = consumer;
         }
 
         [CapSubscribe(nameof(LoginEventData))]
         public async Task UpdateLogin(LoginEventData person)
         {
-            await _handler.UpdateLogin(person);
+            await _consumer.UpdateLogin(person);
         }
     }
 }
