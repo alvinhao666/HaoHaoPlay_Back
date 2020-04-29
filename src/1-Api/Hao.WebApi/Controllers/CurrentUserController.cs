@@ -37,7 +37,7 @@ namespace Hao.WebApi.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPut("UpdateHeadImg")]
-        public async Task UpdateCurrentHeadImg([FromBody]UpdateHeadImgRequest request) => await _currentUserAppService.UpdateHeadImg(request);
+        public async Task UpdateHeadImg([FromBody]UpdateHeadImgRequest request) => await _currentUserAppService.UpdateHeadImg(request);
 
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace Hao.WebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPut("UpdateBaseInfo")]
-        public async Task UpdateCurrentBaseInfo([FromBody]CurrentUserUpdateRequest request) => await _currentUserAppService.UpdateBaseInfo(request);
+        public async Task UpdateBaseInfo([FromBody]CurrentUserUpdateRequest request) => await _currentUserAppService.UpdateBaseInfo(request);
 
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace Hao.WebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("SecurityInfo")]
-        public async Task<UserSecurityVM> GetCurrentSecurityInfo() => await _currentUserAppService.GetSecurityInfo();
+        public async Task<UserSecurityVM> SecurityInfo() => await _currentUserAppService.GetSecurityInfo();
 
 
         /// <summary>
@@ -61,6 +61,6 @@ namespace Hao.WebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPut("UpdatePassword")]
-        public async Task UpdateCurrentPassword([FromBody]PwdUpdateRequest request) => await _currentUserAppService.UpdatePassword(request.OldPassword, request.NewPassword);
+        public async Task UpdatePassword([FromBody]PwdUpdateRequest request) => await _currentUserAppService.UpdatePassword(request.OldPassword, request.NewPassword);
     }
 }
