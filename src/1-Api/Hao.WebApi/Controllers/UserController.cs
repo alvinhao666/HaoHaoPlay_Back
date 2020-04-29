@@ -24,7 +24,7 @@ namespace Hao.WebApi.Controllers
     /// </summary>
     [ApiController]
     [Route("[controller]")]
-    public partial class UserController : HController
+    public class UserController : HController
     {
         private readonly IUserAppService _userAppService;
 

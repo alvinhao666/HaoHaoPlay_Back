@@ -25,16 +25,13 @@ namespace Hao.AppService
 
         private readonly ISysUserRepository _userRep;
 
-        private readonly ISysLoginRecordRepository _recordRep;
-
-
         private readonly ISysRoleRepository _roleRep;
 
         private readonly AppSettingsInfo _appsettings;
 
-        public FilePathInfo PathInfo { get; set; }
-
         private readonly ICurrentUser _currentUser;
+
+        public FilePathInfo PathInfo { get; set; }
 
         public UserAppService(ISysRoleRepository roleRep,
             IOptionsSnapshot<AppSettingsInfo> appsettingsOptions, 
@@ -44,7 +41,6 @@ namespace Hao.AppService
             ICurrentUser currentUser)
         {
             _userRep = userRepository;
-            _recordRep = recordRep;
             _mapper = mapper;
             _appsettings = appsettingsOptions.Value;
             _currentUser = currentUser;

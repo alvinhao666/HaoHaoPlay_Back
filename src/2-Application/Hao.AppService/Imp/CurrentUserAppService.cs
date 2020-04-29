@@ -1,9 +1,14 @@
-﻿using Hao.AppService.ViewModel;
+﻿using AutoMapper;
+using Hao.AppService.ViewModel;
+using Hao.Core;
 using Hao.Encrypt;
 using Hao.Enum;
 using Hao.File;
+using Hao.Library;
+using Hao.Repository;
 using Hao.RunTimeException;
 using Hao.Utility;
+using Microsoft.Extensions.Options;
 using SixLabors.ImageSharp;
 using System;
 using System.Collections.Generic;
@@ -16,13 +21,32 @@ namespace Hao.AppService
     /// <summary>
     /// 处理当前用户的服务
     /// </summary>
-    public partial class UserAppService
+    public class CurrentUserAppService : ApplicationService, ICurrentUserAppService
     {
+
+        private readonly IMapper _mapper;
+
+        private readonly ISysUserRepository _userRep;
+
+        private readonly ICurrentUser _currentUser;
+
+
+        private readonly AppSettingsInfo _appsettings;
+
+        public FilePathInfo PathInfo { get; set; }
+
+        public CurrentUserAppService(ISysUserRepository userRepository, IMapper mapper, ICurrentUser currentUser, IOptionsSnapshot<AppSettingsInfo> appsettingsOptions)
+        {
+            _userRep = userRepository;
+            _mapper = mapper;
+            _currentUser = currentUser;
+            _appsettings = appsettingsOptions.Value;
+        }
         /// <summary>
         /// 获取当前用户信息
         /// </summary>
         /// <returns></returns>
-        public async Task<CurrentUserVM> GetCurrent()
+        public async Task<CurrentUserVM> GetUser()
         {
             var user = await _userRep.GetAysnc(_currentUser.Id.Value);
             return _mapper.Map<CurrentUserVM>(user);
@@ -33,7 +57,7 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task UpdateCurrentHeadImg(UpdateHeadImgRequest request)
+        public async Task UpdateHeadImg(UpdateHeadImgRequest request)
         {
             string[] str = request.Base64Str.Split(',');  //base64Str为base64完整的字符串，先处理一下得到我们所需要的字符串
             byte[] imageBytes = Convert.FromBase64String(str[1]);
@@ -61,7 +85,7 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="vm"></param>
         /// <returns></returns>
-        public async Task UpdateCurrentBaseInfo(CurrentUserUpdateRequest vm)
+        public async Task UpdateBaseInfo(CurrentUserUpdateRequest vm)
         {
             var user = await _userRep.GetAysnc(_currentUser.Id.Value);
             user.Name = vm.Name;
@@ -81,7 +105,7 @@ namespace Hao.AppService
         /// <param name="oldPassword"></param>
         /// <param name="newPassword"></param>
         /// <returns></returns>
-        public async Task UpdateCurrentPassword(string oldPassword, string newPassword)
+        public async Task UpdatePassword(string oldPassword, string newPassword)
         {
             var user = await _userRep.GetAysnc(_currentUser.Id.Value);
             oldPassword = EncryptProvider.HMACSHA256(oldPassword, _appsettings.KeyInfo.Sha256Key);
@@ -95,7 +119,7 @@ namespace Hao.AppService
         /// <summary>
         /// 当前用户安全信息
         /// </summary>
-        public async Task<UserSecurityVM> GetCurrentSecurityInfo()
+        public async Task<UserSecurityVM> GetSecurityInfo()
         {
             var user = await _userRep.GetAysnc(_currentUser.Id.Value);
             var result = _mapper.Map<UserSecurityVM>(user);

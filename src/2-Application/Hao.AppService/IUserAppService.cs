@@ -77,42 +77,5 @@ namespace Hao.AppService
         /// <param name="query"></param>
         /// <returns></returns>
         Task<bool> IsExistUser(UserQuery query);
-
-
-        #region 当前用户
-        /// <summary>
-        /// 当前用户信息
-        /// </summary>
-        /// <returns></returns>
-        Task<CurrentUserVM> GetCurrent();
-
-        /// <summary>
-        /// 更新头像
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        Task UpdateCurrentHeadImg(UpdateHeadImgRequest request);
-
-        /// <summary>
-        /// 更新当前用户基本信息
-        /// </summary>
-        /// <param name="vm"></param>
-        /// <returns></returns>
-        Task UpdateCurrentBaseInfo(CurrentUserUpdateRequest vm);
-
-        /// <summary>
-        /// 更新当前用户密码
-        /// </summary>
-        /// <param name="oldPassword"></param>
-        /// <param name="newPassword"></param>
-        /// <returns></returns>
-        Task UpdateCurrentPassword(string oldPassword, string newPassword);
-
-        /// <summary>
-        /// 当前用户的安全信息
-        /// </summary>
-        /// <returns></returns>
-        Task<UserSecurityVM> GetCurrentSecurityInfo();
-        #endregion
     }
 }
