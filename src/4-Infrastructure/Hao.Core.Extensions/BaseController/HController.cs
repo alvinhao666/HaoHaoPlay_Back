@@ -17,6 +17,8 @@ using System.Text.Json;
 namespace Hao.Core.Extensions
 {
     [Authorize]
+    [ApiController]
+    [Route("[controller]")]
     public class HController : Controller
     {
         private readonly ILogger _logger = LogManager.GetCurrentClassLogger();

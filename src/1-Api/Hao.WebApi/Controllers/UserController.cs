@@ -22,8 +22,6 @@ namespace Hao.WebApi.Controllers
     /// <summary>
     /// 用户
     /// </summary>
-    [ApiController]
-    [Route("[controller]")]
     public class UserController : HController
     {
         private readonly IUserAppService _userAppService;
