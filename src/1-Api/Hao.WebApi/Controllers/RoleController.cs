@@ -54,10 +54,8 @@ namespace Hao.WebApi.Controllers
         /// <returns></returns>
         [HttpPut("UpdateRoleAuth/{id}")]
         [AuthCode("1_524288")]
-        public async Task UpdateRoleAuth(long id, [FromBody]RoleUpdateRequest request) =>
-            await _roleAppService.UpdateRoleAuth(id, request);
+        public async Task UpdateRoleAuth(long id, [FromBody]RoleUpdateRequest request) => await _roleAppService.UpdateRoleAuth(id, request);
 
-        
         ///// <summary>
         ///// 删除角色
         ///// </summary>
