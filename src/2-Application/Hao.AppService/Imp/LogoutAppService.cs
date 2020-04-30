@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Hao.AppService
 {
+    /// <summary>
+    /// 注销应用服务
+    /// </summary>
     public class LogoutAppService : ApplicationService, ILogoutAppService
     {
         private readonly AppSettingsInfo _appsettings;

@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 namespace Hao.AppService
 {
     /// <summary>
-    /// 处理当前用户的服务
+    /// 当前用户应用服务
     /// </summary>
     public class CurrentUserAppService : ApplicationService, ICurrentUserAppService
     {

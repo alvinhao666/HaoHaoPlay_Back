@@ -15,6 +15,9 @@ using Npgsql;
 
 namespace Hao.AppService
 {
+    /// <summary>
+    /// 角色应用服务
+    /// </summary>
     public class RoleAppService : ApplicationService, IRoleAppService
     {
         private readonly ISysRoleRepository _roleRep;

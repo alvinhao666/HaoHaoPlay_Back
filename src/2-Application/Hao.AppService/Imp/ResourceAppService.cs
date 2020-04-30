@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace Hao.AppService
 {
+    /// <summary>
+    /// 模块应用服务-资源
+    /// </summary>
     public partial class ModuleAppService
     {
         /// <summary>

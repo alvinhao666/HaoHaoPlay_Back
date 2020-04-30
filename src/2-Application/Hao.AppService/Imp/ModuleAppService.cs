@@ -13,6 +13,9 @@ using Npgsql;
 
 namespace Hao.AppService
 {
+    /// <summary>
+    /// 模块应用服务
+    /// </summary>
     public partial class ModuleAppService : ApplicationService, IModuleAppService
     {
         private readonly IMapper _mapper;
