@@ -58,6 +58,13 @@ namespace Hao.AppService
             cfg.CreateMap<SysRole, RoleSelectVM>();
             #endregion
 
+
+            #region 数据字典
+            cfg.CreateMap<DictAddRequest, SysDict>();
+
+            cfg.CreateMap<DictItemAddRequest, SysDict>();
+            #endregion
+
         }
     }
 }

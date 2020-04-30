@@ -1,11 +1,12 @@
-﻿using System;
+﻿using FluentValidation;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Hao.AppService
 {
     /// <summary>
-    /// 字典项添加请求
+    /// 字典数据项添加请求
     /// </summary>
     public class DictItemAddRequest
     {
@@ -28,5 +29,20 @@ namespace Hao.AppService
         /// 备注信息
         /// </summary>
         public string Remark { get; set; }
+    }
+
+    /// <summary>
+    /// 验证
+    /// </summary>
+    public class DictItemAddRequestValidator : AbstractValidator<DictItemAddRequest>
+    {
+        public DictItemAddRequestValidator()
+        {
+            RuleFor(x => x.ItemName).NotEmpty().WithMessage("数据项名称不能为空");
+
+            RuleFor(x => x.ItemValue).NotEmpty().WithMessage("数据项值不能为空");
+
+            RuleFor(x => x.ParentId).NotEmpty().WithMessage("字典id不能为空");
+        }
     }
 }
