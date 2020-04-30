@@ -31,7 +31,7 @@ namespace Hao.AppService
         public async Task AddDict(DictAddRequest request)
         {
             var dict = _mapper.Map<SysDict>(request);
-            
+            dict.Sort = 0;
             await _dictRep.InsertAysnc(dict);
         }
 
@@ -46,7 +46,9 @@ namespace Hao.AppService
 
             var dict = _mapper.Map<SysDict>(request);
             dict.ParentId = parentDict.Id;
-
+            dict.DictCode = parentDict.DictCode;
+            dict.DictName = parentDict.DictName;
+            dict.Sort = 0;
             await _dictRep.InsertAysnc(dict);
         }
 

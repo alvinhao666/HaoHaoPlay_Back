@@ -28,12 +28,12 @@ namespace Hao.Model
         /// <summary>
         /// 数据名称
         /// </summary>
-        public string DataName { get; set; }
+        public string ItemName { get; set; }
 
         /// <summary>
         /// 数据值
         /// </summary>
-        public int? DataValue { get; set; }
+        public int? ItemValue { get; set; }
 
         /// <summary>
         /// 排序值
