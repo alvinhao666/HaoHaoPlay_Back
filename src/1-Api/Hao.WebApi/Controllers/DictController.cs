@@ -3,6 +3,9 @@ using Hao.Core.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using AutoMapper;
+using Hao.AppService.ViewModel.Dict;
+using Hao.Core;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.VisualBasic;
 
 namespace Hao.WebApi.Controllers
@@ -15,9 +18,10 @@ namespace Hao.WebApi.Controllers
         private readonly IDictAppService _dictAppService;
 
         private readonly IMapper _mapper;
-        public DictController(IMapper _mapper,IDictAppService dictAppService)
+        public DictController(IMapper mapper,IDictAppService dictAppService)
         {
             _dictAppService = dictAppService;
+            _mapper = mapper;
         }
 
 
@@ -26,7 +30,7 @@ namespace Hao.WebApi.Controllers
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-
+        [HttpPost("AddDict")]
         public async Task AddDict(DictAddRequest request) => await _dictAppService.AddDict(request);
 
         /// <summary>
@@ -34,7 +38,8 @@ namespace Hao.WebApi.Controllers
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        public async Task GetDictList(DictQueryInput query) =>
+        [HttpPost("GetDictList")]
+        public async Task<PagedList<DictVM>> GetDictList(DictQueryInput query) =>
             await _dictAppService.GetDictList(_mapper.Map<DictQuery>(query));
         
         /// <summary>
@@ -43,6 +48,7 @@ namespace Hao.WebApi.Controllers
         /// <param name="id"></param>
         /// <param name="request"></param>
         /// <returns></returns>
+        [HttpPut("UpdateDict/{id}")]
         public async Task UpdateDict(long id, DictUpdateRequest request) => await _dictAppService.UpdateDict(id,request);
         
         /// <summary>
@@ -50,13 +56,15 @@ namespace Hao.WebApi.Controllers
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task AddDictItme(DictItemAddRequest request) => await _dictAppService.AddDictItem(request);
+        [HttpPost("AddDictItem")]
+        public async Task AddDictItem(DictItemAddRequest request) => await _dictAppService.AddDictItem(request);
 
         /// <summary>
         /// 查询字典数据项
         /// </summary>
         /// <returns></returns>
-        public async Task GetDictItemList(DictQueryInput query) => await _dictAppService.GetDictItemList(_mapper.Map<DictQuery>(query));
+        [HttpGet("GetDictItemList")]
+        public async Task<PagedList<DictItemVM>> GetDictItemList(DictQueryInput query) => await _dictAppService.GetDictItemList(_mapper.Map<DictQuery>(query));
 
         /// <summary>
         /// 修改数据项
@@ -64,6 +72,7 @@ namespace Hao.WebApi.Controllers
         /// <param name="id"></param>
         /// <param name="request"></param>
         /// <returns></returns>
+        [HttpPut("UpdateDictItem/{id}")]
         public async Task UpdateDictItem(long id, DictItemUpdateRequest request) =>
             await _dictAppService.UpdateDictItem(id, request);
     }
