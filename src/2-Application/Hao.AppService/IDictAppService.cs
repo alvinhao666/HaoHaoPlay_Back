@@ -1,22 +1,36 @@
 using System.Threading.Tasks;
+using Hao.AppService.ViewModel.Dict;
+using Hao.Core;
 
 namespace Hao.AppService
 {
     public interface IDictAppService
     {
         /// <summary>
-        /// Ìí¼Ó×Öµä
+        /// æ·»åŠ å­—å…¸
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
         Task AddDict(DictAddRequest request);
 
-
         /// <summary>
-        /// Ìí¼Ó×ÖµäÊı¾İÏî
+        /// æŸ¥è¯¢å­—å…¸
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        Task<PagedList<DictVM>> GetDictList(DictQuery query);
+        
+        /// <summary>
+        /// æ·»åŠ å­—å…¸æ•°æ®é¡¹
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
         Task AddDictItem(DictItemAddRequest request);
+
+        /// <summary>
+        /// æŸ¥è¯¢å­—å…¸æ•°æ®é¡¹
+        /// </summary>
+        /// <returns></returns>
+        Task<PagedList<DictItemVM>> GetDictItemList(DictQuery query);
     }
 }

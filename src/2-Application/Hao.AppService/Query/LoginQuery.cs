@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
+using Hao.Utility;
+using NLog.Fluent;
 
 namespace Hao.AppService
 {
@@ -24,8 +26,8 @@ namespace Hao.AppService
             get
             {
                 List<Expression<Func<SysUser, bool>>> expressions = new List<Expression<Func<SysUser, bool>>>();
-                if (!string.IsNullOrWhiteSpace(LoginName)) expressions.Add(x => x.LoginName == LoginName);
-                if (!string.IsNullOrWhiteSpace(Password)) expressions.Add(x => x.Password == Password);
+                if (LoginName.HasValue()) expressions.Add(x => x.LoginName == LoginName);
+                if (LoginName.HasValue()) expressions.Add(x => x.Password == Password);
                 return expressions;
             }
         }

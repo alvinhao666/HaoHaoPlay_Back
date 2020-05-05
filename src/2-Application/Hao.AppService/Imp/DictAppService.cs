@@ -4,16 +4,17 @@ using Hao.Model;
 using Hao.Repository;
 using Hao.RunTimeException;
 using System.Threading.Tasks;
+using Hao.AppService.ViewModel.Dict;
 
 namespace Hao.AppService
 {
     /// <summary>
-    /// Êı¾İ×ÖµäÓ¦ÓÃ·şÎñ
+    /// æ•°æ®å­—å…¸
     /// </summary>
     public class DictAppService:ApplicationService,IDictAppService
     {
         private readonly ISysDictRepository _dictRep;
-
+        
         private readonly IMapper _mapper;
         
         public DictAppService(ISysDictRepository dictRep, IMapper mapper)
@@ -24,7 +25,7 @@ namespace Hao.AppService
 
 
         /// <summary>
-        /// Ìí¼Ó×Öµä
+        /// æ·»åŠ å­—å…¸
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -34,9 +35,21 @@ namespace Hao.AppService
             dict.Sort = 0;
             await _dictRep.InsertAysnc(dict);
         }
+        
+        /// <summary>
+        /// æŸ¥è¯¢å­—å…¸
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public async Task<PagedList<DictVM>> GetDictList(DictQuery query)
+        {
+            var dicts = await _dictRep.GetPagedListAysnc(query);
+
+            return _mapper.Map<PagedList<DictVM>>(dicts);
+        }
 
         /// <summary>
-        /// Ìí¼Ó×ÖµäÏî
+        /// æ·»åŠ å­—å…¸é¡¹
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
@@ -52,20 +65,31 @@ namespace Hao.AppService
             await _dictRep.InsertAysnc(dict);
         }
 
+        /// <summary>
+        /// è·å–å­—å…¸æ•°æ®
+        /// </summary>
+        /// <returns></returns>
+        public async Task<PagedList<DictItemVM>> GetDictItemList(DictQuery query)
+        {
+            var dicts = await _dictRep.GetPagedListAysnc(query);
+
+            return _mapper.Map<PagedList<DictItemVM>>(dicts);
+        }
+
 
         #region private
 
         /// <summary>
-        /// »ñÈ¡×ÖµäÏêÇé
+        /// å­—å…¸è¯¦æƒ…
         /// </summary>
         /// <param name="dictId"></param>
         /// <returns></returns>
         private async Task<SysDict> GetDictDetail(long dictId)
         {
-            var user = await _dictRep.GetAysnc(dictId);
-            if (user == null) throw new HException("ÓÃ»§²»´æÔÚ");
-            if (user.IsDeleted) throw new HException("ÓÃ»§ÒÑÉ¾³ı");
-            return user;
+            var dict = await _dictRep.GetAysnc(dictId);
+            if (dict == null) throw new HException("å­—å…¸æ•°æ®ä¸å­˜åœ¨");
+            if (dict.IsDeleted) throw new HException("å­—å…¸æ•°æ®å·²åˆ é™¤");
+            return dict;
         }
         #endregion
     }

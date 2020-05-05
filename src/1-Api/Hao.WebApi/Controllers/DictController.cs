@@ -2,6 +2,8 @@ using Hao.AppService;
 using Hao.Core.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using AutoMapper;
+using Microsoft.VisualBasic;
 
 namespace Hao.WebApi.Controllers
 {
@@ -11,7 +13,9 @@ namespace Hao.WebApi.Controllers
     public class DictController:HController
     {
         private readonly IDictAppService _dictAppService;
-        public DictController(IDictAppService dictAppService)
+
+        private readonly IMapper _mapper;
+        public DictController(IMapper _mapper,IDictAppService dictAppService)
         {
             _dictAppService = dictAppService;
         }
@@ -27,10 +31,24 @@ namespace Hao.WebApi.Controllers
 
 
         /// <summary>
+        /// 查询字典
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public async Task GetDictList(DictQueryInput query) =>
+            await _dictAppService.GetDictList(_mapper.Map<DictQuery>(query));
+        
+        /// <summary>
         /// 添加字典项
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
         public async Task AddDictItme(DictItemAddRequest request) => await _dictAppService.AddDictItem(request);
+
+        /// <summary>
+        /// 查询字典数据项
+        /// </summary>
+        /// <returns></returns>
+        public async Task GetDictItemList(DictQueryInput query) => await _dictAppService.GetDictItemList(_mapper.Map<DictQuery>(query));
     }
 }

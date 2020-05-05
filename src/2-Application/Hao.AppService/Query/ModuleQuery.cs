@@ -32,7 +32,7 @@ namespace Hao.AppService
             get
             {
                 List<Expression<Func<SysModule, bool>>> expressions = new List<Expression<Func<SysModule, bool>>>();
-                if (!string.IsNullOrWhiteSpace(Name)) expressions.Add(x => x.Name == Name);
+                if (Name.HasValue()) expressions.Add(x => x.Name == Name);
                 if (ParentId.HasValue) expressions.Add(x => x.ParentId == ParentId);
                 if (IncludeResource.IsFalse()) expressions.Add(x => x.Type != ModuleType.Resource);
                 return expressions;
