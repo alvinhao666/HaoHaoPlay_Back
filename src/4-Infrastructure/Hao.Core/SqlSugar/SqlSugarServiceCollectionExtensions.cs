@@ -75,7 +75,7 @@ namespace Microsoft.Extensions.DependencyInjection
             var connectionConfig = new ConnectionConfig()
             {
                 ConnectionString = connectionString,
-                DbType = DbType.PostgreSQL,
+                DbType = DbType.MySql,
                 IsAutoCloseConnection = true,
                 InitKeyType = InitKeyType.SystemTable, 
                 ConfigureExternalServices = new ConfigureExternalServices()
