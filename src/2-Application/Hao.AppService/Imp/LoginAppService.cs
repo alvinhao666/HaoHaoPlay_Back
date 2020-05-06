@@ -66,11 +66,12 @@ namespace Hao.AppService
         {
             var timeNow = DateTime.Now;
             var expireTime = timeNow.AddDays(isRememberLogin ? 3 : 1);
+            //rsa解密
+            password = RSAHelper.Decrypt(_appsettings.KeyInfo.RsaPrivateKey, password);
+            //sha256加密
+            password = EncryptProvider.HMACSHA256(password, _appsettings.KeyInfo.Sha256Key); 
 
-            password = RSAHelper.Decrypt(_appsettings.KeyInfo.RsaPrivateKey, password); //rsa解密
-
-            password = EncryptProvider.HMACSHA256(password, _appsettings.KeyInfo.Sha256Key); //sha256加密
-
+            //根据账号密码查询用户
             var user = await GetUser(loginName, password);
 
             if (string.IsNullOrWhiteSpace(user.AuthNumbers)) throw new HException(_noAuthTip);
@@ -79,14 +80,18 @@ namespace Hao.AppService
 
             if (authNums.Count == 0) throw new HException(_noAuthTip);
 
-            var modules = await _moduleRep.GetListAysnc(new ModuleQuery() { IncludeResource = false });
+            //查询用户菜单
+            var modules = await _moduleRep.GetListAysnc(new ModuleQuery { IncludeResource = false });
             var menus = new List<MenuVM>();
-            InitMenuTree(menus, 0, modules, authNums, user.Id); //找主菜单一级 parentId=0
+
+            //找主菜单一级 parentId=0
+            InitMenuTree(menus, 0, modules, authNums, user.Id); 
 
             if (menus.Count == 0) throw new HException(_noAuthTip);
 
-            var jti = Guid.NewGuid().ToString();//jwt的唯一身份标识，避免重复
-            var jwt = CreateJwt(timeNow, expireTime, jti, user); //生成jwt
+            //jwt的唯一身份标识，避免重复
+            var jti = Guid.NewGuid().ToString();
+            var jwt = CreateJwt(timeNow, expireTime, jti, user);
 
             //存入redis
             var userValue = new RedisCacheUserInfo
@@ -104,7 +109,7 @@ namespace Hao.AppService
             //同步登录信息，例如ip等等
             await AsyncLoginInfo(user.Id, timeNow);
 
-            return new LoginVM()
+            return new LoginVM
             {
                 Id = user.Id,
                 Name = user.Name,
