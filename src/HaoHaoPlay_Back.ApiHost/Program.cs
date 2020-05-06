@@ -37,6 +37,7 @@ namespace HaoHaoPlay.ApiHost
                     builder.RegisterTypes(types).PropertiesAutowired();
 
                     //调用RegisterDynamicProxy扩展方法在Autofac中注册动态代理服务和动态代理配置 aop
+                    //在一般情况下可以使用抽象的AbstractInterceptorAttribute自定义特性类，它实现IInterceptor接口。AspectCore默认实现了基于Attribute的拦截器配置
                     builder.RegisterDynamicProxy();
                 }))
                 .ConfigureWebHostDefaults(webBuilder =>
