@@ -201,7 +201,7 @@ namespace HaoHaoPlay.ApiHost
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("haohaoplay_back/swagger.json", "api");
-                c.InjectStylesheet("/css/swagger_ui.css");
+                //c.InjectStylesheet("/css/swagger_ui.css");
             });
 
             app.UseCors(x => x.AllowCredentials().AllowAnyMethod().AllowAnyHeader().WithOrigins(new string[] { "http://localhost:4200" }));
