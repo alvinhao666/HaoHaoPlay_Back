@@ -76,6 +76,7 @@ namespace Hao.AppService
             user.RoleId = role.Id;
             user.RoleName = role.Name;
             user.AuthNumbers = role.AuthNumbers;
+            user.RoleLevel = role.Level;
             await _userRep.InsertAysnc(user);
         }
 
