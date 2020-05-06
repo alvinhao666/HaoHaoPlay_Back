@@ -8,7 +8,13 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class SqlSugarServiceCollectionExtensions
     {
-
+        /// <summary>
+        /// postgresql
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="connectionString"></param>
+        /// <param name="slaveConnectionStrings"></param>
+        /// <returns></returns>
         public static IServiceCollection AddPostgreSQLService(this IServiceCollection services, string connectionString, Dictionary<string, int> slaveConnectionStrings = null)
         {
             var connectionConfig = new ConnectionConfig()
@@ -21,10 +27,61 @@ namespace Microsoft.Extensions.DependencyInjection
                 {
                     DataInfoCacheService = new SqlSugarRedisCache() //RedisCache是继承ICacheService自已实现的一个类
                 },
-                // MoreSettings = new ConnMoreSettings(){ PgSqlIsAutoToLower = false}
+                //MoreSettings = new ConnMoreSettings(){ PgSqlIsAutoToLower = false}
                 //config.SlaveConnectionConfigs = new List<SlaveConnectionConfig>() { //= 如果配置了 SlaveConnectionConfigs那就是主从模式,所有的写入删除更新都走主库，查询走从库，事务内都走主库，HitRate表示权重 值越大执行的次数越高，如果想停掉哪个连接可以把HitRate设为0 
-                //     new SlaveConnectionConfig() { HitRate=10, ConnectionString=Config.ConnectionString2 },
-                //     new SlaveConnectionConfig() { HitRate=30, ConnectionString=Config.ConnectionString3 }
+                //new SlaveConnectionConfig() { HitRate=10, ConnectionString=Config.ConnectionString2 },
+                //new SlaveConnectionConfig() { HitRate=30, ConnectionString=Config.ConnectionString3 }
+            };
+
+            if (slaveConnectionStrings != null && slaveConnectionStrings.Count() > 0)
+            {
+                connectionConfig.SlaveConnectionConfigs = new List<SlaveConnectionConfig>();
+                foreach (var item in slaveConnectionStrings)
+                {
+                    connectionConfig.SlaveConnectionConfigs.Add(new SlaveConnectionConfig()
+                    {
+                        ConnectionString = item.Key,
+                        HitRate = item.Value
+                    });
+                }
+            }
+#if DEBUG
+            connectionConfig.AopEvents = new AopEvents
+            {
+                OnLogExecuting = (sql, p) =>
+                {
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine(sql);
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine(string.Join(",", p?.Select(it => string.Format("{0}:{1}", it.ParameterName, it.Value))));
+                    Console.ForegroundColor = ConsoleColor.White;
+                }
+            };
+#endif
+            services.AddScoped<ISqlSugarClient>(o => new SqlSugarClient(connectionConfig));
+
+            return services;
+        }
+
+        /// <summary>
+        /// mysql
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="connectionString"></param>
+        /// <param name="slaveConnectionStrings"></param>
+        /// <returns></returns>
+        public static IServiceCollection AddMySQLService(this IServiceCollection services, string connectionString, Dictionary<string, int> slaveConnectionStrings = null)
+        {
+            var connectionConfig = new ConnectionConfig()
+            {
+                ConnectionString = connectionString,
+                DbType = DbType.PostgreSQL,
+                IsAutoCloseConnection = true,
+                InitKeyType = InitKeyType.SystemTable, 
+                ConfigureExternalServices = new ConfigureExternalServices()
+                {
+                    DataInfoCacheService = new SqlSugarRedisCache()
+                }
             };
 
             if (slaveConnectionStrings != null && slaveConnectionStrings.Count() > 0)
@@ -75,6 +132,5 @@ namespace Microsoft.Extensions.DependencyInjection
 
         //    return config;
         //}
-
     }
 }
