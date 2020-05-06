@@ -26,6 +26,13 @@ namespace Hao.AppService
         /// <param name="request"></param>
         /// <returns></returns>
         Task UpdateDict(long id,DictUpdateRequest request);
+
+        /// <summary>
+        /// 删除字典
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task DeleteDict(long id);
         
         /// <summary>
         /// 添加字典数据项
@@ -47,5 +54,12 @@ namespace Hao.AppService
         /// <param name="request"></param>
         /// <returns></returns>
         Task UpdateDictItem(long id, DictItemUpdateRequest request);
+
+        /// <summary>
+        /// 删除数据项
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task DeleteDictItem(long id);
     }
 }

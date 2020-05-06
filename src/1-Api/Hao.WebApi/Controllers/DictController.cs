@@ -50,6 +50,14 @@ namespace Hao.WebApi.Controllers
         /// <returns></returns>
         [HttpPut("UpdateDict/{id}")]
         public async Task UpdateDict(long id, DictUpdateRequest request) => await _dictAppService.UpdateDict(id,request);
+
+        /// <summary>
+        /// 删除字典
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete("DeleteDict/{id}")]
+        public async Task DeleteDict(long id) => await _dictAppService.DeleteDict(id);
         
         /// <summary>
         /// 添加字典项
@@ -75,5 +83,13 @@ namespace Hao.WebApi.Controllers
         [HttpPut("UpdateDictItem/{id}")]
         public async Task UpdateDictItem(long id, DictItemUpdateRequest request) =>
             await _dictAppService.UpdateDictItem(id, request);
+
+        /// <summary>
+        /// 删除数据项
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete("DeleteDictItem/{id}")]
+        public async Task DeleteDictItem(long id) => await _dictAppService.DeleteDictItem(id);
     }
 }

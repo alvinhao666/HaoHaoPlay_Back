@@ -39,13 +39,34 @@ namespace Hao.AppService
         /// <summary>
         /// 修改字典
         /// </summary>
+        /// <param name="id"></param>
         /// <param name="request"></param>
         /// <returns></returns>
         public async Task UpdateDict(long id,DictUpdateRequest request)
         {
-            
+            var dict = await _dictRep.GetAysnc(id);
+            dict.DictCode = request.DictCode;
+            dict.DictName = request.DictName;
+            dict.Remark = request.Remark;
+            dict.Sort = request.Sort;
+            await _dictRep.UpdateAsync(dict, a => new { a.DictCode, a.DictName, a.Remark, a.Sort });
         }
-        
+
+        /// <summary>
+        /// 删除字典
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [UnitOfWork]
+        public async Task DeleteDict(long id)
+        {
+            var dictItems = await _dictRep.GetListAysnc(new DictQuery { ParentId = id });
+            await _dictRep.DeleteAysnc(id);
+            await _dictRep.DeleteAysnc(dictItems);
+        }
+
+
+
         /// <summary>
         /// 查询字典
         /// </summary>
@@ -92,9 +113,24 @@ namespace Hao.AppService
         /// <param name="id"></param>
         /// <param name="request"></param>
         /// <returns></returns>
-        public Task UpdateDictItem(long id, DictItemUpdateRequest request)
+        public async Task UpdateDictItem(long id, DictItemUpdateRequest request)
         {
-            throw new System.NotImplementedException();
+            var item = await _dictRep.GetAysnc(id);
+            item.ItemName = request.ItemName;
+            item.ItemValue = request.ItemValue;
+            item.Remark = request.Remark;
+            item.Sort = request.Sort;
+            await _dictRep.UpdateAsync(item, a => new { a.ItemName, a.ItemValue, a.Remark, a.Sort });
+        }
+
+        /// <summary>
+        /// 删除数据项
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task DeleteDictItem(long id)
+        {
+            await _dictRep.DeleteAysnc(id);
         }
 
 
@@ -112,6 +148,7 @@ namespace Hao.AppService
             if (dict.IsDeleted) throw new HException("字典数据已删除");
             return dict;
         }
+
         #endregion
     }
 }
