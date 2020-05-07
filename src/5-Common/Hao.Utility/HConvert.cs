@@ -128,7 +128,7 @@ namespace Hao.Utility
         {
             if (money < 0.01)
             {
-                throw new ArgumentOutOfRangeException("转换成大写人民币失败，金额最小单位为分");
+                throw new ArgumentOutOfRangeException("money", "转换成大写人民币失败，金额最小单位为分");
             }
             return Regex.Replace(Regex.Replace(money.ToString("#L#E#D#C#K#E#D#C#J#E#D#C#I#E#D#C#H#E#D#C#G#E#D#C#F#E#D#C#.0B0A"), "((?<=-|^)[^1-9]*)|((?'z'0)[0A-E]*((?=[1-9])|(?'-z'(?=[F-L\\.]|$))))|((?'b'[F-L])(?'z'0)[0A-L]*((?=[1-9])|(?'-z'(?=[\\.]|$))))", "${b}${z}"), ".", (Match m) => "负元空零壹贰叁肆伍陆柒捌玖空空空空空空空分角拾佰仟萬億兆京垓秭穰"[(int)(m.Value[0] - '-')].ToString());
         }
