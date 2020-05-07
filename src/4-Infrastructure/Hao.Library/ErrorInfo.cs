@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 namespace Hao.Library
 {
     public static class ErrorInfo

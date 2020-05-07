@@ -11,9 +11,7 @@ using Hao.Utility;
 using Microsoft.Extensions.Options;
 using SixLabors.ImageSharp;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Hao.AppService

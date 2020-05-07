@@ -3,9 +3,7 @@ using Hao.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Text;
 using Hao.Utility;
-using NLog.Fluent;
 
 namespace Hao.AppService
 {

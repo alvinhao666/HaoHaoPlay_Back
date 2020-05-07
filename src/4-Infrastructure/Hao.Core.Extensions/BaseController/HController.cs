@@ -8,10 +8,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Authorization;
 using Hao.RunTimeException;
 using System;
-using SqlSugar;
 using Microsoft.AspNetCore.Mvc.Controllers;
-using System.Reflection;
-using System.Collections.Generic;
 using System.Text.Json;
 
 namespace Hao.Core.Extensions

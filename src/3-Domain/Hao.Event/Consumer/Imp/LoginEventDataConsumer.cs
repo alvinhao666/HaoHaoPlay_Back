@@ -2,9 +2,6 @@
 using Hao.EventData;
 using Hao.Model;
 using Hao.Repository;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Hao.Event

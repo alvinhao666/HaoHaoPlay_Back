@@ -1,7 +1,4 @@
-﻿using Hao.Entity;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
 using Hao.Core;
 
 namespace Hao.Model

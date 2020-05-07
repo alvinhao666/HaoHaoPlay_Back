@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Hao.Core;
 
 namespace Hao.Model

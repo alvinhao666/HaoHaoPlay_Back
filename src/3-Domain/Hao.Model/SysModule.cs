@@ -1,7 +1,4 @@
 ﻿using Hao.Core;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Hao.Enum;
 
 namespace Hao.Model

@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Hao.AppService.ViewModel.Dict;
 using Hao.Core;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.VisualBasic;
 
 namespace Hao.WebApi.Controllers
 {
