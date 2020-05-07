@@ -1,12 +1,6 @@
-﻿using Hao.AppService;
-using Hao.AppService.ViewModel;
+﻿using Hao.AppService.ViewModel;
 using Hao.Core;
-using Hao.Entity;
-using Hao.Model;
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Hao.AppService
