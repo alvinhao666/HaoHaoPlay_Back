@@ -20,6 +20,13 @@ namespace Hao.Utility
             return EqualityComparer<T>.Default.Equals(value, default(T));
         }
 
+        /// <summary>
+        /// 返回一个新对象
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="value"></param>
+        /// <returns></returns>
+
         public static T IsNullReturnNew<T>(this T value) where T : new()
         {
             if (value.IsNullOrWhiteSpace())
@@ -29,7 +36,7 @@ namespace Hao.Utility
             return value;
         }
 
-        public static bool IsNullOrWhiteSpace(this object value)
+        private static bool IsNullOrWhiteSpace(this object value)
         {
             if (value == null || value == DBNull.Value || value.ToString().Trim() == "") return true;
             return false;

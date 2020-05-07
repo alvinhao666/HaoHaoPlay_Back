@@ -184,11 +184,11 @@ namespace Hao.Utility
         }
 
         /// <summary>
-        /// 地址拆分
+        /// 地址拆分成省市区
         /// </summary>
         /// <param name="address"></param>
         /// <returns></returns>
-        public static List<string> GetAddress(string address)
+        public static List<string> SplitAddress(string address)
         {
             string province = "";
 
