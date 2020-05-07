@@ -46,7 +46,7 @@ namespace Hao.Utility
         /// <returns></returns>
         public static bool IsIP(string ip)
         {
-            return Regex.IsMatch(ip, "^(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9])\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1]{1}[0-9]{2}|[1-9]{1}[0-9]{1}|[0-9])$", RegexOptions.IgnoreCase);
+            return Regex.IsMatch(ip, @"^((2[0-4]\d|25[0-5]|[01]?\d\d?)\.){3}(2[0-4]\d|25[0-5]|[01]?\d\d?)$");
         }
 
 
@@ -148,7 +148,11 @@ namespace Hao.Utility
             return Regex.IsMatch(str, "^[\\u4e00-\\u9fa5]+$", RegexOptions.IgnoreCase);
         }
 
-
+        /// <summary>
+        /// 是否含有中文汉字
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns></returns>
         public static bool hasChineseChar(string str)
         {
             return Regex.IsMatch(str, "[\\u4e00-\\u9fa5]+", RegexOptions.IgnoreCase);
