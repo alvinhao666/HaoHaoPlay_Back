@@ -11,10 +11,10 @@ namespace Hao.Utility
     public static class ListExtensions
     {
         /// <summary>
-        /// 将指定的集合转换成DataTable。
+        /// 将指定的集合转换成DataTable
         /// </summary>
-        /// <param name="list">将指定的集合。</param>
-        /// <returns>返回转换后的DataTable。</returns>
+        /// <param name="list">将指定的集合</param>
+        /// <returns>返回转换后的DataTable</returns>
         public static DataTable ToDataTable(this IList list)
         {
             DataTable table = new DataTable();
@@ -46,6 +46,12 @@ namespace Hao.Utility
             return table;
         }
 
+        /// <summary>
+        /// 将指定的集合转换成DataTable
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="list"></param>
+        /// <returns></returns>
         public static DataTable ToDataTable<T>(this List<T> list)
         {
             DataTable table = new DataTable();

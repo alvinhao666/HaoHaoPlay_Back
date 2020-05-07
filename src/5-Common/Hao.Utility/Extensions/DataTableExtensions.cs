@@ -8,6 +8,12 @@ namespace Hao.Utility
 {
     public static class DataTableExtensions
     {
+        /// <summary>
+        /// 将DataTable转换成实体
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="table"></param>
+        /// <returns></returns>
         public static T ToEntity<T>(this DataTable table) where T : new()
         {
             T entity = new T();
@@ -33,7 +39,6 @@ namespace Hao.Utility
                             item.SetValue(entity, Convert.ChangeType(row[item.Name], newType), null);
 
                         }
-
                     }
                 }
             }
@@ -41,6 +46,12 @@ namespace Hao.Utility
             return entity;
         }
 
+        /// <summary>
+        /// 将DataTable转换成实体集合
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="table"></param>
+        /// <returns></returns>
         public static List<T> ToEntities<T>(this DataTable table) where T : new()
         {
             List<T> entities = new List<T>();
