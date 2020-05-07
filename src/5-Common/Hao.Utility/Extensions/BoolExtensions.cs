@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Hao.Utility
+﻿namespace Hao.Utility
 {
     public static class BoolExtensions
     {

@@ -7,6 +7,6 @@ namespace Hao.Utility
 {
     public interface IHttpHelper
     {
-        Task<string> Post(string url, Dictionary<string, string> dic, string mediaType);
+        Task<string> Post(string url, Dictionary<string, string> dic, string contentType);
     }
 }

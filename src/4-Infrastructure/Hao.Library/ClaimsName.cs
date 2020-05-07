@@ -1,5 +1,4 @@
-﻿
-namespace Hao.Library
+﻿namespace Hao.Library
 {
     /// <summary>
     /// Claims名称
