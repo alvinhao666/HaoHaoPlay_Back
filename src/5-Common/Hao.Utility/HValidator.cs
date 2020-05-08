@@ -165,6 +165,7 @@ namespace Hao.Utility
         /// <returns></returns>
         public static bool IsImage(string url)
         {
+            url = url.ToLower();
             return !string.IsNullOrWhiteSpace(url) && new string[]
             {
                 ".jpeg",
@@ -174,7 +175,7 @@ namespace Hao.Utility
                 ".tiff",
                 ".bmp",
                 ".gif"
-            }.FirstOrDefault(d => url.ToLower().EndsWith(d)) != null;
+            }.FirstOrDefault(d => url.EndsWith(d)) != null;
         }
 
         #endregion
