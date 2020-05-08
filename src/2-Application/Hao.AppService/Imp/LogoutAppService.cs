@@ -22,14 +22,14 @@ namespace Hao.AppService
         /// 注销当前登录
         /// </summary>
         /// <param name="userId"></param>
-        /// <param name="jwt"></param>
+        /// <param name="jti"></param>
         /// <returns></returns>
-        public async Task Logout(long userId, string jwt)
+        public async Task Logout(long userId, string jti)
         {
-            var value = await RedisHelper.GetAsync($"{_appsettings.RedisPrefixOptions.LoginInfo}{userId}_{jwt}");
+            var value = await RedisHelper.GetAsync($"{_appsettings.RedisPrefixOptions.LoginInfo}{userId}_{jti}");
             var cacheUser = JsonSerializer.Deserialize<RedisCacheUserInfo>(value);
             cacheUser.LoginStatus = LoginStatus.Offline;
-            await RedisHelper.SetAsync($"{_appsettings.RedisPrefixOptions.LoginInfo}{userId}_{jwt}",JsonSerializer.Serialize(cacheUser));
+            await RedisHelper.SetAsync($"{_appsettings.RedisPrefixOptions.LoginInfo}{userId}_{jti}",JsonSerializer.Serialize(cacheUser));
         }
     }
 }
