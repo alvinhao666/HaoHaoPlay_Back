@@ -19,14 +19,6 @@ namespace Hao.WebApi.Controllers
             _roleAppService = roleAppService;
         }
 
-        ///// <summary>
-        ///// 添加角色
-        ///// </summary>
-        ///// <param name="request"></param>
-        ///// <returns></returns>
-        //[HttpPost]
-        //public async Task Add([FromBody] RoleAddRequest request) => await _roleAppService.AddRole(request);
-
         /// <summary>
         /// 获取角色列表
         /// </summary>
@@ -53,6 +45,14 @@ namespace Hao.WebApi.Controllers
         [HttpPut("UpdateRoleAuth/{id}")]
         //[AuthCode("1_524288")]
         public async Task UpdateRoleAuth(long id, [FromBody]RoleUpdateRequest request) => await _roleAppService.UpdateRoleAuth(id, request);
+
+        ///// <summary>
+        ///// 添加角色
+        ///// </summary>
+        ///// <param name="request"></param>
+        ///// <returns></returns>
+        //[HttpPost]
+        //public async Task Add([FromBody] RoleAddRequest request) => await _roleAppService.AddRole(request);
 
         ///// <summary>
         ///// 删除角色

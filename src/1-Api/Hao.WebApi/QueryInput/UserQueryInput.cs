@@ -4,6 +4,9 @@ using System;
 
 namespace Hao.WebApi
 {
+    /// <summary>
+    /// 用户列表查询
+    /// </summary>
     public class UserQueryInput : QueryInput
     {
         /// <summary>
@@ -57,6 +60,9 @@ namespace Hao.WebApi
     /// </summary>
     public enum SortUser
     {
+        /// <summary>
+        /// 年龄
+        /// </summary>
         Age
     }
 }

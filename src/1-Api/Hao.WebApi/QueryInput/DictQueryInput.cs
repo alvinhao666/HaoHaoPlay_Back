@@ -2,7 +2,10 @@ using Hao.Core;
 
 namespace Hao.WebApi
 {
-    public class DictQueryInput:QueryInput
+    /// <summary>
+    /// 字典列表查询
+    /// </summary>
+    public class DictQueryInput : QueryInput
     {
         /// <summary>
         /// 字典编码
@@ -12,7 +15,7 @@ namespace Hao.WebApi
         /// 字典名称
         /// </summary>
         public string DictName { get; set; }
-        
+
         /// <summary>
         /// 父级id
         /// </summary>
