@@ -19,11 +19,11 @@ namespace Hao.AppService
 
             cfg.CreateMap<SysUser, UserItemVM>()
                .ForMember(x => x.GenderString, a => a.MapFrom(x => x.Gender.GetDescription()))
-               .ForMember(x => x.EnabledString, a => a.MapFrom(x => x.Enabled.Value ? "启用" : "注销"));
+               .ForMember(x => x.EnabledString, a => a.MapFrom(x => x.Enabled.IsTrue() ? "启用" : "注销"));
 
             cfg.CreateMap<SysUser, UserDetailVM>()
                .ForMember(x => x.GenderString, a => a.MapFrom(x => x.Gender.GetDescription()))
-               .ForMember(x => x.EnabledString, a => a.MapFrom(x => x.Enabled.Value ? "启用" : "注销"));
+               .ForMember(x => x.EnabledString, a => a.MapFrom(x => x.Enabled.IsTrue() ? "启用" : "注销"));
 
             cfg.CreateMap<UserAddRequest, SysUser>();
 
