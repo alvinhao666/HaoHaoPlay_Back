@@ -167,6 +167,11 @@ namespace Hao.AppService
 
 
         #region private
+        /// <summary>
+        /// 角色详情
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         private async Task<SysRole> GetRoleDetail(long userId)
         {
             var item = await _roleRep.GetAysnc(userId);
