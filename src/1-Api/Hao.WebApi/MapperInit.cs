@@ -9,7 +9,7 @@ namespace Hao.WebApi
         public static void Map(IMapperConfigurationExpression cfg)
         {
             cfg.CreateMap<UserQueryInput, UserQuery>()
-                .ForMember(x => x.OrderFileds, a => a.MapFrom(x => x.OrderByType.CombineNameWithSpace(x.SortField))); 
+               .ForMember(x => x.OrderFileds, a => a.MapFrom(x => x.OrderByType.CombineNameWithSpace(x.SortField))); 
         }
     }
 }

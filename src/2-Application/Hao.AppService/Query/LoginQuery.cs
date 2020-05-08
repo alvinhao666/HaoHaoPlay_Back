@@ -24,8 +24,11 @@ namespace Hao.AppService
             get
             {
                 List<Expression<Func<SysUser, bool>>> expressions = new List<Expression<Func<SysUser, bool>>>();
+
                 if (LoginName.HasValue()) expressions.Add(x => x.LoginName == LoginName);
+
                 if (LoginName.HasValue()) expressions.Add(x => x.Password == Password);
+
                 return expressions;
             }
         }

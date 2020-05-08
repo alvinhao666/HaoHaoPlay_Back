@@ -18,7 +18,9 @@ namespace Hao.AppService
             get
             {
                 List<Expression<Func<SysRole, bool>>> expressions = new List<Expression<Func<SysRole, bool>>>();
+
                 if (CurrentRoleLevel.HasValue) expressions.Add(x => x.Level > CurrentRoleLevel);
+
                 return expressions;
             }
         }

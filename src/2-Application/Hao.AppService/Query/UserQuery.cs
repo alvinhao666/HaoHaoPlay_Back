@@ -34,7 +34,7 @@ namespace Hao.AppService
         /// <summary>
         /// 是否启用
         /// </summary>
-        public bool? Enabled { get; set; } 
+        public bool? Enabled { get; set; }
         /// <summary>
         /// 最后登录时间
         /// </summary>
@@ -58,17 +58,27 @@ namespace Hao.AppService
             get
             {
                 List<Expression<Func<SysUser, bool>>> expressions = new List<Expression<Func<SysUser, bool>>>();
+
                 if (LoginName.HasValue()) expressions.Add(x => x.LoginName == LoginName);
+
                 if (Password.HasValue()) expressions.Add(x => x.Password == Password);
+
                 if (Name.HasValue()) expressions.Add(x => x.Name.Contains(Name));
+
                 if (Phone.HasValue()) expressions.Add(x => x.Phone.Contains(Phone));
-                if (Gender.HasValue) expressions.Add(x => x.Gender==Gender);
+
+                if (Gender.HasValue) expressions.Add(x => x.Gender == Gender);
+
                 if (Enabled.HasValue) expressions.Add(x => x.Enabled == Enabled);
+
                 if (LastLoginTimeStart.HasValue) expressions.Add(x => x.LastLoginTime >= LastLoginTimeStart);
+
                 if (LastLoginTimeEnd.HasValue) expressions.Add(x => x.LastLoginTime <= LastLoginTimeEnd);
+
                 if (RoleId.HasValue) expressions.Add(x => x.RoleId == RoleId);
 
                 if (CurrentRoleLevel.HasValue) expressions.Add(x => x.RoleLevel > CurrentRoleLevel);
+
                 return expressions;
             }
         }
