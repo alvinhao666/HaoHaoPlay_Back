@@ -11,22 +11,41 @@ namespace Hao.AppService
 {
     public class UserQuery : Query<SysUser>
     {
+        /// <summary>
+        /// 账号
+        /// </summary>
         public string LoginName { get; set; }
-
+        /// <summary>
+        /// 密码
+        /// </summary>
         public string Password { get; set; }
-
+        /// <summary>
+        /// 姓名
+        /// </summary>
         public string Name { get; set; }
-
+        /// <summary>
+        /// 性别
+        /// </summary>
         public Gender? Gender { get; set; }
-
+        /// <summary>
+        /// 手机号码
+        /// </summary>
         public string Phone { get; set; }
-
+        /// <summary>
+        /// 是否启用
+        /// </summary>
         public bool? Enabled { get; set; } 
-
+        /// <summary>
+        /// 最后登录时间
+        /// </summary>
         public DateTime? LastLoginTimeStart { get; set; }
-
+        /// <summary>
+        /// 最后登录时间
+        /// </summary>
         public DateTime? LastLoginTimeEnd { get; set; }
-
+        /// <summary>
+        /// 角色id
+        /// </summary>
         public long? RoleId { get; set; }
 
         /// <summary>

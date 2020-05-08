@@ -148,18 +148,13 @@ namespace Hao.WebApi.Controllers
         {
             var files = HttpContext.Request.Form.Files;
 
-            if (files == null || files.Count == 0)
-            {
-                throw new HException("请选择Excel文件");
-            }
+            if (files == null || files.Count == 0) throw new HException("请选择Excel文件");
 
             //格式限制
             var allowType = new string[] { "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" };
 
-            if (files.Any(b => !allowType.Contains(b.ContentType)))
-            {
-                throw new HException("只能上传Excel文件");
-            }
+            if (files.Any(b => !allowType.Contains(b.ContentType))) throw new HException("只能上传Excel文件");
+
 
             ////大小限制
             //if (files.Sum(b => b.Length) >= 1024 * 1024 * 4)
@@ -168,6 +163,7 @@ namespace Hao.WebApi.Controllers
             //}
 
             var users = new List<UserAddRequest>();
+
             foreach (IFormFile file in files)
             {
                 var reader = new StreamReader(file.OpenReadStream());
@@ -210,7 +206,9 @@ namespace Hao.WebApi.Controllers
                     }
                 }
             }
+
             if (users.Count == 0) return;
+
             await _userAppService.AddUsers(users);
         }
     }

@@ -36,13 +36,25 @@ namespace Hao.WebApi
         /// </summary>
         public bool? Enabled { get; set; }
 
+        /// <summary>
+        /// 最后登录开始时间
+        /// </summary>
         public DateTime? LastLoginTimeStart { get; set; }
 
+        /// <summary>
+        /// 组后登录结束时间
+        /// </summary>
         public DateTime? LastLoginTimeEnd { get; set; }
 
+        /// <summary>
+        /// 排序字段
+        /// </summary>
         public SortUser? SortField { get; set; }
     }
 
+    /// <summary>
+    /// 排序枚举
+    /// </summary>
     public enum SortUser
     {
         Age
