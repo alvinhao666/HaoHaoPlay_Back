@@ -7,11 +7,11 @@ namespace Hao.Core.Extensions
     /// <summary>
     /// 全局过滤器
     /// </summary>
-    public class HResultFilter : ResultFilterAttribute,IResultFilter
+    public class HResultFilter : ResultFilterAttribute, IResultFilter
     {
         public override void OnResultExecuting(ResultExecutingContext context)
         {
-            if(!(context.Result is JsonResult))
+            if (!(context.Result is JsonResult))
             {
                 var response = new HResponse
                 {

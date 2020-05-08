@@ -13,16 +13,13 @@ namespace Hao.RunTimeException
             this.Code = Code;
         }
 
-        public HException(string message)
-            : base(message) { }
+        public HException(string message) : base(message) { }
 
-        public HException(string message, int? code)
-            : base(message)
+        public HException(string message, int? code) : base(message)
         {
             this.Code = code;
         }
 
-        public HException(string message, Exception innerException)
-            : base(message, innerException) { }
+        public HException(string message, Exception innerException) : base(message, innerException) { }
     }
 }

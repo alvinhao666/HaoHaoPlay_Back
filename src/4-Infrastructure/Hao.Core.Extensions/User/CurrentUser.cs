@@ -17,7 +17,7 @@ namespace Hao.Core.Extensions
 
 
         /// <summary>
-        ///用户编号 
+        ///用户id
         /// </summary>
         public long? Id
         {
@@ -40,6 +40,9 @@ namespace Hao.Core.Extensions
             get => _httpContext == null ? null : HConvert.ToInt(_httpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimsName.RoleLevel)?.Value);
         }
 
+        /// <summary>
+        /// json web token唯一标识
+        /// </summary>
         public string Jti 
         {
             get

@@ -19,7 +19,7 @@ namespace Hao.Core.Extensions
     public class HController : Controller
     {
         private readonly ILogger _logger = LogManager.GetCurrentClassLogger();
-        
+
         public IOptionsSnapshot<AppSettingsInfo> AppsettingsOptions { get; set; }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace Hao.Core.Extensions
             var traceId = context.HttpContext.TraceIdentifier;
             var path = context.HttpContext.Request.Path.Value;
 
-            _logger.Info(new 
+            _logger.Info(new
             {
                 Method = path,
                 Argument = new
@@ -52,13 +52,13 @@ namespace Hao.Core.Extensions
 
             var value = RedisHelper.Get($"{AppsettingsOptions.Value.RedisPrefixOptions.LoginInfo}{userId}_{jti}");
 
-            if (value == null) throw new HException(ErrorInfo.E100002, nameof(ErrorInfo.E100002).GetErrorCode());        
+            if (value == null) throw new HException(ErrorInfo.E100002, nameof(ErrorInfo.E100002).GetErrorCode());
 
             var cacheUser = JsonSerializer.Deserialize<RedisCacheUserInfo>(value);
 
             if (cacheUser.LoginStatus.HasValue
-                && cacheUser.LoginStatus == LoginStatus.Offline 
-                && cacheUser.IsAuthUpdate.HasValue 
+                && cacheUser.LoginStatus == LoginStatus.Offline
+                && cacheUser.IsAuthUpdate.HasValue
                 && cacheUser.IsAuthUpdate.Value) throw new HException(ErrorInfo.E100003, nameof(ErrorInfo.E100003).GetErrorCode());
 
             if (!cacheUser.LoginStatus.HasValue || cacheUser.LoginStatus == LoginStatus.Offline) throw new HException(ErrorInfo.E100002, nameof(ErrorInfo.E100002).GetErrorCode());
@@ -92,14 +92,14 @@ namespace Hao.Core.Extensions
                 UserId = context.HttpContext.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sid)?.Value,
                 context.Result
             };
-            _logger.Info(new  { Method = HttpContext.Request.Path.Value, Argument = param, Description = "HaoHaoPlay_Back_Response" });
+            _logger.Info(new { Method = HttpContext.Request.Path.Value, Argument = param, Description = "HaoHaoPlay_Back_Response" });
             base.OnActionExecuted(context);
         }
 
 
         [AttributeUsage(AttributeTargets.Method)]
         protected class AuthCodeAttribute : Attribute
-        {         
+        {
             public AuthCodeAttribute(string code)
             {
 
@@ -108,30 +108,30 @@ namespace Hao.Core.Extensions
 
 
 
-        //        protected async Task<HttpResponseMessage> DownFile(string filePath, string fileName)
-        //        {
-        //            return await Task.Factory.StartNew(() =>
-        //            {
-        //                HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
-        //#if DEBUG
+//        protected async Task<HttpResponseMessage> DownFile(string filePath, string fileName)
+//        {
+//            return await Task.Factory.StartNew(() =>
+//            {
+//                HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
+//#if DEBUG
 
-        //                Stream stream = new FileStream(filePath, FileMode.Open);
-        //                response.Content = new StreamContent(stream);
-        //#else
-        //                response.Content = new StringContent("");
-        //#endif
-        //                response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
-        //                response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
-        //                response.Content.Headers.ContentDisposition.FileName = fileName;
+//                Stream stream = new FileStream(filePath, FileMode.Open);
+//                response.Content = new StreamContent(stream);
+//#else
+//                        response.Content = new StringContent("");
+//#endif
+//                response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+//                response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
+//                response.Content.Headers.ContentDisposition.FileName = fileName;
 
-        //#if DEBUG
-        //#else
-        //                response.Content.Headers.Add("X-Accel-Redirect", $"/Api/ExportExcel/{fileName}");
-        //#endif
-        //                return response;
-        //            });
+//#if DEBUG
+//#else
+//                        response.Content.Headers.Add("X-Accel-Redirect", $"/Api/ExportExcel/{fileName}");
+//#endif
+//                return response;
+//            });
 
-        //        }
+//        }
 
         ///// <summary>
         ///// 读取body参数    （.net core 3.0 system.text.json不支持隐式转换   转换不通过会报错  不需要此方法验证)
