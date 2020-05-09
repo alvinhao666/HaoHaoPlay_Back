@@ -27,8 +27,10 @@ namespace Hao.AppService
         public async Task Logout(long userId, string jti)
         {
             var value = await RedisHelper.GetAsync($"{_appsettings.RedisPrefixOptions.LoginInfo}{userId}_{jti}");
+
             var cacheUser = JsonSerializer.Deserialize<RedisCacheUserInfo>(value);
             cacheUser.LoginStatus = LoginStatus.Offline;
+
             await RedisHelper.SetAsync($"{_appsettings.RedisPrefixOptions.LoginInfo}{userId}_{jti}",JsonSerializer.Serialize(cacheUser));
         }
     }
