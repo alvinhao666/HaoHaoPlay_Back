@@ -50,7 +50,7 @@ namespace Hao.Core.Extensions
                 Description = "请求信息"
             });
 
-            var value = RedisHelper.Get($"{AppsettingsOptions.Value.RedisPrefixOptions.LoginInfo}{userId}_{jti}");
+            var value = RedisHelper.Get($"{AppsettingsOptions.Value.RedisPrefix.LoginInfo}{userId}_{jti}");
 
             if (value == null) throw new HException(ErrorInfo.E100002, nameof(ErrorInfo.E100002).GetErrorCode());
 

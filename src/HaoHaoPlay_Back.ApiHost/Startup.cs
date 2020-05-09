@@ -60,9 +60,9 @@ namespace HaoHaoPlay.ApiHost
 
             _pathInfo = new FilePathInfo
             {
-                ExportExcelPath = Path.Combine(_parentDir.FullName, "ExportFile/Excel"),
-                ImportExcelPath = Path.Combine(_parentDir.FullName, "ImportFile/Excel"),
-                AvatarPath = Path.Combine(_parentDir.FullName, "AvatarFile")
+                ExportExcelPath = Path.Combine(_parentDir.FullName, _appSettings.FilePath.ExportExcelPath),
+                ImportExcelPath = Path.Combine(_parentDir.FullName, _appSettings.FilePath.ImportExcelPath),
+                AvatarPath = Path.Combine(_parentDir.FullName, _appSettings.FilePath.AvatarPath)
             };
 
             #region DeBug
@@ -70,13 +70,13 @@ namespace HaoHaoPlay.ApiHost
             services.AddSwaggerGen(c =>
             {
                 //配置第一个Doc
-                c.SwaggerDoc(_appSettings.SwaggerOptions.Name, new OpenApiInfo
+                c.SwaggerDoc(_appSettings.Swagger.Name, new OpenApiInfo
                 {
                     Version = "v1",
                     Title = "接口文档"
                 });
 
-                foreach(var item in _appSettings.SwaggerOptions.Xmls)
+                foreach(var item in _appSettings.Swagger.Xmls)
                 {
                     c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, item));
                 }
@@ -87,7 +87,7 @@ namespace HaoHaoPlay.ApiHost
 
 
             #region 单例注入
-            var worker = new IdWorker(_appSettings.SnowflakeIdOptions.WorkerId, _appSettings.SnowflakeIdOptions.DataCenterId);
+            var worker = new IdWorker(_appSettings.SnowflakeId.WorkerId, _appSettings.SnowflakeId.DataCenterId);
             services.AddSingleton(worker);
 
             services.AddSingleton(_pathInfo);
@@ -121,7 +121,7 @@ namespace HaoHaoPlay.ApiHost
 
             #region Redis
 
-            var csRedis = new CSRedisClient(_appSettings.ConnectionStrings.RedisConnection);
+            var csRedis = new CSRedisClient(_appSettings.ConnectionString.Redis);
 
             //初始化 RedisHelper
             RedisHelper.Initialization(csRedis);
@@ -135,7 +135,7 @@ namespace HaoHaoPlay.ApiHost
 
 
             //ORM
-            services.AddPostgreSQLService(_appSettings.ConnectionStrings.PostgreSqlConnection);
+            services.AddPostgreSQLService(_appSettings.ConnectionString.PostgreSql);
 
             //Note: The injection of services needs before of `services.AddCap()`
             services.Scan(a =>
@@ -149,7 +149,7 @@ namespace HaoHaoPlay.ApiHost
             //CAP
             services.AddCapService(new HCapConfig()
             {
-                PostgreSqlConnection = _appSettings.ConnectionStrings.PostgreSqlConnection,
+                PostgreSqlConnection = _appSettings.ConnectionString.PostgreSql,
                 HostName = _appSettings.RabbitMQ.HostName,
                 VirtualHost = _appSettings.RabbitMQ.VirtualHost,
                 Port = _appSettings.RabbitMQ.Port,
@@ -207,7 +207,7 @@ namespace HaoHaoPlay.ApiHost
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint($"{_appSettings.SwaggerOptions.Name}/swagger.json", _appSettings.SwaggerOptions.Name);
+                c.SwaggerEndpoint($"{_appSettings.Swagger.Name}/swagger.json", _appSettings.Swagger.Name);
                 //c.InjectStylesheet("/css/swagger_ui.css");
             });
 

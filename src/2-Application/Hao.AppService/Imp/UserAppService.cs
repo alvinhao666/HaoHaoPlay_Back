@@ -71,7 +71,7 @@ namespace Hao.AppService
             var user = _mapper.Map<SysUser>(vm);
             user.FirstNameSpell = HSpell.GetFirstLetter(user.Name.ToCharArray()[0]);
             user.PasswordLevel = (PasswordLevel)HUtil.CheckPasswordLevel(user.Password);
-            user.Password = EncryptProvider.HMACSHA256(user.Password, _appsettings.KeyInfo.Sha256Key);
+            user.Password = EncryptProvider.HMACSHA256(user.Password, _appsettings.Key.Sha256Key);
             user.Enabled = true;
             user.RoleId = role.Id;
             user.RoleName = role.Name;
@@ -92,7 +92,7 @@ namespace Hao.AppService
             foreach (var user in users)
             {
                 user.FirstNameSpell = HSpell.GetFirstLetter(user.Name.ToCharArray()[0]);
-                user.Password = EncryptProvider.HMACSHA256(user.Password, _appsettings.KeyInfo.Sha256Key);
+                user.Password = EncryptProvider.HMACSHA256(user.Password, _appsettings.Key.Sha256Key);
             }
             await _userRep.InsertAysnc(users);
         }
@@ -134,7 +134,7 @@ namespace Hao.AppService
             CheckUser(userId);
             var user = await GetUserDetail(userId);
             await _userRep.DeleteAysnc(user.Id);
-            await RedisHelper.DelAsync(_appsettings.RedisPrefixOptions.LoginInfo + userId);
+            await RedisHelper.DelAsync(_appsettings.RedisPrefix.LoginInfo + userId);
         }
 
         /// <summary>
@@ -150,7 +150,7 @@ namespace Hao.AppService
             user.Enabled = enabled;
             await _userRep.UpdateAsync(user, user => new { user.Enabled });
             // 注销用户，删除登录缓存
-            if(!enabled) await RedisHelper.DelAsync(_appsettings.RedisPrefixOptions.LoginInfo + user.Id);
+            if(!enabled) await RedisHelper.DelAsync(_appsettings.RedisPrefix.LoginInfo + user.Id);
         }
 
         /// <summary>

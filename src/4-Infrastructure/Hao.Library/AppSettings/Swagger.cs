@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Hao.Library
 {
-    public class SwaggerOptions
+    public class Swagger
     {
         public string Name { get; set; }
 

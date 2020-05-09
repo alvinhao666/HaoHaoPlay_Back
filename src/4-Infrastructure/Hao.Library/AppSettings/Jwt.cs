@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Hao.Library
 {
-    public class JwtOptions
+    public class Jwt
     {
         public SigningCredentials SigningCredentials
         {

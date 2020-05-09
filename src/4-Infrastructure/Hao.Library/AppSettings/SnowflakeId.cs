@@ -1,6 +1,6 @@
 namespace Hao.Library
 {
-    public class SnowflakeIdOptions
+    public class SnowflakeId
     {
         public long WorkerId { get; set; }
         public long DataCenterId { get; set; }

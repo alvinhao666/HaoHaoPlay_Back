@@ -68,9 +68,9 @@ namespace Hao.AppService
             var timeNow = DateTime.Now;
             var expireTime = timeNow.AddDays(isRememberLogin ? 3 : 1);
             //rsa解密
-            password = RSAHelper.Decrypt(_appsettings.KeyInfo.RsaPrivateKey, password);
+            password = RSAHelper.Decrypt(_appsettings.Key.RsaPrivateKey, password);
             //sha256加密
-            password = EncryptProvider.HMACSHA256(password, _appsettings.KeyInfo.Sha256Key); 
+            password = EncryptProvider.HMACSHA256(password, _appsettings.Key.Sha256Key); 
 
             //根据账号密码查询用户
             var user = await GetUser(loginName, password);
@@ -105,7 +105,7 @@ namespace Hao.AppService
             };
 
             int expireSeconds = (int)expireTime.Subtract(timeNow).Duration().TotalSeconds + 1;
-            await RedisHelper.SetAsync($"{_appsettings.RedisPrefixOptions.LoginInfo}{user.Id}_{jti}", JsonSerializer.Serialize(userValue), expireSeconds);
+            await RedisHelper.SetAsync($"{_appsettings.RedisPrefix.LoginInfo}{user.Id}_{jti}", JsonSerializer.Serialize(userValue), expireSeconds);
 
             //同步登录信息，例如ip等等
             await AsyncLoginInfo(user.Id, timeNow);

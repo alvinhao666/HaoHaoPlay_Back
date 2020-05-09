@@ -2,25 +2,28 @@
 {
     public class AppSettingsInfo
     {
-        public ConnectionStrings ConnectionStrings { get; set; }
+        public ConnectionString ConnectionString { get; set; }
 
-        public JwtOptions JwtOptions { get; set; }
+        public Jwt JwtOptions { get; set; }
 
-        public RedisPrefixOptions RedisPrefixOptions { get; set; }
+        public RedisPrefix RedisPrefix { get; set; }
 
-        public SnowflakeIdOptions SnowflakeIdOptions { get; set; }
+        public SnowflakeId SnowflakeId { get; set; }
 
         public RabbitMQ RabbitMQ { get; set; }
 
-        public KeyInfo KeyInfo { get; set; }
+        public Key Key { get; set; }
 
         public DataProtectorPurpose DataProtectorPurpose { get; set; }
 
-        public SwaggerOptions SwaggerOptions { get; set; }
+        public Swagger Swagger { get; set; }
 
         /// <summary>
         /// 跨域地址
         /// </summary>
         public string[] CorsUrls { get; set; }
+
+
+        public FilePath FilePath { get; set; }
     }
 }

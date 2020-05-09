@@ -106,10 +106,10 @@ namespace Hao.AppService
         public async Task UpdatePassword(string oldPassword, string newPassword)
         {
             var user = await _userRep.GetAysnc(_currentUser.Id.Value);
-            oldPassword = EncryptProvider.HMACSHA256(oldPassword, _appsettings.KeyInfo.Sha256Key);
+            oldPassword = EncryptProvider.HMACSHA256(oldPassword, _appsettings.Key.Sha256Key);
             if (user.Password != oldPassword) throw new HException("原密码错误");
             user.PasswordLevel = (PasswordLevel)HUtil.CheckPasswordLevel(newPassword);
-            newPassword = EncryptProvider.HMACSHA256(newPassword, _appsettings.KeyInfo.Sha256Key);
+            newPassword = EncryptProvider.HMACSHA256(newPassword, _appsettings.Key.Sha256Key);
             user.Password = newPassword;
             await _userRep.UpdateAsync(user, user => new { user.Password, user.PasswordLevel });
         }
