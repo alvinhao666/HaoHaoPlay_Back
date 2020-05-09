@@ -4,7 +4,7 @@
     {
         public ConnectionString ConnectionString { get; set; }
 
-        public Jwt JwtOptions { get; set; }
+        public Jwt Jwt { get; set; }
 
         public RedisPrefix RedisPrefix { get; set; }
 

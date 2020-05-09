@@ -152,7 +152,7 @@ namespace Hao.AppService
         {
             var claims = new Claim[]
             {
-                new Claim(JwtRegisteredClaimNames.Sub, _appsettings.JwtOptions.Subject), //主题
+                new Claim(JwtRegisteredClaimNames.Sub, _appsettings.Jwt.Subject), //主题
                 new Claim(JwtRegisteredClaimNames.Jti, jti), //针对当前 token 的唯一标识 jwt的唯一身份标识，避免重复
                 new Claim(JwtRegisteredClaimNames.Sid, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Iat, timeNow.Ticks.ToString(), ClaimValueTypes.Integer64), //token 创建时间
@@ -161,12 +161,12 @@ namespace Hao.AppService
             };
 
             var jwt = new JwtSecurityTokenHandler().WriteToken(new JwtSecurityToken(
-                issuer: _appsettings.JwtOptions.Issuer,
-                audience: _appsettings.JwtOptions.Audience,
+                issuer: _appsettings.Jwt.Issuer,
+                audience: _appsettings.Jwt.Audience,
                 claims: claims,
                 notBefore: timeNow, //生效时间
                 expires: expireTime,//过期时间
-                signingCredentials: _appsettings.JwtOptions.SigningCredentials
+                signingCredentials: _appsettings.Jwt.SigningCredentials
             ));
 
             return jwt;

@@ -107,9 +107,9 @@ namespace HaoHaoPlay.ApiHost
                     ValidateIssuer = true,//是否验证Issuer
                     ValidateAudience = true,//是否验证Audience
                     ValidateIssuerSigningKey = true,//是否验证SecurityKey
-                    ValidAudience = _appSettings.JwtOptions.Audience,//Audience
-                    ValidIssuer = _appSettings.JwtOptions.Issuer,//Issuer，这两项和前面签发jwt的设置一致
-                    IssuerSigningKey = _appSettings.JwtOptions.SecurityKey,//拿到SecurityKey
+                    ValidAudience = _appSettings.Jwt.Audience,//Audience
+                    ValidIssuer = _appSettings.Jwt.Issuer,//Issuer，这两项和前面签发jwt的设置一致
+                    IssuerSigningKey = _appSettings.Jwt.SecurityKey,//拿到SecurityKey
                     ValidateLifetime = true,//是否验证失效时间  当设置exp和nbf时有效 同时启用ClockSkew 
                     RequireExpirationTime = true,
                     ClockSkew = TimeSpan.Zero, // ClockSkew 属性，默认是5分钟缓冲。
