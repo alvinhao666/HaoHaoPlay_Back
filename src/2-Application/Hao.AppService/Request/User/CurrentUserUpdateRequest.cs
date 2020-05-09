@@ -1,4 +1,5 @@
-﻿using Hao.Enum;
+﻿using FluentValidation;
+using Hao.Enum;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -55,5 +56,22 @@ namespace Hao.AppService
         /// QQ
         /// </summary>
         public string QQ { get; set; }
+    }
+
+
+    /// <summary>
+    /// 验证
+    /// </summary>
+    public class CurrentUserUpdateValidator : AbstractValidator<CurrentUserUpdateRequest>
+    {
+        public CurrentUserUpdateValidator()
+        {
+
+            RuleFor(x => x.Name).NotEmpty().WithMessage("姓名不能为空");
+
+            RuleFor(x => x.Gender).NotEmpty().WithMessage("性别不能为空").IsInEnum().WithMessage("性别数据有误");
+
+            RuleFor(x => x.Age).NotEmpty().WithMessage("年龄不能为空");
+        }
     }
 }
