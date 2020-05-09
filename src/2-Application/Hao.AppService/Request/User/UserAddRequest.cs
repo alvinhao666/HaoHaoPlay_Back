@@ -6,6 +6,9 @@ using System.Text;
 
 namespace Hao.AppService
 {
+    /// <summary>
+    /// 添加用户请求
+    /// </summary>
     public class UserAddRequest
     {
         /// <summary>
@@ -52,6 +55,10 @@ namespace Hao.AppService
         public long? RoleId { get; set; }
     }
 
+
+    /// <summary>
+    /// 验证
+    /// </summary>
     public class UserAddValidator : AbstractValidator<UserAddRequest>
     {
         public UserAddValidator()

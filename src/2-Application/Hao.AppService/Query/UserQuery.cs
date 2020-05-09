@@ -9,6 +9,9 @@ using System.Linq.Expressions;
 
 namespace Hao.AppService
 {
+    /// <summary>
+    /// 用户查询
+    /// </summary>
     public class UserQuery : Query<SysUser>
     {
         /// <summary>

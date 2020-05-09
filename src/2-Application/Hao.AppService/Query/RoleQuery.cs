@@ -6,6 +6,9 @@ using System.Linq.Expressions;
 
 namespace Hao.AppService
 {
+    /// <summary>
+    /// 角色查询
+    /// </summary>
     public class RoleQuery : Query<SysRole>
     {
         /// <summary>

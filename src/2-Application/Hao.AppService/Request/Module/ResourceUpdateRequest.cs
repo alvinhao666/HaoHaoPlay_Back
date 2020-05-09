@@ -5,6 +5,9 @@ using System.Text;
 
 namespace Hao.AppService
 {
+    /// <summary>
+    /// 更新资源请求
+    /// </summary>
     public class ResourceUpdateRequest
     {
         /// <summary>
@@ -18,6 +21,9 @@ namespace Hao.AppService
         public int? Sort { get; set; }
     }
 
+    /// <summary>
+    /// 验证
+    /// </summary>
     public class ResourceUpdateValidator : AbstractValidator<ResourceUpdateRequest>
     {
         public ResourceUpdateValidator()

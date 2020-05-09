@@ -3,6 +3,9 @@ using Hao.Enum;
 
 namespace Hao.AppService
 {
+    /// <summary>
+    /// 更新模块请求
+    /// </summary>
     public class ModuleUpdateRequest
     {
         /// <summary>
@@ -31,6 +34,9 @@ namespace Hao.AppService
         public int? Sort { get; set; }
     }
 
+    /// <summary>
+    /// 验证
+    /// </summary>
     public class ModuleUpdateValidator : AbstractValidator<ModuleUpdateRequest>
     {
         public ModuleUpdateValidator()

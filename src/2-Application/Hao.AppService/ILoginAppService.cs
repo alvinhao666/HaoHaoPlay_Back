@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Hao.AppService
 {
+    /// <summary>
+    /// 登录服务接口
+    /// </summary>
     public interface ILoginAppService
     {
         /// <summary>

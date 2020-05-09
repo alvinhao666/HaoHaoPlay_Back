@@ -2,6 +2,9 @@
 
 namespace Hao.AppService
 {
+    /// <summary>
+    /// 注销服务接口
+    /// </summary>
     public interface ILogoutAppService
     {
         /// <summary>

@@ -5,6 +5,9 @@ using System.Text;
 
 namespace Hao.AppService
 {
+    /// <summary>
+    /// 更新当前用户信息请求
+    /// </summary>
     public class CurrentUserUpdateRequest
     {
         /// <summary>

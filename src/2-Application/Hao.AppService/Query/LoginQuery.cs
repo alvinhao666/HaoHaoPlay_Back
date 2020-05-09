@@ -7,6 +7,9 @@ using Hao.Utility;
 
 namespace Hao.AppService
 {
+    /// <summary>
+    /// 登录查询
+    /// </summary>
     public class LoginQuery : Query<SysUser>
     {
         /// <summary>

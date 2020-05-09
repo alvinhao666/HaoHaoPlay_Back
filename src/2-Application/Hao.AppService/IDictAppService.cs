@@ -4,6 +4,9 @@ using Hao.Core;
 
 namespace Hao.AppService
 {
+    /// <summary>
+    /// 字典服务接口
+    /// </summary>
     public interface IDictAppService
     {
         /// <summary>

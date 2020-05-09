@@ -6,6 +6,9 @@ using System.Text;
 
 namespace Hao.AppService
 {
+    /// <summary>
+    /// 修改用户请求
+    /// </summary>
     public class UserUpdateRequest
     {
         /// <summary>
@@ -39,6 +42,9 @@ namespace Hao.AppService
         public string QQ { get; set; }
     }
 
+    /// <summary>
+    /// 验证
+    /// </summary>
     public class UserUpdateRequestValidator : AbstractValidator<UserUpdateRequest>
     {
         public UserUpdateRequestValidator()

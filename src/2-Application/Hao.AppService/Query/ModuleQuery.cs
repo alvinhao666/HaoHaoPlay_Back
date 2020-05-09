@@ -8,6 +8,9 @@ using System.Linq.Expressions;
 
 namespace Hao.AppService
 {
+    /// <summary>
+    /// 模块查询
+    /// </summary>
     public class ModuleQuery : Query<SysModule>
     {
         /// <summary>

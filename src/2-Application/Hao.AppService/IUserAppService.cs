@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace Hao.AppService
 {
+    /// <summary>
+    /// 用户服务接口
+    /// </summary>
     public interface IUserAppService 
     {
         /// <summary>

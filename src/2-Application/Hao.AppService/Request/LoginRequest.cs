@@ -5,6 +5,9 @@ using System.Text;
 
 namespace Hao.AppService
 {
+    /// <summary>
+    /// 登录请求
+    /// </summary>
     public class LoginRequest
     {
         /// <summary>
@@ -22,6 +25,9 @@ namespace Hao.AppService
         public bool IsRememberLogin { get; set; }
     }
 
+    /// <summary>
+    /// 验证
+    /// </summary>
     public class LoginValidator : AbstractValidator<LoginRequest>
     {
         public LoginValidator()

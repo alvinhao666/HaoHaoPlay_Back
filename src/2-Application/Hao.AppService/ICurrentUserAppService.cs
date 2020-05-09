@@ -3,6 +3,9 @@ using System.Threading.Tasks;
 
 namespace Hao.AppService
 {
+    /// <summary>
+    /// 当前用户服务接口
+    /// </summary>
     public interface ICurrentUserAppService
     {
 

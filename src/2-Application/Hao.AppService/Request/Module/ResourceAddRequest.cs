@@ -2,6 +2,9 @@
 
 namespace Hao.AppService
 {
+    /// <summary>
+    /// 添加资源请求
+    /// </summary>
     public class ResourceAddRequest
     {
         /// <summary>
@@ -15,6 +18,9 @@ namespace Hao.AppService
         public long? ParentId { get; set; }
     }
 
+    /// <summary>
+    /// 验证
+    /// </summary>
     public class ResourceAddValidator : AbstractValidator<ResourceAddRequest>
     {
         public ResourceAddValidator()

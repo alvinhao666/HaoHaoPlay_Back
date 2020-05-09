@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 namespace Hao.AppService
 {
+    /// <summary>
+    /// 角色服务接口
+    /// </summary>
     public interface IRoleAppService
     {
         /// <summary>

@@ -5,6 +5,9 @@ using System.Text;
 
 namespace Hao.AppService
 {
+    /// <summary>
+    /// 修改密码请求
+    /// </summary>
     public class PwdUpdateRequest
     {
         public string OldPassword { get; set; }
@@ -14,6 +17,9 @@ namespace Hao.AppService
         public string RePassword { get; set; }
     }
 
+    /// <summary>
+    /// 验证
+    /// </summary>
     public class PwdUpdateValidator : AbstractValidator<PwdUpdateRequest>
     {
         public PwdUpdateValidator()

@@ -7,6 +7,9 @@ using Hao.Utility;
 
 namespace Hao.AppService
 {
+    /// <summary>
+    /// 字典查询
+    /// </summary>
     public class DictQuery : Query<SysDict>
     {
         /// <summary>

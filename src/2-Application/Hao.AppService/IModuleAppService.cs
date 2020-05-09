@@ -4,6 +4,9 @@ using System.Threading.Tasks;
 
 namespace Hao.AppService
 {
+    /// <summary>
+    /// 模块服务接口
+    /// </summary>
     public interface IModuleAppService
     {
         /// <summary>
