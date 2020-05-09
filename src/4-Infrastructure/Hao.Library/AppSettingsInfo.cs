@@ -17,5 +17,10 @@
         public DataProtectorPurpose DataProtectorPurpose { get; set; }
 
         public SwaggerOptions SwaggerOptions { get; set; }
+
+        /// <summary>
+        /// 跨域地址
+        /// </summary>
+        public string[] CorsUrls { get; set; }
     }
 }
