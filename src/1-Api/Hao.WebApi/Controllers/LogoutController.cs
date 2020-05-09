@@ -26,9 +26,6 @@ namespace Hao.WebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task Logout()
-        {
-            await _logoutAppService.Logout(_currentUser.Id.Value, _currentUser.Jti);
-        }
+        public async Task Logout() => await _logoutAppService.Logout(_currentUser.Id.Value, _currentUser.Jti);
     }
 }
