@@ -38,7 +38,7 @@ namespace HaoHaoPlay.ApiHost
     {
         private readonly DirectoryInfo _parentDir = new DirectoryInfo(Directory.GetCurrentDirectory()).Parent;
 
-        private readonly FilePathInfo _pathInfo;
+        private FilePathInfo _pathInfo;
 
         private AppSettingsInfo _appSettings;
 
@@ -46,14 +46,8 @@ namespace HaoHaoPlay.ApiHost
 
         public Startup(IConfiguration configuration)
         {
-            Config = configuration;
             if (_parentDir == null) throw new Exception("项目安置路径有误，请检查");
-            _pathInfo = new FilePathInfo
-            {
-                ExportExcelPath = Path.Combine(_parentDir.FullName, "ExportFile/Excel"),
-                ImportExcelPath = Path.Combine(_parentDir.FullName, "ImportFile/Excel"),
-                AvatarPath = Path.Combine(_parentDir.FullName, "AvatarFile")
-            };
+            Config = configuration;
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -63,6 +57,13 @@ namespace HaoHaoPlay.ApiHost
             Config.Bind("AppSettingsInfo", _appSettings);
             var appSettingsOption = Config.GetSection(nameof(AppSettingsInfo));
             services.Configure<AppSettingsInfo>(appSettingsOption);
+
+            _pathInfo = new FilePathInfo
+            {
+                ExportExcelPath = Path.Combine(_parentDir.FullName, "ExportFile/Excel"),
+                ImportExcelPath = Path.Combine(_parentDir.FullName, "ImportFile/Excel"),
+                AvatarPath = Path.Combine(_parentDir.FullName, "AvatarFile")
+            };
 
             #region DeBug
 #if DEBUG
@@ -221,26 +222,27 @@ namespace HaoHaoPlay.ApiHost
             app.UseWhen(a => a.Request.Path.Value.Contains("ExportExcel") || a.Request.Path.Value.Contains("template"), b => b.UseMiddleware<StaticFileMiddleware>());
             //使用默认文件夹wwwroot
             app.UseStaticFiles();
+
             //导出excel路径
-            var exportExcelPath = Path.Combine(_parentDir.FullName, "ExportFile/Excel");
-            HFile.CreateDirectory(exportExcelPath);
+            HFile.CreateDirectory(_pathInfo.ExportExcelPath);
 
             app.UseStaticFiles(new StaticFileOptions()
             {
-                FileProvider = new PhysicalFileProvider(exportExcelPath),
+                FileProvider = new PhysicalFileProvider(_pathInfo.ExportExcelPath),
                 RequestPath = "/ExportExcel",
                 ContentTypeProvider = new FileExtensionContentTypeProvider(new Dictionary<string, string>
-                    {
-                        { ".xlsx","application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}
-                    })
+                {
+                    { ".xlsx","application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}
+                })
             });
 
             //头像路径
-            var avatarPath = Path.Combine(_parentDir.FullName, "AvatarFile");
-            HFile.CreateDirectory(avatarPath);
+
+            HFile.CreateDirectory(_pathInfo.AvatarPath);
+
             app.UseStaticFiles(new StaticFileOptions()
             {
-                FileProvider = new PhysicalFileProvider(avatarPath),
+                FileProvider = new PhysicalFileProvider(_pathInfo.AvatarPath),
                 RequestPath = "/AvatarFile"
             });
             #endregion
