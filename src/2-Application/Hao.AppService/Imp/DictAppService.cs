@@ -4,7 +4,7 @@ using Hao.Model;
 using Hao.Repository;
 using Hao.RunTimeException;
 using System.Threading.Tasks;
-using Hao.AppService.ViewModel.Dict;
+using Hao.AppService.ViewModel;
 
 namespace Hao.AppService
 {

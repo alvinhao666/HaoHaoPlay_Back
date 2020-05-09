@@ -1,4 +1,4 @@
-namespace Hao.AppService.ViewModel.Dict
+namespace Hao.AppService.ViewModel
 {
     public class DictVM
     {

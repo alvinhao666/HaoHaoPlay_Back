@@ -3,7 +3,7 @@ using Hao.Core.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using AutoMapper;
-using Hao.AppService.ViewModel.Dict;
+using Hao.AppService.ViewModel;
 using Hao.Core;
 
 namespace Hao.WebApi.Controllers
