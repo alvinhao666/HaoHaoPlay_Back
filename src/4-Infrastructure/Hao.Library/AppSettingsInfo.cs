@@ -15,5 +15,7 @@
         public KeyInfo KeyInfo { get; set; }
 
         public DataProtectorPurpose DataProtectorPurpose { get; set; }
+
+        public SwaggerOptions SwaggerOptions { get; set; }
     }
 }

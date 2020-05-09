@@ -29,6 +29,8 @@ using Hao.Core.Extensions;
 using Hao.Utility;
 using Hao.AppService;
 using DotNetCore.CAP;
+using Microsoft.Extensions.DependencyModel;
+using System.Linq;
 
 namespace HaoHaoPlay.ApiHost
 {
@@ -37,6 +39,8 @@ namespace HaoHaoPlay.ApiHost
         private readonly DirectoryInfo _parentDir = new DirectoryInfo(Directory.GetCurrentDirectory()).Parent;
 
         private readonly FilePathInfo _pathInfo;
+
+        private AppSettingsInfo _appSettings;
 
         public IConfiguration Config { get; }
 
@@ -48,41 +52,41 @@ namespace HaoHaoPlay.ApiHost
             {
                 ExportExcelPath = Path.Combine(_parentDir.FullName, "ExportFile/Excel"),
                 ImportExcelPath = Path.Combine(_parentDir.FullName, "ImportFile/Excel"),
-                AvatarPath = Path.Combine(_parentDir.FullName,"AvatarFile")
+                AvatarPath = Path.Combine(_parentDir.FullName, "AvatarFile")
             };
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
+
+            _appSettings = new AppSettingsInfo();
+            Config.Bind("AppSettingsInfo", _appSettings);
+            var appSettingsOption = Config.GetSection(nameof(AppSettingsInfo));
+            services.Configure<AppSettingsInfo>(appSettingsOption);
+
             #region DeBug
 #if DEBUG
             services.AddSwaggerGen(c =>
             {
                 //配置第一个Doc
-                c.SwaggerDoc("haohaoplay_back", new OpenApiInfo
+                c.SwaggerDoc(_appSettings.SwaggerOptions.Name, new OpenApiInfo
                 {
                     Version = "v1",
-                    Title = "接口文档",
-                    Description = "接口说明"
+                    Title = "接口文档"
                 });
-                //c.IncludeXmlComments(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "HaoHaoPlay.WebHost.xml"));
-                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                c.IncludeXmlComments(xmlPath);
-                c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "Hao.WebApi.xml"));
-                c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "Hao.AppService.xml"));
+
+                foreach(var item in _appSettings.SwaggerOptions.Xmls)
+                {
+                    c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, item));
+                }
             });
 #endif
             #endregion
 
 
-            var appSettings = new AppSettingsInfo();
-            Config.Bind("AppSettingsInfo", appSettings);
-            var appSettingsOption = Config.GetSection(nameof(AppSettingsInfo));
-            services.Configure<AppSettingsInfo>(appSettingsOption);
 
             #region 单例注入
-            var worker = new IdWorker(appSettings.SnowflakeIdOptions.WorkerId, appSettings.SnowflakeIdOptions.DataCenterId);
+            var worker = new IdWorker(_appSettings.SnowflakeIdOptions.WorkerId, _appSettings.SnowflakeIdOptions.DataCenterId);
             services.AddSingleton(worker);
 
             services.AddSingleton(_pathInfo);
@@ -102,9 +106,9 @@ namespace HaoHaoPlay.ApiHost
                     ValidateIssuer = true,//是否验证Issuer
                     ValidateAudience = true,//是否验证Audience
                     ValidateIssuerSigningKey = true,//是否验证SecurityKey
-                    ValidAudience = appSettings.JwtOptions.Audience,//Audience
-                    ValidIssuer = appSettings.JwtOptions.Issuer,//Issuer，这两项和前面签发jwt的设置一致
-                    IssuerSigningKey = appSettings.JwtOptions.SecurityKey,//拿到SecurityKey
+                    ValidAudience = _appSettings.JwtOptions.Audience,//Audience
+                    ValidIssuer = _appSettings.JwtOptions.Issuer,//Issuer，这两项和前面签发jwt的设置一致
+                    IssuerSigningKey = _appSettings.JwtOptions.SecurityKey,//拿到SecurityKey
                     ValidateLifetime = true,//是否验证失效时间  当设置exp和nbf时有效 同时启用ClockSkew 
                     RequireExpirationTime = true,
                     ClockSkew = TimeSpan.Zero, // ClockSkew 属性，默认是5分钟缓冲。
@@ -116,7 +120,7 @@ namespace HaoHaoPlay.ApiHost
 
             #region Redis
 
-            var csRedis = new CSRedisClient(appSettings.ConnectionStrings.RedisConnection);
+            var csRedis = new CSRedisClient(_appSettings.ConnectionStrings.RedisConnection);
 
             //初始化 RedisHelper
             RedisHelper.Initialization(csRedis);
@@ -130,10 +134,11 @@ namespace HaoHaoPlay.ApiHost
 
 
             //ORM
-            services.AddPostgreSQLService(appSettings.ConnectionStrings.PostgreSqlConnection);
+            services.AddPostgreSQLService(_appSettings.ConnectionStrings.PostgreSqlConnection);
 
             //Note: The injection of services needs before of `services.AddCap()`
-            services.Scan(a => {
+            services.Scan(a =>
+            {
                 a.FromAssembliesOf(typeof(LoginEventDataSubscribe))
                     .AddClasses()
                     .AsMatchingInterface((x, p) => typeof(ICapSubscribe).IsAssignableFrom(p.GetType())) //直接或间接实现了ICapSubscribe
@@ -141,13 +146,14 @@ namespace HaoHaoPlay.ApiHost
             });
 
             //CAP
-            services.AddCapService(new HCapConfig() {
-                PostgreSqlConnection = appSettings.ConnectionStrings.PostgreSqlConnection,
-                HostName=appSettings.RabbitMQ.HostName,
-                VirtualHost=appSettings.RabbitMQ.VirtualHost,
-                Port=appSettings.RabbitMQ.Port,
-                UserName=appSettings.RabbitMQ.UserName,
-                Password=appSettings.RabbitMQ.Password
+            services.AddCapService(new HCapConfig()
+            {
+                PostgreSqlConnection = _appSettings.ConnectionStrings.PostgreSqlConnection,
+                HostName = _appSettings.RabbitMQ.HostName,
+                VirtualHost = _appSettings.RabbitMQ.VirtualHost,
+                Port = _appSettings.RabbitMQ.Port,
+                UserName = _appSettings.RabbitMQ.UserName,
+                Password = _appSettings.RabbitMQ.Password
             });
 
 
@@ -200,7 +206,7 @@ namespace HaoHaoPlay.ApiHost
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("haohaoplay_back/swagger.json", "api");
+                c.SwaggerEndpoint($"{_appSettings.SwaggerOptions.Name}/swagger.json", _appSettings.SwaggerOptions.Name);
                 //c.InjectStylesheet("/css/swagger_ui.css");
             });
 
