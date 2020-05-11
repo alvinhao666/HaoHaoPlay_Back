@@ -99,9 +99,10 @@ namespace Hao.Core.Extensions
 
             //Note: The injection of services needs before of `services.AddCap()`
 
+            var eventSubscribeAssemblies = appSettings.EventSubscribeAssemblyNames.Select(name => Assembly.Load(name)).ToArray();
             services.Scan(a =>
             {
-                a.FromAssemblies(appSettings.EventSubscribeAssemblyNames.Select(name => Assembly.Load(name)).ToArray())
+                a.FromAssemblies(eventSubscribeAssemblies)
                     .AddClasses()
                     .AsMatchingInterface((x, p) => typeof(ICapSubscribe).IsAssignableFrom(p.GetType())) //直接或间接实现了ICapSubscribe
                     .WithTransientLifetime();
@@ -122,11 +123,13 @@ namespace Hao.Core.Extensions
             //替换控制器所有者,详见有道笔记,放AddMvc前面 controller属性注入
             services.Replace(ServiceDescriptor.Transient<IControllerActivator, ServiceBasedControllerActivator>());
 
+
+            var validatorAssemblies = appSettings.ValidatorAssemblyNames.Select(name => Assembly.Load(name)).ToArray();
             services.AddControllers(x =>
             {
                 x.Filters.Add(typeof(H_ResultFilter));
             })
-            .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblies(appSettings.ValidatorAssemblyNames.Select(name => Assembly.Load(name)).ToArray()))
+            .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblies(validatorAssemblies))
             .AddJsonOptions(o =>
             {
                 //不加这个 接口接收参数 string类型的时间 转换 datetime类型报错 system.text.json不支持隐式转化
@@ -156,8 +159,9 @@ namespace Hao.Core.Extensions
             //{
             //    Hao.WebApi.MapperInit.Map(cfg);
             //    Hao.AppService.MapperInit.Map(cfg);
-            //})));            
-            services.AddAutoMapper(appSettings.AutoMapperAssemblyNames.Select(name => Assembly.Load(name)).ToArray());
+            //})));
+            var autoMapperAssemblies= appSettings.AutoMapperAssemblyNames.Select(name => Assembly.Load(name)).ToArray();
+            services.AddAutoMapper(autoMapperAssemblies);
             #endregion 
 
 
