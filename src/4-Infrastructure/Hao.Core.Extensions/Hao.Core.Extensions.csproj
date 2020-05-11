@@ -23,7 +23,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\3-Domain\Hao.Event\Hao.Event.csproj" />
     <ProjectReference Include="..\..\5-Common\Hao.Exception\Hao.Exception.csproj" />
     <ProjectReference Include="..\..\5-Common\Hao.File\Hao.File.csproj" />
     <ProjectReference Include="..\..\5-Common\Hao.Json\Hao.Json.csproj" />
