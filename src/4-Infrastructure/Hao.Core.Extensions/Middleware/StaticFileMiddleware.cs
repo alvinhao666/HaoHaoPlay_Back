@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.DataProtection;
 using Hao.RunTimeException;
 using Microsoft.Extensions.Options;
 
-namespace HaoHaoPlay.ApiHost
+namespace Hao.Core.Extensions
 {
     public class StaticFileMiddleware
     {

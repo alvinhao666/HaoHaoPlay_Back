@@ -34,8 +34,6 @@ namespace Hao.AppService
 
         private readonly ICurrentUser _currentUser;
 
-        public FilePathInfo PathInfo { get; set; }
-
         public UserAppService(ISysRoleRepository roleRep,
             IOptionsSnapshot<AppSettingsInfo> appsettingsOptions, 
             ISysUserRepository userRepository,
@@ -208,7 +206,7 @@ namespace Hao.AppService
             });
 
             string fileName = $"{Guid.NewGuid()}.xlsx";
-            string rootPath = PathInfo.ExportExcelPath;
+            string rootPath = _appsettings.FilePath.ExportExcelPath;
 
             HFile.CreateDirectory(rootPath);
             string filePath = Path.Combine(rootPath, $"{fileName}");

@@ -4,11 +4,11 @@ using Hao.Core;
 
 namespace Hao.WebApi
 {
-    public class MapperInit
+    public class MapperProfile: Profile
     {
-        public static void Map(IMapperConfigurationExpression cfg)
+        public MapperProfile()
         {
-            cfg.CreateMap<UserQueryInput, UserQuery>()
+            CreateMap<UserQueryInput, UserQuery>()
                .ForMember(x => x.OrderFileds, a => a.MapFrom(x => x.OrderByType.CombineNameWithSpace(x.SortField))); 
         }
     }

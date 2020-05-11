@@ -7,30 +7,30 @@ using Hao.Utility;
 
 namespace Hao.AppService
 {
-    public class MapperInit
+    public class MapperProfile: Profile
     {
-        public static void Map(IMapperConfigurationExpression cfg)
+        public MapperProfile()
         {
 
-            cfg.CreateMap<SysUser, LoginVM>();
+            CreateMap<SysUser, LoginVM>();
 
 
-            cfg.CreateMap<PagedList<SysUser>, PagedList<UserItemVM>>();
+            CreateMap<PagedList<SysUser>, PagedList<UserItemVM>>();
 
-            cfg.CreateMap<SysUser, UserItemVM>()
+            CreateMap<SysUser, UserItemVM>()
                .ForMember(x => x.GenderString, a => a.MapFrom(x => x.Gender.GetDescription()))
                .ForMember(x => x.EnabledString, a => a.MapFrom(x => x.Enabled.IsTrue() ? "启用" : "注销"));
 
-            cfg.CreateMap<SysUser, UserDetailVM>()
+            CreateMap<SysUser, UserDetailVM>()
                .ForMember(x => x.GenderString, a => a.MapFrom(x => x.Gender.GetDescription()))
                .ForMember(x => x.EnabledString, a => a.MapFrom(x => x.Enabled.IsTrue() ? "启用" : "注销"));
 
-            cfg.CreateMap<UserAddRequest, SysUser>();
+            CreateMap<UserAddRequest, SysUser>();
 
 
-            cfg.CreateMap<SysUser, CurrentUserVM>();
+            CreateMap<SysUser, CurrentUserVM>();
 
-            cfg.CreateMap<SysUser, UserSecurityVM>()
+            CreateMap<SysUser, UserSecurityVM>()
                .ForMember(x => x.PasswordLevel, a => a.MapFrom(x => x.PasswordLevel.GetDescription()))
                .ForMember(x => x.Phone, a => a.MapFrom(x => H_Util.HidePhoneNumber(x.Phone)))
                .ForMember(x => x.Email, a => a.MapFrom(x => H_Util.HideEmailNumber(x.Email)));
@@ -38,31 +38,31 @@ namespace Hao.AppService
 
             #region 模块
 
-            cfg.CreateMap<SysModule, ModuleDetailVM>()
+            CreateMap<SysModule, ModuleDetailVM>()
                .ForMember(x => x.Code, a => a.MapFrom(x => string.Format("{0}_{1}", x.Layer, x.Number)));
 
-            cfg.CreateMap<ModuleAddRequest, SysModule>();
+            CreateMap<ModuleAddRequest, SysModule>();
             #endregion
 
             #region 资源
-            cfg.CreateMap<ResourceAddRequest, SysModule>();
+            CreateMap<ResourceAddRequest, SysModule>();
 
-            cfg.CreateMap<SysModule, ResourceItemVM>()
+            CreateMap<SysModule, ResourceItemVM>()
                .ForMember(x => x.ResourceCode, a => a.MapFrom(x => string.Format("{0}_{1}", x.Layer, x.Number)));
             #endregion
 
 
             #region 角色
-            cfg.CreateMap<SysRole, RoleVM>();
+            CreateMap<SysRole, RoleVM>();
 
-            cfg.CreateMap<SysRole, RoleSelectVM>();
+            CreateMap<SysRole, RoleSelectVM>();
             #endregion
 
 
             #region 数据字典
-            cfg.CreateMap<DictAddRequest, SysDict>();
+            CreateMap<DictAddRequest, SysDict>();
 
-            cfg.CreateMap<DictItemAddRequest, SysDict>();
+            CreateMap<DictItemAddRequest, SysDict>();
             #endregion
 
         }

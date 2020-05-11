@@ -31,7 +31,6 @@ namespace Hao.AppService
 
         private readonly AppSettingsInfo _appsettings;
 
-        public FilePathInfo PathInfo { get; set; }
 
         public CurrentUserAppService(ISysUserRepository userRepository, IMapper mapper, ICurrentUser currentUser, IOptionsSnapshot<AppSettingsInfo> appsettingsOptions)
         {
@@ -60,9 +59,9 @@ namespace Hao.AppService
             string[] str = request.Base64Str.Split(',');  //base64Str为base64完整的字符串，先处理一下得到我们所需要的字符串
             byte[] imageBytes = Convert.FromBase64String(str[1]);
 
-            HFile.CreateDirectory(PathInfo.AvatarPath);
+            HFile.CreateDirectory(_appsettings.FilePath.AvatarPath);
             string imgName = $"{_currentUser.Id}_{H_Util.GetTimeStamp()}.png";
-            string imgPath = Path.Combine(PathInfo.AvatarPath, imgName);
+            string imgPath = Path.Combine(_appsettings.FilePath.AvatarPath, imgName);
             using (SixLabors.ImageSharp.Image image = SixLabors.ImageSharp.Image.Load(imageBytes))
             {
                 image.Save(imgPath);
@@ -73,7 +72,7 @@ namespace Hao.AppService
             await _userRep.UpdateAsync(user, user => new { user.HeadImgUrl });
             if (!string.IsNullOrWhiteSpace(oldImgUrl))
             {
-                HFile.DeleteFile(Path.Combine(PathInfo.AvatarPath, oldImgUrl));
+                HFile.DeleteFile(Path.Combine(_appsettings.FilePath.AvatarPath, oldImgUrl));
             }
 
         }

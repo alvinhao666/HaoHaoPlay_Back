@@ -32,13 +32,14 @@ namespace Hao.WebApi.Controllers
 
         private readonly ITimeLimitedDataProtector _protector;
 
-        public FilePathInfo PathInfo { get; set; }
+        private readonly AppSettingsInfo _appsettings;
 
         public UserController(IOptionsSnapshot<AppSettingsInfo> appsettingsOptions, IDataProtectionProvider provider, IMapper mapper, IUserAppService userService, IRoleAppService roleAppService)
         {
             _userAppService = userService;
             _roleAppService = roleAppService;
             _mapper = mapper;
+            _appsettings = appsettingsOptions.Value;
             _protector = provider.CreateProtector(appsettingsOptions.Value.DataProtectorPurpose.FileDownload).ToTimeLimitedDataProtector();
         }
 
@@ -170,7 +171,7 @@ namespace Hao.WebApi.Controllers
                 var content = reader.ReadToEnd();
                 var name = file.FileName;
 
-                string rootPath = PathInfo.ImportExcelPath;
+                string rootPath = _appsettings.FilePath.ImportExcelPath;
 
                 HFile.CreateDirectory(rootPath);
                 string filePath = Path.Combine(rootPath, $"{name}");

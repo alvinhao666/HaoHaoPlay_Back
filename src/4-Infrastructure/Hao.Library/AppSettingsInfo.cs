@@ -1,4 +1,6 @@
-﻿namespace Hao.Library
+﻿using System.Collections.Generic;
+
+namespace Hao.Library
 {
     public class AppSettingsInfo
     {
@@ -25,5 +27,21 @@
 
 
         public FilePath FilePath { get; set; }
+
+
+        /// <summary>
+        /// automaper需要注入得类所在程序集名称
+        /// </summary>
+        public List<string> AutoMapperAssemblyNames { get; set; }
+
+        /// <summary>
+        /// 事件订阅需要注入得类所在程序集名称
+        /// </summary>
+        public List<string> EventSubscribeAssemblyNames { get; set; }
+
+        /// <summary>
+        /// 请求模型验证需要注入得类所在程序集名称
+        /// </summary>
+        public List<string> ValidatorAssemblyNames { get; set; }
     }
 }
