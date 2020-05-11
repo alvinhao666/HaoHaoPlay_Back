@@ -7,9 +7,9 @@ namespace Hao.Enum
 {
     public enum Gender
     {
-        [HDescription("女")]
+        [H_Description("女")]
         Women,
-        [HDescription("男")]
+        [H_Description("男")]
         Man
     }
 }

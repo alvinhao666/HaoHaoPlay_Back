@@ -10,7 +10,7 @@ namespace Hao.WebApi.Controllers
     /// <summary>
     /// 角色
     /// </summary>
-    public class RoleController:HController
+    public class RoleController:H_Controller
     {
         private readonly IRoleAppService _roleAppService;
         

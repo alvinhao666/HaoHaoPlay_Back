@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 
 namespace Hao.Utility
 {
-    public static class HUtil
+    public static class H_Util
     {
         public static Type IntType = typeof(int);
         public static Type IntTypeNull = typeof(int);

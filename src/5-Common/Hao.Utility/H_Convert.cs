@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace Hao.Utility
 {
-    public static class HConvert
+    public static class H_Convert
     {
         public static int? ToInt(this object value)
         {

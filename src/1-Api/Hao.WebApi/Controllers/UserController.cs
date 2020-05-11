@@ -22,7 +22,7 @@ namespace Hao.WebApi.Controllers
     /// <summary>
     /// 用户
     /// </summary>
-    public class UserController : HController
+    public class UserController : H_Controller
     {
         private readonly IUserAppService _userAppService;
 

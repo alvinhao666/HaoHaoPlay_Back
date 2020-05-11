@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
-    public static class HCheckViewModel
+    public static class H_CheckViewModel
     {
         public static IServiceCollection AddCheckViewModelService(this IServiceCollection services)
         {

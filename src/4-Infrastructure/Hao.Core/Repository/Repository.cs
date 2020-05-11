@@ -130,7 +130,7 @@ namespace Hao.Core
         public virtual async Task<T> InsertAysnc(T entity)
         {
             var type = typeof(T);
-            var isGuid = typeof(TKey) == HUtil.GuidType;
+            var isGuid = typeof(TKey) == H_Util.GuidType;
             var id = type.GetProperty("Id");
 
             if (isGuid)
@@ -155,7 +155,7 @@ namespace Hao.Core
         public virtual T Insert(T entity)
         {
             var type = typeof(T);
-            var isGuid = typeof(TKey) == HUtil.GuidType;
+            var isGuid = typeof(TKey) == H_Util.GuidType;
             var id = type.GetProperty("Id");
 
             if (isGuid)
@@ -179,7 +179,7 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<bool> InsertAysnc(List<T> entities)
         {
-            var isGuid = typeof(TKey) == HUtil.GuidType;
+            var isGuid = typeof(TKey) == H_Util.GuidType;
             var type = typeof(T);
             var id = type.GetProperty("Id");
             var timeNow = DateTime.Now;
@@ -205,7 +205,7 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual bool Insert(List<T> entities)
         {
-            var isGuid = typeof(TKey) == HUtil.GuidType;
+            var isGuid = typeof(TKey) == H_Util.GuidType;
             var type = typeof(T);
             var id = type.GetProperty("Id");
             var timeNow = DateTime.Now;

@@ -11,7 +11,7 @@ namespace Hao.WebApi.Controllers
     /// <summary>
     /// 数据字典
     /// </summary>
-    public class DictController:HController
+    public class DictController:H_Controller
     {
         private readonly IDictAppService _dictAppService;
 

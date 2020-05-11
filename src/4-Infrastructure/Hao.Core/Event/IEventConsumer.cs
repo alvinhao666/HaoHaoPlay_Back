@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Hao.Core
 {
-    public interface IHEventConsumer: ITransientDependency
+    public interface IEventConsumer: ITransientDependency
     {
 
     }

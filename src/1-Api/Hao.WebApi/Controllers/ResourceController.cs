@@ -10,7 +10,7 @@ namespace Hao.WebApi.Controllers
     /// <summary>
     /// 应用资源
     /// </summary>
-    public class ResourceController:HController
+    public class ResourceController:H_Controller
     {
         private readonly IModuleAppService _moduleAppService;
 

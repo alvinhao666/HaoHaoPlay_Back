@@ -9,7 +9,7 @@ namespace Hao.WebApi.Controllers
     /// <summary>
     /// 当前用户
     /// </summary>
-    public class CurrentUserController : HController
+    public class CurrentUserController : H_Controller
     {
         private readonly ICurrentUserAppService _currentUserAppService;
 

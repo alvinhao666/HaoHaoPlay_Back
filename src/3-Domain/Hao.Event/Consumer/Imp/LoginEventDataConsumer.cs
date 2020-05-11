@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Hao.Event
 {
-    public class LoginEventDataConsumer : HEventConsumer, ILoginEventDataConsumer
+    public class LoginEventDataConsumer : EventConsumer, ILoginEventDataConsumer
     {
         private readonly ISysUserRepository _userRep;
 

@@ -2,9 +2,9 @@
 
 namespace Microsoft.Extensions.DependencyInjection
 {
-    public static class HCap
+    public static class H_Cap
     {
-        public static IServiceCollection AddCapService(this IServiceCollection services, HCapConfig config )
+        public static IServiceCollection AddCapService(this IServiceCollection services, H_CapConfig config )
         {
             services.AddCap(x =>
             {

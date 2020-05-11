@@ -9,7 +9,7 @@ namespace Hao.WebApi.Controllers
     /// <summary>
     /// 注销
     /// </summary>
-    public class LogoutController : HController
+    public class LogoutController : H_Controller
     {
         private readonly ILogoutAppService _logoutAppService;
 

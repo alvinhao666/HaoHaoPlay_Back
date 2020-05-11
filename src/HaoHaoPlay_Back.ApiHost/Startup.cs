@@ -29,8 +29,6 @@ using Hao.Core.Extensions;
 using Hao.Utility;
 using Hao.AppService;
 using DotNetCore.CAP;
-using Microsoft.Extensions.DependencyModel;
-using System.Linq;
 
 namespace HaoHaoPlay.ApiHost
 {
@@ -114,7 +112,7 @@ namespace HaoHaoPlay.ApiHost
                     RequireExpirationTime = true,
                     ClockSkew = TimeSpan.Zero, // ClockSkew 属性，默认是5分钟缓冲。
                 };
-                options.Events = new HJwtBearerEvents();
+                options.Events = new H_JwtBearerEvents();
             });
             #endregion
 
@@ -147,7 +145,7 @@ namespace HaoHaoPlay.ApiHost
             });
 
             //CAP
-            services.AddCapService(new HCapConfig()
+            services.AddCapService(new H_CapConfig()
             {
                 PostgreSqlConnection = _appSettings.ConnectionString.PostgreSql,
                 HostName = _appSettings.RabbitMQ.HostName,
@@ -163,7 +161,7 @@ namespace HaoHaoPlay.ApiHost
 
             services.AddControllers(x =>
             {
-                x.Filters.Add(typeof(HResultFilter));
+                x.Filters.Add(typeof(H_ResultFilter));
             })
             .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginValidator>())
             .AddJsonOptions(o =>

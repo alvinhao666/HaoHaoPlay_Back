@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Hao.Core.Extensions
 {
-    public class HCapConfig
+    public class H_CapConfig
     {
         public string PostgreSqlConnection { get; set; }
 

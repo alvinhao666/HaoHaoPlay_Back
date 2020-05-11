@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace Hao.Utility
 {
-    public static class HValidator
+    public static class H_Validator
     {
         #region 实用功能判断
         /// <summary>
@@ -80,9 +80,9 @@ namespace Hao.Utility
         {
             if (Id.Length == 18)
             {
-                return HValidator.IsIDCard18(Id);
+                return H_Validator.IsIDCard18(Id);
             }
-            return Id.Length == 15 && HValidator.IsIDCard15(Id);
+            return Id.Length == 15 && H_Validator.IsIDCard15(Id);
         }
 
         private static bool IsIDCard15(string Id)

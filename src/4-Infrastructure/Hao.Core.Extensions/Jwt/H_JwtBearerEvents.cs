@@ -11,7 +11,7 @@ namespace HaoHaoPlay.ApiHost
     /// <summary>
 	/// 重写JWT触发函数
 	/// </summary>
-	public class HJwtBearerEvents : JwtBearerEvents
+	public class H_JwtBearerEvents : JwtBearerEvents
     {
         #region 暂不需要重写
         ///// <summary>

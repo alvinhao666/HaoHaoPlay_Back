@@ -8,7 +8,7 @@ namespace Hao.Utility
     /// 枚举说明
     /// </summary>
     [AttributeUsage(AttributeTargets.Enum | AttributeTargets.Field)] //枚举且是字段
-    public class HDescriptionAttribute: DescriptionAttribute
+    public class H_DescriptionAttribute: DescriptionAttribute
     {
         internal FieldInfo Field { get; set; }
 
@@ -17,7 +17,7 @@ namespace Hao.Utility
         /// </summary>
         /// <param name="description">说明</param>
 
-        public HDescriptionAttribute(string description = null) : base(description)
+        public H_DescriptionAttribute(string description = null) : base(description)
         {
 
         }

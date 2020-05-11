@@ -73,7 +73,7 @@ namespace Hao.Utility
 
         public static bool IsClass(this Type type)
         {
-            return type != HUtil.StringType && type.IsEntity();
+            return type != H_Util.StringType && type.IsEntity();
         }
     }
 }

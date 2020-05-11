@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Hao.Event
 {
-    public class LogoutEventDataConsumer : HEventConsumer, ILogoutEventDataConsumer
+    public class LogoutEventDataConsumer : EventConsumer, ILogoutEventDataConsumer
     {
         private readonly AppSettingsInfo _appsettings;
 

@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 namespace Hao.Utility
 {
-    public class HSpell
+    public class H_Spell
     {
         /// <summary>
         /// 一组汉字转换成拼音 (全拼)

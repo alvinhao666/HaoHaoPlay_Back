@@ -7,11 +7,11 @@ namespace Hao.Enum
 {
     public enum PasswordLevel
     {
-        [HDescription("弱")]
+        [H_Description("弱")]
         Weak,
-        [HDescription("中")]
+        [H_Description("中")]
         Medium,
-        [HDescription("强")]
+        [H_Description("强")]
         Strong
     }
 }

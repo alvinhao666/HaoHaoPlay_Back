@@ -69,8 +69,8 @@ namespace Hao.AppService
             if (role.Level <= _currentUser.RoleLevel) throw new HException("无法添加同级及高级角色用户");
 
             var user = _mapper.Map<SysUser>(vm);
-            user.FirstNameSpell = HSpell.GetFirstLetter(user.Name.ToCharArray()[0]);
-            user.PasswordLevel = (PasswordLevel)HUtil.CheckPasswordLevel(user.Password);
+            user.FirstNameSpell = H_Spell.GetFirstLetter(user.Name.ToCharArray()[0]);
+            user.PasswordLevel = (PasswordLevel)H_Util.CheckPasswordLevel(user.Password);
             user.Password = EncryptProvider.HMACSHA256(user.Password, _appsettings.Key.Sha256Key);
             user.Enabled = true;
             user.RoleId = role.Id;
@@ -91,7 +91,7 @@ namespace Hao.AppService
             var users = _mapper.Map<List<SysUser>>(vms);
             foreach (var user in users)
             {
-                user.FirstNameSpell = HSpell.GetFirstLetter(user.Name.ToCharArray()[0]);
+                user.FirstNameSpell = H_Spell.GetFirstLetter(user.Name.ToCharArray()[0]);
                 user.Password = EncryptProvider.HMACSHA256(user.Password, _appsettings.Key.Sha256Key);
             }
             await _userRep.InsertAysnc(users);
