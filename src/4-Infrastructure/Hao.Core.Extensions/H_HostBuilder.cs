@@ -9,6 +9,9 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
 using NLog.Web;
+using Microsoft.Extensions.Configuration;
+using System;
+using Hao.Library;
 
 namespace Hao.Core.Extensions
 {
@@ -25,24 +28,36 @@ namespace Hao.Core.Extensions
         }
 
 
+        /// <summary>
+        /// 创建主机生成器
+        /// </summary>
+        /// <typeparam name="TStartup"></typeparam>
+        /// <param name="args"></param>
+        /// <returns></returns>
         public IHostBuilder CreateBuilder<TStartup>(string[] args) where TStartup : H_Startup
         {
+            var config = new ConfigurationBuilder()
+                .SetBasePath(AppContext.BaseDirectory)
+                .AddJsonFile("appsettings.json", false)
+#if DEBUG
+                .AddJsonFile("appsettings.Development.json", false)
+#endif
+                .Build();
+
+
+            var appSettings = new AppSettingsInfo();
+            config.GetSection("AppSettingsInfo").Bind(appSettings);
+
             return Host.CreateDefaultBuilder(args)
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory(builder =>
                 {
-                    //InstancePerLifetimeScope：同一个Lifetime生成的对象是同一个实例；
-                    //SingleInstance：单例模式，每次调用，都会使用同一个实例化的对象；每次都用同一个对象；
-                    //InstancePerDependency：默认模式，每次调用，都会重新实例化对象；每次请求都创建一个新的对象；
-
-                    builder.RegisterAssemblyTypes(
-                            Assembly.Load("Hao.Core"),
-                            Assembly.Load("Hao.Repository"),
-                            Assembly.Load("Hao.Event"),
-                            Assembly.Load("Hao.AppService"))
+                    builder.RegisterAssemblyTypes(appSettings.IocAssemblyNames.Select(name => Assembly.Load(name)).ToArray())
                             .Where(m => typeof(ITransientDependency).IsAssignableFrom(m) && m != typeof(ITransientDependency)) //直接或间接实现了ITransientDependency
                             .AsImplementedInterfaces().InstancePerDependency().PropertiesAutowired();
 
-                    var types = Assembly.Load("Hao.WebApi").GetExportedTypes().Where(type => typeof(ControllerBase).IsAssignableFrom(type)).ToArray();
+                    var controllerAssemblies = appSettings.ControllerAssemblyNames.Select(name => Assembly.Load(name));
+
+                    var types = controllerAssemblies.SelectMany(a => a.GetExportedTypes()).Where(type => typeof(ControllerBase).IsAssignableFrom(type)).ToArray();
                     builder.RegisterTypes(types).PropertiesAutowired();
 
                     //调用RegisterDynamicProxy扩展方法在Autofac中注册动态代理服务和动态代理配置 aop
@@ -59,7 +74,7 @@ namespace Hao.Core.Extensions
                         logging.AddNLog($"NLog.{hostingContext.HostingEnvironment.EnvironmentName}.config");
                     })
                     .UseNLog()
-                    .UseUrls("http://*:8000")
+                    .UseUrls(appSettings.ServiceStartUrl)
                     .UseKestrel()
                     .UseStartup<TStartup>();
                 });

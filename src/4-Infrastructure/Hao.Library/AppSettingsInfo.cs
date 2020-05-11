@@ -43,5 +43,16 @@ namespace Hao.Library
         /// 请求模型验证需要注入得类所在程序集名称
         /// </summary>
         public List<string> ValidatorAssemblyNames { get; set; }
+
+
+        public List<string> IocAssemblyNames { get; set; }
+
+
+        public List<string> ControllerAssemblyNames { get; set; }
+
+        /// <summary>
+        /// 服务启动地址
+        /// </summary>
+        public string ServiceStartUrl { get; set; }
     }
 }
