@@ -54,5 +54,10 @@ namespace Hao.Library
         /// 服务启动地址
         /// </summary>
         public string ServiceStartUrl { get; set; }
+
+        /// <summary>
+        /// 请求地址
+        /// </summary>
+        public RequestPath RequestPath { get; set; }
     }
 }

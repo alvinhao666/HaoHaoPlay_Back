@@ -36,7 +36,7 @@ namespace Hao.Core.Extensions
 
             #region 文件
             //文件访问权限
-            app.UseWhen(a => a.Request.Path.Value.Contains("ExportExcel") || a.Request.Path.Value.Contains("template"), b => b.UseMiddleware<StaticFileMiddleware>());
+            app.UseWhen(a => a.Request.Path.Value.Contains(appSettings.FilePath.ExportExcelPath) || a.Request.Path.Value.Contains("template"), b => b.UseMiddleware<StaticFileMiddleware>());
             //使用默认文件夹wwwroot
             app.UseStaticFiles();
 
@@ -46,7 +46,7 @@ namespace Hao.Core.Extensions
             app.UseStaticFiles(new StaticFileOptions()
             {
                 FileProvider = new PhysicalFileProvider(appSettings.FilePath.ExportExcelPath),
-                RequestPath = "/ExportExcel",
+                RequestPath = appSettings.RequestPath.ExportExcel,
                 ContentTypeProvider = new FileExtensionContentTypeProvider(new Dictionary<string, string>
                 {
                     { ".xlsx","application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"}
@@ -60,7 +60,7 @@ namespace Hao.Core.Extensions
             app.UseStaticFiles(new StaticFileOptions()
             {
                 FileProvider = new PhysicalFileProvider(appSettings.FilePath.AvatarPath),
-                RequestPath = "/AvatarFile"
+                RequestPath = appSettings.RequestPath.AvatarFile
             });
             #endregion
 
