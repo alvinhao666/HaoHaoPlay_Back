@@ -20,7 +20,7 @@ namespace Hao.Core.Extensions
         protected H_Startup(IHostEnvironment env, IConfiguration cfg, DirectoryInfo currentDir)
         {
             var parentDir = currentDir?.Parent;
-            //parentDir = currentDir?.Parent.Parent.Parent.Parent.Parent;
+            //parentDir = currentDir?.Parent.Parent.Parent.Parent.Parent; //验证是null 而不是抛出异常
             if (parentDir == null) throw new Exception("项目安置路径有误，请检查");
 
             _env = env;
