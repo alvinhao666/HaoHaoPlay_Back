@@ -12,7 +12,7 @@ namespace Hao.Core.Extensions
 {
     public abstract class H_Startup
     {
-        protected readonly IHostEnvironment Env;
+        private readonly IHostEnvironment _env;
 
         private readonly IConfiguration _cfg;
 
@@ -24,7 +24,7 @@ namespace Hao.Core.Extensions
         {
             if (_parentDir == null) throw new Exception("项目安置路径有误，请检查");
 
-            Env = env;
+            _env = env;
             _cfg = cfg;
 
             _appSettings = new AppSettingsInfo();
@@ -40,12 +40,12 @@ namespace Hao.Core.Extensions
             var appSettingsOption = _cfg.GetSection(nameof(AppSettingsInfo));
             services.Configure<AppSettingsInfo>(appSettingsOption);
 
-            services.AddWebHost(Env, _cfg, _appSettings);
+            services.AddWebHost(_env, _cfg, _appSettings);
         }
 
         public virtual void Configure(IApplicationBuilder app)
         {
-            app.UseWebHost(Env, _appSettings);
+            app.UseWebHost(_env, _appSettings);
         }
     }
 }
