@@ -38,9 +38,11 @@ namespace Hao.Core.Extensions
         {
             var appSettingsOption = _cfg.GetSection(nameof(AppSettingsInfo));
 
-            appSettingsOption.GetSection(nameof(AppSettingsInfo.FilePath)).GetSection(nameof(AppSettingsInfo.FilePath.ExportExcelPath)).Value = _appSettings.FilePath.ExportExcelPath;
-            appSettingsOption.GetSection(nameof(AppSettingsInfo.FilePath)).GetSection(nameof(AppSettingsInfo.FilePath.ImportExcelPath)).Value = _appSettings.FilePath.ImportExcelPath;
-            appSettingsOption.GetSection(nameof(AppSettingsInfo.FilePath)).GetSection(nameof(AppSettingsInfo.FilePath.AvatarPath)).Value = _appSettings.FilePath.AvatarPath;
+            var filePathOption = appSettingsOption.GetSection(nameof(AppSettingsInfo.FilePath));
+
+            filePathOption.GetSection(nameof(AppSettingsInfo.FilePath.ExportExcelPath)).Value = _appSettings.FilePath.ExportExcelPath;
+            filePathOption.GetSection(nameof(AppSettingsInfo.FilePath.ImportExcelPath)).Value = _appSettings.FilePath.ImportExcelPath;
+            filePathOption.GetSection(nameof(AppSettingsInfo.FilePath.AvatarPath)).Value = _appSettings.FilePath.AvatarPath;
 
             services.Configure<AppSettingsInfo>(appSettingsOption);
 
