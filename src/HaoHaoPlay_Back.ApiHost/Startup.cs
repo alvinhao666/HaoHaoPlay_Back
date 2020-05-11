@@ -1,7 +1,7 @@
-﻿using Hao.Core.Extensions;
+﻿using System.IO;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using System.IO;
+using Hao.Core.Extensions;
 
 namespace HaoHaoPlay.ApiHost
 {
