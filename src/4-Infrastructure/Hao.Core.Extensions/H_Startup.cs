@@ -16,10 +16,11 @@ namespace Hao.Core.Extensions
 
         private readonly AppSettingsInfo _appSettings;
 
-        private readonly DirectoryInfo _parentDir = new DirectoryInfo(AppContext.BaseDirectory).Parent;
+        private readonly DirectoryInfo _parentDir;
 
         protected H_Startup(IHostEnvironment env, IConfiguration cfg)
         {
+            _parentDir = new DirectoryInfo(AppContext.BaseDirectory).Parent;
             if (_parentDir == null) throw new Exception("项目安置路径有误，请检查");
 
             _env = env;
