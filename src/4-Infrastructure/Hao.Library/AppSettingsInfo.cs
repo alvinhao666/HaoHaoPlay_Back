@@ -73,7 +73,7 @@ namespace Hao.Library
         /// <summary>
         /// 依赖注入接口所在的程序集名称
         /// </summary>
-        public List<string> IocAssemblyNames { get; set; }
+        public List<string> DiAssemblyNames { get; set; }
 
         /// <summary>
         /// controller类所在的程序集名称

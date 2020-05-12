@@ -52,9 +52,9 @@ namespace Hao.Core.Extensions
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory(builder =>
                 {
 
-                    var iocAssemblies = appSettings.IocAssemblyNames.Select(name => Assembly.Load(name)).ToArray();
+                    var diAssemblies = appSettings.DiAssemblyNames.Select(name => Assembly.Load(name)).ToArray();
 
-                    builder.RegisterAssemblyTypes(iocAssemblies)
+                    builder.RegisterAssemblyTypes(diAssemblies)
                             .Where(m => typeof(ITransientDependency).IsAssignableFrom(m) && m != typeof(ITransientDependency)) //直接或间接实现了ITransientDependency
                             .AsImplementedInterfaces().InstancePerDependency().PropertiesAutowired();
 
