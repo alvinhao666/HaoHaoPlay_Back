@@ -28,7 +28,6 @@ namespace Hao.AppService
 
         private readonly ICurrentUser _currentUser;
 
-
         private readonly AppSettingsInfo _appsettings;
 
 

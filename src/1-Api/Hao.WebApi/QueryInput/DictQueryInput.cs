@@ -11,6 +11,7 @@ namespace Hao.WebApi
         /// 字典编码
         /// </summary>
         public string DictCode { get; set; }
+
         /// <summary>
         /// 字典名称
         /// </summary>
