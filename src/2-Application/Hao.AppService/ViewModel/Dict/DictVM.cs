@@ -1,3 +1,5 @@
+using System;
+
 namespace Hao.AppService.ViewModel
 {
     public class DictVM
@@ -18,5 +20,10 @@ namespace Hao.AppService.ViewModel
         /// 备注
         /// </summary>
         public string Remark { get; set; }
+        
+        /// <summary>
+        /// 创建时间
+        /// </summary>
+        public DateTime? CreateTime { get; set; }
     }
 }

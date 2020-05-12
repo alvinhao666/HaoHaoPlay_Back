@@ -18,5 +18,6 @@ namespace Hao.AppService.ViewModel
         /// 备注
         /// </summary>
         public string Remark { get; set; }
+        
     }
 }

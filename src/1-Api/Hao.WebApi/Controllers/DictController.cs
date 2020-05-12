@@ -31,7 +31,7 @@ namespace Hao.WebApi.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost("AddDict")]
-        public async Task AddDict(DictAddRequest request) => await _dictAppService.AddDict(request);
+        public async Task AddDict([FromBody]DictAddRequest request) => await _dictAppService.AddDict(request);
 
         /// <summary>
         /// 查询字典
@@ -49,7 +49,7 @@ namespace Hao.WebApi.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPut("UpdateDict/{id}")]
-        public async Task UpdateDict(long id, DictUpdateRequest request) => await _dictAppService.UpdateDict(id,request);
+        public async Task UpdateDict(long id, [FromBody]DictUpdateRequest request) => await _dictAppService.UpdateDict(id,request);
 
         /// <summary>
         /// 删除字典
@@ -65,7 +65,7 @@ namespace Hao.WebApi.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost("AddDictItem")]
-        public async Task AddDictItem(DictItemAddRequest request) => await _dictAppService.AddDictItem(request);
+        public async Task AddDictItem([FromBody]DictItemAddRequest request) => await _dictAppService.AddDictItem(request);
 
         /// <summary>
         /// 查询字典数据项
@@ -81,7 +81,7 @@ namespace Hao.WebApi.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPut("UpdateDictItem/{id}")]
-        public async Task UpdateDictItem(long id, DictItemUpdateRequest request) =>
+        public async Task UpdateDictItem(long id, [FromBody]DictItemUpdateRequest request) =>
             await _dictAppService.UpdateDictItem(id, request);
 
         /// <summary>
