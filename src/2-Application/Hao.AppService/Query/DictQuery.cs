@@ -33,9 +33,9 @@ namespace Hao.AppService
             {
                 var result = new List<Expression<Func<SysDict, bool>>>();
 
-                if (DictCode.HasValue()) result.Add(x => x.DictCode == DictCode);
+                if (DictCode.HasValue()) result.Add(x => x.DictCode.Contains(DictCode));
 
-                if (DictName.HasValue()) result.Add(x => x.DictName == DictName);
+                if (DictName.HasValue()) result.Add(x => x.DictName.Contains(DictName) );
 
                 if (ParentId.HasValue) result.Add(x => x.ParentId == ParentId);
 

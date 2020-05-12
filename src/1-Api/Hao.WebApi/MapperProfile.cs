@@ -9,7 +9,10 @@ namespace Hao.WebApi
         public MapperProfile()
         {
             CreateMap<UserQueryInput, UserQuery>()
-               .ForMember(x => x.OrderFileds, a => a.MapFrom(x => x.OrderByType.CombineNameWithSpace(x.SortField))); 
+               .ForMember(x => x.OrderFileds, a => a.MapFrom(x => x.OrderByType.CombineNameWithSpace(x.SortField)));
+
+
+            CreateMap<DictQueryInput, DictQuery>();
         }
     }
 }
