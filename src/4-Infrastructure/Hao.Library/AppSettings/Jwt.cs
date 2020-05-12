@@ -30,7 +30,9 @@ namespace Hao.Library
         /// </summary>
         public string Audience { get; set; }
 
-
+        /// <summary>
+        /// 安全密钥
+        /// </summary>
         public string SecretKey { get; set; }
 
         /// <summary>
