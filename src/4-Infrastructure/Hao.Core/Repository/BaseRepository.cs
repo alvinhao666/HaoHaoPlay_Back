@@ -113,7 +113,7 @@ namespace Hao.Core
         {
             var type = typeof(T);
             var isGuid = typeof(TKey) == typeof(Guid);
-            var id = type.GetProperty("Id");
+            var id = type.GetProperty(nameof(BaseEntity<TKey>.Id));
 
             if (isGuid)
             {
@@ -134,7 +134,7 @@ namespace Hao.Core
         {
             var type = typeof(T);
             var isGuid = typeof(TKey) == typeof(Guid);
-            var id = type.GetProperty("Id");
+            var id = type.GetProperty(nameof(BaseEntity<TKey>.Id));
 
             if (isGuid)
             {
@@ -155,7 +155,7 @@ namespace Hao.Core
         {
             var isGuid = typeof(TKey) == typeof(Guid);
             var type = typeof(T);
-            var id = type.GetProperty("Id");
+            var id = type.GetProperty(nameof(BaseEntity<TKey>.Id));
             var timeNow = DateTime.Now;
             entities.ForEach(item =>
             {
@@ -178,7 +178,7 @@ namespace Hao.Core
         {
             var isGuid = typeof(TKey) == typeof(Guid);
             var type = typeof(T);
-            var id = type.GetProperty("Id");
+            var id = type.GetProperty(nameof(BaseEntity<TKey>.Id));
             var timeNow = DateTime.Now;
             entities.ForEach(item =>
             {
