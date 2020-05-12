@@ -38,7 +38,7 @@ namespace Hao.WebApi.Controllers
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        [HttpPost("GetDictList")]
+        [HttpGet("GetDictList")]
         public async Task<PagedList<DictVM>> GetDictList(DictQueryInput query) =>
             await _dictAppService.GetDictList(_mapper.Map<DictQuery>(query));
         
