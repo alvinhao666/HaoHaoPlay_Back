@@ -24,7 +24,7 @@ namespace Hao.Event
                 foreach (var key in keys)
                 {
                     var value = await RedisHelper.GetAsync(key);
-                    var cacheUser = JsonSerializer.Deserialize<RedisCacheUserInfo>(value);
+                    var cacheUser = JsonSerializer.Deserialize<RedisCacheUser>(value);
                     cacheUser.IsAuthUpdate = true;
                     cacheUser.LoginStatus = LoginStatus.Offline;
                     await RedisHelper.SetAsync(key, JsonSerializer.Serialize(cacheUser));

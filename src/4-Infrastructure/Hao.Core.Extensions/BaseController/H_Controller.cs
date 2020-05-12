@@ -54,7 +54,7 @@ namespace Hao.Core.Extensions
 
             if (value == null) throw new HException(ErrorInfo.E100002, nameof(ErrorInfo.E100002).GetErrorCode());
 
-            var cacheUser = JsonSerializer.Deserialize<RedisCacheUserInfo>(value);
+            var cacheUser = JsonSerializer.Deserialize<RedisCacheUser>(value);
 
             if (cacheUser.LoginStatus.HasValue
                 && cacheUser.LoginStatus == LoginStatus.Offline
