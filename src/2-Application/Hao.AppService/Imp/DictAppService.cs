@@ -62,6 +62,7 @@ namespace Hao.AppService
         {
             var dictItems = await _dictRep.GetListAysnc(new DictQuery { ParentId = id });
             await _dictRep.DeleteAysnc(id);
+            if (dictItems.Count < 1) return;
             await _dictRep.DeleteAysnc(dictItems);
         }
 
