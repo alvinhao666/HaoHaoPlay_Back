@@ -25,6 +25,11 @@ namespace Hao.AppService
         /// 父级id
         /// </summary>
         public long? ParentId { get; set; }
+        
+        /// <summary>
+        /// 数据项名称
+        /// </summary>
+        public string ItemName { get; set; }
 
         public override List<Expression<Func<SysDict, bool>>> QueryExpressions
         {
@@ -35,9 +40,18 @@ namespace Hao.AppService
 
                 if (DictCode.HasValue()) result.Add(x => x.DictCode.Contains(DictCode));
 
-                if (DictName.HasValue()) result.Add(x => x.DictName.Contains(DictName) );
+                if (DictName.HasValue()) result.Add(x => x.DictName.Contains(DictName));
 
-                if (ParentId.HasValue) result.Add(x => x.ParentId == ParentId);
+                if (ItemName.HasValue()) result.Add(x => x.ItemName.Contains(ItemName));
+
+                if (ParentId.HasValue)
+                {
+                    result.Add(x => x.ParentId == ParentId);
+                }
+                else
+                {
+                    result.Add(x => x.ParentId == null);
+                }
 
                 return result;
             }

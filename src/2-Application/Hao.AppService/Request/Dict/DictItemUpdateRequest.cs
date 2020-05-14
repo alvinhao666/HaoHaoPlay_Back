@@ -15,11 +15,6 @@ namespace Hao.AppService
         public int? ItemValue { get; set; }
 
         /// <summary>
-        /// 父级 字典id
-        /// </summary>
-        public long? ParentId { get; set; }
-        
-        /// <summary>
         /// 备注信息
         /// </summary>
         public string Remark { get; set; }
@@ -41,7 +36,6 @@ namespace Hao.AppService
 
             RuleFor(x => x.ItemValue).NotEmpty().WithMessage("数据项值不能为空");
 
-            RuleFor(x => x.ParentId).NotEmpty().WithMessage("字典id不能为空");
         }
     }
 }

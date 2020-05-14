@@ -89,11 +89,12 @@ namespace Hao.AppService
         {
             var parentDict = await GetDictDetail(request.ParentId.Value);
 
+            var dictItems = await _dictRep.GetListAysnc(new DictQuery { ParentId = request.ParentId.Value });
             var dict = _mapper.Map<SysDict>(request);
             dict.ParentId = parentDict.Id;
             dict.DictCode = parentDict.DictCode;
             dict.DictName = parentDict.DictName;
-            dict.Sort = 0;
+            dict.Sort = dictItems.Count + 1;
             await _dictRep.InsertAysnc(dict);
         }
 
@@ -103,6 +104,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task<PagedList<DictItemVM>> GetDictItemList(DictQuery query)
         {
+            query.OrderFileds = $"{nameof(SysDict.Sort)},{nameof(SysDict.CreateTime)}";
             var dicts = await _dictRep.GetPagedListAysnc(query);
 
             return _mapper.Map<PagedList<DictItemVM>>(dicts);

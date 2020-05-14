@@ -21,5 +21,10 @@ namespace Hao.WebApi
         /// 父级id
         /// </summary>
         public long? ParentId { get; set; }
+        
+        /// <summary>
+        /// 数据项名称
+        /// </summary>
+        public string ItemName { get; set; }
     }
 }
