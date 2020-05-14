@@ -89,12 +89,16 @@ namespace Hao.AppService
         {
             var parentDict = await GetDictDetail(request.ParentId.Value);
 
-            var dictItems = await _dictRep.GetListAysnc(new DictQuery { ParentId = request.ParentId.Value });
+            
             var dict = _mapper.Map<SysDict>(request);
             dict.ParentId = parentDict.Id;
             dict.DictCode = parentDict.DictCode;
             dict.DictName = parentDict.DictName;
-            dict.Sort = dictItems.Count + 1;
+            if (!dict.Sort.HasValue)
+            {
+                var dictItems = await _dictRep.GetListAysnc(new DictQuery { ParentId = request.ParentId.Value });
+                dict.Sort = dictItems.Count + 1;
+            }
             await _dictRep.InsertAysnc(dict);
         }
 
