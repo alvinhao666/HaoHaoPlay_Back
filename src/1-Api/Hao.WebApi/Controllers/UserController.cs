@@ -49,7 +49,7 @@ namespace Hao.WebApi.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
-        //[AuthCode("1_32")]
+        [AuthCode("1_32")]
         public async Task Add([FromBody]UserAddRequest request) => await _userAppService.AddUser(request);
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace Hao.WebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("GetRole")]
-        //[AuthCode("1_32")]
+        [AuthCode("1_4")]
         public async Task<List<RoleSelectVM>> GetRoleList() => await _roleAppService.GetRoleListByCurrentRole();
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace Hao.WebApi.Controllers
         /// <param name="query"></param>
         /// <returns></returns>
         [HttpGet("IsExistUser")]
-        //[AuthCode("1_32")]
+        [AuthCode("1_4")]
         public async Task<bool> IsExistUser([FromQuery]UserQueryInput query) => await _userAppService.IsExistUser(_mapper.Map<UserQuery>(query));
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace Hao.WebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        //[AuthCode("1_64")]
+        [AuthCode("1_4")]
         public async Task<PagedList<UserItemVM>> GetPagedList([FromQuery]UserQueryInput query) => await _userAppService.GetUserPageList(_mapper.Map<UserQuery>(query));
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace Hao.WebApi.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        //[AuthCode("1_128")]
+        [AuthCode("1_4")]
         public async Task<UserDetailVM> Get(long id) => await _userAppService.GetUser(id);
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace Hao.WebApi.Controllers
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        //[AuthCode("1_256")]
+        [AuthCode("1_64")]
         public async Task Update(long id, [FromBody]UserUpdateRequest request) => await _userAppService.EditUser(id, request);
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace Hao.WebApi.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpPut("Disable/{id}")]
-        //[AuthCode("1_512")]
+        [AuthCode("1_128")]
         public async Task Disable(long id) => await _userAppService.UpdateUserStatus(id, false);
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace Hao.WebApi.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpPut("Enable/{id}")]
-        //[AuthCode("1_1024")]
+        [AuthCode("1_256")]
         public async Task Enable(long id) => await _userAppService.UpdateUserStatus(id, true);
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace Hao.WebApi.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
-        //[AuthCode("1_2048")]
+        [AuthCode("1_512")]
         public async Task Delete(long id) => await _userAppService.DeleteUser(id);
 
 
@@ -130,7 +130,7 @@ namespace Hao.WebApi.Controllers
         /// <param name="query"></param>
         /// <returns></returns>
         [HttpGet("Export")]
-        //[AuthCode("1_4096")]
+        [AuthCode("1_2048")]
         public async Task<object> ExportUser([FromQuery]UserQueryInput query)
         {
             string fileName = await _userAppService.ExportUsers(_mapper.Map<UserQuery>(query));
@@ -144,7 +144,7 @@ namespace Hao.WebApi.Controllers
         /// <param></param>
         /// <returns></returns>
         [HttpPost("Import")]
-        //[AuthCode("1_1048576")]
+        [AuthCode("1_1024")]
         public async Task ImportUser()
         {
             var files = HttpContext.Request.Form.Files;
