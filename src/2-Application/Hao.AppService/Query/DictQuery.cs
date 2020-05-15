@@ -22,14 +22,29 @@ namespace Hao.AppService
         public string DictName { get; set; }
 
         /// <summary>
+        /// 字典名称
+        /// </summary>
+        public string EqualDictName { get; set; }
+
+        /// <summary>
         /// 父级id
         /// </summary>
         public long? ParentId { get; set; }
         
         /// <summary>
-        /// 数据项名称
+        /// 数据项名称，模糊查询
         /// </summary>
         public string ItemName { get; set; }
+
+        /// <summary>
+        /// 数据项名称
+        /// </summary>
+        public string EqualItemName { get; set; }
+
+        /// <summary>
+        /// 数据项值
+        /// </summary>
+        public int? ItemValue { get; set; }
 
         public override List<Expression<Func<SysDict, bool>>> QueryExpressions
         {
@@ -42,7 +57,11 @@ namespace Hao.AppService
 
                 if (DictName.HasValue()) result.Add(x => x.DictName.Contains(DictName));
 
+                if (EqualDictName.HasValue()) result.Add(x => x.DictName == EqualDictName);
+
                 if (ItemName.HasValue()) result.Add(x => x.ItemName.Contains(ItemName));
+
+                if (EqualItemName.HasValue()) result.Add(x => x.ItemName == EqualItemName);
 
                 if (ParentId.HasValue)
                 {
@@ -52,6 +71,9 @@ namespace Hao.AppService
                 {
                     result.Add(x => x.ParentId == null);
                 }
+
+                if (ItemValue.HasValue) result.Add(x => x.ItemValue == ItemValue);
+
 
                 return result;
             }

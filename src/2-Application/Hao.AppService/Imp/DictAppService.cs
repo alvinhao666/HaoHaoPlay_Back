@@ -31,6 +31,11 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task AddDict(DictAddRequest request)
         {
+            var items = await _dictRep.GetListAysnc(new DictQuery { ParentId = null, EqualDictName = request.DictName });
+            if (items.Count > 0)
+            {
+                throw new HException("该字典已存在，请重新添加");
+            }
             var dict = _mapper.Map<SysDict>(request);
             dict.Sort = 0;
             await _dictRep.InsertAysnc(dict);
@@ -89,7 +94,12 @@ namespace Hao.AppService
         {
             var parentDict = await GetDictDetail(request.ParentId.Value);
 
-            
+            var items = await _dictRep.GetListAysnc(new DictQuery { ParentId = request.ParentId.Value, EqualItemName = request.ItemName });
+            if (items.Count > 0)
+            {
+                throw new HException("该数据项已存在，请重新添加");
+            }
+
             var dict = _mapper.Map<SysDict>(request);
             dict.ParentId = parentDict.Id;
             dict.DictCode = parentDict.DictCode;
