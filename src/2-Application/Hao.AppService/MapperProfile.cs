@@ -4,16 +4,14 @@ using Hao.Core;
 using Hao.Model;
 using Hao.Utility;
 
-
 namespace Hao.AppService
 {
     public class MapperProfile: Profile
     {
         public MapperProfile()
         {
-
+            #region 用户
             CreateMap<SysUser, LoginVM>();
-
 
             CreateMap<PagedList<SysUser>, PagedList<UserItemVM>>();
 
@@ -34,6 +32,7 @@ namespace Hao.AppService
                .ForMember(x => x.PasswordLevel, a => a.MapFrom(x => x.PasswordLevel.GetDescription()))
                .ForMember(x => x.Phone, a => a.MapFrom(x => H_Util.HidePhoneNumber(x.Phone)))
                .ForMember(x => x.Email, a => a.MapFrom(x => H_Util.HideEmailNumber(x.Email)));
+            #endregion
 
 
             #region 模块
@@ -43,6 +42,7 @@ namespace Hao.AppService
 
             CreateMap<ModuleAddRequest, SysModule>();
             #endregion
+
 
             #region 资源
             CreateMap<ResourceAddRequest, SysModule>();
