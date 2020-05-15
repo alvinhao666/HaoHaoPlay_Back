@@ -40,7 +40,7 @@ namespace Hao.AppService
                 var items = await _dictRep.GetListAysnc(new DictQuery { EqualDictName = request.DictName });
                 if (items.Count > 0) throw new H_Exception("该字典名称已存在，请重新添加");
 
-                items = await _dictRep.GetListAysnc(new DictQuery {  EqualDictCode = request.DictCode });
+                items = await _dictRep.GetListAysnc(new DictQuery { EqualDictCode = request.DictCode });
                 if (items.Count > 0) throw new H_Exception("该字典编码已存在，请重新添加");
 
                 var dict = _mapper.Map<SysDict>(request);
@@ -116,14 +116,14 @@ namespace Hao.AppService
 
             using (var redisLock = RedisHelper.Lock("AddDictItem", 10)) //redis 分布式锁
             {
-                if (redisLock == null) throw new H_Exception("系统异常，请重新添加"); 
+                if (redisLock == null) throw new H_Exception("系统异常，请重新添加");
 
 
                 var items = await _dictRep.GetListAysnc(new DictQuery { ParentId = request.ParentId, EqualItemName = request.ItemName });
                 if (items.Count > 0) throw new H_Exception("该数据项名称已存在，请重新添加");
 
 
-                items = await _dictRep.GetListAysnc(new DictQuery { ParentId = request.ParentId,  ItemValue = request.ItemValue });
+                items = await _dictRep.GetListAysnc(new DictQuery { ParentId = request.ParentId, ItemValue = request.ItemValue });
                 if (items.Count > 0) throw new H_Exception("该数据项值已存在，请重新添加");
 
 
@@ -172,7 +172,7 @@ namespace Hao.AppService
 
                 items = await _dictRep.GetListAysnc(new DictQuery { ParentId = item.ParentId, ItemValue = request.ItemValue });
                 if (items.Where(a => a.Id != id).Count() > 0) throw new H_Exception("该数据项值已存在，请重新添加");
-          
+
                 item.ItemName = request.ItemName;
                 item.ItemValue = request.ItemValue;
                 item.Remark = request.Remark;
