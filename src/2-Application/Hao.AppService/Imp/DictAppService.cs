@@ -6,6 +6,7 @@ using Hao.RunTimeException;
 using System.Threading.Tasks;
 using Hao.AppService.ViewModel;
 using System;
+using System.Linq;
 
 namespace Hao.AppService
 {
@@ -32,7 +33,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task AddDict(DictAddRequest request)
         {
-            using (var redisLock = RedisHelper.Lock("dictAdd", 10)) //redis 分布式锁
+            using (var redisLock = RedisHelper.Lock("AddDict", 10)) //redis 分布式锁
             {
                 if (redisLock == null) throw new H_Exception("系统异常，请重新添加");
 
@@ -56,12 +57,23 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task UpdateDict(long id, DictUpdateRequest request)
         {
-            var dict = await _dictRep.GetAysnc(id);
-            dict.DictCode = request.DictCode;
-            dict.DictName = request.DictName;
-            dict.Remark = request.Remark;
-            dict.Sort = request.Sort;
-            await _dictRep.UpdateAsync(dict, a => new { a.DictCode, a.DictName, a.Remark, a.Sort });
+            using (var redisLock = RedisHelper.Lock("UpdateDict", 10))
+            {
+                if (redisLock == null) throw new H_Exception("系统异常，请重新添加");
+
+                var items = await _dictRep.GetListAysnc(new DictQuery { EqualDictName = request.DictName });
+                if (items.Where(a => a.Id != id).Count() > 0) throw new H_Exception("该字典名称已存在，请重新添加");
+
+                items = await _dictRep.GetListAysnc(new DictQuery { EqualDictName = request.DictName, EqualDictCode = request.DictCode });
+                if (items.Where(a => a.Id != id).Count() > 0) throw new H_Exception("该字典编码已存在，请重新添加");
+
+                var dict = await _dictRep.GetAysnc(id);
+                dict.DictCode = request.DictCode;
+                dict.DictName = request.DictName;
+                dict.Remark = request.Remark;
+                dict.Sort = request.Sort;
+                await _dictRep.UpdateAsync(dict, a => new { a.DictCode, a.DictName, a.Remark, a.Sort });
+            }
         }
 
         /// <summary>
@@ -102,7 +114,7 @@ namespace Hao.AppService
         public async Task AddDictItem(DictItemAddRequest request)
         {
 
-            using (var redisLock = RedisHelper.Lock("dictItemAdd", 10)) //redis 分布式锁
+            using (var redisLock = RedisHelper.Lock("AddDictItem", 10)) //redis 分布式锁
             {
                 if (redisLock == null) throw new H_Exception("系统异常，请重新添加"); //对象为null，不占资源 ，编译后的代码没有fianlly,不执行dispose()方法
 
@@ -149,12 +161,24 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task UpdateDictItem(long id, DictItemUpdateRequest request)
         {
-            var item = await _dictRep.GetAysnc(id);
-            item.ItemName = request.ItemName;
-            item.ItemValue = request.ItemValue;
-            item.Remark = request.Remark;
-            item.Sort = request.Sort;
-            await _dictRep.UpdateAsync(item, a => new { a.ItemName, a.ItemValue, a.Remark, a.Sort });
+            using (var redisLock = RedisHelper.Lock("UpdateDictItem", 10))
+            {
+                if (redisLock == null) throw new H_Exception("系统异常，请重新添加");
+
+                var item = await _dictRep.GetAysnc(id);
+
+                var items = await _dictRep.GetListAysnc(new DictQuery { ParentId = item.ParentId, EqualItemName = request.ItemName });
+                if (items.Where(a => a.Id != id).Count() > 0) throw new H_Exception("该数据项名称已存在，请重新添加");
+
+                items = await _dictRep.GetListAysnc(new DictQuery { ParentId = item.ParentId, EqualItemName = request.ItemName, ItemValue = request.ItemValue });
+                if (items.Where(a => a.Id != id).Count() > 0) throw new H_Exception("该数据项值已存在，请重新添加");
+          
+                item.ItemName = request.ItemName;
+                item.ItemValue = request.ItemValue;
+                item.Remark = request.Remark;
+                item.Sort = request.Sort;
+                await _dictRep.UpdateAsync(item, a => new { a.ItemName, a.ItemValue, a.Remark, a.Sort });
+            }
         }
 
         /// <summary>
