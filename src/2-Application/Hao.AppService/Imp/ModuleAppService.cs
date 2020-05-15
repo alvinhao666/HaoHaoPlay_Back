@@ -38,7 +38,7 @@ namespace Hao.AppService
         public async Task AddModule(ModuleAddRequest vm)
         {
             var parentNode = await GetModuleDetail(vm.ParentId.Value);
-            if (parentNode.Type == ModuleType.Sub) throw new HException("叶子节点无法继续添加节点");
+            if (parentNode.Type == ModuleType.Sub) throw new H_Exception("叶子节点无法继续添加节点");
             var module = _mapper.Map<SysModule>(vm);
 
             await AddModule(module);
@@ -87,7 +87,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task UpdateModule(long id, ModuleUpdateRequest vm)
         {
-            if (id == 0) throw new HException("无法操作系统根节点");
+            if (id == 0) throw new H_Exception("无法操作系统根节点");
             var module = await GetModuleDetail(id);
             module.Name = vm.Name;
             module.Sort = vm.Sort;
@@ -110,14 +110,14 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task Delete(long id)
         {
-            if (id == 0) throw new HException("无法操作系统根节点");
+            if (id == 0) throw new H_Exception("无法操作系统根节点");
             //var module = await GetModuleDetail(id);
 
             var childs = await _moduleRep.GetListAysnc(new ModuleQuery()
             {
                 ParentId = id
             });
-            if (childs != null && childs.Count > 0) throw new HException("存在子节点无法删除");
+            if (childs != null && childs.Count > 0) throw new H_Exception("存在子节点无法删除");
 
             await _moduleRep.DeleteAysnc(id);
         }
@@ -140,7 +140,7 @@ namespace Hao.AppService
             }
             else
             {
-                throw new HException("数据库数据异常，请检查");
+                throw new H_Exception("数据库数据异常，请检查");
             }
 
             try
@@ -149,7 +149,7 @@ namespace Hao.AppService
             }
             catch (PostgresException ex)
             {
-                if (ex.SqlState == "23505") throw new HException("添加失败，请重新添加");//违反唯一键
+                if (ex.SqlState == "23505") throw new H_Exception("添加失败，请重新添加");//违反唯一键
             }
         }
 
@@ -185,8 +185,8 @@ namespace Hao.AppService
         private async Task<SysModule> GetModuleDetail(long id)
         {
             var module = await _moduleRep.GetAysnc(id);
-            if (module == null) throw new HException("节点不存在");
-            if (module.IsDeleted) throw new HException("节点已删除");
+            if (module == null) throw new H_Exception("节点不存在");
+            if (module.IsDeleted) throw new H_Exception("节点已删除");
             return module;
         }
 

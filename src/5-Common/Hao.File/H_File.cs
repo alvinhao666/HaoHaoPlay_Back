@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Hao.File
 {
-    public partial class HFile
+    public partial class H_File
     {
         #region 文件相关操作
         /// <summary>

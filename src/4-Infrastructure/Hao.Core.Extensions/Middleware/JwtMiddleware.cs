@@ -20,7 +20,7 @@ namespace Hao.Core.Extensions
             if (context.Request.Headers.ContainsKey("Authorization"))
             {
                 var strToken = context.Request.Headers["Authorization"].ToString();
-                if (!strToken.Contains("Bearer ")) throw new HException("Authorization参数格式有误");
+                if (!strToken.Contains("Bearer ")) throw new H_Exception("Authorization参数格式有误");
 
                 var jwtHandler = new JwtSecurityTokenHandler();
                 JwtSecurityToken jwtToken = jwtHandler.ReadJwtToken(strToken.Remove(0, 7)); //去除"Bearer "

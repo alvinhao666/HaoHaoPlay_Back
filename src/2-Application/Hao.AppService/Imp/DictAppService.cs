@@ -5,6 +5,7 @@ using Hao.Repository;
 using Hao.RunTimeException;
 using System.Threading.Tasks;
 using Hao.AppService.ViewModel;
+using System;
 
 namespace Hao.AppService
 {
@@ -31,15 +32,20 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task AddDict(DictAddRequest request)
         {
-            var items = await _dictRep.GetListAysnc(new DictQuery { EqualDictName = request.DictName });
-            if (items.Count > 0) throw new HException("该字典名称已存在，请重新添加");
+            using (var redisLock = RedisHelper.Lock("dictAdd", 10)) //redis 分布式锁
+            {
+                if (redisLock == null) throw new H_Exception("系统异常，请重新添加");
 
-            items = await _dictRep.GetListAysnc(new DictQuery { EqualDictName = request.DictName, EqualDictCode = request.DictCode });
-            if (items.Count > 0) throw new HException("该字典编码已存在，请重新添加");
+                var items = await _dictRep.GetListAysnc(new DictQuery { EqualDictName = request.DictName });
+                if (items.Count > 0) throw new H_Exception("该字典名称已存在，请重新添加");
 
-            var dict = _mapper.Map<SysDict>(request);
-            dict.Sort = 0;
-            await _dictRep.InsertAysnc(dict);
+                items = await _dictRep.GetListAysnc(new DictQuery { EqualDictName = request.DictName, EqualDictCode = request.DictCode });
+                if (items.Count > 0) throw new H_Exception("该字典编码已存在，请重新添加");
+
+                var dict = _mapper.Map<SysDict>(request);
+                dict.Sort = 0;
+                await _dictRep.InsertAysnc(dict);
+            }
         }
 
         /// <summary>
@@ -96,25 +102,31 @@ namespace Hao.AppService
         public async Task AddDictItem(DictItemAddRequest request)
         {
 
-            var items = await _dictRep.GetListAysnc(new DictQuery { ParentId = request.ParentId, EqualItemName = request.ItemName });
-            if (items.Count > 0) throw new HException("该数据项名称已存在，请重新添加");
-
-
-            items = await _dictRep.GetListAysnc(new DictQuery { ParentId = request.ParentId, EqualItemName = request.ItemName, ItemValue = request.ItemValue });
-            if (items.Count > 0) throw new HException("该数据项值已存在，请重新添加");
-
-
-            var parentDict = await GetDictDetail(request.ParentId.Value);
-            var dict = _mapper.Map<SysDict>(request);
-            dict.ParentId = parentDict.Id;
-            dict.DictCode = parentDict.DictCode;
-            dict.DictName = parentDict.DictName;
-            if (!dict.Sort.HasValue)
+            using (var redisLock = RedisHelper.Lock("dictItemAdd", 10)) //redis 分布式锁
             {
-                var dictItems = await _dictRep.GetListAysnc(new DictQuery { ParentId = request.ParentId.Value });
-                dict.Sort = dictItems.Count + 1;
+                if (redisLock == null) throw new H_Exception("系统异常，请重新添加");
+
+
+                var items = await _dictRep.GetListAysnc(new DictQuery { ParentId = request.ParentId, EqualItemName = request.ItemName });
+                if (items.Count > 0) throw new H_Exception("该数据项名称已存在，请重新添加");
+
+
+                items = await _dictRep.GetListAysnc(new DictQuery { ParentId = request.ParentId, EqualItemName = request.ItemName, ItemValue = request.ItemValue });
+                if (items.Count > 0) throw new H_Exception("该数据项值已存在，请重新添加");
+
+
+                var parentDict = await GetDictDetail(request.ParentId.Value);
+                var dict = _mapper.Map<SysDict>(request);
+                dict.ParentId = parentDict.Id;
+                dict.DictCode = parentDict.DictCode;
+                dict.DictName = parentDict.DictName;
+                if (!dict.Sort.HasValue)
+                {
+                    var dictItems = await _dictRep.GetListAysnc(new DictQuery { ParentId = request.ParentId.Value });
+                    dict.Sort = dictItems.Count + 1;
+                }
+                await _dictRep.InsertAysnc(dict);
             }
-            await _dictRep.InsertAysnc(dict);
         }
 
         /// <summary>
@@ -166,8 +178,8 @@ namespace Hao.AppService
         private async Task<SysDict> GetDictDetail(long dictId)
         {
             var dict = await _dictRep.GetAysnc(dictId);
-            if (dict == null) throw new HException("字典数据不存在");
-            if (dict.IsDeleted) throw new HException("字典数据已删除");
+            if (dict == null) throw new H_Exception("字典数据不存在");
+            if (dict.IsDeleted) throw new H_Exception("字典数据已删除");
             return dict;
         }
 

@@ -68,7 +68,7 @@ namespace Hao.Core.Extensions
             context.HandleResponse(); //此处代码为终止.Net Core默认的返回类型和数据结果，这个很重要哦，必须，不加的话 控制台里会报异常System.InvalidOperationException: StatusCode cannot be set because the response has already started
             context.Response.StatusCode = StatusCodes.Status200OK;
             context.Response.ContentType = "application/json";
-            var response = new HResponse()
+            var response = new H_Response()
             {
                 Success = false,
                 ErrorCode = nameof(ErrorInfo.E100001).GetErrorCode(),

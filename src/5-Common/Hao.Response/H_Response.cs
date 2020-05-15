@@ -3,7 +3,7 @@
     /// <summary>
     /// 视图输出根类
     /// </summary>
-    public class HResponse
+    public class H_Response
     {
         /// <summary>
         /// 错误消息

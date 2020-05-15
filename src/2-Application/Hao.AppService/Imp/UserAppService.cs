@@ -59,12 +59,12 @@ namespace Hao.AppService
             {
                 LoginName = vm.LoginName
             });
-            if (users.Count > 0) throw new HException("账号已存在，请重新输入");
+            if (users.Count > 0) throw new H_Exception("账号已存在，请重新输入");
 
             var role = await _roleRep.GetAysnc(vm.RoleId.Value);
-            if (role == null) throw new HException("角色不存在，请重新添加");
-            if (role.IsDeleted) throw new HException("角色已删除，请重新添加");
-            if (role.Level <= _currentUser.RoleLevel) throw new HException("无法添加同级及高级角色用户");
+            if (role == null) throw new H_Exception("角色不存在，请重新添加");
+            if (role.IsDeleted) throw new H_Exception("角色已删除，请重新添加");
+            if (role.Level <= _currentUser.RoleLevel) throw new H_Exception("无法添加同级及高级角色用户");
 
             var user = _mapper.Map<SysUser>(vm);
             user.FirstNameSpell = H_Spell.GetFirstLetter(user.Name.ToCharArray()[0]);
@@ -208,10 +208,10 @@ namespace Hao.AppService
             string fileName = $"{Guid.NewGuid()}.xlsx";
             string rootPath = _appsettings.FilePath.ExportExcelPath;
 
-            HFile.CreateDirectory(rootPath);
+            H_File.CreateDirectory(rootPath);
             string filePath = Path.Combine(rootPath, $"{fileName}");
 
-            await HFile.ExportToExcelEPPlus(filePath, exportData);
+            await H_File.ExportToExcelEPPlus(filePath, exportData);
 
             return fileName;
         }
@@ -223,8 +223,8 @@ namespace Hao.AppService
         /// <param name="userId"></param>
         private void CheckUser(long userId)
         {
-            if (userId == _currentUser.Id) throw new HException("无法操作当前登录用户");
-            if (userId == -1) throw new HException("无法操作系统管理员账户");
+            if (userId == _currentUser.Id) throw new H_Exception("无法操作当前登录用户");
+            if (userId == -1) throw new H_Exception("无法操作系统管理员账户");
         }
 
         /// <summary>
@@ -235,9 +235,9 @@ namespace Hao.AppService
         private async Task<SysUser> GetUserDetail(long userId)
         {
             var user = await _userRep.GetAysnc(userId);
-            if (user == null) throw new HException("用户不存在");
-            if (user.IsDeleted) throw new HException("用户已删除");
-            if (user.RoleLevel <= _currentUser.RoleLevel) throw new HException("无法操作同级及高级角色用户");
+            if (user == null) throw new H_Exception("用户不存在");
+            if (user.IsDeleted) throw new H_Exception("用户已删除");
+            if (user.RoleLevel <= _currentUser.RoleLevel) throw new H_Exception("无法操作同级及高级角色用户");
             return user;
         }
         #endregion

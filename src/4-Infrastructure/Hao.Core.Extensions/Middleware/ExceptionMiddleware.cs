@@ -35,7 +35,7 @@ namespace Hao.Core.Extensions
         {
             context.Response.StatusCode = StatusCodes.Status200OK;
             context.Response.ContentType = "application/json";
-            var response = new HResponse
+            var response = new H_Response
             {
                 Success = false,
                 ErrorMsg = "未知错误"
@@ -43,7 +43,7 @@ namespace Hao.Core.Extensions
 
             var ex = context.Features.Get<IExceptionHandlerFeature>().Error;
 
-            if (ex is HException exception)
+            if (ex is H_Exception exception)
             {
                 response.ErrorCode = exception.Code;
                 response.ErrorMsg = exception.Message;

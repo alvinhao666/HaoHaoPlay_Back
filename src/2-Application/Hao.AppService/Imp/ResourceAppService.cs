@@ -20,7 +20,7 @@ namespace Hao.AppService
         public async Task AddResource(ResourceAddRequest vm)
         {
             var parentNode = await GetModuleDetail(vm.ParentId.Value);
-            if (parentNode.Type != ModuleType.Sub) throw new HException("非子菜单无法添加资源");
+            if (parentNode.Type != ModuleType.Sub) throw new H_Exception("非子菜单无法添加资源");
             var module = _mapper.Map<SysModule>(vm);
             module.Type = ModuleType.Resource;
             module.Sort = 0; 
@@ -34,10 +34,10 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task DeleteResource(long id)
         {
-            if (id == 0) throw new HException("无法操作系统根节点");
+            if (id == 0) throw new H_Exception("无法操作系统根节点");
 
             var node = await GetModuleDetail(id);
-            if (node.Type != ModuleType.Resource) throw new HException("非资源项无法删除");
+            if (node.Type != ModuleType.Resource) throw new H_Exception("非资源项无法删除");
 
             await _moduleRep.DeleteAysnc(id);
         }
@@ -66,11 +66,11 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task UpdateResource(long id, ResourceUpdateRequest vm)
         {
-            if (id == 0) throw new HException("无法操作系统根节点");
+            if (id == 0) throw new H_Exception("无法操作系统根节点");
             var module = await GetModuleDetail(id);
             module.Name = vm.Name;
             module.Sort = vm.Sort;
-            if (module.Type != ModuleType.Resource) throw new HException("非资源项无法更新");
+            if (module.Type != ModuleType.Resource) throw new H_Exception("非资源项无法更新");
             await _moduleRep.UpdateAsync(module, user => new { module.Name, module.Sort });
         }
     }

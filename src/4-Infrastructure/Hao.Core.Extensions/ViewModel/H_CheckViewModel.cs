@@ -13,7 +13,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 options.InvalidModelStateResponseFactory = (context) =>
                 {
                     var error = context.ModelState.Values.SelectMany(x => x.Errors.Select(p => p.ErrorMessage)).FirstOrDefault();
-                    var response = new HResponse
+                    var response = new H_Response
                     {
                         Success = false,
                         ErrorMsg = error

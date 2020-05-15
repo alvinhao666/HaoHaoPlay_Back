@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Hao.File
 {
-    public partial class HFile
+    public partial class H_File
     {
         /// <summary>
         /// 导出excel (EPPlus)

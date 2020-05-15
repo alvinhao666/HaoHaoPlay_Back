@@ -75,11 +75,11 @@ namespace Hao.AppService
             //根据账号密码查询用户
             var user = await GetUser(loginName, password);
 
-            if (string.IsNullOrWhiteSpace(user.AuthNumbers)) throw new HException(_noAuthTip);
+            if (string.IsNullOrWhiteSpace(user.AuthNumbers)) throw new H_Exception(_noAuthTip);
 
             var authNums = JsonSerializer.Deserialize<List<long>>(user.AuthNumbers);
 
-            if (authNums.Count == 0) throw new HException(_noAuthTip);
+            if (authNums.Count == 0) throw new H_Exception(_noAuthTip);
 
             //查询用户菜单
             var modules = await _moduleRep.GetListAysnc(new ModuleQuery { IncludeResource = false });
@@ -88,7 +88,7 @@ namespace Hao.AppService
             //找主菜单一级 parentId=0
             InitMenuTree(menus, 0, modules, authNums, user.Id); 
 
-            if (menus.Count == 0) throw new HException(_noAuthTip);
+            if (menus.Count == 0) throw new H_Exception(_noAuthTip);
 
             //jwt的唯一身份标识，避免重复
             var jti = Guid.NewGuid().ToString();
@@ -133,10 +133,10 @@ namespace Hao.AppService
         {
             var users = await _userRep.GetUserByLoginName(loginName, password);
 
-            if (users.Count == 0) throw new HException("用户名或密码错误");
-            if (users.Count > 1) throw new HException("用户数据异常，存在相同用户");
+            if (users.Count == 0) throw new H_Exception("用户名或密码错误");
+            if (users.Count > 1) throw new H_Exception("用户数据异常，存在相同用户");
             var user = users.First();
-            if (!user.Enabled.IsTrue()) throw new HException("用户已注销");
+            if (!user.Enabled.IsTrue()) throw new H_Exception("用户已注销");
             return user;
         }
 

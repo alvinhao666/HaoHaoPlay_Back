@@ -58,7 +58,7 @@ namespace Hao.AppService
             string[] str = request.Base64Str.Split(',');  //base64Str为base64完整的字符串，先处理一下得到我们所需要的字符串
             byte[] imageBytes = Convert.FromBase64String(str[1]);
 
-            HFile.CreateDirectory(_appsettings.FilePath.AvatarPath);
+            H_File.CreateDirectory(_appsettings.FilePath.AvatarPath);
             string imgName = $"{_currentUser.Id}_{H_Util.GetTimeStamp()}.png";
             string imgPath = Path.Combine(_appsettings.FilePath.AvatarPath, imgName);
             using (SixLabors.ImageSharp.Image image = SixLabors.ImageSharp.Image.Load(imageBytes))
@@ -71,7 +71,7 @@ namespace Hao.AppService
             await _userRep.UpdateAsync(user, user => new { user.HeadImgUrl });
             if (!string.IsNullOrWhiteSpace(oldImgUrl))
             {
-                HFile.DeleteFile(Path.Combine(_appsettings.FilePath.AvatarPath, oldImgUrl));
+                H_File.DeleteFile(Path.Combine(_appsettings.FilePath.AvatarPath, oldImgUrl));
             }
 
         }
@@ -105,7 +105,7 @@ namespace Hao.AppService
         {
             var user = await _userRep.GetAysnc(_currentUser.Id.Value);
             oldPassword = EncryptProvider.HMACSHA256(oldPassword, _appsettings.Key.Sha256Key);
-            if (user.Password != oldPassword) throw new HException("原密码错误");
+            if (user.Password != oldPassword) throw new H_Exception("原密码错误");
             user.PasswordLevel = (PasswordLevel)H_Util.CheckPasswordLevel(newPassword);
             newPassword = EncryptProvider.HMACSHA256(newPassword, _appsettings.Key.Sha256Key);
             user.Password = newPassword;

@@ -41,7 +41,7 @@ namespace Hao.Core.Extensions
             app.UseStaticFiles();
 
             //导出excel路径
-            HFile.CreateDirectory(appSettings.FilePath.ExportExcelPath);
+            H_File.CreateDirectory(appSettings.FilePath.ExportExcelPath);
 
             app.UseStaticFiles(new StaticFileOptions()
             {
@@ -55,7 +55,7 @@ namespace Hao.Core.Extensions
 
             //头像路径
 
-            HFile.CreateDirectory(appSettings.FilePath.AvatarPath);
+            H_File.CreateDirectory(appSettings.FilePath.AvatarPath);
 
             app.UseStaticFiles(new StaticFileOptions()
             {

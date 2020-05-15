@@ -149,12 +149,12 @@ namespace Hao.WebApi.Controllers
         {
             var files = HttpContext.Request.Form.Files;
 
-            if (files == null || files.Count == 0) throw new HException("请选择Excel文件");
+            if (files == null || files.Count == 0) throw new H_Exception("请选择Excel文件");
 
             //格式限制
             var allowType = new string[] { "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" };
 
-            if (files.Any(b => !allowType.Contains(b.ContentType))) throw new HException("只能上传Excel文件");
+            if (files.Any(b => !allowType.Contains(b.ContentType))) throw new H_Exception("只能上传Excel文件");
 
 
             ////大小限制
@@ -173,7 +173,7 @@ namespace Hao.WebApi.Controllers
 
                 string rootPath = _appsettings.FilePath.ImportExcelPath;
 
-                HFile.CreateDirectory(rootPath);
+                H_File.CreateDirectory(rootPath);
                 string filePath = Path.Combine(rootPath, $"{name}");
 
                 using (var fs = System.IO.File.Create(filePath))
@@ -189,7 +189,7 @@ namespace Hao.WebApi.Controllers
                     var worksheet = ep.Workbook.Worksheets[0];
                     if (worksheet != null && worksheet.Cells[1, 1].Text.Trim() != "姓名")
                     {
-                        throw new HException("上传数据列名有误，请检查");
+                        throw new H_Exception("上传数据列名有误，请检查");
                     }
                     foreach (var ws in ep.Workbook.Worksheets)
                     {

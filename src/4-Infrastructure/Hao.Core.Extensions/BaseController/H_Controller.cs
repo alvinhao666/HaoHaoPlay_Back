@@ -33,7 +33,7 @@ namespace Hao.Core.Extensions
 
             var jti = User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti)?.Value;
 
-            if (string.IsNullOrWhiteSpace(userId) || string.IsNullOrWhiteSpace(jti)) throw new HException(ErrorInfo.E100002, nameof(ErrorInfo.E100002).GetErrorCode());
+            if (string.IsNullOrWhiteSpace(userId) || string.IsNullOrWhiteSpace(jti)) throw new H_Exception(ErrorInfo.E100002, nameof(ErrorInfo.E100002).GetErrorCode());
 
             var traceId = context.HttpContext.TraceIdentifier;
             var path = context.HttpContext.Request.Path.Value;
@@ -52,16 +52,16 @@ namespace Hao.Core.Extensions
 
             var value = RedisHelper.Get($"{AppsettingsOptions.Value.RedisPrefix.LoginInfo}{userId}_{jti}");
 
-            if (value == null) throw new HException(ErrorInfo.E100002, nameof(ErrorInfo.E100002).GetErrorCode());
+            if (value == null) throw new H_Exception(ErrorInfo.E100002, nameof(ErrorInfo.E100002).GetErrorCode());
 
             var cacheUser = JsonSerializer.Deserialize<RedisCacheUser>(value);
 
             if (cacheUser.LoginStatus.HasValue
                 && cacheUser.LoginStatus == LoginStatus.Offline
                 && cacheUser.IsAuthUpdate.HasValue
-                && cacheUser.IsAuthUpdate.Value) throw new HException(ErrorInfo.E100003, nameof(ErrorInfo.E100003).GetErrorCode());
+                && cacheUser.IsAuthUpdate.Value) throw new H_Exception(ErrorInfo.E100003, nameof(ErrorInfo.E100003).GetErrorCode());
 
-            if (!cacheUser.LoginStatus.HasValue || cacheUser.LoginStatus == LoginStatus.Offline) throw new HException(ErrorInfo.E100002, nameof(ErrorInfo.E100002).GetErrorCode());
+            if (!cacheUser.LoginStatus.HasValue || cacheUser.LoginStatus == LoginStatus.Offline) throw new H_Exception(ErrorInfo.E100002, nameof(ErrorInfo.E100002).GetErrorCode());
 
 
             var descriptor = context.ActionDescriptor as ControllerActionDescriptor;
@@ -71,12 +71,12 @@ namespace Hao.Core.Extensions
             {
                 var authInfos = attribute.ConstructorArguments.FirstOrDefault().Value.ToString().Split('_');
 
-                if (authInfos.Length != 2) throw new HException("接口权限值有误，请重新配置");
+                if (authInfos.Length != 2) throw new H_Exception("接口权限值有误，请重新配置");
 
                 var layer = int.Parse(authInfos[0]) - 1;
                 var authCode = long.Parse(authInfos[1]);
 
-                if (cacheUser.AuthNumbers != null && cacheUser.AuthNumbers.Count > 0 && ((cacheUser.AuthNumbers[layer] & authCode) != authCode)) throw new HException("没有接口权限，请检查");
+                if (cacheUser.AuthNumbers != null && cacheUser.AuthNumbers.Count > 0 && ((cacheUser.AuthNumbers[layer] & authCode) != authCode)) throw new H_Exception("没有接口权限，请检查");
             }
 
 

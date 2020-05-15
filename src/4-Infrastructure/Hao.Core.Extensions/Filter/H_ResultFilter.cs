@@ -13,7 +13,7 @@ namespace Hao.Core.Extensions
         {
             if (!(context.Result is JsonResult))
             {
-                var response = new HResponse
+                var response = new H_Response
                 {
                     Success = true,
                     Data = context.Result is EmptyResult ? null : (context.Result as ObjectResult)?.Value
