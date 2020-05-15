@@ -35,7 +35,7 @@ namespace Hao.AppService
         {
             using (var redisLock = RedisHelper.Lock("AddDict", 10)) //redis 分布式锁
             {
-                if (redisLock == null) throw new H_Exception("系统异常，请重新添加");
+                if (redisLock == null) throw new H_Exception("系统异常，请重新添加"); //对象为null，不占资源 ，编译后的代码没有fianlly,不执行dispose()方法
 
                 var items = await _dictRep.GetListAysnc(new DictQuery { EqualDictName = request.DictName });
                 if (items.Count > 0) throw new H_Exception("该字典名称已存在，请重新添加");
@@ -57,7 +57,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task UpdateDict(long id, DictUpdateRequest request)
         {
-            using (var redisLock = RedisHelper.Lock("UpdateDict", 10))
+            using (var redisLock = RedisHelper.Lock("UpdateDict", 10)) //redis 分布式锁
             {
                 if (redisLock == null) throw new H_Exception("系统异常，请重新添加");
 
@@ -116,7 +116,7 @@ namespace Hao.AppService
 
             using (var redisLock = RedisHelper.Lock("AddDictItem", 10)) //redis 分布式锁
             {
-                if (redisLock == null) throw new H_Exception("系统异常，请重新添加"); //对象为null，不占资源 ，编译后的代码没有fianlly,不执行dispose()方法
+                if (redisLock == null) throw new H_Exception("系统异常，请重新添加"); 
 
 
                 var items = await _dictRep.GetListAysnc(new DictQuery { ParentId = request.ParentId, EqualItemName = request.ItemName });
