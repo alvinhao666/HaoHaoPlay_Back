@@ -40,7 +40,7 @@ namespace Hao.AppService
                 var items = await _dictRep.GetListAysnc(new DictQuery { EqualDictName = request.DictName });
                 if (items.Count > 0) throw new H_Exception("该字典名称已存在，请重新添加");
 
-                items = await _dictRep.GetListAysnc(new DictQuery { EqualDictName = request.DictName, EqualDictCode = request.DictCode });
+                items = await _dictRep.GetListAysnc(new DictQuery {  EqualDictCode = request.DictCode });
                 if (items.Count > 0) throw new H_Exception("该字典编码已存在，请重新添加");
 
                 var dict = _mapper.Map<SysDict>(request);
@@ -64,7 +64,7 @@ namespace Hao.AppService
                 var items = await _dictRep.GetListAysnc(new DictQuery { EqualDictName = request.DictName });
                 if (items.Where(a => a.Id != id).Count() > 0) throw new H_Exception("该字典名称已存在，请重新添加");
 
-                items = await _dictRep.GetListAysnc(new DictQuery { EqualDictName = request.DictName, EqualDictCode = request.DictCode });
+                items = await _dictRep.GetListAysnc(new DictQuery { EqualDictCode = request.DictCode });
                 if (items.Where(a => a.Id != id).Count() > 0) throw new H_Exception("该字典编码已存在，请重新添加");
 
                 var dict = await _dictRep.GetAysnc(id);
@@ -123,7 +123,7 @@ namespace Hao.AppService
                 if (items.Count > 0) throw new H_Exception("该数据项名称已存在，请重新添加");
 
 
-                items = await _dictRep.GetListAysnc(new DictQuery { ParentId = request.ParentId, EqualItemName = request.ItemName, ItemValue = request.ItemValue });
+                items = await _dictRep.GetListAysnc(new DictQuery { ParentId = request.ParentId,  ItemValue = request.ItemValue });
                 if (items.Count > 0) throw new H_Exception("该数据项值已存在，请重新添加");
 
 
@@ -170,7 +170,7 @@ namespace Hao.AppService
                 var items = await _dictRep.GetListAysnc(new DictQuery { ParentId = item.ParentId, EqualItemName = request.ItemName });
                 if (items.Where(a => a.Id != id).Count() > 0) throw new H_Exception("该数据项名称已存在，请重新添加");
 
-                items = await _dictRep.GetListAysnc(new DictQuery { ParentId = item.ParentId, EqualItemName = request.ItemName, ItemValue = request.ItemValue });
+                items = await _dictRep.GetListAysnc(new DictQuery { ParentId = item.ParentId, ItemValue = request.ItemValue });
                 if (items.Where(a => a.Id != id).Count() > 0) throw new H_Exception("该数据项值已存在，请重新添加");
           
                 item.ItemName = request.ItemName;
