@@ -16,6 +16,12 @@ namespace Hao.AppService
         /// 字典编码
         /// </summary>
         public string DictCode { get; set; }
+
+        /// <summary>
+        /// 字典编码
+        /// </summary>
+        public string EqualDictCode { get; set; }
+
         /// <summary>
         /// 字典名称
         /// </summary>
@@ -54,6 +60,8 @@ namespace Hao.AppService
                 var result = new List<Expression<Func<SysDict, bool>>>();
 
                 if (DictCode.HasValue()) result.Add(x => x.DictCode.Contains(DictCode));
+
+                if (EqualDictCode.HasValue()) result.Add(x => x.DictCode == EqualDictCode);
 
                 if (DictName.HasValue()) result.Add(x => x.DictName.Contains(DictName));
 

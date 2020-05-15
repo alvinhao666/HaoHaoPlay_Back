@@ -34,8 +34,15 @@ namespace Hao.AppService
             var items = await _dictRep.GetListAysnc(new DictQuery { ParentId = null, EqualDictName = request.DictName });
             if (items.Count > 0)
             {
-                throw new HException("该字典已存在，请重新添加");
+                throw new HException("该字典名称已存在，请重新添加");
             }
+
+            items = await _dictRep.GetListAysnc(new DictQuery { ParentId = null, EqualDictName = request.DictName , EqualDictCode = request.DictCode });
+            if (items.Count > 0)
+            {
+                throw new HException("该字典编码已存在，请重新添加");
+            }
+
             var dict = _mapper.Map<SysDict>(request);
             dict.Sort = 0;
             await _dictRep.InsertAysnc(dict);
@@ -97,7 +104,13 @@ namespace Hao.AppService
             var items = await _dictRep.GetListAysnc(new DictQuery { ParentId = request.ParentId.Value, EqualItemName = request.ItemName });
             if (items.Count > 0)
             {
-                throw new HException("该数据项已存在，请重新添加");
+                throw new HException("该数据项名称已存在，请重新添加");
+            }
+
+            items = await _dictRep.GetListAysnc(new DictQuery { ParentId = request.ParentId.Value, EqualItemName = request.ItemName, ItemValue = request.ItemValue });
+            if (items.Count > 0)
+            {
+                throw new HException("该数据项值已存在，请重新添加");
             }
 
             var dict = _mapper.Map<SysDict>(request);
