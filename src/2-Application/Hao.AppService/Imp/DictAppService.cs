@@ -104,7 +104,7 @@ namespace Hao.AppService
 
             using (var redisLock = RedisHelper.Lock("dictItemAdd", 10)) //redis 分布式锁
             {
-                if (redisLock == null) throw new H_Exception("系统异常，请重新添加"); //对象为null，不占资源 ，不执行dispose()方法
+                if (redisLock == null) throw new H_Exception("系统异常，请重新添加"); //对象为null，不占资源 ，编译后的代码没有fianlly,不执行dispose()方法
 
 
                 var items = await _dictRep.GetListAysnc(new DictQuery { ParentId = request.ParentId, EqualItemName = request.ItemName });
