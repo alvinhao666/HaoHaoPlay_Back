@@ -202,20 +202,20 @@ namespace Hao.AppService
                     expanded = (int)item.Type.Value < (int)ModuleType.Sub,
                     children = new List<RoleModuleItemVM>()
                 };
-                if (node.isLeaf && authNumbers?.Count > 0 && item.Layer.Value <= authNumbers.Count ) 
-                {
-                    if((authNumbers[item.Layer.Value - 1] & item.Number) == item.Number)
-                    {
-                        checkedKeys.Add(node.key);
-                    }    
-                }
+ 
                 result.Add(node);
+
                 InitModuleTree(node.children, item.Id, sources, authNumbers,checkedKeys);
 
-                //if (item.Type == ModuleType.Sub)
-                //{
-                //    node.isLeaf = node.children.Count == 0;
-                //}    
+                if (item.Type == ModuleType.Sub) node.isLeaf = node.children.Count == 0;
+
+                if (node.isLeaf && authNumbers?.Count > 0 && item.Layer.Value <= authNumbers.Count)
+                {
+                    if ((authNumbers[item.Layer.Value - 1] & item.Number) == item.Number)
+                    {
+                        checkedKeys.Add(node.key);
+                    }
+                }
             }
         }
         #endregion
