@@ -170,6 +170,7 @@ namespace Hao.AppService
                     key = item.Id.ToString(),
                     title = item.Name,
                     isLeaf = item.Type == ModuleType.Sub,
+                    expanded = true,
                     children = new List<ModuleVM>()
                 };
                 result.Add(node);

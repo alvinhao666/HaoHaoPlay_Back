@@ -34,8 +34,11 @@ namespace Hao.AppService.ViewModel
         /// </summary>
         public List<ModuleVM> children { get; set; }
 
-        // public bool expanded => children.Count > 0;
-        
+        /// <summary>
+        /// 是否展开
+        /// </summary>
+        public bool expanded { get; set; }
+
         /// <summary>
         /// 是否叶子节点
         /// </summary>

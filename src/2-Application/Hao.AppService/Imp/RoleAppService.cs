@@ -211,6 +211,11 @@ namespace Hao.AppService
                 }
                 result.Add(node);
                 InitModuleTree(node.children, item.Id, sources, authNumbers,checkedKeys);
+
+                //if (item.Type == ModuleType.Sub)
+                //{
+                //    node.isLeaf = node.children.Count == 0;
+                //}    
             }
         }
         #endregion
