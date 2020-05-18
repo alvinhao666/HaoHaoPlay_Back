@@ -10,6 +10,9 @@ using Hao.RunTimeException;
 using System;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using System.Text.Json;
+using Hao.Utility;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 
 namespace Hao.Core.Extensions
 {
@@ -20,7 +23,20 @@ namespace Hao.Core.Extensions
     {
         private readonly ILogger _logger = LogManager.GetCurrentClassLogger();
 
+        private const string apiAuthErrorMsg = "接口权限值有误，请重新配置";
+
+        private const string apiNoAuthMsg = "没有接口权限";
+
         public IOptionsSnapshot<AppSettingsInfo> AppsettingsOptions { get; set; }
+
+        [AttributeUsage(AttributeTargets.Method)]
+        protected class AuthCodeAttribute : Attribute
+        {
+            public AuthCodeAttribute(string code)
+            {
+
+            }
+        }
 
         /// <summary>
         /// 在进入方法之前 获取用户jwt中用户信息, 先执行这个方法 再执行模型验证
@@ -33,52 +49,13 @@ namespace Hao.Core.Extensions
 
             var jti = User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti)?.Value;
 
-            if (string.IsNullOrWhiteSpace(userId) || string.IsNullOrWhiteSpace(jti)) throw new H_Exception(ErrorInfo.E100002, nameof(ErrorInfo.E100002).GetErrorCode());
+            var argument = new { context.HttpContext.TraceIdentifier, UserId = userId, context.ActionArguments };
 
-            var traceId = context.HttpContext.TraceIdentifier;
-            var path = context.HttpContext.Request.Path.Value;
+            _logger.Info(new { Method = context.HttpContext.Request.Path.Value, Argument = argument, Description = "请求信息" });
 
-            _logger.Info(new
-            {
-                Method = path,
-                Argument = new
-                {
-                    TraceIdentifier = traceId,
-                    UserId = userId,
-                    context.ActionArguments
-                },
-                Description = "请求信息"
-            });
+            var cache = GetCacheUser(userId, jti);
 
-            var value = RedisHelper.Get($"{AppsettingsOptions.Value.RedisPrefix.LoginInfo}{userId}_{jti}");
-
-            if (value == null) throw new H_Exception(ErrorInfo.E100002, nameof(ErrorInfo.E100002).GetErrorCode());
-
-            var cacheUser = JsonSerializer.Deserialize<RedisCacheUser>(value);
-
-            if (cacheUser.LoginStatus.HasValue
-                && cacheUser.LoginStatus == LoginStatus.Offline
-                && cacheUser.IsAuthUpdate.HasValue
-                && cacheUser.IsAuthUpdate.Value) throw new H_Exception(ErrorInfo.E100003, nameof(ErrorInfo.E100003).GetErrorCode());
-
-            if (!cacheUser.LoginStatus.HasValue || cacheUser.LoginStatus == LoginStatus.Offline) throw new H_Exception(ErrorInfo.E100002, nameof(ErrorInfo.E100002).GetErrorCode());
-
-
-            var descriptor = context.ActionDescriptor as ControllerActionDescriptor;
-            var attribute = descriptor.MethodInfo.CustomAttributes.FirstOrDefault(x => x.AttributeType == typeof(AuthCodeAttribute));
-
-            if (attribute != null)
-            {
-                var authInfos = attribute.ConstructorArguments.FirstOrDefault().Value.ToString().Split('_');
-
-                if (authInfos.Length != 2) throw new H_Exception("接口权限值有误，请重新配置");
-
-                var layer = int.Parse(authInfos[0]) - 1;
-                var authCode = long.Parse(authInfos[1]);
-
-                if (cacheUser.AuthNumbers != null && cacheUser.AuthNumbers.Count > 0 && ((cacheUser.AuthNumbers[layer] & authCode) != authCode)) throw new H_Exception("没有接口权限，请检查");
-            }
-
+            CheckAuth(context, cache.AuthNumbers);
 
             base.OnActionExecuting(context);
         }
@@ -92,17 +69,62 @@ namespace Hao.Core.Extensions
                 UserId = context.HttpContext.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sid)?.Value,
                 context.Result
             };
-            _logger.Info(new { Method = HttpContext.Request.Path.Value, Argument = param, Description = "HaoHaoPlay_Back_Response" });
+            _logger.Info(new { Method = HttpContext.Request.Path.Value, Argument = param, Description = "返回信息" });
             base.OnActionExecuted(context);
         }
 
 
-        [AttributeUsage(AttributeTargets.Method)]
-        protected class AuthCodeAttribute : Attribute
+        /// <summary>
+        /// 获取登录缓存的用户信息
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="jti"></param>
+        /// <returns></returns>
+        private RedisCacheUser GetCacheUser(string userId, string jti)
         {
-            public AuthCodeAttribute(string code)
-            {
+            var value = RedisHelper.Get($"{AppsettingsOptions.Value.RedisPrefix.LoginInfo}{userId}_{jti}");
 
+            if (value.IsNullOrWhiteSpace()) throw new H_Exception(ErrorInfo.E100002, nameof(ErrorInfo.E100002).GetErrorCode());
+
+            var cacheUser = JsonSerializer.Deserialize<RedisCacheUser>(value);
+
+            if (cacheUser == null) throw new H_Exception(ErrorInfo.E100002, nameof(ErrorInfo.E100002).GetErrorCode());
+
+            if (cacheUser.LoginStatus.HasValue
+                && cacheUser.LoginStatus == LoginStatus.Offline
+                && cacheUser.IsAuthUpdate.HasValue
+                && cacheUser.IsAuthUpdate.Value) throw new H_Exception(ErrorInfo.E100003, nameof(ErrorInfo.E100003).GetErrorCode());
+
+            if (!cacheUser.LoginStatus.HasValue || cacheUser.LoginStatus == LoginStatus.Offline) throw new H_Exception(ErrorInfo.E100002, nameof(ErrorInfo.E100002).GetErrorCode());
+
+            return cacheUser;
+        }
+
+
+        /// <summary>
+        /// 检查接口权限
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="userAuthNumbers"></param>
+        private void CheckAuth(ActionExecutingContext context, List<long> userAuthNumbers)
+        {
+
+            var descriptor = context.ActionDescriptor as ControllerActionDescriptor;
+            var attribute = descriptor.MethodInfo.CustomAttributes.FirstOrDefault(x => x.AttributeType == typeof(AuthCodeAttribute));
+
+            if (attribute != null)
+            {
+                var authInfos = attribute.ConstructorArguments.FirstOrDefault().Value.ToString().Split('_');
+
+                if (authInfos.Length != 2) throw new H_Exception(apiAuthErrorMsg);
+
+                if (!int.TryParse(authInfos[0], out var layer)) throw new H_Exception(apiAuthErrorMsg);
+
+                if (!long.TryParse(authInfos[1], out var authCode)) throw new H_Exception(apiAuthErrorMsg);
+
+                layer--;
+
+                if (userAuthNumbers != null && userAuthNumbers.Count > 0 && ((userAuthNumbers[layer] & authCode) != authCode)) throw new H_Exception(apiNoAuthMsg);
             }
         }
 
