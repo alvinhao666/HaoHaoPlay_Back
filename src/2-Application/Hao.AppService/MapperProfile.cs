@@ -71,6 +71,8 @@ namespace Hao.AppService
             CreateMap<PagedList<SysDict>, PagedList<DictItemVM>>();
             
             CreateMap<SysDict, DictItemVM>();
+
+            CreateMap<SysDict, DictDataItemVM>();
             #endregion
 
         }

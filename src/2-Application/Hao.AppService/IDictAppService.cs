@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Hao.AppService.ViewModel;
 using Hao.Core;
@@ -64,5 +65,12 @@ namespace Hao.AppService
         /// <param name="id"></param>
         /// <returns></returns>
         Task DeleteDictItem(long id);
+
+        /// <summary>
+        /// 根据字典编码查询数据项
+        /// </summary>
+        /// <param name="dictCode"></param>
+        /// <returns></returns>
+        Task<List<DictDataItemVM>> GetDictDataItem(string dictCode);
     }
 }

@@ -6,6 +6,7 @@ using Hao.RunTimeException;
 using System.Threading.Tasks;
 using Hao.AppService.ViewModel;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Hao.AppService
 {
@@ -190,6 +191,19 @@ namespace Hao.AppService
             await _dictRep.DeleteAysnc(id);
         }
 
+        /// <summary>
+        /// 根据字典编码查询数据项
+        /// </summary>
+        /// <param name="dictCode"></param>
+        /// <returns></returns>
+
+        public async Task<List<DictDataItemVM>> GetDictDataItem(string dictCode)
+        {
+            var dictItems = await _dictRep.GetListAysnc(new DictQuery { EqualDictCode = dictCode, IsQueryItem = true, OrderFileds = $"{nameof(SysDict.Sort)},{nameof(SysDict.CreateTime)}" });
+
+            return _mapper.Map<List<DictDataItemVM>>(dictItems);
+        }
+
 
         #region private
 
@@ -205,6 +219,7 @@ namespace Hao.AppService
             if (dict.IsDeleted) throw new H_Exception("字典数据已删除");
             return dict;
         }
+
 
         #endregion
     }

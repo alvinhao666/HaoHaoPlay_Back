@@ -52,6 +52,12 @@ namespace Hao.AppService
         /// </summary>
         public int? ItemValue { get; set; }
 
+
+        /// <summary>
+        /// 是否查询数据项
+        /// </summary>
+        public bool? IsQueryItem { get; set; }
+
         public override List<Expression<Func<SysDict, bool>>> QueryExpressions
         {
 
@@ -77,7 +83,14 @@ namespace Hao.AppService
                 }
                 else
                 {
-                    result.Add(x => x.ParentId == null);
+                    if (IsQueryItem.IsTrue())
+                    {
+                        result.Add(x => x.ParentId != null);
+                    }
+                    else
+                    {
+                        result.Add(x => x.ParentId == null);
+                    }
                 }
 
                 if (ItemValue.HasValue) result.Add(x => x.ItemValue == ItemValue);
