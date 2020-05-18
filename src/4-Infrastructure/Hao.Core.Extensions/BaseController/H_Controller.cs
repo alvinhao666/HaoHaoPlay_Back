@@ -39,7 +39,7 @@ namespace Hao.Core.Extensions
         }
 
         /// <summary>
-        /// 在进入方法之前 获取用户jwt中用户信息, 先执行这个方法 再执行模型验证
+        /// 控制器中的操作执行之前调用此方法（先执行这个方法 再执行模型验证）
         /// </summary>
         /// <param name="context"></param>
         public override void OnActionExecuting(ActionExecutingContext context)
@@ -60,9 +60,12 @@ namespace Hao.Core.Extensions
             base.OnActionExecuting(context);
         }
 
+        /// <summary>
+        /// 控制器中的操作执行后调用此方法
+        /// </summary>
+        /// <param name="context"></param>
         public override void OnActionExecuted(ActionExecutedContext context)
         {
-            //输出日志
             var param = new
             {
                 context.HttpContext.TraceIdentifier,
