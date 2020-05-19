@@ -1,21 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using AutoMapper;
 using Hao.AppService;
 using Hao.AppService.ViewModel;
-using Microsoft.AspNetCore.Mvc;
-using System.IO;
-using System.Linq;
-using AutoMapper;
+using Hao.Core;
+using Hao.Core.Extensions;
+using Hao.File;
 using Hao.Library;
+using Hao.RunTimeException;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
-using OfficeOpenXml;
-using Hao.File;
-using Hao.RunTimeException;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using Hao.Core.Extensions;
-using Hao.Core;
+using OfficeOpenXml;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Hao.WebApi.Controllers
 {
@@ -30,17 +30,17 @@ namespace Hao.WebApi.Controllers
 
         private readonly IMapper _mapper;
 
-        private readonly ITimeLimitedDataProtector _protector;
+
 
         private readonly AppSettingsInfo _appsettings;
 
-        public UserController(IOptionsSnapshot<AppSettingsInfo> appsettingsOptions, IDataProtectionProvider provider, IMapper mapper, IUserAppService userService, IRoleAppService roleAppService)
+        public UserController(IOptionsSnapshot<AppSettingsInfo> appsettingsOptions, IMapper mapper, IUserAppService userService, IRoleAppService roleAppService)
         {
             _userAppService = userService;
             _roleAppService = roleAppService;
             _mapper = mapper;
             _appsettings = appsettingsOptions.Value;
-            _protector = provider.CreateProtector(appsettingsOptions.Value.DataProtectorPurpose.FileDownload).ToTimeLimitedDataProtector();
+
         }
 
         /// <summary>
@@ -131,12 +131,8 @@ namespace Hao.WebApi.Controllers
         /// <returns></returns>
         [HttpGet("Export")]
         [AuthCode("1_2048")]
-        public async Task<object> ExportUser([FromQuery]UserQueryInput query)
-        {
-            string fileName = await _userAppService.ExportUsers(_mapper.Map<UserQuery>(query));
+        public async Task<UserExcelVM> ExportUser([FromQuery]UserQueryInput query) => await _userAppService.ExportUser(_mapper.Map<UserQuery>(query));
 
-            return new { FileName = fileName, FileId = _protector.Protect(fileName.Split('.')[0], TimeSpan.FromSeconds(5)) };
-        }
 
         /// <summary>
         /// 导入用户
@@ -167,14 +163,16 @@ namespace Hao.WebApi.Controllers
 
             foreach (IFormFile file in files)
             {
-                var reader = new StreamReader(file.OpenReadStream());
-                var content = reader.ReadToEnd();
-                var name = file.FileName;
+                //using (var reader = new StreamReader(file.OpenReadStream()))
+                //{
+                //    var content = reader.ReadToEnd();
+                //}
 
                 string rootPath = _appsettings.FilePath.ImportExcelPath;
 
                 H_File.CreateDirectory(rootPath);
-                string filePath = Path.Combine(rootPath, $"{name}");
+
+                string filePath = Path.Combine(rootPath, file.FileName);
 
                 using (var fs = System.IO.File.Create(filePath))
                 {

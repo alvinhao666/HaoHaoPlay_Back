@@ -66,7 +66,7 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        Task<string> ExportUsers(UserQuery query);
+        Task<UserExcelVM> ExportUser(UserQuery query);
 
         /// <summary>
         /// 是否存在用户

@@ -9,6 +9,7 @@ using Hao.Model;
 using Hao.Repository;
 using Hao.RunTimeException;
 using Hao.Utility;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -34,18 +35,22 @@ namespace Hao.AppService
 
         private readonly ICurrentUser _currentUser;
 
+        private readonly ITimeLimitedDataProtector _protector;
+
         public UserAppService(ISysRoleRepository roleRep,
             IOptionsSnapshot<AppSettingsInfo> appsettingsOptions, 
             ISysUserRepository userRepository,
             ISysLoginRecordRepository recordRep, 
             IMapper mapper,
-            ICurrentUser currentUser)
+            ICurrentUser currentUser,
+            IDataProtectionProvider provider)
         {
             _userRep = userRepository;
             _mapper = mapper;
             _appsettings = appsettingsOptions.Value;
             _currentUser = currentUser;
             _roleRep = roleRep;
+            _protector = provider.CreateProtector(appsettingsOptions.Value.DataProtectorPurpose.FileDownload).ToTimeLimitedDataProtector();
         }
 
         /// <summary>
@@ -189,7 +194,7 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        public async Task<string> ExportUsers(UserQuery query)
+        public async Task<UserExcelVM> ExportUser(UserQuery query)
         {
             var users = await _userRep.GetListAysnc(query);
 
@@ -213,7 +218,7 @@ namespace Hao.AppService
 
             await H_File.ExportToExcelEPPlus(filePath, exportData);
 
-            return fileName;
+            return new UserExcelVM { FileName = fileName, FileId = _protector.Protect(fileName.Split('.')[0], TimeSpan.FromSeconds(5)) };
         }
 
         #region private

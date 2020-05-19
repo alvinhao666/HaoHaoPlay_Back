@@ -1,9 +1,9 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Hao.AppService;
 using Hao.AppService.ViewModel;
 using Hao.Core.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Hao.WebApi.Controllers
 {

@@ -2,9 +2,7 @@
 using Hao.AppService.ViewModel;
 using Hao.Core.Extensions;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Hao.WebApi.Controllers
@@ -12,7 +10,7 @@ namespace Hao.WebApi.Controllers
     /// <summary>
     /// 通用接口
     /// </summary>
-    public class CommonController:H_Controller
+    public class CommonController : H_Controller
     {
         private readonly IDictAppService _dictAppService;
 

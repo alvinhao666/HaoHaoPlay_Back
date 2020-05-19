@@ -11,14 +11,14 @@ namespace Hao.WebApi.Controllers
     /// <summary>
     /// 数据字典
     /// </summary>
-    public class DictController:H_Controller
+    public class DictController : H_Controller
     {
         private readonly IDictAppService _dictAppService;
 
         private readonly IMapper _mapper;
 
 
-        public DictController(IMapper mapper,IDictAppService dictAppService)
+        public DictController(IMapper mapper, IDictAppService dictAppService)
         {
             _dictAppService = dictAppService;
             _mapper = mapper;
@@ -43,7 +43,7 @@ namespace Hao.WebApi.Controllers
         [AuthCode("1_524288")]
         public async Task<PagedList<DictVM>> GetDictList([FromQuery]DictQueryInput query) =>
             await _dictAppService.GetDictList(_mapper.Map<DictQuery>(query));
-        
+
         /// <summary>
         /// 修改字典
         /// </summary>
@@ -52,7 +52,7 @@ namespace Hao.WebApi.Controllers
         /// <returns></returns>
         [HttpPut("UpdateDict/{id}")]
         [AuthCode("1_2097152")]
-        public async Task UpdateDict(long id, [FromBody]DictUpdateRequest request) => await _dictAppService.UpdateDict(id,request);
+        public async Task UpdateDict(long id, [FromBody]DictUpdateRequest request) => await _dictAppService.UpdateDict(id, request);
 
         /// <summary>
         /// 删除字典
@@ -62,7 +62,7 @@ namespace Hao.WebApi.Controllers
         [HttpDelete("DeleteDict/{id}")]
         [AuthCode("1_4194304")]
         public async Task DeleteDict(long id) => await _dictAppService.DeleteDict(id);
-        
+
         /// <summary>
         /// 添加字典项
         /// </summary>
