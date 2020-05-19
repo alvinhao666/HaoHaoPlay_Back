@@ -163,10 +163,6 @@ namespace Hao.WebApi.Controllers
 
             foreach (IFormFile file in files)
             {
-                //using (var reader = new StreamReader(file.OpenReadStream()))
-                //{
-                //    var content = reader.ReadToEnd();
-                //}
                 string rootPath = _appsettings.FilePath.ImportExcelPath;
 
                 H_File.CreateDirectory(rootPath);
