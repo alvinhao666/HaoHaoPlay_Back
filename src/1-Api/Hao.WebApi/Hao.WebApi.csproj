@@ -9,10 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="EPPlus" Version="4.5.3.3" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\2-Application\Hao.AppService\Hao.AppService.csproj" />
     <ProjectReference Include="..\..\4-Infrastructure\Hao.Core.Extensions\Hao.Core.Extensions.csproj" />
     <ProjectReference Include="..\..\5-Common\Hao.Log\Hao.Log.csproj" />

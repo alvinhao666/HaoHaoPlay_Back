@@ -1,5 +1,6 @@
 ﻿using Hao.AppService.ViewModel;
 using Hao.Core;
+using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -16,14 +17,7 @@ namespace Hao.AppService
         /// <param name="vm"></param>
         /// <returns></returns>
         Task AddUser(UserAddRequest vm);
-        
-        /// <summary>
-        /// 批量添加用户
-        /// </summary>
-        /// <param name="vms"></param>
-        /// <returns></returns>
-        Task AddUsers(List<UserAddRequest> vms);
-        
+                
         /// <summary>
         /// 编辑用户
         /// </summary>
@@ -62,7 +56,7 @@ namespace Hao.AppService
         Task UpdateUserStatus(long userId,bool enabled);
 
         /// <summary>
-        /// 导出
+        /// 导出excel
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
@@ -74,5 +68,12 @@ namespace Hao.AppService
         /// <param name="query"></param>
         /// <returns></returns>
         Task<bool> IsExistUser(UserQuery query);
+
+        /// <summary>
+        /// 导入excel
+        /// </summary>
+        /// <param name="files"></param>
+        /// <returns></returns>
+        Task ImportUser(IFormFileCollection files);
     }
 }
