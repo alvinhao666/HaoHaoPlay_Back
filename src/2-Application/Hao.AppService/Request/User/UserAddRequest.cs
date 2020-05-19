@@ -73,6 +73,8 @@ namespace Hao.AppService
             RuleFor(x => x.Age).NotEmpty().WithMessage("年龄不能为空");
 
             RuleFor(x => x.RoleId).NotEmpty().WithMessage("角色Id不能为空");
+
+            //RuleFor(x => x.Data).SetCollectionValidator(new BoxOrderItemVMValidator()); // 集合子项数据验证
         }
     }
 }

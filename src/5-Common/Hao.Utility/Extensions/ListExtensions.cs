@@ -2,7 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace Hao.Utility
 {
@@ -80,6 +82,26 @@ namespace Hao.Utility
                 }
             }
             return table;
+        }
+
+        /// <summary>
+        /// 将一个集合以一定分割数量，分割成另外一组集合
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="list">集合</param>
+        /// <param name="splitCount">分割数量</param>
+        /// <returns></returns>
+        public static List<List<T>> HandleList<T>(this List<T> list,int splitCount)
+        {
+            var listGroup = new List<List<T>>();
+            int j = splitCount;
+            for (int i = 0; i < list.Count; i += splitCount)
+            {
+                var cList = list.Take(j).Skip(i).ToList();
+                j += splitCount;
+                listGroup.Add(cList);
+            }
+            return listGroup;
         }
     }
 }
