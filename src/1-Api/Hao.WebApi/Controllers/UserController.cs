@@ -167,7 +167,6 @@ namespace Hao.WebApi.Controllers
                 //{
                 //    var content = reader.ReadToEnd();
                 //}
-
                 string rootPath = _appsettings.FilePath.ImportExcelPath;
 
                 H_File.CreateDirectory(rootPath);

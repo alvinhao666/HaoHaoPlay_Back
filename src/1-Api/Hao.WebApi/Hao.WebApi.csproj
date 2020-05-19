@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="EPPlus" Version="5.1.2" />
+    <PackageReference Include="EPPlus" Version="4.5.3.3" />
   </ItemGroup>
 
   <ItemGroup>
