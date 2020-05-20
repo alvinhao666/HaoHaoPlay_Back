@@ -10,10 +10,10 @@ namespace Hao.WebApi.Controllers
     /// <summary>
     /// 角色
     /// </summary>
-    public class RoleController:H_Controller
+    public class RoleController : H_Controller
     {
         private readonly IRoleAppService _roleAppService;
-        
+
         public RoleController(IRoleAppService roleAppService)
         {
             _roleAppService = roleAppService;
@@ -26,7 +26,7 @@ namespace Hao.WebApi.Controllers
         [HttpGet]
         [AuthCode("1_16")]
         public async Task<List<RoleVM>> GetRoleList() => await _roleAppService.GetRoleList();
-        
+
         /// <summary>
         /// 获取角色用户的模块
         /// </summary>

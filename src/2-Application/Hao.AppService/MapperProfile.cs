@@ -13,9 +13,9 @@ namespace Hao.AppService
             #region 用户
             CreateMap<SysUser, LoginVM>();
 
-            CreateMap<PagedList<SysUser>, PagedList<UserItemVM>>();
+            CreateMap<PagedList<SysUser>, PagedList<UserVM>>();
 
-            CreateMap<SysUser, UserItemVM>()
+            CreateMap<SysUser, UserVM>()
                .ForMember(x => x.GenderString, a => a.MapFrom(x => x.Gender.GetDescription()))
                .ForMember(x => x.EnabledString, a => a.MapFrom(x => x.Enabled.IsTrue() ? "启用" : "注销"));
 

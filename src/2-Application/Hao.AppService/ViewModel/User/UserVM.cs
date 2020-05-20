@@ -9,7 +9,7 @@ namespace Hao.AppService.ViewModel
     /// <summary>
     /// 用户-列表项
     /// </summary>
-    public class UserItemVM
+    public class UserVM
     {
         public long? Id { get; set; }
 

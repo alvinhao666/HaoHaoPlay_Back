@@ -10,7 +10,7 @@ namespace Hao.WebApi.Controllers
     /// <summary>
     /// 应用模块
     /// </summary>
-    public class ModuleController:H_Controller
+    public class ModuleController : H_Controller
     {
 
         private readonly IModuleAppService _moduleAppService;

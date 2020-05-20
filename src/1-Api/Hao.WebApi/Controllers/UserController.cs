@@ -3,18 +3,11 @@ using Hao.AppService;
 using Hao.AppService.ViewModel;
 using Hao.Core;
 using Hao.Core.Extensions;
-using Hao.File;
 using Hao.Library;
-using Hao.RunTimeException;
-using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using OfficeOpenXml;
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Hao.WebApi.Controllers
@@ -75,7 +68,7 @@ namespace Hao.WebApi.Controllers
         /// <returns></returns>
         [HttpGet]
         [AuthCode("1_4")]
-        public async Task<PagedList<UserItemVM>> GetPagedList([FromQuery]UserQueryInput query) => await _userAppService.GetUserPageList(_mapper.Map<UserQuery>(query));
+        public async Task<PagedList<UserVM>> GetPagedList([FromQuery]UserQueryInput query) => await _userAppService.GetUserPageList(_mapper.Map<UserQuery>(query));
 
         /// <summary>
         /// 根据id获取用户
