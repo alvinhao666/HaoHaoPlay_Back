@@ -12,6 +12,7 @@ using Hao.Utility;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
+using Npgsql;
 using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
@@ -66,7 +67,7 @@ namespace Hao.AppService
             {
                 LoginName = vm.LoginName
             });
-            if (users.Count > 0) throw new H_Exception("账号已存在，请重新输入");
+            if (users.Count > 0) throw new H_Exception("账号已存在，请重新添加");
 
             var role = await _roleRep.GetAysnc(vm.RoleId.Value);
             if (role == null) throw new H_Exception("角色不存在，请重新添加");
@@ -82,7 +83,15 @@ namespace Hao.AppService
             user.RoleName = role.Name;
             user.AuthNumbers = role.AuthNumbers;
             user.RoleLevel = role.Level;
-            await _userRep.InsertAysnc(user);
+     
+            try
+            {
+                await _userRep.InsertAysnc(user);
+            }
+            catch (PostgresException ex)
+            {
+                if (ex.SqlState == PostgresSqlState.E23505) throw new H_Exception("账号已存在，请重新添加");//违反唯一键
+            }
         }
 
         /// <summary>

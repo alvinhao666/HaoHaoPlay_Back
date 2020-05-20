@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Hao.Enum;
 using Npgsql;
+using Hao.Library;
 
 namespace Hao.AppService
 {
@@ -127,29 +128,32 @@ namespace Hao.AppService
 
         private async Task AddModule(SysModule module)
         {
-            var max = await _moduleRep.GetLayerCount();
-            if (max.Count < 31)
+            using (var redisLock = RedisHelper.Lock("AddModule", 10)) //redis 分布式锁
             {
-                module.Layer = 1;
-                module.Number = Convert.ToInt64(Math.Pow(2, max.Count.Value));
-            }
-            else if (max.Count == 31) //js  位运算 32位
-            {
-                module.Layer = ++max.Layer;
-                module.Number = Convert.ToInt64(Math.Pow(2, 0));
-            }
-            else
-            {
-                throw new H_Exception("数据库数据异常，请检查");
-            }
+                var max = await _moduleRep.GetLayerCount();
+                if (max.Count < 31)
+                {
+                    module.Layer = 1;
+                    module.Number = Convert.ToInt64(Math.Pow(2, max.Count.Value));
+                }
+                else if (max.Count == 31) //js  位运算 32位
+                {
+                    module.Layer = ++max.Layer;
+                    module.Number = Convert.ToInt64(Math.Pow(2, 0));
+                }
+                else
+                {
+                    throw new H_Exception("数据库数据异常，请检查");
+                }
 
-            try
-            {
-                await _moduleRep.InsertAysnc(module);
-            }
-            catch (PostgresException ex)
-            {
-                if (ex.SqlState == "23505") throw new H_Exception("添加失败，请重新添加");//违反唯一键
+                try
+                {
+                    await _moduleRep.InsertAysnc(module);
+                }
+                catch (PostgresException ex)
+                {
+                    if (ex.SqlState == PostgresSqlState.E23505) throw new H_Exception("添加失败，请重新添加");//违反唯一键
+                }
             }
         }
 

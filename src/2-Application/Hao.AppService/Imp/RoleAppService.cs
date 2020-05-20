@@ -8,6 +8,7 @@ using Hao.AppService.ViewModel;
 using Hao.Core;
 using Hao.Enum;
 using Hao.EventData;
+using Hao.Library;
 using Hao.Model;
 using Hao.Repository;
 using Hao.RunTimeException;
@@ -57,7 +58,7 @@ namespace Hao.AppService
             }
             catch (PostgresException ex)
             {
-                if (ex.SqlState == "23505") throw new H_Exception("角色名称已存在，请重新输入");//违反唯一键
+                if (ex.SqlState == PostgresSqlState.E23505) throw new H_Exception("角色名称已存在，请重新输入");//违反唯一键
             }
         }
 
