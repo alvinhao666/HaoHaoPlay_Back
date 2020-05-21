@@ -10,14 +10,14 @@
 
   <ItemGroup>
     <Content Remove="wwwroot\css\swagger_ui.css" />
-    <Content Remove="wwwroot\template\user.xlsx" />
+    <Content Remove="wwwroot\file_template\user.xlsx" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="wwwroot\css\swagger_ui.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="wwwroot\template\user.xlsx">
+    <EmbeddedResource Include="wwwroot\file_template\user.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
@@ -31,7 +31,7 @@
     <Content Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="NLog.config">
+    <Content Update="nlog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

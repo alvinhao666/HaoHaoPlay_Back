@@ -74,7 +74,7 @@ namespace Hao.Core.Extensions
                         logging.ClearProviders();
                         logging.SetMinimumLevel(LogLevel.Information);
                         logging.AddConsole();
-                        logging.AddNLog($"NLog.{hostingContext.HostingEnvironment.EnvironmentName}.config");
+                        logging.AddNLog($"nlog.{hostingContext.HostingEnvironment.EnvironmentName}.config");
                     })
                     .UseNLog()
                     .UseUrls(appSettings.ServiceStartUrl)

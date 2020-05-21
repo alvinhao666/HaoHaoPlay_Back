@@ -36,7 +36,7 @@ namespace Hao.Core.Extensions
 
             #region 文件
             //文件访问权限
-            app.UseWhen(a => a.Request.Path.Value.Contains(appSettings.FilePath.ExportExcelPath) || a.Request.Path.Value.Contains("template"), b => b.UseMiddleware<StaticFileMiddleware>());
+            app.UseWhen(a => a.Request.Path.Value.Contains(appSettings.FilePath.ExportExcelPath) || a.Request.Path.Value.Contains("file_template"), b => b.UseMiddleware<StaticFileMiddleware>());
             //使用默认文件夹wwwroot
             app.UseStaticFiles();
 
