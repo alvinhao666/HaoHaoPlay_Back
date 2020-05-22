@@ -14,14 +14,11 @@ namespace Hao.WebApi.Controllers
     {
         private readonly ICurrentUserAppService _currentUserAppService;
 
-        private readonly ILogoutAppService _logoutAppService;
-
         private readonly ICurrentUser _currentUser;
 
-        public CurrentUserController(ICurrentUserAppService currentUserAppService, ILogoutAppService logoutAppService, ICurrentUser currentUser)
+        public CurrentUserController(ICurrentUserAppService currentUserAppService, ICurrentUser currentUser)
         {
             _currentUserAppService = currentUserAppService;
-            _logoutAppService = logoutAppService;
             _currentUser = currentUser;
         }
 
@@ -69,6 +66,6 @@ namespace Hao.WebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task Logout() => await _logoutAppService.Logout(_currentUser.Id.Value, _currentUser.Jti);
+        public async Task Logout() => await _currentUserAppService.Logout(_currentUser.Id.Value, _currentUser.Jti);
     }
 }

@@ -12,6 +12,7 @@ using Microsoft.Extensions.Options;
 using SixLabors.ImageSharp;
 using System;
 using System.IO;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Hao.AppService
@@ -120,6 +121,22 @@ namespace Hao.AppService
             var user = await _userRep.GetAysnc(_currentUser.Id.Value);
             var result = _mapper.Map<UserSecurityVM>(user);
             return result;
+        }
+
+        /// <summary>
+        /// 注销当前登录
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="jti"></param>
+        /// <returns></returns>
+        public async Task Logout(long userId, string jti)
+        {
+            var value = await RedisHelper.GetAsync($"{_appsettings.RedisPrefix.LoginInfo}{userId}_{jti}");
+
+            var cacheUser = JsonSerializer.Deserialize<RedisCacheUser>(value);
+            cacheUser.LoginStatus = LoginStatus.Offline;
+
+            await RedisHelper.SetAsync($"{_appsettings.RedisPrefix.LoginInfo}{userId}_{jti}", JsonSerializer.Serialize(cacheUser));
         }
     }
 }
