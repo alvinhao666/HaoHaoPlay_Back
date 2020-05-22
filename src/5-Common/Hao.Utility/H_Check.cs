@@ -10,7 +10,6 @@ namespace Hao.Utility
     {
         internal H_Check()
         {
-
         }
 
         public class Argument
@@ -33,7 +32,7 @@ namespace Hao.Utility
 
                 if (argument.Count == 0)
                 {
-                    throw new ArgumentException("集合不能为空.", argumentName);
+                    throw new ArgumentException("集合不能为空", argumentName);
                 }
             }
         }
