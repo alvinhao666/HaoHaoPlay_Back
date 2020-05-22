@@ -42,7 +42,7 @@ namespace Hao.WebApi.Controllers
         /// 查询资源分页列表
         /// </summary>
         /// <returns></returns>
-        [HttpGet("GetList/{parentId}")]
+        [HttpGet("{parentId}")]
         [AuthCode("1_8")]
         public async Task<List<ResourceItemVM>> GetList(long parentId) => await _moduleAppService.GetResourceList(parentId);
 
