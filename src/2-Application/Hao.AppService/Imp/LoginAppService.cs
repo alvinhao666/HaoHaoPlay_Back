@@ -207,12 +207,9 @@ namespace Hao.AppService
             var tempTree = sources.Where(item => item.ParentId == parentID).OrderBy(a => a.Sort).ToList();
             foreach (var item in tempTree)
             {
-                if (userId != -1)
-                {
-                    if (authNums?.Count < 1 || item.Layer.Value > authNums.Count) continue;
+                if (authNums?.Count < 1 || item.Layer.Value > authNums.Count) continue;
 
-                    if ((authNums[item.Layer.Value - 1] & item.Number) != item.Number) continue;
-                }
+                if ((authNums[item.Layer.Value - 1] & item.Number) != item.Number) continue;
 
                 var node = new MenuVM()
                 {
