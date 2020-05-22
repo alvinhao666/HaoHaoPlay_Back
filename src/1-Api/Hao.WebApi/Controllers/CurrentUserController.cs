@@ -37,7 +37,7 @@ namespace Hao.WebApi.Controllers
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [HttpPut("UpdateHeadImg")]
+        [HttpPut]
         public async Task UpdateHeadImg([FromBody]UpdateHeadImgRequest request) => await _currentUserAppService.UpdateHeadImg(request);
 
 
@@ -45,7 +45,7 @@ namespace Hao.WebApi.Controllers
         /// 更新当前用户基本信息
         /// </summary>
         /// <returns></returns>
-        [HttpPut("UpdateBaseInfo")]
+        [HttpPut]
         public async Task UpdateBaseInfo([FromBody]CurrentUserUpdateRequest request) => await _currentUserAppService.UpdateBaseInfo(request);
 
 
@@ -53,7 +53,7 @@ namespace Hao.WebApi.Controllers
         /// 当前用户安全信息
         /// </summary>
         /// <returns></returns>
-        [HttpGet("SecurityInfo")]
+        [HttpGet]
         public async Task<UserSecurityVM> SecurityInfo() => await _currentUserAppService.GetSecurityInfo();
 
 
@@ -61,7 +61,7 @@ namespace Hao.WebApi.Controllers
         /// 更新当前用户密码
         /// </summary>
         /// <returns></returns>
-        [HttpPut("UpdatePassword")]
+        [HttpPut]
         public async Task UpdatePassword([FromBody]PwdUpdateRequest request) => await _currentUserAppService.UpdatePassword(request.OldPassword, request.NewPassword);
 
         /// <summary>
