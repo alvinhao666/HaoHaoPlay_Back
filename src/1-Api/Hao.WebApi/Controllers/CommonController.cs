@@ -25,7 +25,7 @@ namespace Hao.WebApi.Controllers
         /// </summary>
         /// <param name="dictCode"></param>
         /// <returns></returns>
-        [HttpGet("GetDictDataItem/{dictCode}")]
-        public async Task<List<DictDataItemVM>> GetDictDataItem(string dictCode) => await _dictAppService.GetDictDataItem(dictCode);
+        [HttpGet("{dictCode}")]
+        public async Task<List<DictDataItemVM>> GetDictItemList(string dictCode) => await _dictAppService.GetDictDataItem(dictCode);
     }
 }

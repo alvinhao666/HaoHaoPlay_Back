@@ -32,7 +32,7 @@ namespace Hao.WebApi.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpGet("GetRoleModule/{id}")]
+        [HttpGet("{id}")]
         [AuthCode("1_16")]
         public async Task<RoleModuleVM> GetRoleModule(long id) => await _roleAppService.GetRoleModule(id);
 
@@ -42,7 +42,7 @@ namespace Hao.WebApi.Controllers
         /// <param name="id"></param>
         /// <param name="request"></param>
         /// <returns></returns>
-        [HttpPut("UpdateRoleAuth/{id}")]
+        [HttpPut("{id}")]
         [AuthCode("1_262144")]
         public async Task UpdateRoleAuth(long id, [FromBody]RoleUpdateRequest request) => await _roleAppService.UpdateRoleAuth(id, request);
 

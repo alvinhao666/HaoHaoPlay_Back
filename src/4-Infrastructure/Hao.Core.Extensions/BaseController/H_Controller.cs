@@ -18,7 +18,7 @@ namespace Hao.Core.Extensions
 {
     [Authorize]
     [ApiController]
-    [Route("[controller]")]
+    [Route("[controller]/[action]")]
     public class H_Controller : Controller
     {
         private readonly ILogger _logger = LogManager.GetCurrentClassLogger();

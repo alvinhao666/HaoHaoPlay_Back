@@ -49,7 +49,7 @@ namespace Hao.WebApi.Controllers
         /// 获取角色列表
         /// </summary>
         /// <returns></returns>
-        [HttpGet("GetRole")]
+        [HttpGet]
         [AuthCode("1_4")]
         public async Task<List<RoleSelectVM>> GetRoleList() => await _roleAppService.GetRoleListByCurrentRole();
 
@@ -58,7 +58,7 @@ namespace Hao.WebApi.Controllers
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        [HttpGet("IsExistUser")]
+        [HttpGet]
         [AuthCode("1_4")]
         public async Task<bool> IsExistUser([FromQuery]UserQueryInput query) => await _userAppService.IsExistUser(_mapper.Map<UserQuery>(query));
 
@@ -94,7 +94,7 @@ namespace Hao.WebApi.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpPut("Disable/{id}")]
+        [HttpPut("{id}")]
         [AuthCode("1_128")]
         public async Task Disable(long id) => await _userAppService.UpdateUserStatus(id, false);
 
@@ -103,7 +103,7 @@ namespace Hao.WebApi.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [HttpPut("Enable/{id}")]
+        [HttpPut("{id}")]
         [AuthCode("1_256")]
         public async Task Enable(long id) => await _userAppService.UpdateUserStatus(id, true);
 
@@ -122,9 +122,9 @@ namespace Hao.WebApi.Controllers
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        [HttpGet("Export")]
+        [HttpGet]
         [AuthCode("1_2048")]
-        public async Task<UserExcelVM> ExportUser([FromQuery]UserQueryInput query) => await _userAppService.ExportUser(_mapper.Map<UserQuery>(query));
+        public async Task<UserExcelVM> Export([FromQuery]UserQueryInput query) => await _userAppService.ExportUser(_mapper.Map<UserQuery>(query));
 
 
         /// <summary>
@@ -132,8 +132,8 @@ namespace Hao.WebApi.Controllers
         /// </summary>
         /// <param></param>
         /// <returns></returns>
-        [HttpPost("Import")]
+        [HttpPost]
         [AuthCode("1_1024")]
-        public async Task ImportUser() => await _userAppService.ImportUser(HttpContext.Request.Form.Files);
+        public async Task Import() => await _userAppService.ImportUser(HttpContext.Request.Form.Files);
     }
 }

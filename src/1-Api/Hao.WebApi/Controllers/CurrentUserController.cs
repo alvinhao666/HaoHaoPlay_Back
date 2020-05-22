@@ -1,5 +1,6 @@
 ﻿using Hao.AppService;
 using Hao.AppService.ViewModel;
+using Hao.Core;
 using Hao.Core.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -13,9 +14,15 @@ namespace Hao.WebApi.Controllers
     {
         private readonly ICurrentUserAppService _currentUserAppService;
 
-        public CurrentUserController(ICurrentUserAppService currentUserAppService)
+        private readonly ILogoutAppService _logoutAppService;
+
+        private readonly ICurrentUser _currentUser;
+
+        public CurrentUserController(ICurrentUserAppService currentUserAppService, ILogoutAppService logoutAppService, ICurrentUser currentUser)
         {
             _currentUserAppService = currentUserAppService;
+            _logoutAppService = logoutAppService;
+            _currentUser = currentUser;
         }
 
         /// <summary>
@@ -56,5 +63,12 @@ namespace Hao.WebApi.Controllers
         /// <returns></returns>
         [HttpPut("UpdatePassword")]
         public async Task UpdatePassword([FromBody]PwdUpdateRequest request) => await _currentUserAppService.UpdatePassword(request.OldPassword, request.NewPassword);
+
+        /// <summary>
+        /// 注销登录
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task Logout() => await _logoutAppService.Logout(_currentUser.Id.Value, _currentUser.Jti);
     }
 }
