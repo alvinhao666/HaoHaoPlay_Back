@@ -68,7 +68,7 @@ namespace Hao.WebApi.Controllers
         /// <returns></returns>
         [HttpGet]
         [AuthCode("1_4")]
-        public async Task<PagedList<UserVM>> GetPagedList([FromQuery]UserQueryInput query) => await _userAppService.GetUserPageList(_mapper.Map<UserQuery>(query));
+        public async Task<PagedList<UserVM>> GetPagedList([FromQuery]UserQueryInput query) => await _userAppService.GetUserPagedList(_mapper.Map<UserQuery>(query));
 
         /// <summary>
         /// 根据id获取用户

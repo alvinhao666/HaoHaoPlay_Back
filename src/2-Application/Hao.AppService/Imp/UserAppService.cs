@@ -99,7 +99,7 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        public async Task<PagedList<UserVM>> GetUserPageList(UserQuery query)
+        public async Task<PagedList<UserVM>> GetUserPagedList(UserQuery query)
         {
             query.CurrentRoleLevel = _currentUser.RoleLevel; //只能获取角色等级低用户
 
