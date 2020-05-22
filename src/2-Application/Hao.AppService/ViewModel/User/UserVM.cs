@@ -1,8 +1,5 @@
 ﻿using Hao.Enum;
-using Hao.Utility;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Hao.AppService.ViewModel
 {

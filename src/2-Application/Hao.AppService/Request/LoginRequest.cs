@@ -1,7 +1,4 @@
 ﻿using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Hao.AppService
 {
@@ -20,7 +17,7 @@ namespace Hao.AppService
         public string Password { get; set; }
 
         /// <summary>
-        /// 是否选择十天免登录
+        /// 是否选择三天免登录
         /// </summary>
         public bool IsRememberLogin { get; set; }
     }
