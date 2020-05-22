@@ -41,8 +41,8 @@ namespace Hao.WebApi.Controllers
         /// <returns></returns>
         [HttpGet("GetDictList")]
         [AuthCode("1_524288")]
-        public async Task<PagedList<DictVM>> GetDictList([FromQuery]DictQueryInput query) =>
-            await _dictAppService.GetDictList(_mapper.Map<DictQuery>(query));
+        public async Task<PagedList<DictVM>> GetDictPagedList([FromQuery]DictQueryInput query) =>
+            await _dictAppService.GetDictPagedList(_mapper.Map<DictQuery>(query));
 
         /// <summary>
         /// 修改字典
@@ -78,7 +78,7 @@ namespace Hao.WebApi.Controllers
         /// <returns></returns>
         [HttpGet("GetDictItemList")]
         [AuthCode("1_524288")]
-        public async Task<PagedList<DictItemVM>> GetDictItemList([FromQuery]DictQueryInput query) => await _dictAppService.GetDictItemList(_mapper.Map<DictQuery>(query));
+        public async Task<PagedList<DictItemVM>> GetDictItemList([FromQuery]DictQueryInput query) => await _dictAppService.GetDictItemPagedList(_mapper.Map<DictQuery>(query));
 
         /// <summary>
         /// 修改数据项
