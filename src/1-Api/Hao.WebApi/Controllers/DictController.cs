@@ -87,8 +87,7 @@ namespace Hao.WebApi.Controllers
         /// <returns></returns>
         [HttpPut("{id}")]
         [AuthCode("1_2097152")]
-        public async Task UpdateDictItem(long id, [FromBody]DictItemUpdateRequest request) =>
-            await _dictAppService.UpdateDictItem(id, request);
+        public async Task UpdateDictItem(long id, [FromBody]DictItemUpdateRequest request) => await _dictAppService.UpdateDictItem(id, request);
 
         /// <summary>
         /// 删除数据项
