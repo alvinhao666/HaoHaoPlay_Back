@@ -42,6 +42,7 @@ namespace Hao.File
                 throw ex;
             }
         }
+
         /// <summary>
         /// 是否存在文件夹
         /// </summary>
@@ -51,6 +52,7 @@ namespace Hao.File
         {
             return Directory.Exists(directoryPath);
         }
+
         /// <summary>
         /// 创建文件夹
         /// </summary>
@@ -62,6 +64,7 @@ namespace Hao.File
                 Directory.CreateDirectory(directoryPath);
             }
         }
+
         /// <summary>
         /// 删除文件
         /// </summary>
@@ -73,6 +76,7 @@ namespace Hao.File
                 System.IO.File.Delete(filePath);
             }
         }
+
         /// <summary>
         /// 获取文件上级路径
         /// </summary>
@@ -84,6 +88,7 @@ namespace Hao.File
             DirectoryInfo directory = file.Directory;
             return directory.FullName;
         }
+
         /// <summary>
         /// 是否存在文件
         /// </summary>

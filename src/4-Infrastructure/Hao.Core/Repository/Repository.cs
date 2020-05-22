@@ -36,6 +36,10 @@ namespace Hao.Core
         /// <returns>泛型实体</returns>
         public virtual async Task<List<T>> GetListAysnc(List<TKey> pkValues)
         {
+            H_Check.Argument.NotNull(pkValues, nameof(pkValues));
+           
+            if (pkValues.Count == 0) return new List<T>();
+
             //Type type = typeof(T); 类型判断，主要包括 is 和 typeof 两个操作符及对象实例上的 GetType 调用。这是最轻型的消耗，可以无需考虑优化问题。注意 typeof 运算符比对象实例上的 GetType 方法要快，只要可能则优先使用 typeof 运算符。 
             return await Db.Queryable<T>().In(pkValues).ToListAsync();
         }
@@ -65,6 +69,8 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<List<T>> GetListAysnc(Query<T> query)
         {
+            H_Check.Argument.NotNull(query, nameof(query));
+
             var flag = string.IsNullOrWhiteSpace(query.OrderFileds);
             var q = Db.Queryable<T>();
             foreach (var item in query.QueryExpressions)
@@ -84,6 +90,8 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<int> GetCountAysnc(Query<T> query)
         {
+            H_Check.Argument.NotNull(query, nameof(query));
+
             var q = Db.Queryable<T>();
             foreach (var item in query.QueryExpressions)
             {
@@ -99,6 +107,8 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<PagedList<T>> GetPagedListAysnc(Query<T> query)
         {
+            H_Check.Argument.NotNull(query, nameof(query));
+
             RefAsync<int> totalNumber = 10;
             var flag = string.IsNullOrWhiteSpace(query.OrderFileds);
             var q = Db.Queryable<T>(); //.WithCache(int cacheDurationInSeconds = int.MaxValue) 使用缓存取数据 
@@ -129,6 +139,8 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<T> InsertAysnc(T entity)
         {
+            H_Check.Argument.NotNull(entity, nameof(entity));
+
             var type = typeof(T);
             var isGuid = typeof(TKey) == H_Util.GuidType;
             var id = type.GetProperty(nameof(FullAuditedEntity<TKey>.Id));
@@ -147,30 +159,32 @@ namespace Hao.Core
             return obj;
         }
 
-        /// <summary>
-        /// 异步写入实体数据
-        /// </summary>
-        /// <param name="entity">实体类</param>
-        /// <returns></returns>
-        public virtual T Insert(T entity)
-        {
-            var type = typeof(T);
-            var isGuid = typeof(TKey) == H_Util.GuidType;
-            var id = type.GetProperty(nameof(FullAuditedEntity<TKey>.Id));
+        ///// <summary>
+        ///// 异步写入实体数据
+        ///// </summary>
+        ///// <param name="entity">实体类</param>
+        ///// <returns></returns>
+        //public virtual T Insert(T entity)
+        //{
+        //    H_Check.Argument.NotNull(entity, nameof(entity));
 
-            if (isGuid)
-            {
-                if (id != null) id.SetValue(entity, Guid.NewGuid());
-            }
-            else if (id != null) id.SetValue(entity, IdWorker.NextId());
+        //    var type = typeof(T);
+        //    var isGuid = typeof(TKey) == H_Util.GuidType;
+        //    var id = type.GetProperty(nameof(FullAuditedEntity<TKey>.Id));
 
-            entity.CreatorId = CurrentUser.Id;
-            entity.CreateTime = DateTime.Now;
-            entity.IsDeleted = false;
+        //    if (isGuid)
+        //    {
+        //        if (id != null) id.SetValue(entity, Guid.NewGuid());
+        //    }
+        //    else if (id != null) id.SetValue(entity, IdWorker.NextId());
 
-            var obj =  Db.Insertable(entity).ExecuteReturnEntity();
-            return obj;
-        }
+        //    entity.CreatorId = CurrentUser.Id;
+        //    entity.CreateTime = DateTime.Now;
+        //    entity.IsDeleted = false;
+
+        //    var obj =  Db.Insertable(entity).ExecuteReturnEntity();
+        //    return obj;
+        //}
 
         /// <summary>
         /// 异步写入实体数据（批量）
@@ -179,6 +193,10 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<bool> InsertAysnc(List<T> entities)
         {
+            H_Check.Argument.NotNull(entities, nameof(entities));
+
+            if (entities.Count == 0) return true;
+
             var isGuid = typeof(TKey) == H_Util.GuidType;
             var type = typeof(T);
             var id = type.GetProperty(nameof(FullAuditedEntity<TKey>.Id));
@@ -198,31 +216,35 @@ namespace Hao.Core
             return await Db.Insertable(entities).ExecuteCommandAsync() > 0;
         }
 
-        /// <summary>
-        /// 写入实体数据
-        /// </summary>
-        /// <param name="entities">实体类</param>
-        /// <returns></returns>
-        public virtual bool Insert(List<T> entities)
-        {
-            var isGuid = typeof(TKey) == H_Util.GuidType;
-            var type = typeof(T);
-            var id = type.GetProperty(nameof(FullAuditedEntity<TKey>.Id));
-            var timeNow = DateTime.Now;
-            entities.ForEach(item =>
-            {
-                if (isGuid)
-                {
-                    if (id != null) id.SetValue(item, Guid.NewGuid());
-                }
-                else if (id != null) id.SetValue(item, IdWorker.NextId());
+        ///// <summary>
+        ///// 写入实体数据
+        ///// </summary>
+        ///// <param name="entities">实体类</param>
+        ///// <returns></returns>
+        //public virtual bool Insert(List<T> entities)
+        //{
+        //    H_Check.Argument.NotNull(entities, nameof(entities));
 
-                item.CreatorId = CurrentUser.Id;
-                item.CreateTime = timeNow;
-                item.IsDeleted = false;
-            });
-            return Db.Insertable(entities).ExecuteCommand() > 0;
-        }
+        //    if (entities.Count == 0) return true;
+
+        //    var isGuid = typeof(TKey) == H_Util.GuidType;
+        //    var type = typeof(T);
+        //    var id = type.GetProperty(nameof(FullAuditedEntity<TKey>.Id));
+        //    var timeNow = DateTime.Now;
+        //    entities.ForEach(item =>
+        //    {
+        //        if (isGuid)
+        //        {
+        //            if (id != null) id.SetValue(item, Guid.NewGuid());
+        //        }
+        //        else if (id != null) id.SetValue(item, IdWorker.NextId());
+
+        //        item.CreatorId = CurrentUser.Id;
+        //        item.CreateTime = timeNow;
+        //        item.IsDeleted = false;
+        //    });
+        //    return Db.Insertable(entities).ExecuteCommand() > 0;
+        //}
 
         /// <summary>
         /// 异步删除数据（逻辑删除）
@@ -231,6 +253,8 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<bool> DeleteAysnc(T entity)
         {
+            H_Check.Argument.NotNull(entity, nameof(entity));
+
             entity.ModifierId = CurrentUser.Id;
             entity.ModifyTime = DateTime.Now;
             entity.IsDeleted = true;
@@ -239,20 +263,22 @@ namespace Hao.Core
             return await Db.Updateable(entity).UpdateColumns(columns.ToArray()).ExecuteCommandAsync() > 0;
         }
 
-        /// <summary>
-        /// 异步删除数据（逻辑删除）
-        /// </summary>
-        /// <param name="entity">实体类</param>
-        /// <returns></returns>
-        public virtual bool Delete(T entity)
-        {
-            entity.ModifierId = CurrentUser.Id;
-            entity.ModifyTime = DateTime.Now;
-            entity.IsDeleted = true;
-            var columns = new string[] { nameof(FullAuditedEntity<TKey>.ModifierId), nameof(FullAuditedEntity<TKey>.ModifyTime), nameof(FullAuditedEntity<TKey>.IsDeleted) };
+        ///// <summary>
+        ///// 异步删除数据（逻辑删除）
+        ///// </summary>
+        ///// <param name="entity">实体类</param>
+        ///// <returns></returns>
+        //public virtual bool Delete(T entity)
+        //{
+        //    H_Check.Argument.NotNull(entity, nameof(entity));
 
-            return  Db.Updateable(entity).UpdateColumns(columns.ToArray()).ExecuteCommand() > 0;
-        }
+        //    entity.ModifierId = CurrentUser.Id;
+        //    entity.ModifyTime = DateTime.Now;
+        //    entity.IsDeleted = true;
+        //    var columns = new string[] { nameof(FullAuditedEntity<TKey>.ModifierId), nameof(FullAuditedEntity<TKey>.ModifyTime), nameof(FullAuditedEntity<TKey>.IsDeleted) };
+
+        //    return  Db.Updateable(entity).UpdateColumns(columns.ToArray()).ExecuteCommand() > 0;
+        //}
 
         /// <summary>
         /// 删除数据
@@ -265,16 +291,16 @@ namespace Hao.Core
                         .Where($"{nameof(FullAuditedEntity<TKey>.Id)}='{pkValue}'").ExecuteCommandAsync() > 0;
         }
 
-        /// <summary>
-        /// 删除数据
-        /// </summary>
-        /// <param name="pkValue">实体类</param>
-        /// <returns></returns>
-        public virtual bool Delete(TKey pkValue)
-        {
-            return Db.Updateable<T>(new { LastModifyTime = DateTime.Now, LastModifyUserId = CurrentUser.Id, IsDeleted = true })
-                        .Where($"{nameof(FullAuditedEntity<TKey>.Id)}='{pkValue}'").ExecuteCommand() > 0;
-        }
+        ///// <summary>
+        ///// 删除数据
+        ///// </summary>
+        ///// <param name="pkValue">实体类</param>
+        ///// <returns></returns>
+        //public virtual bool Delete(TKey pkValue)
+        //{
+        //    return Db.Updateable<T>(new { LastModifyTime = DateTime.Now, LastModifyUserId = CurrentUser.Id, IsDeleted = true })
+        //                .Where($"{nameof(FullAuditedEntity<TKey>.Id)}='{pkValue}'").ExecuteCommand() > 0;
+        //}
 
         /// <summary>
         /// 异步删除数据（批量）
@@ -283,20 +309,28 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<bool> DeleteAysnc(List<TKey> pkValues)
         {
+            H_Check.Argument.NotNull(pkValues, nameof(pkValues));
+
+            if (pkValues.Count == 0) return true;
+
             return await Db.Updateable<T>(new { LastModifyTime = DateTime.Now, LastModifyUserId = CurrentUser.Id, IsDeleted = true })
                     .Where(it => pkValues.Contains(it.Id)).ExecuteCommandAsync() > 0;
         }
 
-        /// <summary>
-        /// 删除数据（批量）
-        /// </summary>
-        /// <param name="pkValues">实体类</param>
-        /// <returns></returns>
-        public virtual bool Delete(List<TKey> pkValues)
-        {
-            return Db.Updateable<T>(new { LastModifyTime = DateTime.Now, LastModifyUserId = CurrentUser.Id, IsDeleted = true })
-                    .Where(it => pkValues.Contains(it.Id)).ExecuteCommand() > 0;
-        }
+        ///// <summary>
+        ///// 删除数据（批量）
+        ///// </summary>
+        ///// <param name="pkValues">实体类</param>
+        ///// <returns></returns>
+        //public virtual bool Delete(List<TKey> pkValues)
+        //{
+        //    H_Check.Argument.NotNull(pkValues, nameof(pkValues));
+
+        //    if (pkValues.Count == 0) return true;
+
+        //    return Db.Updateable<T>(new { LastModifyTime = DateTime.Now, LastModifyUserId = CurrentUser.Id, IsDeleted = true })
+        //            .Where(it => pkValues.Contains(it.Id)).ExecuteCommand() > 0;
+        //}
 
         /// <summary>
         /// 异步删除数据（批量）
@@ -305,6 +339,10 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<bool> DeleteAysnc(List<T> entities)
         {
+            H_Check.Argument.NotNull(entities, nameof(entities));
+
+            if (entities.Count == 0) return true;
+
             var timeNow = DateTime.Now;
             entities.ForEach(item =>
             {
@@ -316,23 +354,27 @@ namespace Hao.Core
             return await Db.Updateable(entities).UpdateColumns(columns).ExecuteCommandAsync() > 0;
         }
 
-        /// <summary>
-        /// 删除数据（批量）
-        /// </summary>
-        /// <param name="entities">实体类</param>
-        /// <returns></returns>
-        public virtual bool Delete(List<T> entities)
-        {
-            var timeNow = DateTime.Now;
-            entities.ForEach(item =>
-            {
-                item.ModifierId = CurrentUser.Id;
-                item.ModifyTime = timeNow;
-                item.IsDeleted = true;
-            });
-            var columns = new string[] { nameof(FullAuditedEntity<TKey>.ModifierId),nameof(FullAuditedEntity<TKey>.ModifyTime), nameof(FullAuditedEntity<TKey>.IsDeleted) };
-            return Db.Updateable(entities).UpdateColumns(columns).ExecuteCommand() > 0;
-        }
+        ///// <summary>
+        ///// 删除数据（批量）
+        ///// </summary>
+        ///// <param name="entities">实体类</param>
+        ///// <returns></returns>
+        //public virtual bool Delete(List<T> entities)
+        //{
+        //    H_Check.Argument.NotNull(entities, nameof(entities));
+
+        //    if (entities.Count == 0) return true;
+
+        //    var timeNow = DateTime.Now;
+        //    entities.ForEach(item =>
+        //    {
+        //        item.ModifierId = CurrentUser.Id;
+        //        item.ModifyTime = timeNow;
+        //        item.IsDeleted = true;
+        //    });
+        //    var columns = new string[] { nameof(FullAuditedEntity<TKey>.ModifierId),nameof(FullAuditedEntity<TKey>.ModifyTime), nameof(FullAuditedEntity<TKey>.IsDeleted) };
+        //    return Db.Updateable(entities).UpdateColumns(columns).ExecuteCommand() > 0;
+        //}
 
         /// <summary>
         /// 异步更新数据
@@ -341,22 +383,26 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<bool> UpdateAsync(T entity)
         {
+            H_Check.Argument.NotNull(entity, nameof(entity));
+
             entity.ModifierId = CurrentUser.Id;
             entity.ModifyTime = DateTime.Now;
             return await Db.Updateable(entity).ExecuteCommandAsync() > 0;
         }
 
-        /// <summary>
-        /// 更新数据
-        /// </summary>
-        /// <param name="entity"></param>
-        /// <returns></returns>
-        public virtual bool Update(T entity)
-        {
-            entity.ModifierId = CurrentUser.Id;
-            entity.ModifyTime = DateTime.Now;
-            return Db.Updateable(entity).ExecuteCommand() > 0;
-        }
+        ///// <summary>
+        ///// 更新数据
+        ///// </summary>
+        ///// <param name="entity"></param>
+        ///// <returns></returns>
+        //public virtual bool Update(T entity)
+        //{
+        //    H_Check.Argument.NotNull(entity, nameof(entity));
+
+        //    entity.ModifierId = CurrentUser.Id;
+        //    entity.ModifyTime = DateTime.Now;
+        //    return Db.Updateable(entity).ExecuteCommand() > 0;
+        //}
 
         /// <summary>
         /// 异步更新数据（指定列名）
@@ -366,6 +412,10 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<bool> UpdateAsync(T entity, Expression<Func<T, object>> columns)
         {
+            H_Check.Argument.NotNull(entity, nameof(entity));
+
+            H_Check.Argument.NotNull(columns, nameof(columns));
+
             entity.ModifierId = CurrentUser.Id;
             entity.ModifyTime = DateTime.Now;
 
@@ -377,24 +427,28 @@ namespace Hao.Core
             return await Db.Updateable(entity).UpdateColumns(updateColumns.ToArray()).ExecuteCommandAsync() > 0;
         }
 
-        /// <summary>
-        /// 更新数据（指定列名）
-        /// </summary>
-        /// <param name="entity"></param>
-        /// <param name="columns"></param>
-        /// <returns></returns>
-        public virtual bool Update(T entity, Expression<Func<T, object>> columns)
-        {
-            entity.ModifierId = CurrentUser.Id;
-            entity.ModifyTime = DateTime.Now;
+        ///// <summary>
+        ///// 更新数据（指定列名）
+        ///// </summary>
+        ///// <param name="entity"></param>
+        ///// <param name="columns"></param>
+        ///// <returns></returns>
+        //public virtual bool Update(T entity, Expression<Func<T, object>> columns)
+        //{
+        //    H_Check.Argument.NotNull(entity, nameof(entity));
 
-            var properties = columns.Body.Type.GetProperties();
-            var updateColumns = properties.Select(a => a.Name).ToList();
-            updateColumns.Add(nameof(entity.ModifierId));
-            updateColumns.Add(nameof(entity.ModifyTime));
+        //    H_Check.Argument.NotNull(columns, nameof(columns));
 
-            return  Db.Updateable(entity).UpdateColumns(updateColumns.ToArray()).ExecuteCommand() > 0;
-        }
+        //    entity.ModifierId = CurrentUser.Id;
+        //    entity.ModifyTime = DateTime.Now;
+
+        //    var properties = columns.Body.Type.GetProperties();
+        //    var updateColumns = properties.Select(a => a.Name).ToList();
+        //    updateColumns.Add(nameof(entity.ModifierId));
+        //    updateColumns.Add(nameof(entity.ModifyTime));
+
+        //    return  Db.Updateable(entity).UpdateColumns(updateColumns.ToArray()).ExecuteCommand() > 0;
+        //}
 
         /// <summary>
         /// 异步更新数据（批量）
@@ -403,6 +457,10 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<bool> UpdateAsync(List<T> entities)
         {
+            H_Check.Argument.NotNull(entities, nameof(entities));
+
+            if (entities.Count == 0) return true;
+
             var timeNow = DateTime.Now;
             entities.ForEach(item =>
             {
@@ -412,21 +470,25 @@ namespace Hao.Core
             return await Db.Updateable(entities).ExecuteCommandAsync() > 0;
         }
 
-        /// <summary>
-        ///更新数据（批量）
-        /// </summary>
-        /// <param name="entities"></param>
-        /// <returns></returns>
-        public virtual bool Update(List<T> entities)
-        {
-            var timeNow = DateTime.Now;
-            entities.ForEach(item =>
-            {
-                item.ModifierId = CurrentUser.Id;
-                item.ModifyTime = timeNow;
-            });
-            return Db.Updateable(entities).ExecuteCommand() > 0;
-        }
+        ///// <summary>
+        /////更新数据（批量）
+        ///// </summary>
+        ///// <param name="entities"></param>
+        ///// <returns></returns>
+        //public virtual bool Update(List<T> entities)
+        //{
+        //    H_Check.Argument.NotNull(entities, nameof(entities));
+
+        //    if (entities.Count == 0) return true;
+
+        //    var timeNow = DateTime.Now;
+        //    entities.ForEach(item =>
+        //    {
+        //        item.ModifierId = CurrentUser.Id;
+        //        item.ModifyTime = timeNow;
+        //    });
+        //    return Db.Updateable(entities).ExecuteCommand() > 0;
+        //}
 
         /// <summary>
         /// 异步更新数据（批量）（指定列名）
@@ -436,6 +498,13 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<bool> UpdateAsync(List<T> entities, Expression<Func<T, object>> columns)
         {
+
+            H_Check.Argument.NotNull(entities, nameof(entities));
+
+            H_Check.Argument.NotNull(columns, nameof(columns));
+
+            if (entities.Count == 0) return true;
+
             var timeNow = DateTime.Now;
             entities.ForEach(item =>
             {
@@ -449,25 +518,31 @@ namespace Hao.Core
             return await  Db.Updateable(entities).UpdateColumns(updateColumns.ToArray()).ExecuteCommandAsync() > 0;
         }
 
-        /// <summary>
-        /// 更新数据（批量）（指定列名）
-        /// </summary>
-        /// <param name="entities"></param>
-        /// <param name="columns"></param>
-        /// <returns></returns>
-        public virtual bool Update(List<T> entities, Expression<Func<T, object>> columns)
-        {
-            var timeNow = DateTime.Now;
-            entities.ForEach(item =>
-            {
-                item.ModifierId = CurrentUser.Id;
-                item.ModifyTime = timeNow;
-            });
-            var properties = columns.Body.Type.GetProperties();
-            var updateColumns = properties.Select(a => a.Name).ToList();
-            updateColumns.Add(nameof(FullAuditedEntity<TKey>.ModifierId));
-            updateColumns.Add(nameof(FullAuditedEntity<TKey>.ModifyTime));
-            return Db.Updateable(entities).UpdateColumns(updateColumns.ToArray()).ExecuteCommand() > 0;
-        }
+        ///// <summary>
+        ///// 更新数据（批量）（指定列名）
+        ///// </summary>
+        ///// <param name="entities"></param>
+        ///// <param name="columns"></param>
+        ///// <returns></returns>
+        //public virtual bool Update(List<T> entities, Expression<Func<T, object>> columns)
+        //{
+        //    H_Check.Argument.NotNull(entities, nameof(entities));
+
+        //    H_Check.Argument.NotNull(columns, nameof(columns));
+
+        //    if (entities.Count == 0) return true;
+
+        //    var timeNow = DateTime.Now;
+        //    entities.ForEach(item =>
+        //    {
+        //        item.ModifierId = CurrentUser.Id;
+        //        item.ModifyTime = timeNow;
+        //    });
+        //    var properties = columns.Body.Type.GetProperties();
+        //    var updateColumns = properties.Select(a => a.Name).ToList();
+        //    updateColumns.Add(nameof(FullAuditedEntity<TKey>.ModifierId));
+        //    updateColumns.Add(nameof(FullAuditedEntity<TKey>.ModifyTime));
+        //    return Db.Updateable(entities).UpdateColumns(updateColumns.ToArray()).ExecuteCommand() > 0;
+        //}
     }
 }
