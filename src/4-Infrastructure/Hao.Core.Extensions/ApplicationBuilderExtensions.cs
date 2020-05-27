@@ -54,7 +54,6 @@ namespace Hao.Core.Extensions
             });
 
             //头像路径
-
             H_File.CreateDirectory(appSettings.FilePath.AvatarPath);
 
             app.UseStaticFiles(new StaticFileOptions()
