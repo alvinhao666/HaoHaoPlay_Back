@@ -133,10 +133,13 @@ namespace Hao.AppService
         {
             var value = await RedisHelper.GetAsync($"{_appsettings.RedisPrefix.LoginInfo}{userId}_{jti}");
 
-            var cacheUser = JsonSerializer.Deserialize<RedisCacheUser>(value);
-            cacheUser.LoginStatus = LoginStatus.Offline;
+            if (value.HasValue())
+            {
+                var cacheUser = JsonSerializer.Deserialize<RedisCacheUser>(value);
+                cacheUser.LoginStatus = LoginStatus.Offline;
 
-            await RedisHelper.SetAsync($"{_appsettings.RedisPrefix.LoginInfo}{userId}_{jti}", JsonSerializer.Serialize(cacheUser));
+                await RedisHelper.SetAsync($"{_appsettings.RedisPrefix.LoginInfo}{userId}_{jti}", JsonSerializer.Serialize(cacheUser));
+            }
         }
     }
 }
