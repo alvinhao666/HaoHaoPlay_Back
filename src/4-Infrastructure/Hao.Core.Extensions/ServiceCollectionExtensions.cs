@@ -50,7 +50,6 @@ namespace Hao.Core.Extensions
             var worker = new IdWorker(appSettings.SnowflakeId.WorkerId, appSettings.SnowflakeId.DataCenterId);
             services.AddSingleton(worker);
 
-            //services.AddSingleton(_pathInfo);
             #endregion
 
 
@@ -155,11 +154,6 @@ namespace Hao.Core.Extensions
 
 
             #region AutoMapper
-            //services.AddSingleton<IMapper>(new Mapper(new MapperConfiguration(cfg =>
-            //{
-            //    Hao.WebApi.MapperInit.Map(cfg);
-            //    Hao.AppService.MapperInit.Map(cfg);
-            //})));
             var autoMapperAssemblies= appSettings.AutoMapperAssemblyNames.Select(name => Assembly.Load(name)).ToArray();
             services.AddAutoMapper(autoMapperAssemblies);
             #endregion 
