@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Hao.Core.Extensions
+﻿namespace Hao.Core.Extensions
 {
     public class H_CapConfig
     {

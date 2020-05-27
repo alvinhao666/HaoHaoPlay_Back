@@ -2,16 +2,16 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Hao.Dependency;
-using Microsoft.AspNetCore.Hosting;
+using Hao.Library;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Linq;
 using System.Reflection;
-using Microsoft.Extensions.Logging;
 using NLog.Web;
-using Microsoft.Extensions.Configuration;
-using System;
-using Hao.Library;
 
 namespace Hao.Core.Extensions
 {
