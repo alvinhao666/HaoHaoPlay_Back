@@ -1,7 +1,6 @@
 ﻿using Hao.AppService.ViewModel;
 using Hao.Core;
 using Microsoft.AspNetCore.Http;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Hao.AppService
