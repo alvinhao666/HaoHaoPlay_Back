@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Hao.Event
 {
+    /// <summary>
+    /// 登录
+    /// </summary>
     public class LoginEventDataConsumer : EventConsumer, ILoginEventDataConsumer
     {
         private readonly ISysUserRepository _userRep;
