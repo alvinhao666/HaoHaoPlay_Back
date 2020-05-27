@@ -1,18 +1,16 @@
 ﻿using Hao.Library;
+using Hao.RunTimeException;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Options;
 using NLog;
+using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using Microsoft.Extensions.Options;
-using Microsoft.AspNetCore.Authorization;
-using Hao.RunTimeException;
-using System;
-using Microsoft.AspNetCore.Mvc.Controllers;
 using System.Text.Json;
-using Hao.Utility;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 
 namespace Hao.Core.Extensions
 {
@@ -87,7 +85,7 @@ namespace Hao.Core.Extensions
         {
             var value = RedisHelper.Get($"{AppsettingsOptions.Value.RedisPrefix.LoginInfo}{userId}_{jti}");
 
-            if (value.IsNullOrWhiteSpace()) throw new H_Exception(ErrorInfo.E100002, nameof(ErrorInfo.E100002).GetErrorCode());
+            if (string.IsNullOrWhiteSpace(value)) throw new H_Exception(ErrorInfo.E100002, nameof(ErrorInfo.E100002).GetErrorCode());
 
             var cacheUser = JsonSerializer.Deserialize<RedisCacheUser>(value);
 
