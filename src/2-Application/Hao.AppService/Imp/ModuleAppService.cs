@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Hao.Enum;
 using Npgsql;
 using Hao.Library;
+using Microsoft.Extensions.Options;
 
 namespace Hao.AppService
 {
@@ -23,11 +24,13 @@ namespace Hao.AppService
 
         private readonly ISysModuleRepository _moduleRep;
 
+        private readonly string _lockPrefix;
 
-        public ModuleAppService(IMapper mapper, ISysModuleRepository moduleRep)
+        public ModuleAppService(IMapper mapper, ISysModuleRepository moduleRep, IOptionsSnapshot<AppSettingsInfo> appsettingsOptions)
         {
             _mapper = mapper;
             _moduleRep = moduleRep;
+            _lockPrefix = appsettingsOptions.Value.RedisPrefix.Lock;
         }
 
 
@@ -128,12 +131,14 @@ namespace Hao.AppService
 
         private async Task AddModule(SysModule module)
         {
-            using (var redisLock = RedisHelper.Lock("AddModule", 10)) //redis 分布式锁
+            using (var redisLock = RedisHelper.Lock($"{_lockPrefix}AddModule", 10)) //redis 分布式锁
             {
+                if (redisLock == null) throw new H_Exception("系统异常");
+
                 var max = await _moduleRep.GetLayerCount();
                 if (max.Count < 31)
                 {
-                    module.Layer = 1;
+                    module.Layer = max.Layer;
                     module.Number = Convert.ToInt64(Math.Pow(2, max.Count.Value));
                 }
                 else if (max.Count == 31) //js  位运算 32位
