@@ -35,17 +35,23 @@ namespace Hao.Core
         Task<List<T>> GetListAysnc();
 
         /// <summary>
+        /// 根据条件查询所有数据（未删除）
+        /// </summary>
+        /// <returns></returns>
+        Task<List<T>> GetListAysnc(Query<T> query);
+
+        /// <summary>
         /// 查询所有数据
         /// </summary>
         /// <returns></returns>
         Task<List<T>> GetAllAysnc();
 
         /// <summary>
-        /// 根据条件查询所有数据（未删除）
+        /// 查询所有数据
         /// </summary>
         /// <returns></returns>
-        Task<List<T>> GetListAysnc(Query<T> query);
-        
+        Task<List<T>> GetAllAysnc(Query<T> query);
+
         /// <summary>
         /// 根据条件查询所有数据数量（未删除）
         /// </summary>

@@ -83,7 +83,7 @@ namespace Hao.Core.Extensions
         /// <returns></returns>
         private RedisCacheUser GetCacheUser(string userId, string jti)
         {
-            var value = RedisHelper.Get($"{AppsettingsOptions.Value.RedisPrefix.LoginInfo}{userId}_{jti}");
+            var value = RedisHelper.Get($"{AppsettingsOptions.Value.RedisPrefix.Login}{userId}_{jti}");
 
             if (string.IsNullOrWhiteSpace(value)) throw new H_Exception(ErrorInfo.E100002, nameof(ErrorInfo.E100002).GetErrorCode());
 

@@ -1,5 +1,7 @@
-﻿using Hao.Response;
+﻿using AspectCore.DynamicProxy;
+using Hao.Response;
 using Hao.RunTimeException;
+using Hao.Utility;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
@@ -48,10 +50,19 @@ namespace Hao.Core.Extensions
                 response.ErrorCode = exception.Code;
                 response.ErrorMsg = exception.Message;
             }
+            else if(ex is AspectInvocationException aspectException) 
+            {
+                var errorSplit = "--->";
 
-#if DEBUG
-            response.ErrorMsg = ex.Message;
-#endif
+                if (aspectException.Message.Contains(errorSplit))
+                {
+                    response.ErrorMsg = aspectException.Message.Split(errorSplit)[1].Trim();
+                }
+            }
+            else
+            {
+                response.ErrorMsg = ex.Message;
+            }
 
             var errorLog = new
             {
@@ -61,6 +72,8 @@ namespace Hao.Core.Extensions
             };
 
             _logger.Error(ex, JsonSerializer.Serialize(errorLog));
+
+
 
             await context.Response.WriteAsync(
                 JsonSerializer.Serialize(response,new JsonSerializerOptions() {Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping}),

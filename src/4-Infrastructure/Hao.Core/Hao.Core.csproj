@@ -14,6 +14,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\5-Common\Hao.Dependency\Hao.Dependency.csproj" />
     <ProjectReference Include="..\..\5-Common\Hao.Entity\Hao.Entity.csproj" />
+    <ProjectReference Include="..\..\5-Common\Hao.Exception\Hao.Exception.csproj" />
     <ProjectReference Include="..\..\5-Common\Hao.Query\Hao.Query.csproj" />
     <ProjectReference Include="..\..\5-Common\Hao.Response\Hao.Response.csproj" />
     <ProjectReference Include="..\..\5-Common\Hao.Snowflake\Hao.Snowflake.csproj" />

@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Hao.AppService.ViewModel;
 using System.Linq;
 using System.Collections.Generic;
+using Hao.Library;
+using Microsoft.Extensions.Options;
 
 namespace Hao.AppService
 {
@@ -19,10 +21,13 @@ namespace Hao.AppService
 
         private readonly IMapper _mapper;
 
-        public DictAppService(ISysDictRepository dictRep, IMapper mapper)
+        private readonly string _lockPrefix;
+
+        public DictAppService(ISysDictRepository dictRep, IMapper mapper, IOptionsSnapshot<AppSettingsInfo> appsettingsOptions)
         {
             _dictRep = dictRep;
             _mapper = mapper;
+            _lockPrefix = appsettingsOptions.Value.RedisPrefix.Lock;
         }
 
 
@@ -33,7 +38,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task AddDict(DictAddRequest request)
         {
-            using (var redisLock = RedisHelper.Lock("DictAppService_AddDict", 10)) //redis 分布式锁
+            using (var redisLock = RedisHelper.Lock($"{_lockPrefix}DictAppService_AddDict", 10)) //redis 分布式锁
             {
                 if (redisLock == null) throw new H_Exception("开启分布式锁超时");//对象为null，不占资源 ，编译后的代码没有fianlly,不执行dispose()方法
 
@@ -57,7 +62,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task UpdateDict(long id, DictUpdateRequest request)
         {
-            using (var redisLock = RedisHelper.Lock("DictAppService_UpdateDict", 10)) //redis 分布式锁
+            using (var redisLock = RedisHelper.Lock($"{_lockPrefix}DictAppService_UpdateDict", 10)) //redis 分布式锁
             {
                 if (redisLock == null) throw new H_Exception("开启分布式锁超时");
 
@@ -114,7 +119,7 @@ namespace Hao.AppService
         public async Task AddDictItem(DictItemAddRequest request)
         {
 
-            using (var redisLock = RedisHelper.Lock("DictAppService_AddDictItem", 10)) //redis 分布式锁
+            using (var redisLock = RedisHelper.Lock($"{_lockPrefix}DictAppService_AddDictItem", 10)) //redis 分布式锁
             {
                 if (redisLock == null) throw new H_Exception("开启分布式锁超时");
 
@@ -161,7 +166,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task UpdateDictItem(long id, DictItemUpdateRequest request)
         {
-            using (var redisLock = RedisHelper.Lock("DictAppService_UpdateDictItem", 10))
+            using (var redisLock = RedisHelper.Lock($"{_lockPrefix}DictAppService_UpdateDictItem", 10))
             {
                 if (redisLock == null) throw new H_Exception("开启分布式锁超时");
 

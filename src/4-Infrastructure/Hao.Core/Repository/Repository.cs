@@ -54,15 +54,6 @@ namespace Hao.Core
         }
 
         /// <summary>
-        /// 查询所有数据（单表）
-        /// </summary>
-        /// <returns></returns>
-        public virtual async Task<List<T>> GetAllAysnc()
-        {
-            return await Db.Queryable<T>().ToListAsync();
-        }
-
-        /// <summary>
         /// 根据条件查询所有数据（未删除）（单表）
         /// </summary>
         /// <param name="query"></param>
@@ -82,7 +73,35 @@ namespace Hao.Core
                                     .OrderByIF(!flag, query.OrderFileds)
                                     .ToListAsync();
         }
-        
+
+        /// <summary>
+        /// 查询所有数据（单表）
+        /// </summary>
+        /// <returns></returns>
+        public virtual async Task<List<T>> GetAllAysnc()
+        {
+            return await Db.Queryable<T>().OrderBy(a => a.CreateTime, OrderByType.Desc).ToListAsync();
+        }
+
+        /// <summary>
+        /// 查询所有数据（单表）
+        /// </summary>
+        /// <returns></returns>
+        public virtual async Task<List<T>> GetAllAysnc(Query<T> query)
+        {
+            H_Check.Argument.NotNull(query, nameof(query));
+
+            var flag = string.IsNullOrWhiteSpace(query.OrderFileds);
+            var q = Db.Queryable<T>();
+            foreach (var item in query.QueryExpressions)
+            {
+                q.Where(item);
+            }
+            return await q.OrderByIF(flag, a => a.CreateTime, OrderByType.Desc)
+                          .OrderByIF(!flag, query.OrderFileds)
+                          .ToListAsync();
+        }
+
         /// <summary>
         /// 根据条件查询所有数据数量（未删除）（单表）
         /// </summary>

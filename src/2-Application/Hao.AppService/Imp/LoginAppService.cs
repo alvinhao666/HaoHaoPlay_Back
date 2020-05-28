@@ -105,7 +105,7 @@ namespace Hao.AppService
             };
 
             int expireSeconds = (int)expireTime.Subtract(timeNow).Duration().TotalSeconds + 1;
-            await RedisHelper.SetAsync($"{_appsettings.RedisPrefix.LoginInfo}{user.Id}_{jti}", JsonSerializer.Serialize(userValue), expireSeconds);
+            await RedisHelper.SetAsync($"{_appsettings.RedisPrefix.Login}{user.Id}_{jti}", JsonSerializer.Serialize(userValue), expireSeconds);
 
             //同步登录信息，例如ip等等
             await AsyncLoginInfo(user.Id, timeNow);

@@ -3,8 +3,13 @@ namespace Hao.Library
     public class RedisPrefix
     {
         /// <summary>
-        /// 登录信息前端
+        /// 登录信息前缀
         /// </summary>
-        public string LoginInfo { get; set; }
+        public string Login { get; set; }
+
+        /// <summary>
+        /// 分布式锁前缀
+        /// </summary>
+        public string Lock { get; set; }
     }
 }

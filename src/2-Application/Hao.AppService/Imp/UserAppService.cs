@@ -64,19 +64,19 @@ namespace Hao.AppService
         [UnitOfWork]
         public async Task AddUser(UserAddRequest vm)
         {
-            using (var redisLock = RedisHelper.Lock("UserAppService_AddUser", 10))
+            using (var redisLock = RedisHelper.Lock($"{_appsettings.RedisPrefix.Lock}UserAppService_AddUser", 10))
             {
                 if (redisLock == null) throw new H_Exception("开启分布式锁超时");
 
-                var users = await _userRep.GetListAysnc(new UserQuery()
+                var users = await _userRep.GetAllAysnc(new UserQuery()
                 {
                     LoginName = vm.LoginName
                 });
-                if (users.Count > 0) throw new H_Exception("账号已存在，请重新添加");
+                if (users.Count > 0) throw new H_Exception("账号已存在，请重新输入");
 
                 var role = await _roleRep.GetAysnc(vm.RoleId.Value);
-                if (role == null) throw new H_Exception("角色不存在，请重新添加");
-                if (role.IsDeleted) throw new H_Exception("角色已删除，请重新添加");
+                if (role == null) throw new H_Exception("角色不存在，请重新选择");
+                if (role.IsDeleted) throw new H_Exception("角色已删除，请重新选择");
                 if (role.Level <= _currentUser.RoleLevel) throw new H_Exception("无法添加同级及高级角色用户");
 
                 var user = _mapper.Map<SysUser>(vm);
@@ -89,7 +89,7 @@ namespace Hao.AppService
                 user.AuthNumbers = role.AuthNumbers;
                 user.RoleLevel = role.Level;
 
-                role.UserCount = role.UserCount ?? 0 + 1;
+                role.UserCount = role.UserCount.HasValue ? ++role.UserCount : 1; 
                 try
                 {
                     await _userRep.InsertAysnc(user);
@@ -98,7 +98,7 @@ namespace Hao.AppService
                 }
                 catch (PostgresException ex)
                 {
-                    if (ex.SqlState == PostgresSqlState.E23505) throw new H_Exception("账号已存在，请重新添加");//违反唯一键
+                    if (ex.SqlState == PostgresSqlState.E23505) throw new H_Exception("账号已存在，请重新输入");//违反唯一键
                 }
             } 
         }
@@ -137,7 +137,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task DeleteUser(long userId)
         {
-            using (var redisLock = RedisHelper.Lock("UserAppService_DeleteUser", 10))
+            using (var redisLock = RedisHelper.Lock($"{_appsettings.RedisPrefix.Lock}UserAppService_DeleteUser", 10))
             {
                 if (redisLock == null) throw new H_Exception("开启分布式锁超时");
                 CheckUser(userId);
@@ -147,7 +147,7 @@ namespace Hao.AppService
                 var role = await _roleRep.GetAysnc(user.RoleId.Value);
                 role.UserCount--;
                 await _roleRep.UpdateAsync(role, a => new { a.UserCount });
-                await RedisHelper.DelAsync(_appsettings.RedisPrefix.LoginInfo + userId);
+                await RedisHelper.DelAsync(_appsettings.RedisPrefix.Login + userId);
             }
         }
 
@@ -164,7 +164,7 @@ namespace Hao.AppService
             user.Enabled = enabled;
             await _userRep.UpdateAsync(user, user => new { user.Enabled });
             // 注销用户，删除登录缓存
-            if(!enabled) await RedisHelper.DelAsync(_appsettings.RedisPrefix.LoginInfo + user.Id);
+            if(!enabled) await RedisHelper.DelAsync(_appsettings.RedisPrefix.Login + user.Id);
         }
 
         /// <summary>

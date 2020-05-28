@@ -1,8 +1,7 @@
 ﻿using AspectCore.DynamicProxy;
+using NLog;
 using SqlSugar;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Hao.Core
@@ -12,6 +11,8 @@ namespace Hao.Core
         [AttributeUsage(AttributeTargets.Method)]
         protected class UnitOfWorkAttribute : AbstractInterceptorAttribute
         {
+            private readonly static ILogger _logger = LogManager.GetCurrentClassLogger();
+
             public override async Task Invoke(AspectContext context, AspectDelegate next)
             {
                 var sqlSugarClient = context.ServiceProvider.GetService(typeof(ISqlSugarClient)) as ISqlSugarClient;
@@ -39,7 +40,7 @@ namespace Hao.Core
                     Console.WriteLine("事务" + sqlSugarClient.ContextID);
 #endif
                     sqlSugarClient.Ado.RollbackTran();
-                    throw ex;
+                    _logger.Error(ex);
                 }
             }
         }

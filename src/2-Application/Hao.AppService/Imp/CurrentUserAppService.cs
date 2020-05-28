@@ -131,14 +131,14 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task Logout(long userId, string jti)
         {
-            var value = await RedisHelper.GetAsync($"{_appsettings.RedisPrefix.LoginInfo}{userId}_{jti}");
+            var value = await RedisHelper.GetAsync($"{_appsettings.RedisPrefix.Login}{userId}_{jti}");
 
             if (value.HasValue())
             {
                 var cacheUser = JsonSerializer.Deserialize<RedisCacheUser>(value);
                 cacheUser.LoginStatus = LoginStatus.Offline;
 
-                await RedisHelper.SetAsync($"{_appsettings.RedisPrefix.LoginInfo}{userId}_{jti}", JsonSerializer.Serialize(cacheUser));
+                await RedisHelper.SetAsync($"{_appsettings.RedisPrefix.Login}{userId}_{jti}", JsonSerializer.Serialize(cacheUser));
             }
         }
     }
