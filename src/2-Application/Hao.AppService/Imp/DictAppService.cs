@@ -40,13 +40,13 @@ namespace Hao.AppService
         {
             using (var redisLock = RedisHelper.Lock($"{_lockPrefix}DictAppService_AddDict", 10)) //redis 分布式锁
             {
-                if (redisLock == null) throw new H_Exception("开启分布式锁超时");//对象为null，不占资源 ，编译后的代码没有fianlly,不执行dispose()方法
+                if (redisLock == null) throw new H_Exception("系统异常"); //开启分布式锁超时 //对象为null，不占资源 ，编译后的代码没有fianlly,不执行dispose()方法
 
                 var sameItems = await _dictRep.GetListAysnc(new DictQuery { EqualDictName = request.DictName });
-                if (sameItems.Count > 0) throw new H_Exception("字典名称已存在，请重新添加");
+                if (sameItems.Count > 0) throw new H_Exception("字典名称已存在，请重新输入");
 
                 sameItems = await _dictRep.GetListAysnc(new DictQuery { EqualDictCode = request.DictCode });
-                if (sameItems.Count > 0) throw new H_Exception("字典编码已存在，请重新添加");
+                if (sameItems.Count > 0) throw new H_Exception("字典编码已存在，请重新输入");
 
                 var dict = _mapper.Map<SysDict>(request);
                 dict.Sort = 0;
@@ -64,13 +64,13 @@ namespace Hao.AppService
         {
             using (var redisLock = RedisHelper.Lock($"{_lockPrefix}DictAppService_UpdateDict", 10)) //redis 分布式锁
             {
-                if (redisLock == null) throw new H_Exception("开启分布式锁超时");
+                if (redisLock == null) throw new H_Exception("系统异常");
 
                 var sameItems = await _dictRep.GetListAysnc(new DictQuery { EqualDictName = request.DictName });
-                if (sameItems.Where(a => a.Id != id).Count() > 0) throw new H_Exception("字典名称已存在，请重新添加");
+                if (sameItems.Where(a => a.Id != id).Count() > 0) throw new H_Exception("字典名称已存在，请重新输入");
 
                 sameItems = await _dictRep.GetListAysnc(new DictQuery { EqualDictCode = request.DictCode });
-                if (sameItems.Where(a => a.Id != id).Count() > 0) throw new H_Exception("字典编码已存在，请重新添加");
+                if (sameItems.Where(a => a.Id != id).Count() > 0) throw new H_Exception("字典编码已存在，请重新输入");
 
                 var dict = await _dictRep.GetAysnc(id);
                 dict.DictCode = request.DictCode;
@@ -121,15 +121,15 @@ namespace Hao.AppService
 
             using (var redisLock = RedisHelper.Lock($"{_lockPrefix}DictAppService_AddDictItem", 10)) //redis 分布式锁
             {
-                if (redisLock == null) throw new H_Exception("开启分布式锁超时");
+                if (redisLock == null) throw new H_Exception("系统异常");
 
 
                 var sameItems = await _dictRep.GetListAysnc(new DictQuery { ParentId = request.ParentId, EqualItemName = request.ItemName });
-                if (sameItems.Count > 0) throw new H_Exception("数据项名称已存在，请重新添加");
+                if (sameItems.Count > 0) throw new H_Exception("数据项名称已存在，请重新输入");
 
 
                 sameItems = await _dictRep.GetListAysnc(new DictQuery { ParentId = request.ParentId, ItemValue = request.ItemValue });
-                if (sameItems.Count > 0) throw new H_Exception("数据项值已存在，请重新添加");
+                if (sameItems.Count > 0) throw new H_Exception("数据项值已存在，请重新输入");
 
 
                 var parentDict = await GetDictDetail(request.ParentId.Value);
@@ -168,15 +168,15 @@ namespace Hao.AppService
         {
             using (var redisLock = RedisHelper.Lock($"{_lockPrefix}DictAppService_UpdateDictItem", 10))
             {
-                if (redisLock == null) throw new H_Exception("开启分布式锁超时");
+                if (redisLock == null) throw new H_Exception("系统异常");
 
                 var item = await _dictRep.GetAysnc(id);
 
                 var sameItems = await _dictRep.GetListAysnc(new DictQuery { ParentId = item.ParentId, EqualItemName = request.ItemName });
-                if (sameItems.Where(a => a.Id != id).Count() > 0) throw new H_Exception("数据项名称已存在，请重新添加");
+                if (sameItems.Where(a => a.Id != id).Count() > 0) throw new H_Exception("数据项名称已存在，请重新输入");
 
                 sameItems = await _dictRep.GetListAysnc(new DictQuery { ParentId = item.ParentId, ItemValue = request.ItemValue });
-                if (sameItems.Where(a => a.Id != id).Count() > 0) throw new H_Exception("数据项值已存在，请重新添加");
+                if (sameItems.Where(a => a.Id != id).Count() > 0) throw new H_Exception("数据项值已存在，请重新输入");
 
                 item.ItemName = request.ItemName;
                 item.ItemValue = request.ItemValue;
