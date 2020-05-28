@@ -66,7 +66,7 @@ namespace Hao.AppService
         {
             using (var redisLock = RedisHelper.Lock($"{_appsettings.RedisPrefix.Lock}UserAppService_AddUser", 10))
             {
-                if (redisLock == null) throw new H_Exception("系统异常");
+                H_Check.InspectRedisLock(redisLock);
 
                 var users = await _userRep.GetAllAysnc(new UserQuery()
                 {
@@ -140,7 +140,7 @@ namespace Hao.AppService
         {
             using (var redisLock = RedisHelper.Lock($"{_appsettings.RedisPrefix.Lock}UserAppService_DeleteUser", 10))
             {
-                if (redisLock == null) throw new H_Exception("系统异常");
+                H_Check.InspectRedisLock(redisLock);
 
                 CheckUser(userId);
                 var user = await GetUserDetail(userId);

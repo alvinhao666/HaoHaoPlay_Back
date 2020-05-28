@@ -9,6 +9,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Hao.Library;
 using Microsoft.Extensions.Options;
+using Hao.Utility;
 
 namespace Hao.AppService
 {
@@ -43,7 +44,9 @@ namespace Hao.AppService
 
             using (var redisLock = RedisHelper.Lock($"{_lockPrefix}DictAppService_AddDict", 10)) //redis 分布式锁
             {
-                if (redisLock == null) throw new H_Exception("系统异常"); //开启分布式锁超时 //对象为null，不占资源 ，编译后的代码没有fianlly,不执行dispose()方法
+                //if (redisLock == null) throw new H_Exception("系统异常"); //开启分布式锁超时 //对象为null，不占资源 ，编译后的代码没有fianlly,不执行dispose()方法
+
+                H_Check.InspectRedisLock(redisLock);
 
                 var sameItems = await _dictRep.GetListAysnc(new DictQuery { EqualDictName = request.DictName });
                 if (sameItems.Count > 0) throw new H_Exception("字典名称已存在，请重新输入");
@@ -67,7 +70,7 @@ namespace Hao.AppService
         {
             using (var redisLock = RedisHelper.Lock($"{_lockPrefix}DictAppService_UpdateDict", 10)) //redis 分布式锁
             {
-                if (redisLock == null) throw new H_Exception("系统异常");
+                H_Check.InspectRedisLock(redisLock);
 
                 var sameItems = await _dictRep.GetListAysnc(new DictQuery { EqualDictName = request.DictName });
                 if (sameItems.Where(a => a.Id != id).Count() > 0) throw new H_Exception("字典名称已存在，请重新输入");
@@ -124,8 +127,7 @@ namespace Hao.AppService
 
             using (var redisLock = RedisHelper.Lock($"{_lockPrefix}DictAppService_AddDictItem", 10)) //redis 分布式锁
             {
-                if (redisLock == null) throw new H_Exception("系统异常");
-
+                H_Check.InspectRedisLock(redisLock);
 
                 var sameItems = await _dictRep.GetListAysnc(new DictQuery { ParentId = request.ParentId, EqualItemName = request.ItemName });
                 if (sameItems.Count > 0) throw new H_Exception("数据项名称已存在，请重新输入");
@@ -171,7 +173,7 @@ namespace Hao.AppService
         {
             using (var redisLock = RedisHelper.Lock($"{_lockPrefix}DictAppService_UpdateDictItem", 10))
             {
-                if (redisLock == null) throw new H_Exception("系统异常");
+                H_Check.InspectRedisLock(redisLock);
 
                 var item = await _dictRep.GetAysnc(id);
 
@@ -227,8 +229,6 @@ namespace Hao.AppService
             if (dict.IsDeleted) throw new H_Exception("字典数据已删除");
             return dict;
         }
-
-
         #endregion
     }
 }

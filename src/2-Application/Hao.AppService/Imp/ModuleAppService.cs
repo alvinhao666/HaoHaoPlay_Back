@@ -12,6 +12,7 @@ using Hao.Enum;
 using Npgsql;
 using Hao.Library;
 using Microsoft.Extensions.Options;
+using Hao.Utility;
 
 namespace Hao.AppService
 {
@@ -133,7 +134,7 @@ namespace Hao.AppService
         {
             using (var redisLock = RedisHelper.Lock($"{_lockPrefix}AddModule", 10)) //redis 分布式锁
             {
-                if (redisLock == null) throw new H_Exception("系统异常");
+                H_Check.InspectRedisLock(redisLock);
 
                 var max = await _moduleRep.GetLayerCount();
                 if (max.Count < 31)
