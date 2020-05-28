@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="9.0.0" />
-    <PackageReference Include="DotNetCore.CAP" Version="3.0.3" />
+    <PackageReference Include="DotNetCore.CAP" Version="3.0.4" />
     <PackageReference Include="EPPlus" Version="4.5.3.3" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="8.6.2" />
     <PackageReference Include="Microsoft.AspNetCore.DataProtection.Extensions" Version="3.1.4" />
