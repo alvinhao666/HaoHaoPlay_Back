@@ -135,6 +135,7 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
+        [UnitOfWork]
         public async Task DeleteUser(long userId)
         {
             using (var redisLock = RedisHelper.Lock($"{_appsettings.RedisPrefix.Lock}UserAppService_DeleteUser", 10))
@@ -142,11 +143,13 @@ namespace Hao.AppService
                 if (redisLock == null) throw new H_Exception("开启分布式锁超时");
                 CheckUser(userId);
                 var user = await GetUserDetail(userId);
-                await _userRep.DeleteAysnc(user.Id);
 
                 var role = await _roleRep.GetAysnc(user.RoleId.Value);
                 role.UserCount--;
+
+                await _userRep.DeleteAysnc(user.Id);               
                 await _roleRep.UpdateAsync(role, a => new { a.UserCount });
+
                 await RedisHelper.DelAsync(_appsettings.RedisPrefix.Login + userId);
             }
         }

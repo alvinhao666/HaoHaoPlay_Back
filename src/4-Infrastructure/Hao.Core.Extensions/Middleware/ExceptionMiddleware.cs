@@ -73,8 +73,6 @@ namespace Hao.Core.Extensions
 
             _logger.Error(ex, JsonSerializer.Serialize(errorLog));
 
-
-
             await context.Response.WriteAsync(
                 JsonSerializer.Serialize(response,new JsonSerializerOptions() {Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping}),
                 Encoding.UTF8);
