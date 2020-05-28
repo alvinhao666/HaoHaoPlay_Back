@@ -35,7 +35,7 @@ namespace Hao.AppService
         {
             using (var redisLock = RedisHelper.Lock("DictAppService_AddDict", 10)) //redis 分布式锁
             {
-                if (redisLock == null) throw new H_Exception("系统异常，请重新添加"); //对象为null，不占资源 ，编译后的代码没有fianlly,不执行dispose()方法
+                if (redisLock == null) throw new H_Exception("开启分布式锁超时");//对象为null，不占资源 ，编译后的代码没有fianlly,不执行dispose()方法
 
                 var sameItems = await _dictRep.GetListAysnc(new DictQuery { EqualDictName = request.DictName });
                 if (sameItems.Count > 0) throw new H_Exception("字典名称已存在，请重新添加");
@@ -59,7 +59,7 @@ namespace Hao.AppService
         {
             using (var redisLock = RedisHelper.Lock("DictAppService_UpdateDict", 10)) //redis 分布式锁
             {
-                if (redisLock == null) throw new H_Exception("系统异常，请重新添加");
+                if (redisLock == null) throw new H_Exception("开启分布式锁超时");
 
                 var sameItems = await _dictRep.GetListAysnc(new DictQuery { EqualDictName = request.DictName });
                 if (sameItems.Where(a => a.Id != id).Count() > 0) throw new H_Exception("字典名称已存在，请重新添加");
@@ -116,7 +116,7 @@ namespace Hao.AppService
 
             using (var redisLock = RedisHelper.Lock("DictAppService_AddDictItem", 10)) //redis 分布式锁
             {
-                if (redisLock == null) throw new H_Exception("系统异常，请重新添加");
+                if (redisLock == null) throw new H_Exception("开启分布式锁超时");
 
 
                 var sameItems = await _dictRep.GetListAysnc(new DictQuery { ParentId = request.ParentId, EqualItemName = request.ItemName });
@@ -163,7 +163,7 @@ namespace Hao.AppService
         {
             using (var redisLock = RedisHelper.Lock("DictAppService_UpdateDictItem", 10))
             {
-                if (redisLock == null) throw new H_Exception("系统异常，请重新添加");
+                if (redisLock == null) throw new H_Exception("开启分布式锁超时");
 
                 var item = await _dictRep.GetAysnc(id);
 

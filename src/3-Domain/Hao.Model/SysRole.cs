@@ -18,5 +18,10 @@ namespace Hao.Model
         /// 角色等级
         /// </summary>
         public int? Level { get; set; }
+
+        /// <summary>
+        /// 用户数量
+        /// </summary>
+        public int? UserCount { get; set; }
     }
 }

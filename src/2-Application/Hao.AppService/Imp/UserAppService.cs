@@ -61,37 +61,46 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="vm"></param>
         /// <returns></returns>
+        [UnitOfWork]
         public async Task AddUser(UserAddRequest vm)
         {
-            var users = await _userRep.GetListAysnc(new UserQuery()
+            using (var redisLock = RedisHelper.Lock("UserAppService_AddUser", 10))
             {
-                LoginName = vm.LoginName
-            });
-            if (users.Count > 0) throw new H_Exception("账号已存在，请重新添加");
+                if (redisLock == null) throw new H_Exception("开启分布式锁超时");
 
-            var role = await _roleRep.GetAysnc(vm.RoleId.Value);
-            if (role == null) throw new H_Exception("角色不存在，请重新添加");
-            if (role.IsDeleted) throw new H_Exception("角色已删除，请重新添加");
-            if (role.Level <= _currentUser.RoleLevel) throw new H_Exception("无法添加同级及高级角色用户");
+                var users = await _userRep.GetListAysnc(new UserQuery()
+                {
+                    LoginName = vm.LoginName
+                });
+                if (users.Count > 0) throw new H_Exception("账号已存在，请重新添加");
 
-            var user = _mapper.Map<SysUser>(vm);
-            user.FirstNameSpell = H_Spell.GetFirstLetter(user.Name.ToCharArray()[0]);
-            user.PasswordLevel = (PasswordLevel)H_Util.CheckPasswordLevel(user.Password);
-            user.Password = EncryptProvider.HMACSHA256(user.Password, _appsettings.Key.Sha256Key);
-            user.Enabled = true;
-            user.RoleId = role.Id;
-            user.RoleName = role.Name;
-            user.AuthNumbers = role.AuthNumbers;
-            user.RoleLevel = role.Level;
-     
-            try
-            {
-                await _userRep.InsertAysnc(user);
-            }
-            catch (PostgresException ex)
-            {
-                if (ex.SqlState == PostgresSqlState.E23505) throw new H_Exception("账号已存在，请重新添加");//违反唯一键
-            }
+                var role = await _roleRep.GetAysnc(vm.RoleId.Value);
+                if (role == null) throw new H_Exception("角色不存在，请重新添加");
+                if (role.IsDeleted) throw new H_Exception("角色已删除，请重新添加");
+                if (role.Level <= _currentUser.RoleLevel) throw new H_Exception("无法添加同级及高级角色用户");
+
+                var user = _mapper.Map<SysUser>(vm);
+                user.FirstNameSpell = H_Spell.GetFirstLetter(user.Name.ToCharArray()[0]);
+                user.PasswordLevel = (PasswordLevel)H_Util.CheckPasswordLevel(user.Password);
+                user.Password = EncryptProvider.HMACSHA256(user.Password, _appsettings.Key.Sha256Key);
+                user.Enabled = true;
+                user.RoleId = role.Id;
+                user.RoleName = role.Name;
+                user.AuthNumbers = role.AuthNumbers;
+                user.RoleLevel = role.Level;
+
+                role.UserCount = role.UserCount ?? 0 + 1;
+                try
+                {
+                    await _userRep.InsertAysnc(user);
+
+                    await _roleRep.UpdateAsync(role, a => new { a.UserCount });
+                }
+                catch (PostgresException ex)
+                {
+                    if (ex.SqlState == PostgresSqlState.E23505) throw new H_Exception("账号已存在，请重新添加");//违反唯一键
+                }
+            } 
         }
 
         /// <summary>
@@ -128,10 +137,18 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task DeleteUser(long userId)
         {
-            CheckUser(userId);
-            var user = await GetUserDetail(userId);
-            await _userRep.DeleteAysnc(user.Id);
-            await RedisHelper.DelAsync(_appsettings.RedisPrefix.LoginInfo + userId);
+            using (var redisLock = RedisHelper.Lock("UserAppService_DeleteUser", 10))
+            {
+                if (redisLock == null) throw new H_Exception("开启分布式锁超时");
+                CheckUser(userId);
+                var user = await GetUserDetail(userId);
+                await _userRep.DeleteAysnc(user.Id);
+
+                var role = await _roleRep.GetAysnc(user.RoleId.Value);
+                role.UserCount--;
+                await _roleRep.UpdateAsync(role, a => new { a.UserCount });
+                await RedisHelper.DelAsync(_appsettings.RedisPrefix.LoginInfo + userId);
+            }
         }
 
         /// <summary>
