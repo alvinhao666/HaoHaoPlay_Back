@@ -38,6 +38,9 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task AddDict(DictAddRequest request)
         {
+
+            //Setnx就是，如果没有这个key，那么就set一个key-value, 但是如果这个key已经存在，那么将不会再次设置，get出来的value还是最开始set进去的那个value.
+
             using (var redisLock = RedisHelper.Lock($"{_lockPrefix}DictAppService_AddDict", 10)) //redis 分布式锁
             {
                 if (redisLock == null) throw new H_Exception("系统异常"); //开启分布式锁超时 //对象为null，不占资源 ，编译后的代码没有fianlly,不执行dispose()方法
