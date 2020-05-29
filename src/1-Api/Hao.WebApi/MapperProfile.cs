@@ -4,6 +4,9 @@ using Hao.Core;
 
 namespace Hao.WebApi
 {
+    /// <summary>
+    /// 模型映射
+    /// </summary>
     public class MapperProfile: Profile
     {
         public MapperProfile()

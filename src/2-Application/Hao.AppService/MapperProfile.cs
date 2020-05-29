@@ -6,6 +6,9 @@ using Hao.Utility;
 
 namespace Hao.AppService
 {
+    /// <summary>
+    /// 模型映射
+    /// </summary>
     public class MapperProfile: Profile
     {
         public MapperProfile()
