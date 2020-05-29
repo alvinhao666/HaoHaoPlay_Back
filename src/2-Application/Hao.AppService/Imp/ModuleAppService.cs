@@ -145,7 +145,7 @@ namespace Hao.AppService
                 else if (max.Count == 31) //js  位运算 32位
                 {
                     module.Layer = ++max.Layer;
-                    module.Number = Convert.ToInt64(Math.Pow(2, 0));
+                    module.Number = 1;
                 }
                 else
                 {
