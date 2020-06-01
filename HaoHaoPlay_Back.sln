@@ -63,7 +63,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.Core.Extensions", "src\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".global", ".global", "{15E4896F-99C8-414A-9160-B559E20B492B}"
 	ProjectSection(SolutionItems) = preProject
-		..\..\gitlab1\tmsback\Dockerfile = ..\..\gitlab1\tmsback\Dockerfile
+		Dockerfile = Dockerfile
 	EndProjectSection
 EndProject
 Global

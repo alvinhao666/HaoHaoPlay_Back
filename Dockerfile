@@ -1,17 +1,13 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build-env
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
+COPY *.csproj ./app/
 WORKDIR /app
-EXPOSE 8000
-
-# Copy csproj and restore as distinct layers
-COPY *.csproj  . ./
 RUN dotnet restore
 
-# Copy everything else and build
 COPY . ./
-RUN dotnet publish -c Release -o out
+RUN dotnet publish -o out /p:PublishWithAspNetCoreTargetManifest="false"
 
-# Build runtime image
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim AS runtime
+ENV ASPNETCORE_URLS http://+:8000
 WORKDIR /app
-COPY --from=build-env /app/out .
-ENTRYPOINT ["dotnet", "HaoHaoPlay.ApiHost.dll"]
+COPY --from=build /app/out ./
+ENTRYPOINT ["dotnet", "HaoHaoPlay_Back.ApiHost.dll"]
