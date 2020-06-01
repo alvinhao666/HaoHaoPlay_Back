@@ -32,11 +32,11 @@ namespace Hao.AppService
 
         private readonly ISysModuleRepository _moduleRep;
 
-        private readonly AppSettingsInfo _appsettings;
-
         private readonly ICapPublisher _publisher;
 
         private readonly HttpContext _httpContext;
+
+        private readonly AppSettingsInfo _appsettings;
 
         private const string _noAuthTip= "没有系统权限，暂时无法登录，请联系管理员";
 
@@ -45,8 +45,8 @@ namespace Hao.AppService
             ISysUserRepository userRep,
             ISysModuleRepository moduleRep,
             IMapper mapper,
-            IOptionsSnapshot<AppSettingsInfo> appsettingsOptions,
-            ICapPublisher publisher)
+            ICapPublisher publisher,
+            IOptionsSnapshot<AppSettingsInfo> appsettingsOptions)
         {
             _userRep = userRep;
             _mapper = mapper;
