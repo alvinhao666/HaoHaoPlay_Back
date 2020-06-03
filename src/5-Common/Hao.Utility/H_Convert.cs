@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace Hao.Utility
 {
@@ -113,6 +114,28 @@ namespace Hao.Utility
                 return null;
             else
                 return result;
+        }
+
+        /// <summary> 
+        /// 将 Stream 转成 byte[] 
+        /// </summary> 
+        public static byte[] StreamToBytes(this Stream stream)
+        {
+            byte[] bytes = new byte[stream.Length];
+            stream.Read(bytes, 0, bytes.Length);
+
+            // 设置当前流的位置为流的开始 
+            stream.Seek(0, SeekOrigin.Begin);
+            return bytes;
+        }
+
+        /// <summary> 
+        /// 将 byte[] 转成 Stream 
+        /// </summary> 
+        public static Stream BytesToStream(this byte[] bytes)
+        {
+            Stream stream = new MemoryStream(bytes);
+            return stream;
         }
 
 
