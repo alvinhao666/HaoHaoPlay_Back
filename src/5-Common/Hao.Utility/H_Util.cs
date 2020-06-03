@@ -111,15 +111,15 @@ namespace Hao.Utility
         }
 
         /// <summary>
-        /// 将网络图片转base64
+        /// 将网络文件转base64
         /// </summary>
         /// <param name="imageUrl"></param>
         /// <returns></returns>
-        public static string GetBase64String(string imageUrl)
+        public static string GetBase64String(string url)
         {
-            var webreq = WebRequest.Create(imageUrl);
+            var webreq = WebRequest.Create(url);
             var webres = webreq.GetResponse();
-            string image = string.Empty;
+            string result = string.Empty;
             using (var stream = webres.GetResponseStream())
             {
                 using (var ms = new MemoryStream())
@@ -129,10 +129,10 @@ namespace Hao.Utility
                     ms.Seek(0, SeekOrigin.Begin);
                     byte[] fileBytes = new byte[ms.Length];
                     ms.Read(fileBytes, 0, (int)ms.Length);
-                    image = Convert.ToBase64String(fileBytes);
+                    result = Convert.ToBase64String(fileBytes);
                 }
             }
-            return image;
+            return result;
         }
 
         /// <summary>
