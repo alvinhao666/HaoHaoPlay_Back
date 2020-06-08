@@ -204,7 +204,7 @@ namespace Hao.AppService
         private void InitMenuTree(List<MenuVM> result, long? parentID, List<SysModule> sources, List<long> authNums, long userId)
         {
             //递归寻找子节点  
-            var tempTree = sources.Where(item => item.ParentId == parentID).OrderBy(a => a.Sort).ToList();
+            var tempTree = sources.Where(item => item.ParentId == parentID).OrderBy(a => a.Sort);
             foreach (var item in tempTree)
             {
                 if (authNums?.Count < 1 || item.Layer.Value > authNums.Count) continue;

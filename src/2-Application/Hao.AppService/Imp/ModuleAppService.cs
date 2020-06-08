@@ -172,7 +172,7 @@ namespace Hao.AppService
         private void InitModuleTree(List<ModuleVM> result, long? parentID, List<SysModule> sources)
         {
             //递归寻找子节点  
-            var tempTree = sources.Where(item => item.ParentId == parentID).OrderBy(a => a.Sort).ToList();
+            var tempTree = sources.Where(item => item.ParentId == parentID).OrderBy(a => a.Sort);
             foreach (var item in tempTree)
             {
                 var node = new ModuleVM()
