@@ -115,11 +115,9 @@ namespace Hao.Core.Extensions
 
                 if (authInfos.Length != 2 || !int.TryParse(authInfos[0], out var layer) || !long.TryParse(authInfos[1], out var authCode)) throw new H_Exception("接口权限值有误，请检查");
 
-                layer--;
-
                 if (userAuthNumbers == null || userAuthNumbers.Count == 0) throw new H_Exception("所拥有的权限值有误，请检查");
 
-                if ((userAuthNumbers[layer] & authCode) != authCode) throw new H_Exception("没有接口权限");
+                if ((userAuthNumbers[--layer] & authCode) != authCode) throw new H_Exception("没有接口权限");
             }
         }
 
