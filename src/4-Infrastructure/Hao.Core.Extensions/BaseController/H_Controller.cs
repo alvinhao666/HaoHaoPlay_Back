@@ -85,7 +85,7 @@ namespace Hao.Core.Extensions
 
             var cacheUser = JsonSerializer.Deserialize<RedisCacheUser>(value);
 
-            if (cacheUser == null) throw new H_Exception(ErrorInfo.E100002, nameof(ErrorInfo.E100002).GetErrorCode());
+            if (cacheUser?.Id == null) throw new H_Exception(ErrorInfo.E100002, nameof(ErrorInfo.E100002).GetErrorCode());
 
             if (cacheUser.LoginStatus.HasValue
                 && cacheUser.LoginStatus == LoginStatus.Offline
@@ -117,7 +117,9 @@ namespace Hao.Core.Extensions
 
                 layer--;
 
-                if (userAuthNumbers != null && userAuthNumbers.Count > 0 && ((userAuthNumbers[layer] & authCode) != authCode)) throw new H_Exception("没有接口权限");
+                if (userAuthNumbers == null || userAuthNumbers.Count == 0) throw new H_Exception("所拥有的权限值有误，请检查");
+
+                if ((userAuthNumbers[layer] & authCode) != authCode) throw new H_Exception("没有接口权限");
             }
         }
 
