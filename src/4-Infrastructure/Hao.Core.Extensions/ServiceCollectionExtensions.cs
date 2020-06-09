@@ -93,15 +93,18 @@ namespace Hao.Core.Extensions
             #endregion
 
 
-            //ORM
+            #region Orm
+
             services.AddPostgreSQLService(appSettings.ConnectionString.PostgreSql);
 
-            //Note: The injection of services needs before of `services.AddCap()`
+            #endregion
 
-            var eventSubscribeAssemblies = appSettings.EventSubscribeAssemblyNames.Select(name => Assembly.Load(name)).ToArray();
+
+            #region CAP
+            //Note: The injection of services needs before of `services.AddCap()`
             services.Scan(a =>
             {
-                a.FromAssemblies(eventSubscribeAssemblies)
+                a.FromAssemblies(appSettings.EventSubscribeAssemblyNames.Select(name => Assembly.Load(name)))
                  .AddClasses()
                  .AsMatchingInterface((x, p) => typeof(ICapSubscribe).IsAssignableFrom(p.GetType())) //直接或间接实现了ICapSubscribe
                  .WithTransientLifetime();
@@ -117,18 +120,25 @@ namespace Hao.Core.Extensions
                 UserName = appSettings.RabbitMQ.UserName,
                 Password = appSettings.RabbitMQ.Password
             });
+            #endregion
+
+
+            #region AutoMapper
+
+            services.AddAutoMapper(appSettings.AutoMapperAssemblyNames.Select(name => Assembly.Load(name)));
+
+            #endregion 
 
 
             //替换控制器所有者,详见有道笔记,放AddMvc前面 controller属性注入
             services.Replace(ServiceDescriptor.Transient<IControllerActivator, ServiceBasedControllerActivator>());
 
 
-            var validatorAssemblies = appSettings.ValidatorAssemblyNames.Select(name => Assembly.Load(name)).ToArray();
             services.AddControllers(x =>
             {
                 x.Filters.Add(typeof(H_ResultFilter));
             })
-            .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblies(validatorAssemblies))
+            .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblies(appSettings.ValidatorAssemblyNames.Select(name => Assembly.Load(name))))
             .AddJsonOptions(o =>
             {
                 //不加这个 接口接收参数 string类型的时间 转换 datetime类型报错 system.text.json不支持隐式转化
@@ -151,12 +161,6 @@ namespace Hao.Core.Extensions
 
             services.AddScoped<ICurrentUser, CurrentUser>();
             services.AddScoped<IHttpHelper, HttpHelper>();
-
-
-            #region AutoMapper
-            var autoMapperAssemblies= appSettings.AutoMapperAssemblyNames.Select(name => Assembly.Load(name)).ToArray();
-            services.AddAutoMapper(autoMapperAssemblies);
-            #endregion 
 
 
             return services;
