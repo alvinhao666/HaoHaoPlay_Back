@@ -78,11 +78,12 @@ namespace Hao.Utility
         /// <returns></returns>
         public static string GetRandomCha(int length)
         {
-            char[] arrChar = new char[]{
+            char[] arrChar = new char[]
+            {
            'a','b','d','c','e','f','g','h','i','j','k','l','m','n','p','r','q','s','t','u','v','w','z','y','x',
            '0','1','2','3','4','5','6','7','8','9',
            'A','B','C','D','E','F','G','H','I','J','K','L','M','N','Q','P','R','T','S','V','U','W','X','Y','Z'
-          };
+            };
 
             StringBuilder num = new StringBuilder();
 
@@ -186,7 +187,7 @@ namespace Hao.Utility
         public static List<string> GetHtmlImageUrlList(string htmlText)
         {
             Regex regImg = new Regex(@"<img\b[^<>]*?\bsrc[\s\t\r\n]*=[\s\t\r\n]*[""']?[\s\t\r\n]*(?<imgUrl>[^\s\t\r\n""'<>]*)[^<>]*?/?[\s\t\r\n]*>", RegexOptions.IgnoreCase);
-    
+
             MatchCollection matches = regImg.Matches(htmlText);
 
             List<string> urlList = new List<string>();
