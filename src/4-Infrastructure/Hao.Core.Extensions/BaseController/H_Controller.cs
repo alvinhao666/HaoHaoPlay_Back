@@ -21,10 +21,6 @@ namespace Hao.Core.Extensions
     {
         private readonly ILogger _logger = LogManager.GetCurrentClassLogger();
 
-        private const string apiAuthErrorMsg = "接口权限值有误，请重新配置";
-
-        private const string apiNoAuthMsg = "没有接口权限";
-
         public IOptionsSnapshot<AppSettingsInfo> AppsettingsOptions { get; set; }
 
         [AttributeUsage(AttributeTargets.Method)]
@@ -117,15 +113,11 @@ namespace Hao.Core.Extensions
             {
                 var authInfos = attribute.ConstructorArguments.FirstOrDefault().Value.ToString().Split('_');
 
-                if (authInfos.Length != 2) throw new H_Exception(apiAuthErrorMsg);
-
-                if (!int.TryParse(authInfos[0], out var layer)) throw new H_Exception(apiAuthErrorMsg);
-
-                if (!long.TryParse(authInfos[1], out var authCode)) throw new H_Exception(apiAuthErrorMsg);
+                if (authInfos.Length != 2 || !int.TryParse(authInfos[0], out var layer) || !long.TryParse(authInfos[1], out var authCode)) throw new H_Exception("接口权限值有误，请检查");
 
                 layer--;
 
-                if (userAuthNumbers != null && userAuthNumbers.Count > 0 && ((userAuthNumbers[layer] & authCode) != authCode)) throw new H_Exception(apiNoAuthMsg);
+                if (userAuthNumbers != null && userAuthNumbers.Count > 0 && ((userAuthNumbers[layer] & authCode) != authCode)) throw new H_Exception("没有接口权限");
             }
         }
 
