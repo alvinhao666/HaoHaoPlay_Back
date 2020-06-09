@@ -49,7 +49,7 @@ namespace Hao.Core.Extensions
 
             var argument = new { context.HttpContext.TraceIdentifier, UserId = userId, context.ActionArguments };
 
-            _logger.Info(new { Method = context.HttpContext.Request.Path.Value, Argument = argument, Description = "请求信息" });
+            _logger.Info(new { Method = context.HttpContext.Request.Path.Value, Argument = argument, Description = "haohaoplay_back的请求信息" });
 
             var cache = GetCacheUser(userId, jti);
 
@@ -70,7 +70,7 @@ namespace Hao.Core.Extensions
                 UserId = context.HttpContext.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sid)?.Value,
                 context.Result
             };
-            _logger.Info(new { Method = HttpContext.Request.Path.Value, Argument = param, Description = "返回信息" });
+            _logger.Info(new { Method = HttpContext.Request.Path.Value, Argument = param, Description = "haohaoplay_back的返回信息" });
             base.OnActionExecuted(context);
         }
 
