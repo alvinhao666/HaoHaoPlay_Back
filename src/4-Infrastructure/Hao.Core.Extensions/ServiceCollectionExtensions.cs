@@ -132,13 +132,14 @@ namespace Hao.Core.Extensions
 
 
             //替换控制器所有者,详见有道笔记,放AddMvc前面 controller属性注入
-            services.Replace(ServiceDescriptor.Transient<IControllerActivator, ServiceBasedControllerActivator>());
+            //services.Replace(ServiceDescriptor.Transient<IControllerActivator, ServiceBasedControllerActivator>());
 
 
             services.AddControllers(x =>
             {
                 x.Filters.Add(typeof(H_ResultFilter));
             })
+            .AddControllersAsServices() //controller属性注入 .net core 3.1版本
             .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblies(appSettings.ValidatorAssemblyNames.Select(name => Assembly.Load(name))))
             .AddJsonOptions(o =>
             {
@@ -148,7 +149,7 @@ namespace Hao.Core.Extensions
                 o.JsonSerializerOptions.PropertyNamingPolicy = null;
                 o.JsonSerializerOptions.Converters.Add(new DatetimeJsonConverter());
                 o.JsonSerializerOptions.Converters.Add(new LongJsonConvert());
-            }); //.AddWebApiConventions()//处理HttpResponseMessage类型返回值的问题
+            }); //.AddWebApiConventions() 处理HttpResponseMessage类型返回值的问题
 
 
             //模型验证 ApiBehaviorOptions 的统一模型验证配置一定要放到(.AddMvc)后面
