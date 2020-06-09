@@ -24,15 +24,11 @@ namespace Hao.WebApi.Controllers
         private readonly IMapper _mapper;
 
 
-
-        private readonly AppSettingsInfo _appsettings;
-
-        public UserController(IOptionsSnapshot<AppSettingsInfo> appsettingsOptions, IMapper mapper, IUserAppService userService, IRoleAppService roleAppService)
+        public UserController(IMapper mapper, IUserAppService userService, IRoleAppService roleAppService)
         {
             _userAppService = userService;
             _roleAppService = roleAppService;
             _mapper = mapper;
-            _appsettings = appsettingsOptions.Value;
 
         }
 
