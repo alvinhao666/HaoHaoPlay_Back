@@ -46,7 +46,7 @@ namespace Hao.Core.Extensions
                 });
             }
 
-            #region 单例注入
+            #region 单例注入，雪花id
 
             var worker = new IdWorker(appSettings.SnowflakeId.WorkerId, appSettings.SnowflakeId.DataCenterId);
             services.AddSingleton(worker);
