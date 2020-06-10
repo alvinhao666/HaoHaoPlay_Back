@@ -7,9 +7,9 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Hao.File
+namespace Hao.Excel
 {
-    public partial class H_File
+    public partial class H_Excel
     {
         /// <summary>
         /// 导出excel (EPPlus)

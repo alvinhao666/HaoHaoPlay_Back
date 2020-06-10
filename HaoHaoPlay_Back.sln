@@ -68,6 +68,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".global", ".global", "{D700
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hao.Http", "src\5-Common\Hao.Http\Hao.Http.csproj", "{CD1B2E8B-519C-4A6E-AC3B-0C9E4A49D426}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hao.Excel", "src\5-Common\Hao.Excel\Hao.Excel.csproj", "{FF2CC4EA-55D7-423F-9DA4-09F7C719EF9B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -166,6 +168,10 @@ Global
 		{CD1B2E8B-519C-4A6E-AC3B-0C9E4A49D426}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CD1B2E8B-519C-4A6E-AC3B-0C9E4A49D426}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CD1B2E8B-519C-4A6E-AC3B-0C9E4A49D426}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF2CC4EA-55D7-423F-9DA4-09F7C719EF9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF2CC4EA-55D7-423F-9DA4-09F7C719EF9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF2CC4EA-55D7-423F-9DA4-09F7C719EF9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF2CC4EA-55D7-423F-9DA4-09F7C719EF9B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -199,6 +205,7 @@ Global
 		{A21BC0AB-6C64-4DE4-AFF6-60153F790F9D} = {042FD3BE-DA74-462B-8F16-E6D1ADFC7454}
 		{8ED48A73-C61C-4C7D-8A01-47F564C9DBC1} = {2F74256B-F2C2-494A-82AE-97722C2A4F4B}
 		{CD1B2E8B-519C-4A6E-AC3B-0C9E4A49D426} = {042FD3BE-DA74-462B-8F16-E6D1ADFC7454}
+		{FF2CC4EA-55D7-423F-9DA4-09F7C719EF9B} = {042FD3BE-DA74-462B-8F16-E6D1ADFC7454}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5BAAEA79-B086-4D1C-AC3A-B029DF5FA31A}

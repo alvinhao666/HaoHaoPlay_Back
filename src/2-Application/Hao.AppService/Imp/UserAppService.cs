@@ -3,6 +3,7 @@ using Hao.AppService.ViewModel;
 using Hao.Core;
 using Hao.Encrypt;
 using Hao.Enum;
+using Hao.Excel;
 using Hao.File;
 using Hao.Library;
 using Hao.Model;
@@ -231,7 +232,7 @@ namespace Hao.AppService
             H_File.CreateDirectory(rootPath);
             string filePath = Path.Combine(rootPath, $"{fileName}");
 
-            await H_File.ExportToExcelEPPlus(filePath, exportData);
+            await H_Excel.ExportToExcelEPPlus(filePath, exportData);
 
             return new UserExcelVM { FileName = fileName, FileId = _protector.Protect(fileName.Split('.')[0], TimeSpan.FromSeconds(5)) };
         }
