@@ -20,15 +20,15 @@ namespace Hao.Core
                 {
 #if DEBUG
                     Console.ForegroundColor = ConsoleColor.Magenta;
-                    Console.WriteLine("开始事务");
-                    Console.WriteLine("事务" + sqlSugarClient.ContextID);
+
+                    Console.WriteLine("开始事务" + sqlSugarClient.ContextID);
 #endif
                     sqlSugarClient.Ado.BeginTran();
                     await next(context);
 #if DEBUG
                     Console.ForegroundColor = ConsoleColor.Magenta;
-                    Console.WriteLine("提交事务");
-                    Console.WriteLine("事务" + sqlSugarClient.ContextID);
+
+                    Console.WriteLine("提交事务" + sqlSugarClient.ContextID);
 #endif
                     sqlSugarClient.Ado.CommitTran();
                 }
@@ -36,8 +36,8 @@ namespace Hao.Core
                 {
 #if DEBUG
                     Console.ForegroundColor = ConsoleColor.Blue;
-                    Console.WriteLine("回滚事务");
-                    Console.WriteLine("事务" + sqlSugarClient.ContextID);
+
+                    Console.WriteLine("回滚事务" + sqlSugarClient.ContextID);
 #endif
                     sqlSugarClient.Ado.RollbackTran();
                     _logger.Error(ex);
