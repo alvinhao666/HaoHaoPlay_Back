@@ -26,7 +26,7 @@ namespace Hao.Utility
         /// <param name="dic"></param>
         /// <param name="mediaType"></param>
         /// <returns></returns>
-        public async Task<string> Post(string url, Dictionary<string, string> dic, int timeoutSeconds = 30, string contentType= "application/json")
+        public async Task<TResult> Post<TResult>(string url, Dictionary<string, string> dic, int timeoutSeconds = 30, string contentType= "application/json") where TResult : new()
         {
             var body = dic.Select(pair => pair.Key + "=" + WebUtility.UrlEncode(pair.Value))
                           .DefaultIfEmpty("") //如果是空 返回 new List<string>(){""};
@@ -40,10 +40,13 @@ namespace Hao.Utility
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
-                return content;
+
+                var result = JsonSerializer.Deserialize<TResult>(content);
+
+                return result;
             }
 
-            return null;
+            return default;
         }
 
         /// <summary>
