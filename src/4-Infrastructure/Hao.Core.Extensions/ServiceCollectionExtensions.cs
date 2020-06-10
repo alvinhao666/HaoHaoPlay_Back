@@ -7,12 +7,10 @@ using Hao.Library;
 using Hao.Snowflake;
 using Hao.Utility;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Redis;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -162,7 +160,7 @@ namespace Hao.Core.Extensions
             services.AddDataProtection();
 
             services.AddScoped<ICurrentUser, CurrentUser>();
-            services.AddScoped<IHttpHelper, HttpHelper>();
+            services.AddScoped<IHttpProvider, HttpProvider>();
 
 
             return services;

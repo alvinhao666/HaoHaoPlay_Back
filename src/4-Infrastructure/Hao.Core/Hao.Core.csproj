@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="AspectCore.Abstractions" Version="2.1.0" />
-    <PackageReference Include="CSRedisCore" Version="3.6.3" />
+    <PackageReference Include="CSRedisCore" Version="3.6.5" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.9.2" />
     <PackageReference Include="sqlSugarCore" Version="5.0.0.15" />
   </ItemGroup>
