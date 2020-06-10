@@ -1,11 +1,11 @@
-﻿using Hao.File;
-using Hao.Library;
+﻿using Hao.Library;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Hao.Core.Extensions
 {
@@ -41,7 +41,10 @@ namespace Hao.Core.Extensions
             app.UseStaticFiles();
 
             //导出excel路径
-            H_File.CreateDirectory(appSettings.FilePath.ExportExcelPath);
+            if (!Directory.Exists(appSettings.FilePath.ExportExcelPath))
+            {
+                Directory.CreateDirectory(appSettings.FilePath.ExportExcelPath);
+            }
 
             app.UseStaticFiles(new StaticFileOptions()
             {
@@ -54,7 +57,10 @@ namespace Hao.Core.Extensions
             });
 
             //头像路径
-            H_File.CreateDirectory(appSettings.FilePath.AvatarPath);
+            if (!Directory.Exists(appSettings.FilePath.AvatarPath))
+            {
+                Directory.CreateDirectory(appSettings.FilePath.AvatarPath);
+            }
 
             app.UseStaticFiles(new StaticFileOptions()
             {

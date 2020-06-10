@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Hao.Utility
+namespace Hao.Http
 {
     public interface IHttpProvider
     {

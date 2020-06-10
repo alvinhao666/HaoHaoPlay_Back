@@ -8,7 +8,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Hao.Utility
+namespace Hao.Http
 {
     public class HttpProvider : IHttpProvider
     {
