@@ -2,47 +2,47 @@
 
 namespace Hao.Library
 {
-    public class AppSettingsInfo
+    public class AppSettingsConfig
     {
         /// <summary>
         /// 数据库连接字符信息
         /// </summary>
-        public ConnectionString ConnectionString { get; set; }
+        public ConnectionStringConfig ConnectionString { get; set; }
 
         /// <summary>
         /// Json Web Token信息
         /// </summary>
-        public Jwt Jwt { get; set; }
+        public JwtConfig Jwt { get; set; }
 
         /// <summary>
         /// Redis前缀信息
         /// </summary>
-        public RedisPrefix RedisPrefix { get; set; }
+        public RedisPrefixConfig RedisPrefix { get; set; }
 
         /// <summary>
         /// 雪花id信息
         /// </summary>
-        public SnowflakeId SnowflakeId { get; set; }
+        public SnowflakeIdConfig SnowflakeId { get; set; }
 
         /// <summary>
         /// Rabbitmq配置
         /// </summary>
-        public RabbitMQ RabbitMQ { get; set; }
+        public RabbitMQConfig RabbitMQ { get; set; }
 
         /// <summary>
         /// 密钥信息
         /// </summary>
-        public Key Key { get; set; }
+        public KeyConfig Key { get; set; }
 
         /// <summary>
         /// 数据保护类别
         /// </summary>
-        public DataProtectorPurpose DataProtectorPurpose { get; set; }
+        public DataProtectorPurposeConfig DataProtectorPurpose { get; set; }
 
         /// <summary>
         /// Swagger信息
         /// </summary>
-        public Swagger Swagger { get; set; }
+        public SwaggerConfig Swagger { get; set; }
 
         /// <summary>
         /// 跨域地址
@@ -52,7 +52,7 @@ namespace Hao.Library
         /// <summary>
         /// 文件路径
         /// </summary>
-        public FilePath FilePath { get; set; }
+        public FilePathConfig FilePath { get; set; }
 
 
         /// <summary>
@@ -88,6 +88,6 @@ namespace Hao.Library
         /// <summary>
         /// 请求地址
         /// </summary>
-        public RequestPath RequestPath { get; set; }
+        public RequestPathConfig RequestPath { get; set; }
     }
 }

@@ -45,8 +45,8 @@ namespace Hao.Core.Extensions
                             .Build();
 
 
-            var appSettings = new AppSettingsInfo();
-            config.GetSection("AppSettingsInfo").Bind(appSettings);
+            var appSettings = new AppSettingsConfig();
+            config.Bind(appSettings);
 
             return Host.CreateDefaultBuilder(args)
                        .UseServiceProviderFactory(new AutofacServiceProviderFactory(builder =>

@@ -3,7 +3,7 @@
     /// <summary>
     /// 密钥
     /// </summary>
-    public class Key
+    public class KeyConfig
     {
         /// <summary>
         /// RSA公钥

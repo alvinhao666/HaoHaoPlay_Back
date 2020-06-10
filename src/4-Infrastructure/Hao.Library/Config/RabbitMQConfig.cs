@@ -1,6 +1,6 @@
 ﻿namespace Hao.Library
 {
-    public class RabbitMQ
+    public class RabbitMQConfig
     {
         /// <summary>
         /// 用户名

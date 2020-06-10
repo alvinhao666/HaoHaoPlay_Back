@@ -1,6 +1,6 @@
 namespace Hao.Library
 {
-    public class RedisPrefix
+    public class RedisPrefixConfig
     {
         /// <summary>
         /// µÇÂ¼ÐÅÏ¢Ç°×º

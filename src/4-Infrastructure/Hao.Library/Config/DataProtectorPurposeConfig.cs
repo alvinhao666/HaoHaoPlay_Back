@@ -1,6 +1,6 @@
 ﻿namespace Hao.Library
 {
-    public class DataProtectorPurpose
+    public class DataProtectorPurposeConfig
     {
         /// <summary>
         /// 文件下载

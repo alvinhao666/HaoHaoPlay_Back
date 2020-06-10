@@ -2,7 +2,7 @@
 
 namespace Hao.Library
 {
-    public class Swagger
+    public class SwaggerConfig
     {
         /// <summary>
         /// 名称

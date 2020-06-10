@@ -35,14 +35,14 @@ namespace Hao.AppService
 
         private readonly ISysRoleRepository _roleRep;
 
-        private readonly AppSettingsInfo _appsettings;
+        private readonly AppSettingsConfig _appsettings;
 
         private readonly ICurrentUser _currentUser;
 
         private readonly ITimeLimitedDataProtector _protector;
 
         public UserAppService(ISysRoleRepository roleRep,
-            IOptionsSnapshot<AppSettingsInfo> appsettingsOptions, 
+            IOptionsSnapshot<AppSettingsConfig> appsettingsOptions, 
             ISysUserRepository userRepository,
             ISysLoginRecordRepository recordRep, 
             IMapper mapper,

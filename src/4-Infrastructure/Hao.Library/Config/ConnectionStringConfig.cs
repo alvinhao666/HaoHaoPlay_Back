@@ -1,6 +1,6 @@
 ﻿namespace Hao.Library
 {
-    public class ConnectionString
+    public class ConnectionStringConfig
     {
         public string MySql { get; set; }
 

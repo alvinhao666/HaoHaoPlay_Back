@@ -1,6 +1,6 @@
 ﻿namespace Hao.Library
 {
-    public class FilePath
+    public class FilePathConfig
     {
         /// <summary>
         /// 导出的excel地址

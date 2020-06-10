@@ -14,7 +14,7 @@ namespace Hao.Core.Extensions
 
         private readonly IConfiguration _cfg;
 
-        private readonly AppSettingsInfo _appSettings;
+        private readonly AppSettingsConfig _appSettings;
 
         protected H_Startup(IHostEnvironment env, IConfiguration cfg, DirectoryInfo currentDir)
         {
@@ -25,9 +25,9 @@ namespace Hao.Core.Extensions
             _env = env;
             _cfg = cfg;
 
-            _appSettings = new AppSettingsInfo();
-            cfg.Bind("AppSettingsInfo", _appSettings);
-   
+            _appSettings = new AppSettingsConfig();
+            cfg.Bind(_appSettings);
+
             _appSettings.FilePath.ExportExcelPath = Path.Combine(parentDir.FullName, _appSettings.FilePath.ExportExcelPath);
             _appSettings.FilePath.ImportExcelPath = Path.Combine(parentDir.FullName, _appSettings.FilePath.ImportExcelPath);
             _appSettings.FilePath.AvatarPath = Path.Combine(parentDir.FullName, _appSettings.FilePath.AvatarPath);
@@ -35,15 +35,13 @@ namespace Hao.Core.Extensions
 
         public virtual void ConfigureServices(IServiceCollection services)
         {
-            var appSettingsOption = _cfg.GetSection(nameof(AppSettingsInfo));
+            var filePathOption = _cfg.GetSection(nameof(AppSettingsConfig.FilePath));
 
-            var filePathOption = appSettingsOption.GetSection(nameof(AppSettingsInfo.FilePath));
+            filePathOption.GetSection(nameof(AppSettingsConfig.FilePath.ExportExcelPath)).Value = _appSettings.FilePath.ExportExcelPath;
+            filePathOption.GetSection(nameof(AppSettingsConfig.FilePath.ImportExcelPath)).Value = _appSettings.FilePath.ImportExcelPath;
+            filePathOption.GetSection(nameof(AppSettingsConfig.FilePath.AvatarPath)).Value = _appSettings.FilePath.AvatarPath;
 
-            filePathOption.GetSection(nameof(AppSettingsInfo.FilePath.ExportExcelPath)).Value = _appSettings.FilePath.ExportExcelPath;
-            filePathOption.GetSection(nameof(AppSettingsInfo.FilePath.ImportExcelPath)).Value = _appSettings.FilePath.ImportExcelPath;
-            filePathOption.GetSection(nameof(AppSettingsInfo.FilePath.AvatarPath)).Value = _appSettings.FilePath.AvatarPath;
-
-            services.Configure<AppSettingsInfo>(appSettingsOption);
+            services.Configure<AppSettingsConfig>(_cfg);
 
             services.AddWebHost(_env, _cfg, _appSettings);
         }

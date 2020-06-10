@@ -1,6 +1,6 @@
 ﻿namespace Hao.Library
 {
-    public class RequestPath
+    public class RequestPathConfig
     {
         /// <summary>
         /// 导出excel请求地址

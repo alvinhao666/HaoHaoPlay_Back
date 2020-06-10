@@ -12,9 +12,9 @@ namespace Hao.Event
     /// </summary>
     public class LogoutEventDataConsumer : EventConsumer, ILogoutEventDataConsumer
     {
-        private readonly AppSettingsInfo _appsettings;
+        private readonly AppSettingsConfig _appsettings;
 
-        public LogoutEventDataConsumer(IOptionsSnapshot<AppSettingsInfo> appsettingsOptions)
+        public LogoutEventDataConsumer(IOptionsSnapshot<AppSettingsConfig> appsettingsOptions)
         {
             _appsettings = appsettingsOptions.Value;
         }
