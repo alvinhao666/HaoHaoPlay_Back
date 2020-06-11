@@ -14,7 +14,7 @@ namespace Hao.Core.Extensions
         private readonly ITimeLimitedDataProtector _protector;
 
 
-        public StaticFileMiddleware( RequestDelegate next,IDataProtectionProvider provider, IOptionsSnapshot<AppSettingsConfig> appsettingsOptions)
+        public StaticFileMiddleware( RequestDelegate next,IDataProtectionProvider provider, IOptionsSnapshot<H_AppSettingsConfig> appsettingsOptions)
         {
             _next = next;
             _protector = provider.CreateProtector(appsettingsOptions.Value.DataProtectorPurpose.FileDownload).ToTimeLimitedDataProtector();

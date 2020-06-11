@@ -4,10 +4,11 @@ using Microsoft.Extensions.Hosting;
 using Hao.Core.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
+using Hao.Library;
 
-namespace HaoHaoPlay.ApiHost
+namespace HaoHaoPlay_Back.ApiHost
 {
-    public class Startup : H_Startup
+    public class Startup<TConfig> : H_Startup<TConfig> where TConfig : H_AppSettingsConfig, new()
     {
         public Startup(IHostEnvironment env, IConfiguration cfg) : base(env, cfg, new DirectoryInfo(Directory.GetCurrentDirectory()))
         {

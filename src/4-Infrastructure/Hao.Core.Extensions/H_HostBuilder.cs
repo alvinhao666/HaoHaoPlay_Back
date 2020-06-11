@@ -15,14 +15,14 @@ using NLog.Web;
 
 namespace Hao.Core.Extensions
 {
-    public class H_HostBuilder
+    public class H_HostBuilder<TConfig> where TConfig : H_AppSettingsConfig, new()
     {
         /// <summary>
         /// 启动
         /// </summary>
         /// <typeparam name="TStartup"></typeparam>
         /// <param name="args"></param>
-        public void Run<TStartup>(string[] args) where TStartup : H_Startup
+        public void Run<TStartup>(string[] args) where TStartup : H_Startup<TConfig>
         {
             CreateBuilder<TStartup>(args).Build().Run();
         }
@@ -34,7 +34,7 @@ namespace Hao.Core.Extensions
         /// <typeparam name="TStartup"></typeparam>
         /// <param name="args"></param>
         /// <returns></returns>
-        public IHostBuilder CreateBuilder<TStartup>(string[] args) where TStartup : H_Startup
+        public IHostBuilder CreateBuilder<TStartup>(string[] args) where TStartup : H_Startup<TConfig>
         {
             var config = new ConfigurationBuilder()
                             .SetBasePath(AppContext.BaseDirectory)
@@ -45,7 +45,7 @@ namespace Hao.Core.Extensions
                             .Build();
 
 
-            var appSettings = new AppSettingsConfig();
+            var appSettings = new TConfig();
             config.Bind(appSettings);
 
             return Host.CreateDefaultBuilder(args)

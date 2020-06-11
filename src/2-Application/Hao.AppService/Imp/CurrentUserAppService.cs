@@ -29,10 +29,10 @@ namespace Hao.AppService
 
         private readonly ICurrentUser _currentUser;
 
-        private readonly AppSettingsConfig _appsettings;
+        private readonly H_AppSettingsConfig _appsettings;
 
 
-        public CurrentUserAppService(ISysUserRepository userRepository, IMapper mapper, ICurrentUser currentUser, IOptionsSnapshot<AppSettingsConfig> appsettingsOptions)
+        public CurrentUserAppService(ISysUserRepository userRepository, IMapper mapper, ICurrentUser currentUser, IOptionsSnapshot<H_AppSettingsConfig> appsettingsOptions)
         {
             _userRep = userRepository;
             _mapper = mapper;

@@ -2,7 +2,7 @@
 
 namespace Hao.Library
 {
-    public class AppSettingsConfig
+    public class H_AppSettingsConfig
     {
         /// <summary>
         /// 数据库连接字符信息

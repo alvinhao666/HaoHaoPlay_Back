@@ -21,7 +21,7 @@ namespace Hao.Core.Extensions
     {
         private readonly ILogger _logger = LogManager.GetCurrentClassLogger();
 
-        public IOptionsSnapshot<AppSettingsConfig> AppsettingsOptions { get; set; }
+        public IOptionsSnapshot<H_AppSettingsConfig> AppsettingsOptions { get; set; }
 
         [AttributeUsage(AttributeTargets.Method)]
         protected class AuthCodeAttribute : Attribute

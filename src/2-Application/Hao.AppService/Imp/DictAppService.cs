@@ -24,7 +24,7 @@ namespace Hao.AppService
 
         private readonly string _lockPrefix;
 
-        public DictAppService(ISysDictRepository dictRep, IMapper mapper, IOptionsSnapshot<AppSettingsConfig> appsettingsOptions)
+        public DictAppService(ISysDictRepository dictRep, IMapper mapper, IOptionsSnapshot<H_AppSettingsConfig> appsettingsOptions)
         {
             _dictRep = dictRep;
             _mapper = mapper;

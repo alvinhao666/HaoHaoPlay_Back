@@ -27,7 +27,7 @@ namespace Hao.AppService
 
         private readonly string _lockPrefix;
 
-        public ModuleAppService(IMapper mapper, ISysModuleRepository moduleRep, IOptionsSnapshot<AppSettingsConfig> appsettingsOptions)
+        public ModuleAppService(IMapper mapper, ISysModuleRepository moduleRep, IOptionsSnapshot<H_AppSettingsConfig> appsettingsOptions)
         {
             _mapper = mapper;
             _moduleRep = moduleRep;

@@ -8,13 +8,13 @@ using System.IO;
 
 namespace Hao.Core.Extensions
 {
-    public abstract class H_Startup
+    public abstract class H_Startup<TConfig> where TConfig : H_AppSettingsConfig, new()
     {
         private readonly IHostEnvironment _env;
 
         private readonly IConfiguration _cfg;
 
-        private readonly AppSettingsConfig _appSettings;
+        private readonly TConfig _appSettings;
 
         protected H_Startup(IHostEnvironment env, IConfiguration cfg, DirectoryInfo currentDir)
         {
@@ -25,7 +25,7 @@ namespace Hao.Core.Extensions
             _env = env;
             _cfg = cfg;
 
-            _appSettings = new AppSettingsConfig();
+            _appSettings = new TConfig();
             cfg.Bind(_appSettings);
 
             _appSettings.FilePath.ExportExcelPath = Path.Combine(parentDir.FullName, _appSettings.FilePath.ExportExcelPath);
@@ -35,13 +35,15 @@ namespace Hao.Core.Extensions
 
         public virtual void ConfigureServices(IServiceCollection services)
         {
-            var filePathOption = _cfg.GetSection(nameof(AppSettingsConfig.FilePath));
+            var filePathOption = _cfg.GetSection(nameof(H_AppSettingsConfig.FilePath));
 
-            filePathOption.GetSection(nameof(AppSettingsConfig.FilePath.ExportExcelPath)).Value = _appSettings.FilePath.ExportExcelPath;
-            filePathOption.GetSection(nameof(AppSettingsConfig.FilePath.ImportExcelPath)).Value = _appSettings.FilePath.ImportExcelPath;
-            filePathOption.GetSection(nameof(AppSettingsConfig.FilePath.AvatarPath)).Value = _appSettings.FilePath.AvatarPath;
+            filePathOption.GetSection(nameof(H_AppSettingsConfig.FilePath.ExportExcelPath)).Value = _appSettings.FilePath.ExportExcelPath;
+            filePathOption.GetSection(nameof(H_AppSettingsConfig.FilePath.ImportExcelPath)).Value = _appSettings.FilePath.ImportExcelPath;
+            filePathOption.GetSection(nameof(H_AppSettingsConfig.FilePath.AvatarPath)).Value = _appSettings.FilePath.AvatarPath;
 
-            services.Configure<AppSettingsConfig>(_cfg);
+            services.Configure<TConfig>(_cfg); ////绑定配置对象 子类 （新增配置信息）
+
+            services.Configure<H_AppSettingsConfig>(_cfg); //绑定配置对象 基类
 
             services.AddWebHost(_env, _cfg, _appSettings);
         }
