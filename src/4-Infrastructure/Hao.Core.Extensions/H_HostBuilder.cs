@@ -38,9 +38,9 @@ namespace Hao.Core.Extensions
         {
             var config = new ConfigurationBuilder()
                             .SetBasePath(AppContext.BaseDirectory)
-                            .AddJsonFile("appsettings.json", false)
+                            .AddJsonFile("appsettings.json", false) //optional:（Whether the file is optional）是否可选，意思是如果配置文件不存在的时候是否要抛异常。第三个参数 reloadOnChange  json文件更改后是否重新加载。
 #if DEBUG
-                            .AddJsonFile("appsettings.Development.json", false)
+                            .AddJsonFile("appsettings.Development.json", false)  //false，不可选， 文件不存在，则会报错
 #endif
                             .Build();
 
