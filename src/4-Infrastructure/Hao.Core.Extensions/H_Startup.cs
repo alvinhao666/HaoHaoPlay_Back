@@ -45,7 +45,7 @@ namespace Hao.Core.Extensions
 
             services.Configure<H_AppSettingsConfig>(_cfg); //绑定配置对象 基类
 
-            services.AddWebHost(_env, _cfg, _appSettings);
+            services.AddWebHost(_env, _appSettings);
         }
 
         public virtual void Configure(IApplicationBuilder app)

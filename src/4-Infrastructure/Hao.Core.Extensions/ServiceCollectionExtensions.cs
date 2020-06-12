@@ -24,7 +24,7 @@ namespace Hao.Core.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddWebHost(this IServiceCollection services, IHostEnvironment env, IConfiguration cfg, H_AppSettingsConfig appSettings)
+        public static IServiceCollection AddWebHost(this IServiceCollection services, IHostEnvironment env, H_AppSettingsConfig appSettings)
         {
             if (env.IsDevelopment())
             {
