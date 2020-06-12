@@ -24,21 +24,10 @@ namespace Hao.Core.Extensions
         /// <param name="args"></param>
         public void Run<TStartup>(string[] args) where TStartup : H_Startup<TConfig>
         {
-            CreateBuilder<TStartup>(args).Build().Run();
-        }
 
-
-        /// <summary>
-        /// 创建主机生成器
-        /// </summary>
-        /// <typeparam name="TStartup"></typeparam>
-        /// <param name="args"></param>
-        /// <returns></returns>
-        public IHostBuilder CreateBuilder<TStartup>(string[] args) where TStartup : H_Startup<TConfig>
-        {
             var config = new ConfigurationBuilder()
-                            .SetBasePath(AppContext.BaseDirectory)
-                            .AddJsonFile("appsettings.json", false) //optional:（Whether the file is optional）是否可选，意思是如果配置文件不存在的时候是否要抛异常。第三个参数 reloadOnChange  json文件更改后是否重新加载。
+                .SetBasePath(AppContext.BaseDirectory)
+                .AddJsonFile("appsettings.json", false) //optional:（Whether the file is optional）是否可选，意思是如果配置文件不存在的时候是否要抛异常。第三个参数 reloadOnChange  json文件更改后是否重新加载。
 #if DEBUG
                             .AddJsonFile("appsettings.Development.json", false)  //false，不可选， 文件不存在，则会报错
 #endif
@@ -48,39 +37,41 @@ namespace Hao.Core.Extensions
             var appSettings = new TConfig();
             config.Bind(appSettings);
 
-            return Host.CreateDefaultBuilder(args)
-                       .UseServiceProviderFactory(new AutofacServiceProviderFactory(builder =>
-                       {
-
-                           var diAssemblies = appSettings.DiAssemblyNames.Select(name => Assembly.Load(name)).ToArray();
-
-                           builder.RegisterAssemblyTypes(diAssemblies)
-                                   .Where(m => typeof(ITransientDependency).IsAssignableFrom(m) && m != typeof(ITransientDependency)) //直接或间接实现了ITransientDependency
-                                   .AsImplementedInterfaces().InstancePerDependency().PropertiesAutowired();
-
-                           var controllerAssemblies = appSettings.ControllerAssemblyNames.Select(name => Assembly.Load(name));
-
-                           var types = controllerAssemblies.SelectMany(a => a.GetExportedTypes()).Where(type => typeof(ControllerBase).IsAssignableFrom(type)).ToArray();
-                           builder.RegisterTypes(types).PropertiesAutowired();
-
-                           //调用RegisterDynamicProxy扩展方法在Autofac中注册动态代理服务和动态代理配置 aop
-                           //在一般情况下可以使用抽象的AbstractInterceptorAttribute自定义特性类，它实现IInterceptor接口。AspectCore默认实现了基于Attribute的拦截器配置
-                           builder.RegisterDynamicProxy();
-                       }))
-                       .ConfigureWebHostDefaults(webBuilder =>
-                       {
-                           webBuilder.ConfigureLogging((hostingContext, logging) =>
-                           {
-                               logging.ClearProviders();
-                               logging.SetMinimumLevel(LogLevel.Information);
-                               logging.AddConsole();
-                               logging.AddNLog($"nlog.{hostingContext.HostingEnvironment.EnvironmentName}.config");
-                           })
-                           .UseNLog()
-                           .UseUrls(appSettings.ServiceStartUrl)
-                           .UseKestrel()
-                           .UseStartup<TStartup>();
-                       });
+             Host.CreateDefaultBuilder(args)
+                 .UseServiceProviderFactory(new AutofacServiceProviderFactory(builder =>
+                 {
+                 
+                     var diAssemblies = appSettings.DiAssemblyNames.Select(name => Assembly.Load(name)).ToArray();
+                 
+                     builder.RegisterAssemblyTypes(diAssemblies)
+                             .Where(m => typeof(ITransientDependency).IsAssignableFrom(m) && m != typeof(ITransientDependency)) //直接或间接实现了ITransientDependency
+                             .AsImplementedInterfaces().InstancePerDependency().PropertiesAutowired();
+                 
+                     var controllerAssemblies = appSettings.ControllerAssemblyNames.Select(name => Assembly.Load(name));
+                 
+                     var types = controllerAssemblies.SelectMany(a => a.GetExportedTypes()).Where(type => typeof(ControllerBase).IsAssignableFrom(type)).ToArray();
+                     builder.RegisterTypes(types).PropertiesAutowired();
+                 
+                     //调用RegisterDynamicProxy扩展方法在Autofac中注册动态代理服务和动态代理配置 aop
+                     //在一般情况下可以使用抽象的AbstractInterceptorAttribute自定义特性类，它实现IInterceptor接口。AspectCore默认实现了基于Attribute的拦截器配置
+                     builder.RegisterDynamicProxy();
+                 }))
+                 .ConfigureWebHostDefaults(webBuilder =>
+                 {
+                     webBuilder.ConfigureLogging((hostingContext, logging) =>
+                     {
+                         logging.ClearProviders();
+                         logging.SetMinimumLevel(LogLevel.Information);
+                         logging.AddConsole();
+                         logging.AddNLog($"nlog.{hostingContext.HostingEnvironment.EnvironmentName}.config");
+                     })
+                     .UseNLog()
+                     .UseUrls(appSettings.ServiceStartUrl)
+                     .UseKestrel()
+                     .UseStartup<TStartup>();
+                 })
+                 .Build()
+                 .Run();
         }
     }
 }
