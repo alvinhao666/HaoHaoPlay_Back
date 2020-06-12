@@ -39,16 +39,13 @@ namespace Hao.Core.Extensions
 
              Host.CreateDefaultBuilder(args)
                  .UseServiceProviderFactory(new AutofacServiceProviderFactory(builder =>
-                 {
-                 
+                 {        
                      var diAssemblies = appSettings.DiAssemblyNames.Select(name => Assembly.Load(name)).ToArray();
 
-                     var diTypes = builder.RegisterAssemblyTypes(diAssemblies);
-
-                     diTypes.Where(m => typeof(ITransientDependency).IsAssignableFrom(m) && m != typeof(ITransientDependency)) //直接或间接实现了ITransientDependency
+                     builder.RegisterAssemblyTypes(diAssemblies).Where(m => typeof(ITransientDependency).IsAssignableFrom(m) && m != typeof(ITransientDependency)) //直接或间接实现了ITransientDependency
                             .AsImplementedInterfaces().InstancePerDependency().PropertiesAutowired();
 
-                     diTypes.Where(m => typeof(ISingletonDependency).IsAssignableFrom(m) && m != typeof(ISingletonDependency)) 
+                     builder.RegisterAssemblyTypes(diAssemblies).Where(m => typeof(ISingletonDependency).IsAssignableFrom(m) && m != typeof(ISingletonDependency)) 
                             .AsImplementedInterfaces().SingleInstance().PropertiesAutowired();
 
                      var controllerAssemblies = appSettings.ControllerAssemblyNames.Select(name => Assembly.Load(name));
