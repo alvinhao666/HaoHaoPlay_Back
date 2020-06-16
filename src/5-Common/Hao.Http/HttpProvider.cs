@@ -20,19 +20,19 @@ namespace Hao.Http
         }
 
         /// <summary>
-        /// Post提交
+        /// Post提交 需要用[FromForm]接受
         /// </summary>
         /// <param name="url"></param>
         /// <param name="dic"></param>
         /// <param name="mediaType"></param>
         /// <returns></returns>
-        public async Task<TResult> Post<TResult>(string url, Dictionary<string, string> dic, int timeoutSeconds = 30, string contentType= "application/json") where TResult : new()
+        public async Task<TResult> Post<TResult>(string url, Dictionary<string, string> dic, int timeoutSeconds = 30) where TResult : new()
         {
             var body = dic.Select(pair => pair.Key + "=" + WebUtility.UrlEncode(pair.Value))
                           .DefaultIfEmpty("") //如果是空 返回 new List<string>(){""};
                           .Aggregate((a, b) => a + "&" + b);
             StringContent c = new StringContent(body, Encoding.UTF8);
-            c.Headers.ContentType = new MediaTypeHeaderValue(contentType);
+            c.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
 
             _httpClient.Timeout = new TimeSpan(0, 0, timeoutSeconds);
             var response = await _httpClient.PostAsync(url, c);
@@ -50,7 +50,7 @@ namespace Hao.Http
         }
 
         /// <summary>
-        /// Post提交
+        /// Post提交 需要用[FromBody]接受
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="TResult"></typeparam>
@@ -58,13 +58,13 @@ namespace Hao.Http
         /// <param name="t"></param>
         /// <param name="contentType"></param>
         /// <returns></returns>
-        public async Task<TResult> Post<T, TResult>(string url, T t, int timeoutSeconds = 30, string contentType = "application/json") where T : new() where TResult : new()
+        public async Task<TResult> Post<T, TResult>(string url, T t, int timeoutSeconds = 30) where T : new() where TResult : new()
         {
             var json = JsonSerializer.Serialize(t);
 
             _httpClient.Timeout = new TimeSpan(0, 0, timeoutSeconds);
 
-            var response = await _httpClient.PostAsync(url, new StringContent(json, Encoding.UTF8, contentType));
+            var response = await _httpClient.PostAsync(url, new StringContent(json, Encoding.UTF8, "application/json"));
 
             if (response.IsSuccessStatusCode)
             {
