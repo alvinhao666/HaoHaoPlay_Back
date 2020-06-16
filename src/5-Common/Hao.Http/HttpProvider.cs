@@ -20,7 +20,7 @@ namespace Hao.Http
         }
 
         /// <summary>
-        /// Post提交 需要用[FromForm]接受
+        /// Post提交 需要用[FromForm]接收
         /// </summary>
         /// <param name="url"></param>
         /// <param name="dic"></param>
@@ -50,7 +50,7 @@ namespace Hao.Http
         }
 
         /// <summary>
-        /// Post提交 需要用[FromBody]接受
+        /// Post提交 需要用[FromBody]接收
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="TResult"></typeparam>
