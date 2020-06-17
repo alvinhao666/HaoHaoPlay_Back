@@ -21,6 +21,7 @@ namespace Hao.Core.Extensions
     {
         private readonly ILogger _logger = LogManager.GetCurrentClassLogger();
 
+        //IOptionsSnapshot修改即更新  和IConfiguration效果一样  热更新
         public IOptionsSnapshot<H_AppSettingsConfig> AppsettingsOptions { get; set; } //属性注入必须public
 
         [AttributeUsage(AttributeTargets.Method)]
