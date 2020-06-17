@@ -12,11 +12,11 @@ namespace Hao.Http
 {
     public class HttpProvider : IHttpProvider
     {
-        private readonly HttpClient _httpClient;
+        private readonly IHttpClientFactory _httpFactory;
 
         public HttpProvider(IHttpClientFactory httpFactory)
         {
-            _httpClient = httpFactory.CreateClient();
+            _httpFactory = httpFactory;
         }
 
         /// <summary>
@@ -28,14 +28,16 @@ namespace Hao.Http
         /// <returns></returns>
         public async Task<TResult> Post<TResult>(string url, Dictionary<string, string> dic, int timeoutSeconds = 30) where TResult : new()
         {
+
             var body = dic.Select(pair => pair.Key + "=" + WebUtility.UrlEncode(pair.Value))
                           .DefaultIfEmpty("") //如果是空 返回 new List<string>(){""};
                           .Aggregate((a, b) => a + "&" + b);
             StringContent c = new StringContent(body, Encoding.UTF8);
             c.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
 
-            _httpClient.Timeout = new TimeSpan(0, 0, timeoutSeconds);
-            var response = await _httpClient.PostAsync(url, c);
+            var httpClient = _httpFactory.CreateClient();
+            httpClient.Timeout = new TimeSpan(0, 0, timeoutSeconds);
+            var response = await httpClient.PostAsync(url, c);
 
             if (response.IsSuccessStatusCode)
             {
@@ -62,9 +64,10 @@ namespace Hao.Http
         {
             var json = JsonSerializer.Serialize(t);
 
-            _httpClient.Timeout = new TimeSpan(0, 0, timeoutSeconds);
+            var httpClient = _httpFactory.CreateClient();
+            httpClient.Timeout = new TimeSpan(0, 0, timeoutSeconds);
 
-            var response = await _httpClient.PostAsync(url, new StringContent(json, Encoding.UTF8, "application/json"));
+            var response = await httpClient.PostAsync(url, new StringContent(json, Encoding.UTF8, "application/json"));
 
             if (response.IsSuccessStatusCode)
             {
