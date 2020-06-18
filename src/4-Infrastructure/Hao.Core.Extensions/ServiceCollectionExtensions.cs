@@ -43,13 +43,6 @@ namespace Hao.Core.Extensions
                 });
             }
 
-            #region 单例注入，雪花id
-
-            var worker = new IdWorker(appSettings.SnowflakeId.WorkerId, appSettings.SnowflakeId.DataCenterId);
-            services.AddSingleton(worker);
-
-            #endregion
-
 
             #region Jwt
 
@@ -120,14 +113,6 @@ namespace Hao.Core.Extensions
             });
             #endregion
 
-
-            #region AutoMapper
-
-            services.AddAutoMapper(appSettings.AutoMapperAssemblyNames.Select(name => Assembly.Load(name)));
-
-            #endregion 
-
-
             //替换控制器所有者,详见有道笔记,放AddMvc前面 controller属性注入
             //services.Replace(ServiceDescriptor.Transient<IControllerActivator, ServiceBasedControllerActivator>());
 
@@ -157,6 +142,12 @@ namespace Hao.Core.Extensions
 
             //数据保护
             services.AddDataProtection();
+
+            //雪花id
+            services.AddSingleton(new IdWorker(appSettings.SnowflakeId.WorkerId, appSettings.SnowflakeId.DataCenterId));
+
+            //AutoMapper
+            services.AddAutoMapper(appSettings.AutoMapperAssemblyNames.Select(name => Assembly.Load(name)));
 
             services.AddScoped<ICurrentUser, CurrentUser>();
             services.AddScoped<IHttpProvider, HttpProvider>();
