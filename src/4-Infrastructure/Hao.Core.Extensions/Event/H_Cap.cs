@@ -1,14 +1,19 @@
-﻿using Hao.Core.Extensions;
+﻿using DotNetCore.CAP.Dashboard;
+using Hao.Core.Extensions;
+using System.Threading.Tasks;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
     public static class H_Cap
     {
-        public static IServiceCollection AddCapService(this IServiceCollection services, H_CapConfig config )
+        public static IServiceCollection AddCapService(this IServiceCollection services, H_CapConfig config)
         {
             services.AddCap(x =>
             {
-                x.UseDashboard();  //默认地址http://localhost:8000/cap
+                x.UseDashboard(a =>
+                {
+                    a.Authorization = new[] { new CapDashboardFilter() };
+                });  //默认地址http://localhost:8000/cap?password=666666
 
                 x.UsePostgreSql(cfg => { cfg.ConnectionString = config.PostgreSqlConnection; });
 
@@ -21,14 +26,30 @@ namespace Microsoft.Extensions.DependencyInjection
                     cfg.Password = config.Password;
                 });
 
-                x.FailedRetryCount = 3; //失败重试机会
-                x.FailedRetryInterval = 5;
-                x.SucceedMessageExpiredAfter = 24 * 3600;
+                x.FailedRetryCount = 5; //失败重试机会
+                //x.FailedRetryInterval = 5;
+                //x.SucceedMessageExpiredAfter = 24 * 3600;
                 // If you are using Kafka, you need to add the configuration：
                 //x.UseKafka("localhost");
             });
 
             return services;
+        }
+    }
+
+    public class CapDashboardFilter : IDashboardAuthorizationFilter
+    {
+
+        public async Task<bool> AuthorizeAsync(DashboardContext context)
+        {
+            return await Task.Factory.StartNew(() =>
+            {
+                if (context.Request.GetQuery("password") == "666666")
+                {
+                    return true;
+                }
+                return false;
+            });
         }
     }
 }
