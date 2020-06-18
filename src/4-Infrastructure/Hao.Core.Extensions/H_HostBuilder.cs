@@ -68,7 +68,7 @@ namespace Hao.Core.Extensions
                                 //.AddFilter("System", LogLevel.Error) //过滤Error等级以下（不报括Error）的信息
                                 //.AddFilter("DotNetCore.CAP", LogLevel.Error)
                                 //.AddConsole()
-                                .AddNLog($"nlog.{hostingContext.HostingEnvironment.EnvironmentName}.config");
+                                  .AddNLog($"nlog.{hostingContext.HostingEnvironment.EnvironmentName}.config");
                     })
                     .UseNLog()
                     .UseUrls(appSettings.ServiceStartUrl)
