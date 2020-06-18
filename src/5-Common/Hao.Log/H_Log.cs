@@ -1,3 +1,5 @@
+using System.Text.Json;
+
 namespace Hao.Log
 {
     public class H_Log
@@ -16,5 +18,14 @@ namespace Hao.Log
         /// 描述
         /// </summary>
         public string Description { get; set; }
+
+        /// <summary>
+        /// 重写方法，必须，用于日志记录
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return JsonSerializer.Serialize(this);
+        }
     }
 }

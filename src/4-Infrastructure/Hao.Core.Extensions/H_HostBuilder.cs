@@ -60,12 +60,14 @@ namespace Hao.Core.Extensions
                  }))
                  .ConfigureWebHostDefaults(webBuilder =>
                  {
-                     webBuilder.ConfigureLogging((hostingContext, logging) =>
+                     webBuilder.ConfigureLogging((hostingContext, logBuilder) =>
                      {
-                         logging.ClearProviders();
-                         logging.SetMinimumLevel(LogLevel.Information);
-                         logging.AddConsole();
-                         logging.AddNLog($"nlog.{hostingContext.HostingEnvironment.EnvironmentName}.config");
+                         logBuilder.ClearProviders()
+                                   //.SetMinimumLevel(LogLevel.Information)
+                                   //.AddFilter("Microsoft", LogLevel.Error)
+                                   //.AddFilter("System", LogLevel.Error) //过滤Error等级以下（不报括Error）的信息
+                                   //.AddConsole()
+                                   .AddNLog($"nlog.{hostingContext.HostingEnvironment.EnvironmentName}.config");
                      })
                      .UseNLog()
                      .UseUrls(appSettings.ServiceStartUrl)
