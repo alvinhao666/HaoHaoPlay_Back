@@ -24,7 +24,6 @@ namespace Hao.Core.Extensions
         /// <param name="args"></param>
         public void Run<TStartup>(string[] args) where TStartup : H_Startup<TConfig>
         {
-
             var config = new ConfigurationBuilder()
                 .SetBasePath(AppContext.BaseDirectory)
                 .AddJsonFile("appsettings.json", false) //optional:（Whether the file is optional）是否可选，意思是如果配置文件不存在的时候是否要抛异常。第三个参数 reloadOnChange  json文件更改后是否重新加载。
@@ -64,8 +63,10 @@ namespace Hao.Core.Extensions
                      {
                          logBuilder.ClearProviders()
                                    //.SetMinimumLevel(LogLevel.Information)
+                                   //.AddFilter("Microsoft.Hosting", LogLevel.Information)
                                    //.AddFilter("Microsoft", LogLevel.Error)
                                    //.AddFilter("System", LogLevel.Error) //过滤Error等级以下（不报括Error）的信息
+                                   //.AddFilter("DotNetCore.CAP", LogLevel.Error)
                                    //.AddConsole()
                                    .AddNLog($"nlog.{hostingContext.HostingEnvironment.EnvironmentName}.config");
                      })
