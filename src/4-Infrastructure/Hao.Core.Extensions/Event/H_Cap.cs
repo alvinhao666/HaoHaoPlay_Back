@@ -8,7 +8,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             services.AddCap(x =>
             {
-                x.UseDashboard(); 
+                x.UseDashboard();  //默认地址http://localhost:8000/cap
 
                 x.UsePostgreSql(cfg => { cfg.ConnectionString = config.PostgreSqlConnection; });
 
@@ -21,7 +21,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     cfg.Password = config.Password;
                 });
 
-                x.FailedRetryCount = 2; //失败重试机会
+                x.FailedRetryCount = 3; //失败重试机会
                 x.FailedRetryInterval = 5;
                 x.SucceedMessageExpiredAfter = 24 * 3600;
                 // If you are using Kafka, you need to add the configuration：
