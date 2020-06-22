@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Dynamic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -222,6 +223,34 @@ namespace Hao.Utility
             }
 
             return new List<string>() { province, city, district };
+        }
+
+
+        /// <summary>
+        /// 根据权重值，计算获取随机索引下标值
+        /// </summary>
+        /// <param name="pars">key:索引下标值, value:权重值</param>
+        /// <returns></returns>
+        public static int GetRandomIndex(Dictionary<int, int> pars)
+        {
+            int maxValue = 0;
+            foreach (var item in pars)
+            {
+                maxValue += item.Value;
+            }
+            var num = new Random().Next(1, maxValue);
+            var result = 0;
+            var endValue = 0;
+            foreach (var item in pars)
+            {
+                var index = pars.ToList().IndexOf(item);
+                var beginValue = index == 0 ? 0 : pars[index - 1];
+                endValue += item.Value;
+                result = item.Key;
+                if (num >= beginValue && num <= endValue)
+                    break;
+            }
+            return result;
         }
 
     }
