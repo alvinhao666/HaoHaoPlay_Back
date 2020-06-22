@@ -19,14 +19,14 @@ namespace Hao.Core
                 try
                 {
 #if DEBUG
-                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    Console.ForegroundColor = ConsoleColor.Blue;
 
                     Console.WriteLine("开始事务：" + sqlSugarClient.ContextID);
 #endif
                     sqlSugarClient.Ado.BeginTran();
                     await next(context);
 #if DEBUG
-                    Console.ForegroundColor = ConsoleColor.Magenta;
+                    Console.ForegroundColor = ConsoleColor.Blue;
 
                     Console.WriteLine("提交事务：" + sqlSugarClient.ContextID);
 #endif
@@ -35,7 +35,7 @@ namespace Hao.Core
                 catch (Exception ex)
                 {
 #if DEBUG
-                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.ForegroundColor = ConsoleColor.Red;
 
                     Console.WriteLine("回滚事务：" + sqlSugarClient.ContextID);
 #endif
