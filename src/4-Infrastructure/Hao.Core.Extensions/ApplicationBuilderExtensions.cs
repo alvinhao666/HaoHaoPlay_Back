@@ -18,7 +18,7 @@ namespace Hao.Core.Extensions
         /// <param name="env"></param>
         /// <param name="appSettings"></param>
         /// <returns></returns>
-        public static IApplicationBuilder UseWebHost(this IApplicationBuilder app, IHostEnvironment env, H_AppSettingsConfig appSettings)
+        public static IApplicationBuilder Configure(this IApplicationBuilder app, IHostEnvironment env, H_AppSettingsConfig appSettings)
         {
             if (env.IsDevelopment())
             {
