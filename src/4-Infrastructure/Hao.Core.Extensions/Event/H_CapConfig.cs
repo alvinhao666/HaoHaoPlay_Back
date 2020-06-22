@@ -1,6 +1,6 @@
 ﻿namespace Hao.Core.Extensions
 {
-    public class H_CapConfig
+    internal class H_CapConfig
     {
         public string PostgreSqlConnection { get; set; }
 

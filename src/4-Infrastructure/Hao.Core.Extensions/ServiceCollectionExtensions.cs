@@ -21,7 +21,7 @@ using System.Text.Encodings.Web;
 
 namespace Hao.Core.Extensions
 {
-    public static class ServiceCollectionExtensions
+    internal static class ServiceCollectionExtensions
     {
         public static IServiceCollection ConfigureServices(this IServiceCollection services, IHostEnvironment env, H_AppSettingsConfig appSettings)
         {

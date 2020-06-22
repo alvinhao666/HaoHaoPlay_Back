@@ -7,7 +7,7 @@ using Microsoft.Extensions.Options;
 
 namespace Hao.Core.Extensions
 {
-    public class StaticFileMiddleware
+    internal class StaticFileMiddleware
     {
         private readonly RequestDelegate _next;
         

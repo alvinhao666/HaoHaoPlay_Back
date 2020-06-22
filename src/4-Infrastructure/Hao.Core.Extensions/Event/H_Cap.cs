@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
-    public static class H_Cap
+    internal static class H_Cap
     {
         public static IServiceCollection AddCapService(this IServiceCollection services, H_CapConfig config)
         {
@@ -37,7 +37,7 @@ namespace Microsoft.Extensions.DependencyInjection
         }
     }
 
-    public class CapDashboardFilter : IDashboardAuthorizationFilter
+    internal class CapDashboardFilter : IDashboardAuthorizationFilter
     {
 
         public async Task<bool> AuthorizeAsync(DashboardContext context)

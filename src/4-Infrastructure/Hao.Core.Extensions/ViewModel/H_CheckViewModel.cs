@@ -4,9 +4,9 @@ using System.Linq;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
-    public static class H_CheckViewModel
+    internal static class H_CheckViewModel
     {
-        public static IServiceCollection AddCheckViewModelService(this IServiceCollection services)
+        internal static IServiceCollection AddCheckViewModelService(this IServiceCollection services)
         {
             services.Configure<ApiBehaviorOptions>(options =>
             {

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Hao.Core.Extensions
 {
-    public static class ExceptionMiddleware
+    internal static class ExceptionMiddleware
     {
         private readonly static ILogger _logger = LogManager.GetCurrentClassLogger();
 

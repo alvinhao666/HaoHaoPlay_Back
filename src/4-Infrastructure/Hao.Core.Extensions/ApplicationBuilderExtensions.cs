@@ -9,7 +9,7 @@ using System.IO;
 
 namespace Hao.Core.Extensions
 {
-    public static class ApplicationBuilderExtensions
+    internal static class ApplicationBuilderExtensions
     {
         /// <summary>
         /// 启动webhost
@@ -18,7 +18,7 @@ namespace Hao.Core.Extensions
         /// <param name="env"></param>
         /// <param name="appSettings"></param>
         /// <returns></returns>
-        public static IApplicationBuilder Configure(this IApplicationBuilder app, IHostEnvironment env, H_AppSettingsConfig appSettings)
+        internal static IApplicationBuilder Configure(this IApplicationBuilder app, IHostEnvironment env, H_AppSettingsConfig appSettings)
         {
             if (env.IsDevelopment())
             {

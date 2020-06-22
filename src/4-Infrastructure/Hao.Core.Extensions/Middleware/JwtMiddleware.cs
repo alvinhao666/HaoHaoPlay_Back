@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Hao.Core.Extensions
 {
-    public class JwtMiddleware
+    internal class JwtMiddleware
     {
         private readonly RequestDelegate _next;
 

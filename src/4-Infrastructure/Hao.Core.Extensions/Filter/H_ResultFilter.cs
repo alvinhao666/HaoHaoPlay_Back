@@ -7,7 +7,7 @@ namespace Hao.Core.Extensions
     /// <summary>
     /// 全局过滤器
     /// </summary>
-    public class H_ResultFilter : ResultFilterAttribute, IResultFilter
+    internal class H_ResultFilter : ResultFilterAttribute, IResultFilter
     {
         public override void OnResultExecuting(ResultExecutingContext context)
         {

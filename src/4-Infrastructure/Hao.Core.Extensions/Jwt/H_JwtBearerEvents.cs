@@ -11,7 +11,7 @@ namespace Hao.Core.Extensions
     /// <summary>
 	/// 重写JWT触发函数
 	/// </summary>
-	public class H_JwtBearerEvents : JwtBearerEvents
+	internal class H_JwtBearerEvents : JwtBearerEvents
     {
         #region 暂不需要重写
         ///// <summary>
