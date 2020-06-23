@@ -1,5 +1,4 @@
-﻿using System.IO;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Hao.Core.Extensions;
 using Microsoft.Extensions.DependencyInjection;
