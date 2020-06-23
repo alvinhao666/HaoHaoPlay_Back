@@ -20,7 +20,7 @@ namespace Hao.Core.Extensions
         {
             var parentDir = new DirectoryInfo(AppContext.BaseDirectory).Parent;
          
-            //parentDir = currentDir?.Parent.Parent.Parent.Parent.Parent; //验证是null 而不是抛出异常
+            //parentDir = currentDir?.Parent.Parent.Parent.Parent.Parent; 验证是null 而不是抛出异常
             if (parentDir == null) throw new Exception("项目安置路径有误，请检查");
 
             _env = env;
@@ -42,7 +42,7 @@ namespace Hao.Core.Extensions
             filePathOption.GetSection(nameof(H_AppSettingsConfig.FilePath.ImportExcelPath)).Value = _appSettings.FilePath.ImportExcelPath;
             filePathOption.GetSection(nameof(H_AppSettingsConfig.FilePath.AvatarPath)).Value = _appSettings.FilePath.AvatarPath;
 
-            services.Configure<TConfig>(_cfg); ////绑定配置对象 子类 （新增配置信息）
+            services.Configure<TConfig>(_cfg); //绑定配置对象 子类 （新增配置信息）
 
             services.Configure<H_AppSettingsConfig>(_cfg); //绑定配置对象 基类
 
