@@ -10,7 +10,7 @@ namespace HaoHaoPlay_Back.ApiHost
 {
     public class Startup<TConfig> : H_Startup<TConfig> where TConfig : H_AppSettingsConfig, new()
     {
-        public Startup(IHostEnvironment env, IConfiguration cfg) : base(env, cfg, new DirectoryInfo(Directory.GetCurrentDirectory()))
+        public Startup(IHostEnvironment env, IConfiguration cfg) : base(env, cfg)
         {
         }
 
