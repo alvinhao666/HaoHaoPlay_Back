@@ -14,7 +14,7 @@ namespace HaoHaoPlay_Back.ApiHost
         }
 
         /// <summary>
-        ///  用于配置依赖注入以在运行时根据依赖关系创建对象
+        /// 用于配置依赖注入以在运行时根据依赖关系创建对象
         /// </summary>
         /// <param name="services"></param>
         public override void ConfigureServices(IServiceCollection services)
