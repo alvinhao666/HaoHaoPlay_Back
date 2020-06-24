@@ -4,6 +4,7 @@ using Hao.Core;
 using Hao.Encrypt;
 using Hao.Enum;
 using Hao.File;
+using Hao.Json;
 using Hao.Library;
 using Hao.Repository;
 using Hao.RunTimeException;
@@ -135,10 +136,10 @@ namespace Hao.AppService
 
             if (value.HasValue())
             {
-                var cacheUser = JsonSerializer.Deserialize<RedisCacheUser>(value);
+                var cacheUser = H_JsonSerializer.Deserialize<RedisCacheUser>(value);
                 cacheUser.LoginStatus = LoginStatus.Offline;
 
-                await RedisHelper.SetAsync($"{_appsettings.RedisPrefix.Login}{userId}_{jti}", JsonSerializer.Serialize(cacheUser));
+                await RedisHelper.SetAsync($"{_appsettings.RedisPrefix.Login}{userId}_{jti}", H_JsonSerializer.Serialize(cacheUser));
             }
         }
     }

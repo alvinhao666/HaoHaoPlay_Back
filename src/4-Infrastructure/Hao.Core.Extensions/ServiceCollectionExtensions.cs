@@ -129,6 +129,7 @@ namespace Hao.Core.Extensions
                 //Newtonsoft.Json 等默认支持隐式转换, 不一定是个合理的方式
                 o.JsonSerializerOptions.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
                 o.JsonSerializerOptions.PropertyNamingPolicy = null;
+                //o.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase //开头字母小写 默认
                 o.JsonSerializerOptions.Converters.Add(new DatetimeJsonConverter());
                 o.JsonSerializerOptions.Converters.Add(new LongJsonConvert());
             }); //.AddWebApiConventions() 处理HttpResponseMessage类型返回值的问题

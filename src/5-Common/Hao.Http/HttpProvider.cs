@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Hao.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Hao.Http
@@ -43,7 +43,7 @@ namespace Hao.Http
             {
                 var content = await response.Content.ReadAsStringAsync();
 
-                var result = JsonSerializer.Deserialize<TResult>(content);
+                var result = H_JsonSerializer.Deserialize<TResult>(content);
 
                 return result;
             }
@@ -62,7 +62,7 @@ namespace Hao.Http
         /// <returns></returns>
         public async Task<TResult> Post<T, TResult>(string url, T t, int timeoutSeconds = 30) where T : new() where TResult : new()
         {
-            var json = JsonSerializer.Serialize(t);
+            var json = H_JsonSerializer.Serialize(t);
 
             var httpClient = _httpFactory.CreateClient();
             httpClient.Timeout = new TimeSpan(0, 0, timeoutSeconds);
@@ -73,7 +73,7 @@ namespace Hao.Http
             {
                 string content = await response.Content.ReadAsStringAsync();
 
-                var result = JsonSerializer.Deserialize<TResult>(content);
+                var result = H_JsonSerializer.Deserialize<TResult>(content);
 
                 return result;
             }

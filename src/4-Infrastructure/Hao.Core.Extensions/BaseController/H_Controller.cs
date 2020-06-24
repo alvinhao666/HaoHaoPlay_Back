@@ -1,4 +1,5 @@
-﻿using Hao.Library;
+﻿using Hao.Json;
+using Hao.Library;
 using Hao.Log;
 using Hao.RunTimeException;
 using Microsoft.AspNetCore.Authorization;
@@ -89,7 +90,7 @@ namespace Hao.Core.Extensions
 
             if (string.IsNullOrWhiteSpace(value)) throw new H_Exception(ErrorInfo.E100002, nameof(ErrorInfo.E100002).GetErrorCode());
 
-            var cacheUser = JsonSerializer.Deserialize<RedisCacheUser>(value);
+            var cacheUser = H_JsonSerializer.Deserialize<RedisCacheUser>(value);
 
             if (cacheUser?.Id == null) throw new H_Exception(ErrorInfo.E100002, nameof(ErrorInfo.E100002).GetErrorCode());
 

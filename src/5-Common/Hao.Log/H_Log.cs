@@ -1,5 +1,4 @@
-using System.Text.Encodings.Web;
-using System.Text.Json;
+using Hao.Json;
 
 namespace Hao.Log
 {
@@ -26,7 +25,7 @@ namespace Hao.Log
         /// <returns></returns>
         public override string ToString()
         {
-            return JsonSerializer.Serialize(this, new JsonSerializerOptions() { Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping });
+            return H_JsonSerializer.Serialize(this);
         }
     }
 }

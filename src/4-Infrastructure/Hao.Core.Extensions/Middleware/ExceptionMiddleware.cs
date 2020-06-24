@@ -1,4 +1,5 @@
 ﻿using AspectCore.DynamicProxy;
+using Hao.Json;
 using Hao.Response;
 using Hao.RunTimeException;
 using Microsoft.AspNetCore.Builder;
@@ -28,7 +29,7 @@ namespace Hao.Core.Extensions
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, JsonSerializer.Serialize(ex.Message));
+                _logger.Error(ex, H_JsonSerializer.Serialize(ex.Message));
             }
         }
 
@@ -70,11 +71,9 @@ namespace Hao.Core.Extensions
                 ex.Message
             };
 
-            _logger.Error(ex, JsonSerializer.Serialize(errorLog));
+            _logger.Error(ex, H_JsonSerializer.Serialize(errorLog));
 
-            await context.Response.WriteAsync(
-                JsonSerializer.Serialize(response,new JsonSerializerOptions() {Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping}),
-                Encoding.UTF8);
+            await context.Response.WriteAsync(H_JsonSerializer.Serialize(response), Encoding.UTF8);
         }
     }
 }

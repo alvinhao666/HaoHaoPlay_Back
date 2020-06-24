@@ -1,8 +1,8 @@
 ﻿using Hao.Core;
 using Hao.EventData;
+using Hao.Json;
 using Hao.Library;
 using Microsoft.Extensions.Options;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Hao.Event
@@ -27,10 +27,10 @@ namespace Hao.Event
                 foreach (var key in keys)
                 {
                     var value = await RedisHelper.GetAsync(key);
-                    var cacheUser = JsonSerializer.Deserialize<RedisCacheUser>(value);
+                    var cacheUser = H_JsonSerializer.Deserialize<RedisCacheUser>(value);
                     cacheUser.IsAuthUpdate = true;
                     cacheUser.LoginStatus = LoginStatus.Offline;
-                    await RedisHelper.SetAsync(key, JsonSerializer.Serialize(cacheUser));
+                    await RedisHelper.SetAsync(key, H_JsonSerializer.Serialize(cacheUser));
                 }
             }
         }

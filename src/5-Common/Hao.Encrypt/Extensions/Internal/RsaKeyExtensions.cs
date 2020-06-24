@@ -1,12 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Security.Cryptography;
 using System.Xml;
 using Hao.Encrypt.Shared;
 using Hao.Encrypt.Internal;
 using System.Text.Json;
+using Hao.Json;
 
 namespace Hao.Encrypt.Extensions.Internal
 {
@@ -28,7 +26,7 @@ namespace Hao.Encrypt.Extensions.Internal
             RSAParameters parameters = new RSAParameters();
             try
             {
-                var paramsJson = JsonSerializer.Deserialize<RSAParametersJson>(jsonString);
+                var paramsJson = H_JsonSerializer.Deserialize<RSAParametersJson>(jsonString);
 
                 parameters.Modulus = paramsJson.Modulus != null ? Convert.FromBase64String(paramsJson.Modulus) : null;
                 parameters.Exponent = paramsJson.Exponent != null ? Convert.FromBase64String(paramsJson.Exponent) : null;
@@ -68,7 +66,7 @@ namespace Hao.Encrypt.Extensions.Internal
                 D = parameters.D != null ? Convert.ToBase64String(parameters.D) : null
             };
 
-            return JsonSerializer.Serialize(parasJson);
+            return H_JsonSerializer.Serialize(parasJson);
         }
         #endregion
 

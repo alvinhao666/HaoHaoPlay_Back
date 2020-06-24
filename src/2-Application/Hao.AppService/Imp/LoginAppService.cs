@@ -4,6 +4,7 @@ using Hao.AppService.ViewModel;
 using Hao.Core;
 using Hao.Encrypt;
 using Hao.EventData;
+using Hao.Json;
 using Hao.Library;
 using Hao.Model;
 using Hao.Repository;
@@ -77,7 +78,7 @@ namespace Hao.AppService
 
             if (string.IsNullOrWhiteSpace(user.AuthNumbers)) throw new H_Exception(_noAuthTip);
 
-            var authNums = JsonSerializer.Deserialize<List<long>>(user.AuthNumbers);
+            var authNums = H_JsonSerializer.Deserialize<List<long>>(user.AuthNumbers);
 
             if (authNums.Count == 0) throw new H_Exception(_noAuthTip);
 
@@ -105,7 +106,7 @@ namespace Hao.AppService
             };
 
             int expireSeconds = (int)expireTime.Subtract(timeNow).Duration().TotalSeconds + 1;
-            await RedisHelper.SetAsync($"{_appsettings.RedisPrefix.Login}{user.Id}_{jti}", JsonSerializer.Serialize(userValue), expireSeconds);
+            await RedisHelper.SetAsync($"{_appsettings.RedisPrefix.Login}{user.Id}_{jti}", H_JsonSerializer.Serialize(userValue), expireSeconds);
 
             //同步登录信息，例如ip等等
             await AsyncLoginInfo(user.Id, timeNow);

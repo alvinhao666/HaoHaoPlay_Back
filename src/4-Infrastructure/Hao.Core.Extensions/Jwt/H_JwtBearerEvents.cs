@@ -1,4 +1,5 @@
-﻿using Hao.Library;
+﻿using Hao.Json;
+using Hao.Library;
 using Hao.Response;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
@@ -54,7 +55,7 @@ namespace Hao.Core.Extensions
         //        ErrorCode = nameof(ErrorInfo.E100001).GetErrorCode(),
         //        ErrorMsg = ErrorInfo.E100001
         //    };
-        //    await context.Response.WriteAsync(JsonSerializer.Serialize(response));
+        //    await context.Response.WriteAsync(H_JsonSerializer.Serialize(response));
         //}
 
 
@@ -74,7 +75,7 @@ namespace Hao.Core.Extensions
                 ErrorCode = nameof(ErrorInfo.E100001).GetErrorCode(),
                 ErrorMsg = ErrorInfo.E100001
             };
-            await context.Response.WriteAsync(JsonSerializer.Serialize(response));
+            await context.Response.WriteAsync(H_JsonSerializer.Serialize(response));
         }
     }
 }
