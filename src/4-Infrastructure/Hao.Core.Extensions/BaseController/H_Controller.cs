@@ -53,13 +53,26 @@ namespace Hao.Core.Extensions
         /// <param name="context"></param>
         public override void OnActionExecuted(ActionExecutedContext context)
         {
+            object result = null; //EmptyResult对应null
+
+            if (context.Result is ObjectResult)
+            {
+                result = (context.Result as ObjectResult)?.Value;
+            }
+            else if (context.Result is JsonResult)
+            {
+                result = (context.Result as JsonResult)?.Value;
+            }
+
             var param = new
             {
                 context.HttpContext.TraceIdentifier,
                 UserId = context.HttpContext.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sid)?.Value,
-                Result = context.Result is EmptyResult ? null : (context.Result as ObjectResult)?.Value
+                Result = result
             };
+
             _logger.Info(new H_Log{ Method = HttpContext.Request.Path.Value, Argument = param, Description = "返回信息" });
+
             base.OnActionExecuted(context);
         }
 

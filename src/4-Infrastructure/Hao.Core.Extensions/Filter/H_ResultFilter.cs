@@ -18,8 +18,10 @@ namespace Hao.Core.Extensions
                     Success = true,
                     Data = context.Result is EmptyResult ? null : (context.Result as ObjectResult)?.Value
                 };
+
                 context.Result = new JsonResult(response);
             }
+
             base.OnResultExecuting(context);
         }
     }
