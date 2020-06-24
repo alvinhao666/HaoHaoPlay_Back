@@ -29,7 +29,6 @@ namespace Hao.Json
         /// </summary>
         /// <typeparam name="TValue"></typeparam>
         /// <param name="json"></param>
-        /// <param name="options"></param>
         /// <returns></returns>
         public static TValue Deserialize<TValue>(string json)
         {
