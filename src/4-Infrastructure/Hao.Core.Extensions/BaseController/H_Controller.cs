@@ -1,4 +1,5 @@
 ﻿using Hao.Library;
+using Hao.Log;
 using Hao.RunTimeException;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -37,7 +38,7 @@ namespace Hao.Core.Extensions
 
             var argument = new { context.HttpContext.TraceIdentifier, UserId = userId, context.ActionArguments };
 
-            _logger.Info(JsonSerializer.Serialize(new { Method = context.HttpContext.Request.Path.Value, Argument = argument, Description = "haohaoplay_back的请求信息" }));
+            _logger.Info(new H_Log{ Method = context.HttpContext.Request.Path.Value, Argument = argument, Description = "请求信息" });
 
             var cache = GetCacheUser(userId, jti);
 
@@ -47,7 +48,7 @@ namespace Hao.Core.Extensions
         }
 
         /// <summary>
-        /// 控制器中的操作执行后调用此方法
+        /// 控制器中的操作执行后调用此方法 再执行H_ResultFilter全局过滤器
         /// </summary>
         /// <param name="context"></param>
         public override void OnActionExecuted(ActionExecutedContext context)
@@ -56,9 +57,9 @@ namespace Hao.Core.Extensions
             {
                 context.HttpContext.TraceIdentifier,
                 UserId = context.HttpContext.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sid)?.Value,
-                context.Result
+                Result = context.Result is EmptyResult ? null : (context.Result as ObjectResult)?.Value
             };
-            _logger.Info(JsonSerializer.Serialize(new { Method = HttpContext.Request.Path.Value, Argument = param, Description = "haohaoplay_back的返回信息" }));
+            _logger.Info(new H_Log{ Method = HttpContext.Request.Path.Value, Argument = param, Description = "返回信息" });
             base.OnActionExecuted(context);
         }
 
