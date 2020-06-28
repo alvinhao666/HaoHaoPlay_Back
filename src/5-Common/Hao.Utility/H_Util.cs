@@ -233,11 +233,8 @@ namespace Hao.Utility
         /// <returns></returns>
         public static int GetRandomIndex(Dictionary<int, int> pars)
         {
-            int maxValue = 0;
-            foreach (var item in pars)
-            {
-                maxValue += item.Value;
-            }
+            var maxValue = pars.Sum(a => a.Value); //总权重
+
             var num = new Random().Next(1, maxValue);
             var result = 0;
             var endValue = 0;
