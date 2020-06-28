@@ -59,7 +59,7 @@ namespace Hao.AppService
             }
             catch (PostgresException ex)
             {
-                if (ex.SqlState == PostgresSqlState.E23505) throw new H_Exception("角色名称已存在，请重新输入");//违反唯一键
+                if (ex.SqlState == H_PostgresSqlState.E23505) throw new H_Exception("角色名称已存在，请重新输入");//违反唯一键
             }
         }
 

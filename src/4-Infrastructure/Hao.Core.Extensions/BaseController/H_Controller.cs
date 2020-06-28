@@ -84,22 +84,22 @@ namespace Hao.Core.Extensions
         /// <param name="userId"></param>
         /// <param name="jti"></param>
         /// <returns></returns>
-        private RedisCacheUser GetCacheUser(string userId, string jti)
+        private H_RedisCacheUser GetCacheUser(string userId, string jti)
         {
             var value = RedisHelper.Get($"{AppsettingsOptions.Value.RedisPrefix.Login}{userId}_{jti}");
 
-            if (string.IsNullOrWhiteSpace(value)) throw new H_Exception(ErrorInfo.E100002, nameof(ErrorInfo.E100002).GetErrorCode());
+            if (string.IsNullOrWhiteSpace(value)) throw new H_Exception(H_Error.E100002, nameof(H_Error.E100002).GetErrorCode());
 
-            var cacheUser = H_JsonSerializer.Deserialize<RedisCacheUser>(value);
+            var cacheUser = H_JsonSerializer.Deserialize<H_RedisCacheUser>(value);
 
-            if (cacheUser?.Id == null) throw new H_Exception(ErrorInfo.E100002, nameof(ErrorInfo.E100002).GetErrorCode());
+            if (cacheUser?.Id == null) throw new H_Exception(H_Error.E100002, nameof(H_Error.E100002).GetErrorCode());
 
             if (cacheUser.LoginStatus.HasValue
                 && cacheUser.LoginStatus == LoginStatus.Offline
                 && cacheUser.IsAuthUpdate.HasValue
-                && cacheUser.IsAuthUpdate.Value) throw new H_Exception(ErrorInfo.E100003, nameof(ErrorInfo.E100003).GetErrorCode());
+                && cacheUser.IsAuthUpdate.Value) throw new H_Exception(H_Error.E100003, nameof(H_Error.E100003).GetErrorCode());
 
-            if (!cacheUser.LoginStatus.HasValue || cacheUser.LoginStatus == LoginStatus.Offline) throw new H_Exception(ErrorInfo.E100002, nameof(ErrorInfo.E100002).GetErrorCode());
+            if (!cacheUser.LoginStatus.HasValue || cacheUser.LoginStatus == LoginStatus.Offline) throw new H_Exception(H_Error.E100002, nameof(H_Error.E100002).GetErrorCode());
 
             return cacheUser;
         }

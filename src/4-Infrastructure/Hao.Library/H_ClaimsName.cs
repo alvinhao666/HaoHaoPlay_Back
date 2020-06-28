@@ -3,7 +3,7 @@
     /// <summary>
     /// Claims名称
     /// </summary>
-    public static class ClaimsName
+    public static class H_ClaimsName
     {
         /// <summary>
         /// 用户姓名

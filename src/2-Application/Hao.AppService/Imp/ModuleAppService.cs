@@ -158,7 +158,7 @@ namespace Hao.AppService
                 }
                 catch (PostgresException ex)
                 {
-                    if (ex.SqlState == PostgresSqlState.E23505) throw new H_Exception("添加失败，请重新添加");//违反唯一键
+                    if (ex.SqlState == H_PostgresSqlState.E23505) throw new H_Exception("添加失败，请重新添加");//违反唯一键
                 }
             }
         }

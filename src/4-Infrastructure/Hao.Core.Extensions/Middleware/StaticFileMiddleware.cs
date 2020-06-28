@@ -26,7 +26,7 @@ namespace Hao.Core.Extensions
             //https传递查询参数肯定是没有问题的，但是不要用来传递可能引发安全问题的敏感信息奥。
             if (!context.Request.Query.ContainsKey("Authorization"))
             {
-                throw new H_Exception(ErrorInfo.E100001, nameof(ErrorInfo.E100001).GetErrorCode());
+                throw new H_Exception(H_Error.E100001, nameof(H_Error.E100001).GetErrorCode());
             }
             
             // var fileId = _protector.Unprotect(context.Request.Query["FileId"].ToString());

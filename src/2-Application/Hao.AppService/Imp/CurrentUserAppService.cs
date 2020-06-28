@@ -136,7 +136,7 @@ namespace Hao.AppService
 
             if (value.HasValue())
             {
-                var cacheUser = H_JsonSerializer.Deserialize<RedisCacheUser>(value);
+                var cacheUser = H_JsonSerializer.Deserialize<H_RedisCacheUser>(value);
                 cacheUser.LoginStatus = LoginStatus.Offline;
 
                 await RedisHelper.SetAsync($"{_appsettings.RedisPrefix.Login}{userId}_{jti}", H_JsonSerializer.Serialize(cacheUser));

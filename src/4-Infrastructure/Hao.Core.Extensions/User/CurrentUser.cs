@@ -29,7 +29,7 @@ namespace Hao.Core.Extensions
         /// </summary>
         public string Name
         {
-            get => _httpContext == null ? null : _httpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimsName.Name)?.Value.ToString();
+            get => _httpContext == null ? null : _httpContext.User.Claims.FirstOrDefault(x => x.Type == H_ClaimsName.Name)?.Value.ToString();
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace Hao.Core.Extensions
         /// </summary>
         public int? RoleLevel
         {
-            get => _httpContext == null ? null : H_Convert.ToInt(_httpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimsName.RoleLevel)?.Value);
+            get => _httpContext == null ? null : H_Convert.ToInt(_httpContext.User.Claims.FirstOrDefault(x => x.Type == H_ClaimsName.RoleLevel)?.Value);
         }
 
         /// <summary>

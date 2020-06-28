@@ -96,7 +96,7 @@ namespace Hao.AppService
             var jwt = CreateJwt(timeNow, expireTime, jti, user);
 
             //存入redis
-            var userValue = new RedisCacheUser
+            var userValue = new H_RedisCacheUser
             {
                 Id = user.Id,
                 Name = user.Name,
@@ -157,8 +157,8 @@ namespace Hao.AppService
                 new Claim(JwtRegisteredClaimNames.Jti, jti), //针对当前 token 的唯一标识 jwt的唯一身份标识，避免重复
                 new Claim(JwtRegisteredClaimNames.Sid, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Iat, timeNow.Ticks.ToString(), ClaimValueTypes.Integer64), //token 创建时间
-                new Claim(ClaimsName.Name, user.Name),
-                new Claim(ClaimsName.RoleLevel, user.RoleLevel.ToString())
+                new Claim(H_ClaimsName.Name, user.Name),
+                new Claim(H_ClaimsName.RoleLevel, user.RoleLevel.ToString())
             };
 
             var jwt = new JwtSecurityTokenHandler().WriteToken(new JwtSecurityToken(
