@@ -1,10 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.Text;
 using System.Security.Cryptography;
 using System.IO;
 using Hao.Encrypt.Shared;
-using Hao.Encrypt.Extensions;
 using Hao.Encrypt.Internal;
 using Hao.Encrypt.Extensions.Internal;
 

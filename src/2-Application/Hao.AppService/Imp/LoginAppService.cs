@@ -69,7 +69,7 @@ namespace Hao.AppService
             var timeNow = DateTime.Now;
             var expireTime = timeNow.AddDays(isRememberLogin ? 3 : 1);
             //rsa解密
-            password = RSAHelper.Decrypt(_appsettings.Key.RsaPrivateKey, password);
+            password = RsaHelper.Decrypt(_appsettings.Key.RsaPrivateKey, password);
             //sha256加密
             password = EncryptProvider.HMACSHA256(password, _appsettings.Key.Sha256Key); 
 
