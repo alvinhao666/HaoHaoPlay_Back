@@ -15,7 +15,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="connectionString"></param>
         /// <param name="slaveConnectionStrings"></param>
         /// <returns></returns>
-        public static IServiceCollection AddPostgreSQLService(this IServiceCollection services, string connectionString, Dictionary<string, int> slaveConnectionStrings = null)
+        public static IServiceCollection AddPostgreSqlService(this IServiceCollection services, string connectionString, Dictionary<string, int> slaveConnectionStrings = null)
         {
             return AddSQLService(services, DbType.PostgreSQL, connectionString, slaveConnectionStrings);
         }
@@ -27,7 +27,19 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="connectionString"></param>
         /// <param name="slaveConnectionStrings"></param>
         /// <returns></returns>
-        public static IServiceCollection AddMySQLService(this IServiceCollection services, string connectionString, Dictionary<string, int> slaveConnectionStrings = null)
+        public static IServiceCollection AddMySqlService(this IServiceCollection services, string connectionString, Dictionary<string, int> slaveConnectionStrings = null)
+        {
+            return AddSQLService(services, DbType.MySql, connectionString, slaveConnectionStrings);
+        }
+
+        /// <summary>
+        /// sqlserver
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="connectionString"></param>
+        /// <param name="slaveConnectionStrings"></param>
+        /// <returns></returns>
+        public static IServiceCollection AddSqlServerService(this IServiceCollection services, string connectionString, Dictionary<string, int> slaveConnectionStrings = null)
         {
             return AddSQLService(services, DbType.MySql, connectionString, slaveConnectionStrings);
         }
