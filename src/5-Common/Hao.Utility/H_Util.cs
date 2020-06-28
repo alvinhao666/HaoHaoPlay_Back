@@ -241,7 +241,7 @@ namespace Hao.Utility
 
             foreach (var item in pars)
             {
-                var beginValue = index == 0 ? 0 : item.Value;
+                var beginValue = index == 0 ? 0 : pars[index - 1];
 
                 endValue += item.Value;
 
