@@ -51,9 +51,9 @@ namespace Microsoft.Extensions.DependencyInjection
                 OnLogExecuting = (sql, p) =>
                 {
                     Console.ForegroundColor = ConsoleColor.Cyan;
-                    Console.WriteLine(sql);
+                    Console.WriteLine($"SQL：{sql}");
                     Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine(string.Join(",", p?.Select(it => string.Format("{0}:{1}", it.ParameterName, it.Value))));
+                    Console.WriteLine($"参数：{string.Join(",", p?.Select(it => string.Format("{0}:{1}", it.ParameterName, it.Value)))}");
                     Console.ForegroundColor = ConsoleColor.White;
                 }
             };
