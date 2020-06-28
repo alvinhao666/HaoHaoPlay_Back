@@ -4,17 +4,21 @@ namespace Hao.Library
 {
     public class ConnectionStringConfig
     {
-        public string MySql_Master { get; set; }
-
-        public List<Sql_SlaveConfig> MySql_Slave { get; set; }
-
         public string PostgreSql_Master { get; set; }
 
         public List<Sql_SlaveConfig> PostgreSql_Slave { get; set; }
 
         public string Redis { get; set; }
 
-        public string SqlServer { get; set; }
+
+
+        public string MySql_Master { get; set; }
+
+        public List<Sql_SlaveConfig> MySql_Slave { get; set; }
+
+        public string SqlServer_Master { get; set; }
+
+        public List<Sql_SlaveConfig> SqlServer_Slave { get; set; }
     }
 
     public class Sql_SlaveConfig
