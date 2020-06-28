@@ -2,6 +2,7 @@
 using Hao.AppService.ViewModel;
 using Hao.Core.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -18,6 +19,13 @@ namespace Hao.WebApi.Controllers
         {
             _dictAppService = dictAppService;
         }
+
+        /// <summary>
+        /// 获取服务器当前时间
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public DateTime GetCurrentTime() => DateTime.Now;
 
 
         /// <summary>
