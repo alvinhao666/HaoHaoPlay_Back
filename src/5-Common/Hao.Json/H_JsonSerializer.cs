@@ -18,7 +18,9 @@ namespace Hao.Json
         {
             return JsonSerializer.Serialize(value, new JsonSerializerOptions()
             {
-                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+                //在默认情况下，System.Text.Json 序列化程序对所有非 ASCII 字符进行转义；这就是中文被转义的根本原因
+                //可以不必设置例外而达到不转义的效果，这个模式就是“非严格JSON”模式
+                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping, 
                 PropertyNamingPolicy = null
             });
         }
