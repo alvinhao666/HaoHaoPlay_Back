@@ -74,7 +74,7 @@ namespace Hao.AppService
             password = EncryptProvider.HMACSHA256(password, _appsettings.Key.Sha256Key); 
 
             //根据账号密码查询用户
-            var user = await GetUser(loginName, password);
+            var user = await GetUserByLoginName(loginName, password);
 
             if (string.IsNullOrWhiteSpace(user.AuthNumbers)) throw new H_Exception(_noAuthTip);
 
@@ -125,12 +125,12 @@ namespace Hao.AppService
 
 
         /// <summary>
-        /// 获取用户
+        /// 登录获取用户
         /// </summary>
         /// <param name="loginName"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        private async Task<SysUser> GetUser(string loginName, string password)
+        private async Task<SysUser> GetUserByLoginName(string loginName, string password)
         {
             var users = await _userRep.GetUserByLoginName(loginName, password);
 

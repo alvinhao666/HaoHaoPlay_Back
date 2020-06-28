@@ -22,7 +22,7 @@ namespace Hao.Utility
             {
                 if (argument == null)
                 {
-                    throw new ArgumentNullException(argumentName, message);
+                    throw new ArgumentNullException(argumentName, message); //异常中件捕捉到异常信息，记录到日志中
                 }
             }
 

@@ -71,7 +71,7 @@ namespace Hao.Core.Extensions
                 ex.Message
             };
 
-            _logger.Error(ex, H_JsonSerializer.Serialize(errorLog));
+            _logger.Error(ex, H_JsonSerializer.Serialize(errorLog)); //异常信息，记录到日志中
 
             await context.Response.WriteAsync(H_JsonSerializer.Serialize(response), Encoding.UTF8);
         }
