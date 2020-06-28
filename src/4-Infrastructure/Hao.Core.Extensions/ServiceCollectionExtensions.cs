@@ -86,7 +86,7 @@ namespace Hao.Core.Extensions
 
             #region Orm
 
-            services.AddPostgreSQLService(appSettings.ConnectionString.PostgreSql);
+            services.AddPostgreSQLService(appSettings.ConnectionString.PostgreSql_Master, appSettings.ConnectionString.PostgreSql_Slave.ToDictionary(a => a.Connection, a => a.Weight));
 
             #endregion
 
@@ -104,7 +104,7 @@ namespace Hao.Core.Extensions
             //CAP
             services.AddCapService(new H_CapConfig()
             {
-                PostgreSqlConnection = appSettings.ConnectionString.PostgreSql,
+                PostgreSqlConnection = appSettings.ConnectionString.PostgreSql_Master,
                 HostName = appSettings.RabbitMQ.HostName,
                 VirtualHost = appSettings.RabbitMQ.VirtualHost,
                 Port = appSettings.RabbitMQ.Port,
