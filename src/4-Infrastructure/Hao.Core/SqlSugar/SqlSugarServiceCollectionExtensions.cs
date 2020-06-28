@@ -17,7 +17,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns></returns>
         public static IServiceCollection AddPostgreSqlService(this IServiceCollection services, string connectionString, Dictionary<string, int> slaveConnectionStrings = null)
         {
-            return AddSQLService(services, DbType.PostgreSQL, connectionString, slaveConnectionStrings);
+            return AddOrmService(services, DbType.PostgreSQL, connectionString, slaveConnectionStrings);
         }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns></returns>
         public static IServiceCollection AddMySqlService(this IServiceCollection services, string connectionString, Dictionary<string, int> slaveConnectionStrings = null)
         {
-            return AddSQLService(services, DbType.MySql, connectionString, slaveConnectionStrings);
+            return AddOrmService(services, DbType.MySql, connectionString, slaveConnectionStrings);
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns></returns>
         public static IServiceCollection AddSqlServerService(this IServiceCollection services, string connectionString, Dictionary<string, int> slaveConnectionStrings = null)
         {
-            return AddSQLService(services, DbType.MySql, connectionString, slaveConnectionStrings);
+            return AddOrmService(services, DbType.MySql, connectionString, slaveConnectionStrings);
         }
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="connectionString"></param>
         /// <param name="slaveConnectionStrings"></param>
         /// <returns></returns>
-        private static IServiceCollection AddSQLService(IServiceCollection services, DbType dbType, string connectionString, Dictionary<string, int> slaveConnectionStrings = null)
+        private static IServiceCollection AddOrmService(IServiceCollection services, DbType dbType, string connectionString, Dictionary<string, int> slaveConnectionStrings = null)
         {
             var connectionConfig = new ConnectionConfig()
             {
