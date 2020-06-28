@@ -236,18 +236,20 @@ namespace Hao.Utility
             var maxValue = pars.Sum(a => a.Value); //总权重
 
             var num = new Random().Next(1, maxValue);
-            var result = 0;
+            var index = 0;
             var endValue = 0;
+
             foreach (var item in pars)
             {
-                var index = pars.ToList().IndexOf(item);
-                var beginValue = index == 0 ? 0 : pars[index - 1];
+                var beginValue = index == 0 ? 0 : item.Value;
+
                 endValue += item.Value;
-                result = item.Key;
-                if (num >= beginValue && num <= endValue)
-                    break;
+
+                if (num >= beginValue && num <= endValue) break; //划成几等份累加，比较随机数是否在区间内
+
+                index++;
             }
-            return result;
+            return index;
         }
 
     }
