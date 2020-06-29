@@ -7,7 +7,6 @@ using Hao.Snowflake;
 using Hao.Utility;
 using System.Linq;
 
-
 namespace Hao.Core
 {
     public abstract class Repository<T, TKey> : IRepository<T, TKey>  where T : FullAuditedEntity<TKey>, new() where TKey : struct

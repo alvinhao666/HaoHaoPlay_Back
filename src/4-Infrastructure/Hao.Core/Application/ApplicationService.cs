@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Hao.Core
 {
-    public abstract class ApplicationService: IApplicationService 
+    public abstract class ApplicationService : IApplicationService
     {
         [AttributeUsage(AttributeTargets.Method)]
         protected class UnitOfWorkAttribute : AbstractInterceptorAttribute
