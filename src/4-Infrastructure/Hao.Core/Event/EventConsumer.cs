@@ -50,7 +50,7 @@ namespace Hao.Core
         {
             var prefix = Config["RedisPrefix:Lock"];
 
-            if (string.IsNullOrWhiteSpace(prefix)) throw new Exception("分布式锁前缀字符串不能为空");
+            if (string.IsNullOrWhiteSpace(prefix)) throw new Exception("分布式锁前缀字符不能为空");
 
             var redisLock = RedisHelper.Lock($"{prefix}{name}", timeoutSeconds, autoDelay);
 
