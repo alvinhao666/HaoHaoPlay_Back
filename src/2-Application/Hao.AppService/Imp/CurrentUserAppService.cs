@@ -22,7 +22,6 @@ namespace Hao.AppService
     /// </summary>
     public class CurrentUserAppService : ApplicationService, ICurrentUserAppService
     {
-
         private readonly IMapper _mapper;
 
         private readonly ISysUserRepository _userRep;
@@ -32,13 +31,15 @@ namespace Hao.AppService
         private readonly H_AppSettingsConfig _appsettings;
 
 
-        public CurrentUserAppService(ISysUserRepository userRepository, IMapper mapper, ICurrentUser currentUser, IOptionsSnapshot<H_AppSettingsConfig> appsettingsOptions)
+        public CurrentUserAppService(ISysUserRepository userRepository, IMapper mapper, ICurrentUser currentUser,
+            IOptionsSnapshot<H_AppSettingsConfig> appsettingsOptions)
         {
             _userRep = userRepository;
             _mapper = mapper;
             _currentUser = currentUser;
             _appsettings = appsettingsOptions.Value;
         }
+
         /// <summary>
         /// 获取当前用户信息
         /// </summary>
@@ -56,7 +57,8 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task UpdateHeadImg(UpdateHeadImgRequest request)
         {
-            string[] str = request.Base64Str.Split(',');  //base64Str为base64完整的字符串，先处理一下得到我们所需要的字符串
+            string[] str = request.Base64Str.Split(','); //base64Str为base64完整的字符串，先处理一下得到我们所需要的字符串
+            if (str.Length < 2) throw new H_Exception("图片格式不对");
             byte[] imageBytes = Convert.FromBase64String(str[1]);
 
             H_File.CreateDirectory(_appsettings.FilePath.AvatarPath);
@@ -66,15 +68,15 @@ namespace Hao.AppService
             {
                 image.Save(imgPath);
             }
+
             var user = await _userRep.GetAysnc(_currentUser.Id.Value);
             string oldImgUrl = user.HeadImgUrl;
             user.HeadImgUrl = imgName;
-            await _userRep.UpdateAsync(user, user => new { user.HeadImgUrl });
+            await _userRep.UpdateAsync(user, user => new {user.HeadImgUrl});
             if (!string.IsNullOrWhiteSpace(oldImgUrl))
             {
                 H_File.DeleteFile(Path.Combine(_appsettings.FilePath.AvatarPath, oldImgUrl));
             }
-
         }
 
         /// <summary>
@@ -93,7 +95,10 @@ namespace Hao.AppService
             user.HomeAddress = vm.HomeAddress;
             user.FirstNameSpell = H_Spell.GetFirstLetter(user.Name.ToCharArray()[0]);
             await _userRep.UpdateAsync(user,
-                user => new { user.Name, user.Age, user.Gender, user.NickName, user.Profile, user.HomeAddress, user.FirstNameSpell });
+                user => new
+                {
+                    user.Name, user.Age, user.Gender, user.NickName, user.Profile, user.HomeAddress, user.FirstNameSpell
+                });
         }
 
         /// <summary>
@@ -107,10 +112,10 @@ namespace Hao.AppService
             var user = await _userRep.GetAysnc(_currentUser.Id.Value);
             oldPassword = EncryptProvider.HMACSHA256(oldPassword, _appsettings.Key.Sha256Key);
             if (user.Password != oldPassword) throw new H_Exception("原密码错误");
-            user.PasswordLevel = (PasswordLevel)H_Util.CheckPasswordLevel(newPassword);
+            user.PasswordLevel = (PasswordLevel) H_Util.CheckPasswordLevel(newPassword);
             newPassword = EncryptProvider.HMACSHA256(newPassword, _appsettings.Key.Sha256Key);
             user.Password = newPassword;
-            await _userRep.UpdateAsync(user, user => new { user.Password, user.PasswordLevel });
+            await _userRep.UpdateAsync(user, user => new {user.Password, user.PasswordLevel});
         }
 
         /// <summary>
@@ -138,7 +143,8 @@ namespace Hao.AppService
                 var cacheUser = H_JsonSerializer.Deserialize<H_RedisCacheUser>(value);
                 cacheUser.LoginStatus = LoginStatus.Offline;
 
-                await RedisHelper.SetAsync($"{_appsettings.RedisPrefix.Login}{userId}_{jti}", H_JsonSerializer.Serialize(cacheUser));
+                await RedisHelper.SetAsync($"{_appsettings.RedisPrefix.Login}{userId}_{jti}",
+                    H_JsonSerializer.Serialize(cacheUser));
             }
         }
     }
