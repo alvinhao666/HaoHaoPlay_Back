@@ -35,7 +35,7 @@ namespace Hao.AppService
         {
             //Setnx就是，如果没有这个key，那么就set一个key-value, 但是如果这个key已经存在，那么将不会再次设置，get出来的value还是最开始set进去的那个value.
 
-            using (var redisLock = DistributedLock("DictAppService_AddDict")) //redis 分布式锁
+            using (var redisLock = Lock("DictAppService_AddDict")) //redis 分布式锁
             {
                 var sameItems = await _dictRep.GetListAysnc(new DictQuery { EqualDictName = request.DictName });
                 if (sameItems.Count > 0) throw new H_Exception("字典名称已存在，请重新输入");
@@ -57,7 +57,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task UpdateDict(long id, DictUpdateRequest request)
         {
-            using (var redisLock = DistributedLock("DictAppService_UpdateDict")) //redis 分布式锁
+            using (var redisLock = Lock("DictAppService_UpdateDict")) //redis 分布式锁
             {
 
                 var sameItems = await _dictRep.GetListAysnc(new DictQuery { EqualDictName = request.DictName });
@@ -113,7 +113,7 @@ namespace Hao.AppService
         public async Task AddDictItem(DictItemAddRequest request)
         {
 
-            using (var redisLock = DistributedLock("DictAppService_AddDictItem")) //redis 分布式锁
+            using (var redisLock = Lock("DictAppService_AddDictItem")) //redis 分布式锁
             {
 
                 var sameItems = await _dictRep.GetListAysnc(new DictQuery { ParentId = request.ParentId, EqualItemName = request.ItemName });
@@ -158,7 +158,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task UpdateDictItem(long id, DictItemUpdateRequest request)
         {
-            using (var redisLock = DistributedLock("DictAppService_UpdateDictItem"))
+            using (var redisLock = Lock("DictAppService_UpdateDictItem"))
             {
                 var item = await _dictRep.GetAysnc(id);
 

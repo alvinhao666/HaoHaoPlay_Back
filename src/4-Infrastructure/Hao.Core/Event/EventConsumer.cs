@@ -56,7 +56,7 @@ namespace Hao.Core
         /// <param name="timeoutSeconds"></param>
         /// <param name="autoDelay"></param>
         /// <returns></returns>
-        protected CSRedisClientLock DistributedLock(string name, int timeoutSeconds = 10, bool autoDelay = true)
+        protected CSRedisClientLock Lock(string name, int timeoutSeconds = 10, bool autoDelay = true)
         {
             var prefix = Config["RedisPrefix:Lock"];
 

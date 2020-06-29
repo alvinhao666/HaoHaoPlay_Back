@@ -127,7 +127,7 @@ namespace Hao.AppService
 
         private async Task AddModule(SysModule module)
         {
-            using (var redisLock = DistributedLock("ModuleAppService_AddModule")) //redis 分布式锁
+            using (var redisLock = Lock("ModuleAppService_AddModule")) //redis 分布式锁
             {
 
                 var max = await _moduleRep.GetLayerCount();

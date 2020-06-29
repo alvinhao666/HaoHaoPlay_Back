@@ -64,7 +64,7 @@ namespace Hao.AppService
         [UnitOfWork]
         public async Task AddUser(UserAddRequest vm)
         {
-            using (var redisLock = DistributedLock("UserAppService_AddUser"))
+            using (var redisLock = Lock("UserAppService_AddUser"))
             {
                 var users = await _userRep.GetAllAysnc(new UserQuery()
                 {
@@ -136,7 +136,7 @@ namespace Hao.AppService
         [UnitOfWork]
         public async Task DeleteUser(long userId)
         {
-            using (var redisLock = DistributedLock("UserAppService_DeleteUser"))
+            using (var redisLock = Lock("UserAppService_DeleteUser"))
             {
                 CheckUser(userId);
                 var user = await GetUserDetail(userId);
