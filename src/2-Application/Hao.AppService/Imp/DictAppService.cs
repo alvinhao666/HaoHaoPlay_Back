@@ -22,13 +22,10 @@ namespace Hao.AppService
 
         private readonly IMapper _mapper;
 
-        private readonly string _lockPrefix;
-
-        public DictAppService(ISysDictRepository dictRep, IMapper mapper, IOptionsSnapshot<H_AppSettingsConfig> appsettingsOptions)
+        public DictAppService(ISysDictRepository dictRep, IMapper mapper)
         {
             _dictRep = dictRep;
             _mapper = mapper;
-            _lockPrefix = appsettingsOptions.Value.RedisPrefix.Lock;
         }
 
 
@@ -39,15 +36,10 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task AddDict(DictAddRequest request)
         {
-
             //Setnx就是，如果没有这个key，那么就set一个key-value, 但是如果这个key已经存在，那么将不会再次设置，get出来的value还是最开始set进去的那个value.
 
-            using (var redisLock = RedisHelper.Lock($"{_lockPrefix}DictAppService_AddDict", 10)) //redis 分布式锁
+            using (var redisLock = DistributedLock("DictAppService_AddDict")) //redis 分布式锁
             {
-                //if (redisLock == null) throw new H_Exception("系统异常"); //开启分布式锁超时 //对象为null，不占资源 ，编译后的代码没有fianlly,不执行dispose()方法
-
-                H_Check.InspectRedisLock(redisLock);
-
                 var sameItems = await _dictRep.GetListAysnc(new DictQuery { EqualDictName = request.DictName });
                 if (sameItems.Count > 0) throw new H_Exception("字典名称已存在，请重新输入");
 
@@ -68,9 +60,8 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task UpdateDict(long id, DictUpdateRequest request)
         {
-            using (var redisLock = RedisHelper.Lock($"{_lockPrefix}DictAppService_UpdateDict", 10)) //redis 分布式锁
+            using (var redisLock = DistributedLock("DictAppService_UpdateDict")) //redis 分布式锁
             {
-                H_Check.InspectRedisLock(redisLock);
 
                 var sameItems = await _dictRep.GetListAysnc(new DictQuery { EqualDictName = request.DictName });
                 if (sameItems.Where(a => a.Id != id).Count() > 0) throw new H_Exception("字典名称已存在，请重新输入");
@@ -125,9 +116,8 @@ namespace Hao.AppService
         public async Task AddDictItem(DictItemAddRequest request)
         {
 
-            using (var redisLock = RedisHelper.Lock($"{_lockPrefix}DictAppService_AddDictItem", 10)) //redis 分布式锁
+            using (var redisLock = DistributedLock("DictAppService_AddDictItem")) //redis 分布式锁
             {
-                H_Check.InspectRedisLock(redisLock);
 
                 var sameItems = await _dictRep.GetListAysnc(new DictQuery { ParentId = request.ParentId, EqualItemName = request.ItemName });
                 if (sameItems.Count > 0) throw new H_Exception("数据项名称已存在，请重新输入");
@@ -171,10 +161,8 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task UpdateDictItem(long id, DictItemUpdateRequest request)
         {
-            using (var redisLock = RedisHelper.Lock($"{_lockPrefix}DictAppService_UpdateDictItem", 10))
+            using (var redisLock = DistributedLock("DictAppService_UpdateDictItem"))
             {
-                H_Check.InspectRedisLock(redisLock);
-
                 var item = await _dictRep.GetAysnc(id);
 
                 var sameItems = await _dictRep.GetListAysnc(new DictQuery { ParentId = item.ParentId, EqualItemName = request.ItemName });

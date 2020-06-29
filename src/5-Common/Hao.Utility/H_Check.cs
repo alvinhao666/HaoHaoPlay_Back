@@ -36,15 +36,5 @@ namespace Hao.Utility
                 }
             }
         }
-
-
-        /// <summary>
-        /// 检查开启分布式锁是否超时
-        /// </summary>
-        /// <param name="redisLock"></param>
-        public static void InspectRedisLock(object redisLock)
-        {
-            if (redisLock == null) throw new Exception("系统异常");
-        }
     }
 }

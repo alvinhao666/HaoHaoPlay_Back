@@ -11,8 +11,6 @@ using System.Threading.Tasks;
 using Hao.Enum;
 using Npgsql;
 using Hao.Library;
-using Microsoft.Extensions.Options;
-using Hao.Utility;
 
 namespace Hao.AppService
 {
@@ -25,13 +23,10 @@ namespace Hao.AppService
 
         private readonly ISysModuleRepository _moduleRep;
 
-        private readonly string _lockPrefix;
-
-        public ModuleAppService(IMapper mapper, ISysModuleRepository moduleRep, IOptionsSnapshot<H_AppSettingsConfig> appsettingsOptions)
+        public ModuleAppService(IMapper mapper, ISysModuleRepository moduleRep)
         {
             _mapper = mapper;
             _moduleRep = moduleRep;
-            _lockPrefix = appsettingsOptions.Value.RedisPrefix.Lock;
         }
 
 
@@ -132,9 +127,8 @@ namespace Hao.AppService
 
         private async Task AddModule(SysModule module)
         {
-            using (var redisLock = RedisHelper.Lock($"{_lockPrefix}AddModule", 10)) //redis 分布式锁
+            using (var redisLock = DistributedLock("ModuleAppService_AddModule")) //redis 分布式锁
             {
-                H_Check.InspectRedisLock(redisLock);
 
                 var max = await _moduleRep.GetLayerCount();
                 if (max.Count < 31)

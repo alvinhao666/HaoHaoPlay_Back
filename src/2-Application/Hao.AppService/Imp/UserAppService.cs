@@ -44,7 +44,6 @@ namespace Hao.AppService
         public UserAppService(ISysRoleRepository roleRep,
             IOptionsSnapshot<H_AppSettingsConfig> appsettingsOptions, 
             ISysUserRepository userRepository,
-            ISysLoginRecordRepository recordRep, 
             IMapper mapper,
             ICurrentUser currentUser,
             IDataProtectionProvider provider)
@@ -65,10 +64,8 @@ namespace Hao.AppService
         [UnitOfWork]
         public async Task AddUser(UserAddRequest vm)
         {
-            using (var redisLock = RedisHelper.Lock($"{_appsettings.RedisPrefix.Lock}UserAppService_AddUser", 10))
+            using (var redisLock = DistributedLock("UserAppService_AddUser"))
             {
-                H_Check.InspectRedisLock(redisLock);
-
                 var users = await _userRep.GetAllAysnc(new UserQuery()
                 {
                     LoginName = vm.LoginName
@@ -139,10 +136,8 @@ namespace Hao.AppService
         [UnitOfWork]
         public async Task DeleteUser(long userId)
         {
-            using (var redisLock = RedisHelper.Lock($"{_appsettings.RedisPrefix.Lock}UserAppService_DeleteUser", 10))
+            using (var redisLock = DistributedLock("UserAppService_DeleteUser"))
             {
-                H_Check.InspectRedisLock(redisLock);
-
                 CheckUser(userId);
                 var user = await GetUserDetail(userId);
 
