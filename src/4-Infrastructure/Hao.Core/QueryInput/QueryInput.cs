@@ -3,7 +3,7 @@ using SqlSugar;
 
 namespace Hao.Core
 {
-    public class QueryInput : IPagedQuery,IQueryInput
+    public class QueryInput : IPagedQuery, IQueryInput
     {
         public int PageIndex { get; set; } = 1;
 

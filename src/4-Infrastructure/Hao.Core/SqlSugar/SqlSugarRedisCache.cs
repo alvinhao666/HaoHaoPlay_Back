@@ -1,7 +1,6 @@
 ﻿using SqlSugar;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Hao.Core
 {
@@ -52,7 +51,7 @@ namespace Hao.Core
 
         public void Remove<V>(string key)
         {
-            RedisHelper.Expire(key,0);
+            RedisHelper.Expire(key, 0);
         }
     }
 }
