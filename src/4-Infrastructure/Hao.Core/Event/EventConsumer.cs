@@ -40,7 +40,7 @@ namespace Hao.Core
                     Console.WriteLine("回滚事务：" + sqlSugarClient.ContextID);
 #endif
                     sqlSugarClient.Ado.RollbackTran();
-                    _logger.Error(ex);
+                    throw ex; //抛给上层接收
                 }
             }
         }
