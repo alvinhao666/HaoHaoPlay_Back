@@ -37,39 +37,34 @@ namespace Hao.Utility
         public static Type ByteArrayType = typeof(byte[]);
         public static Type DynamicType = typeof(ExpandoObject);
 
-        /// <summary>  
-        /// 获取当前时间戳  
-        /// </summary>  
-        /// <returns></returns>  
-        public static long GetTimeStamp()
+        /// <summary>
+        /// 获取Unix时间戳
+        /// </summary>
+        public static long GetUnixTimestamp()
         {
-            TimeSpan ts = DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0);
-            return Convert.ToInt64(ts.TotalSeconds);
+            return GetUnixTimestamp(DateTime.Now);
         }
 
         /// <summary>
-        /// 时间转时间戳
+        /// 获取Unix时间戳
         /// </summary>
-        /// <param name="time"></param>
-        /// <returns></returns>
-        public static long GetTimeStamp(DateTime time)
+        /// <param name="time">时间</param>
+        public static long GetUnixTimestamp(DateTime time)
         {
-            TimeSpan ts = time.ToUniversalTime() - new DateTime(1970, 1, 1, 0, 0, 0, 0);
-            return Convert.ToInt64(ts.TotalSeconds);
+            var start = TimeZoneInfo.ConvertTime(new DateTime(1970, 1, 1), TimeZoneInfo.Local);
+            long ticks = (time - start.Add(new TimeSpan(8, 0, 0))).Ticks;
+            return H_Convert.ToLong0(ticks / TimeSpan.TicksPerSecond);
         }
 
         /// <summary>
-        /// 时间戳转换为时间
+        /// 从Unix时间戳获取时间
         /// </summary>
-        /// <param name="timeStamp"></param>
-        /// <returns></returns>
-        public static DateTime ToDateTime(long timeStamp)
+        /// <param name="timestamp">Unix时间戳</param>
+        public static DateTime GetTimeFromUnixTimestamp(long timestamp)
         {
-            DateTime startTime = TimeZoneInfo.ConvertTimeFromUtc(new DateTime(1970, 1, 1), TimeZoneInfo.Local);
-            long mTime = long.Parse($"{timeStamp}0000");
-            TimeSpan toNow = new TimeSpan(mTime);
-            var time = startTime.Add(toNow);
-            return time;
+            var start = TimeZoneInfo.ConvertTime(new DateTime(1970, 1, 1), TimeZoneInfo.Local);
+            TimeSpan span = new TimeSpan(long.Parse(timestamp + "0000000"));
+            return start.Add(span).Add(new TimeSpan(8, 0, 0));
         }
 
         /// <summary>

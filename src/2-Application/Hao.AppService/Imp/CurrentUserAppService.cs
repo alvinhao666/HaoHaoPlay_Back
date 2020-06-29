@@ -60,7 +60,7 @@ namespace Hao.AppService
             byte[] imageBytes = Convert.FromBase64String(str[1]);
 
             H_File.CreateDirectory(_appsettings.FilePath.AvatarPath);
-            string imgName = $"{_currentUser.Id}_{H_Util.GetTimeStamp()}.png";
+            string imgName = $"{_currentUser.Id}_{H_Util.GetUnixTimestamp()}.png";
             string imgPath = Path.Combine(_appsettings.FilePath.AvatarPath, imgName);
             using (SixLabors.ImageSharp.Image image = SixLabors.ImageSharp.Image.Load(imageBytes))
             {
