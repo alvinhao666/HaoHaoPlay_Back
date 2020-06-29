@@ -38,7 +38,8 @@ namespace Hao.Utility
         public static Type DynamicType = typeof(ExpandoObject);
 
         /// <summary>
-        /// 获取Unix时间戳
+        /// 计算机中的UNIX时间戳，是以GMT/UTC时间「1970-01-01T00:00:00」为起点，到具体时间的秒数，不考虑闰秒。这么做当然是为了简化计算机对时间操作的复杂度。
+        /// 比如我的电脑现在的系统时间为2015年2月27日15点43分0秒，因为我的电脑默认时区为东8区，则0时区的时间为2015年2月27日7点43分0秒，则UNIX时间戳为1425022980秒。
         /// </summary>
         public static long GetUnixTimestamp()
         {
