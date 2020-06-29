@@ -11,6 +11,9 @@ namespace Hao.Core
     {
         public IConfiguration Config { get; set; }
 
+        /// <summary>
+        /// 工作单元
+        /// </summary>
         [AttributeUsage(AttributeTargets.Method)]
         protected class UnitOfWorkAttribute : AbstractInterceptorAttribute
         {
@@ -46,6 +49,13 @@ namespace Hao.Core
             }
         }
 
+        /// <summary>
+        /// 开启分布式锁
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="timeoutSeconds"></param>
+        /// <param name="autoDelay"></param>
+        /// <returns></returns>
         protected CSRedisClientLock DistributedLock(string name, int timeoutSeconds = 10, bool autoDelay = true)
         {
             var prefix = Config["RedisPrefix:Lock"];
