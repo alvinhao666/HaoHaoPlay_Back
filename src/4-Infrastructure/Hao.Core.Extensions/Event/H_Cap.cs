@@ -26,8 +26,8 @@ namespace Microsoft.Extensions.DependencyInjection
                     cfg.Password = config.Password;
                 });
 
-                x.FailedRetryCount = 5; //失败重试机会
-                //x.FailedRetryInterval = 5;
+                x.FailedRetryCount = 10; //失败重试机会
+                x.FailedRetryInterval = 10; //每10秒重试一次
                 //x.SucceedMessageExpiredAfter = 24 * 3600;
                 // If you are using Kafka, you need to add the configuration：
                 //x.UseKafka("localhost");
