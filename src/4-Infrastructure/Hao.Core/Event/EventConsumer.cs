@@ -11,8 +11,6 @@ namespace Hao.Core
         [AttributeUsage(AttributeTargets.Method)]
         protected class UnitOfWorkAttribute : AbstractInterceptorAttribute
         {
-            private readonly static ILogger _logger = LogManager.GetCurrentClassLogger();
-
             public override async Task Invoke(AspectContext context, AspectDelegate next)
             {
                 var sqlSugarClient = context.ServiceProvider.GetService(typeof(ISqlSugarClient)) as ISqlSugarClient;
