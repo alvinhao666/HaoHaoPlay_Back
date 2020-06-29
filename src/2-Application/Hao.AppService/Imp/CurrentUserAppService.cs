@@ -13,7 +13,6 @@ using Microsoft.Extensions.Options;
 using SixLabors.ImageSharp;
 using System;
 using System.IO;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Hao.AppService
