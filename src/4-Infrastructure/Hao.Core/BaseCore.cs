@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Hao.Core
 {
-    public abstract class DomainCore
+    public abstract class BaseCore
     {
         public IConfiguration Config { get; set; }
 
@@ -60,7 +60,7 @@ namespace Hao.Core
         {
             var prefix = Config["RedisPrefix:Lock"];
 
-            if (string.IsNullOrWhiteSpace(prefix)) throw new Exception("分布式锁前缀字符不能为空");
+            if (string.IsNullOrWhiteSpace(prefix)) throw new Exception("请配置分布式锁名称的前缀字符");
 
             var redisLock = RedisHelper.Lock($"{prefix}{name}", timeoutSeconds, autoDelay);
 

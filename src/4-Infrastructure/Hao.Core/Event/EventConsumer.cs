@@ -1,6 +1,6 @@
 ﻿namespace Hao.Core
 {
-    public abstract class EventConsumer : DomainCore, IEventConsumer
+    public abstract class EventConsumer : BaseCore, IEventConsumer
     {
 
     }
