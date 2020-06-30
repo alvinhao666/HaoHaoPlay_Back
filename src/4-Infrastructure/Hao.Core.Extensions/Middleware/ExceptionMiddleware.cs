@@ -54,7 +54,7 @@ namespace Hao.Core.Extensions
 
                 if (aspectException.Message.Contains(errorSplit))
                 {
-                    response.ErrorMsg = aspectException.Message.Split(errorSplit)[1].Trim();
+                    response.ErrorMsg = aspectException.Message.Split(errorSplit)[1].Trim().TrimEnd('.');
                 }
             }
             else
