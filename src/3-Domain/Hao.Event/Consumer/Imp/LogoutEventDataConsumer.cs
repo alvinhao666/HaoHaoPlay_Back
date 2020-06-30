@@ -10,7 +10,7 @@ namespace Hao.Event
     /// <summary>
     /// 注销
     /// </summary>
-    public class LogoutEventDataConsumer : EventConsumer, ILogoutEventDataConsumer
+    public class LogoutEventDataConsumer : EventService, ILogoutEventDataConsumer
     {
         private readonly H_AppSettingsConfig _appsettings;
 

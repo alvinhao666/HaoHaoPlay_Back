@@ -2,7 +2,7 @@
 
 namespace Hao.Core
 {
-    public interface IEventConsumer : ITransientDependency
+    public interface IEventService : ITransientDependency
     {
 
     }

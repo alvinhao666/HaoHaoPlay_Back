@@ -9,7 +9,7 @@ namespace Hao.Event
     /// <summary>
     /// 登录
     /// </summary>
-    public class LoginEventDataConsumer : EventConsumer, ILoginEventDataConsumer
+    public class LoginEventDataConsumer : EventService, ILoginEventDataConsumer
     {
         private readonly ISysUserRepository _userRep;
 

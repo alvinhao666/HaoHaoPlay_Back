@@ -7,9 +7,32 @@ using System.Threading.Tasks;
 
 namespace Hao.Core
 {
-    public abstract class BaseCore
+    public abstract class BaseService
     {
         public IConfiguration Config { get; set; }
+
+        /// <summary>
+        /// 开启分布式锁
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="timeoutSeconds"></param>
+        /// <param name="autoDelay"></param>
+        /// <returns></returns>
+        protected CSRedisClientLock Lock(string name, int timeoutSeconds = 10, bool autoDelay = true)
+        {
+            var prefix = Config["RedisPrefix:Lock"];
+
+            if (string.IsNullOrWhiteSpace(prefix)) throw new Exception("请配置分布式锁名称的前缀字符");
+
+            var redisLock = RedisHelper.Lock($"{prefix}{name}", timeoutSeconds, autoDelay);
+
+            if (redisLock == null) throw new Exception("开启分布式锁异常");
+
+            //if (redisLock == null) throw new H_Exception("系统异常"); //开启分布式锁超时 //对象为null，不占资源 ，编译后的代码没有fianlly,不执行dispose()方法
+            return redisLock;
+        }
+
+
 
         /// <summary>
         /// 工作单元
@@ -47,27 +70,6 @@ namespace Hao.Core
                     throw ex;
                 }
             }
-        }
-
-        /// <summary>
-        /// 开启分布式锁
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="timeoutSeconds"></param>
-        /// <param name="autoDelay"></param>
-        /// <returns></returns>
-        protected CSRedisClientLock Lock(string name, int timeoutSeconds = 10, bool autoDelay = true)
-        {
-            var prefix = Config["RedisPrefix:Lock"];
-
-            if (string.IsNullOrWhiteSpace(prefix)) throw new Exception("请配置分布式锁名称的前缀字符");
-
-            var redisLock = RedisHelper.Lock($"{prefix}{name}", timeoutSeconds, autoDelay);
-
-            if (redisLock == null) throw new Exception("开启分布式锁异常");
-
-            //if (redisLock == null) throw new H_Exception("系统异常"); //开启分布式锁超时 //对象为null，不占资源 ，编译后的代码没有fianlly,不执行dispose()方法
-            return redisLock;
         }
     }
 }

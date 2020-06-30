@@ -1,6 +1,6 @@
 ﻿namespace Hao.Core
 {
-    public abstract class ApplicationService : BaseCore, IApplicationService
+    public abstract class ApplicationService : BaseService, IApplicationService
     {
 
     }
