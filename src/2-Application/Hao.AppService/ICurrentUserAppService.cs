@@ -44,11 +44,9 @@ namespace Hao.AppService
         Task<UserSecurityVM> GetSecurityInfo();
 
         /// <summary>
-        /// 注销当前登录
+        /// 注销登录
         /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="jti"></param>
         /// <returns></returns>
-        Task Logout(long userId, string jti);
+        Task Logout();
     }
 }

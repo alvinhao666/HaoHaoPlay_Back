@@ -72,7 +72,7 @@ namespace Hao.AppService
             var user = await _userRep.GetAysnc(_currentUser.Id.Value);
             string oldImgUrl = user.HeadImgUrl;
             user.HeadImgUrl = imgName;
-            await _userRep.UpdateAsync(user, user => new {user.HeadImgUrl});
+            await _userRep.UpdateAsync(user, user => new { user.HeadImgUrl });
             if (!string.IsNullOrWhiteSpace(oldImgUrl))
             {
                 H_File.DeleteFile(Path.Combine(_appsettings.FilePath.AvatarPath, oldImgUrl));
@@ -97,7 +97,13 @@ namespace Hao.AppService
             await _userRep.UpdateAsync(user,
                 user => new
                 {
-                    user.Name, user.Age, user.Gender, user.NickName, user.Profile, user.HomeAddress, user.FirstNameSpell
+                    user.Name,
+                    user.Age,
+                    user.Gender,
+                    user.NickName,
+                    user.Profile,
+                    user.HomeAddress,
+                    user.FirstNameSpell
                 });
         }
 
@@ -112,10 +118,10 @@ namespace Hao.AppService
             var user = await _userRep.GetAysnc(_currentUser.Id.Value);
             oldPassword = EncryptProvider.HMACSHA256(oldPassword, _appsettings.Key.Sha256Key);
             if (user.Password != oldPassword) throw new H_Exception("原密码错误");
-            user.PasswordLevel = (PasswordLevel) H_Util.CheckPasswordLevel(newPassword);
+            user.PasswordLevel = (PasswordLevel)H_Util.CheckPasswordLevel(newPassword);
             newPassword = EncryptProvider.HMACSHA256(newPassword, _appsettings.Key.Sha256Key);
             user.Password = newPassword;
-            await _userRep.UpdateAsync(user, user => new {user.Password, user.PasswordLevel});
+            await _userRep.UpdateAsync(user, user => new { user.Password, user.PasswordLevel });
         }
 
         /// <summary>
@@ -128,23 +134,25 @@ namespace Hao.AppService
             return result;
         }
 
+
         /// <summary>
         /// 注销当前登录
         /// </summary>
         /// <param name="userId"></param>
         /// <param name="jti"></param>
         /// <returns></returns>
-        public async Task Logout(long userId, string jti)
+        public async Task Logout()
         {
-            var value = await RedisHelper.GetAsync($"{_appsettings.RedisPrefix.Login}{userId}_{jti}");
+            var key = $"{_appsettings.RedisPrefix.Login}{_currentUser.Id.Value}_{_currentUser.Jti}";
+
+            var value = await RedisHelper.GetAsync(key);
 
             if (value.HasValue())
             {
                 var cacheUser = H_JsonSerializer.Deserialize<H_RedisCacheUser>(value);
                 cacheUser.LoginStatus = LoginStatus.Offline;
 
-                await RedisHelper.SetAsync($"{_appsettings.RedisPrefix.Login}{userId}_{jti}",
-                    H_JsonSerializer.Serialize(cacheUser));
+                await RedisHelper.SetAsync(key, H_JsonSerializer.Serialize(cacheUser));
             }
         }
     }

@@ -1,6 +1,5 @@
 ﻿using Hao.AppService;
 using Hao.AppService.ViewModel;
-using Hao.Core;
 using Hao.Core.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -14,12 +13,9 @@ namespace Hao.WebApi.Controllers
     {
         private readonly ICurrentUserAppService _currentUserAppService;
 
-        private readonly ICurrentUser _currentUser;
-
-        public CurrentUserController(ICurrentUserAppService currentUserAppService, ICurrentUser currentUser)
+        public CurrentUserController(ICurrentUserAppService currentUserAppService)
         {
             _currentUserAppService = currentUserAppService;
-            _currentUser = currentUser;
         }
 
         /// <summary>
@@ -66,6 +62,6 @@ namespace Hao.WebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task Logout() => await _currentUserAppService.Logout(_currentUser.Id.Value, _currentUser.Jti);
+        public async Task Logout() => await _currentUserAppService.Logout();
     }
 }
