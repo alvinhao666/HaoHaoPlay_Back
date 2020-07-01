@@ -17,6 +17,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Text.Encodings.Web;
 
 namespace Hao.Core.Extensions
@@ -59,7 +60,7 @@ namespace Hao.Core.Extensions
                     ValidateIssuerSigningKey = true,//是否验证SecurityKey
                     ValidAudience = appSettings.Jwt.Audience,//Audience
                     ValidIssuer = appSettings.Jwt.Issuer,//Issuer，这两项和前面签发jwt的设置一致
-                    IssuerSigningKey = appSettings.Jwt.SecurityKey,//拿到SecurityKey
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(appSettings.Jwt.SecretKey)),//拿到SecurityKey
                     ValidateLifetime = true,//是否验证失效时间  当设置exp和nbf时有效 同时启用ClockSkew 
                     RequireExpirationTime = true,
                     ClockSkew = TimeSpan.Zero, // ClockSkew 属性，默认是5分钟缓冲。

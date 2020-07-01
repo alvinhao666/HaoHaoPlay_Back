@@ -12,11 +12,13 @@ using Hao.RunTimeException;
 using Hao.Utility;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Hao.AppService
@@ -166,7 +168,7 @@ namespace Hao.AppService
                 claims: claims,
                 notBefore: timeNow, //生效时间
                 expires: expireTime,//过期时间
-                signingCredentials: _appsettings.Jwt.SigningCredentials
+                signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_appsettings.Jwt.SecretKey)), SecurityAlgorithms.HmacSha256)
             ));
 
             return jwt;
