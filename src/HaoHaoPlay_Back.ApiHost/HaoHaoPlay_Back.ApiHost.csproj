@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>bin\Debug\netcoreapp3.1\HaoHaoPlay_Back.ApiHost.xml</DocumentationFile>
+    <DocumentationFile>E:\MyDev\HaoHaoPlay_Back\src\HaoHaoPlay_Back.ApiHost\HaoHaoPlay_Back.ApiHost.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

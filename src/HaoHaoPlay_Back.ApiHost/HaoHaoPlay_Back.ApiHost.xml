@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HaoHaoPlay_Back.ApiHost</name>
+    </assembly>
+    <members>
+        <member name="T:HaoHaoPlay_Back.ApiHost.AppSettingsConfig">
+            <summary>
+            配置文件映射实体
+            </summary>
+        </member>
+        <member name="M:HaoHaoPlay_Back.ApiHost.Startup`1.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            用于配置依赖注入以在运行时根据依赖关系创建对象
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="M:HaoHaoPlay_Back.ApiHost.Startup`1.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder)">
+            <summary>
+            用于配置中间件（middleware）以构建请求处理流水线
+            </summary>
+            <param name="app"></param>
+        </member>
+    </members>
+</doc>
