@@ -122,7 +122,7 @@ namespace Hao.Core.Extensions
             {
                 x.Filters.Add(typeof(H_ResultFilter));
             })
-            .AddControllersAsServices() //controller属性注入 .net core 3.1版本   //法实现了两件事情 - 它将您应用程序中的所有控制器注册到 DI 容器（如果尚未注册），并将IControllerActivator注册为ServiceBasedControllerActivator
+            .AddControllersAsServices() //controller属性注入 .net core 3.1版本   //实现了两件事情 - 它将您应用程序中的所有控制器注册到 DI 容器（如果尚未注册），并将IControllerActivator注册为ServiceBasedControllerActivator
             .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblies(appSettings.ValidatorAssemblyNames.Select(name => Assembly.Load(name))))
             .AddJsonOptions(o =>
             {
