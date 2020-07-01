@@ -162,13 +162,15 @@ namespace Hao.AppService
                 new Claim(H_ClaimsName.RoleLevel, user.RoleLevel.ToString())
             };
 
+            var secretKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_appsettings.Jwt.SecretKey));
+
             var jwt = new JwtSecurityTokenHandler().WriteToken(new JwtSecurityToken(
                 issuer: _appsettings.Jwt.Issuer,
                 audience: _appsettings.Jwt.Audience,
                 claims: claims,
                 notBefore: timeNow, //生效时间
                 expires: expireTime,//过期时间
-                signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_appsettings.Jwt.SecretKey)), SecurityAlgorithms.HmacSha256)
+                signingCredentials: new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256)
             ));
 
             return jwt;
