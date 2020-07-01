@@ -12,8 +12,8 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 x.UseDashboard(a =>
                 {
-                    a.Authorization = new[] { new CapDashboardFilter() };
-                });  //默认地址http://localhost:8000/cap?password=666666
+                    a.PathMatch = "/haohaoplay_back_capdashboard";
+                }); 
 
                 x.UsePostgreSql(cfg => { cfg.ConnectionString = config.PostgreSqlConnection; });
 
@@ -26,8 +26,8 @@ namespace Microsoft.Extensions.DependencyInjection
                     cfg.Password = config.Password;
                 });
 
-                x.FailedRetryCount = 50; //失败重试机会，默认就50次
-                x.FailedRetryInterval = 60; //每60秒重试一次   50次*60秒  50分钟后放弃失败重试
+                x.FailedRetryCount = 10; //失败重试机会，默认50次
+                x.FailedRetryInterval = 30; //每60秒重试一次   50次*60秒  50分钟后放弃失败重试
                 //x.SucceedMessageExpiredAfter = 24 * 3600;
                 // If you are using Kafka, you need to add the configuration：
                 //x.UseKafka("localhost");
@@ -37,20 +37,20 @@ namespace Microsoft.Extensions.DependencyInjection
         }
     }
 
-    internal class CapDashboardFilter : IDashboardAuthorizationFilter
-    {
-
-        public async Task<bool> AuthorizeAsync(DashboardContext context)
-        {
-            return await Task.Factory.StartNew(() =>
-            {
-                if (context.Request.GetQuery("password") == "666666")
-                {
-                    return true;
-                }
-                return false;
-            });
-        }
-    }
+    //internal class CapDashboardFilter : IDashboardAuthorizationFilter
+    //{
+    //    //默认地址http://localhost:8000/cap?password=666666
+    //    public async Task<bool> AuthorizeAsync(DashboardContext context)
+    //    {
+    //        return await Task.Factory.StartNew(() =>
+    //        {
+    //            if (context.Request.GetQuery("password") == "666666")
+    //            {
+    //                return true;
+    //            }
+    //            return false;
+    //        });
+    //    }
+    //}
 }
 
