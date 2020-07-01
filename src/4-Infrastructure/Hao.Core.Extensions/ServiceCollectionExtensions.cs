@@ -105,7 +105,7 @@ namespace Hao.Core.Extensions
             //CAP
             services.AddCapService(new H_CapConfig()
             {
-                PostgreSqlConnection = appSettings.ConnectionString.PostgreSql_Master,
+                PostgreSqlConnection = appSettings.RabbitMQ.PostgreSqlConnection,
                 HostName = appSettings.RabbitMQ.HostName,
                 VirtualHost = appSettings.RabbitMQ.VirtualHost,
                 Port = appSettings.RabbitMQ.Port,

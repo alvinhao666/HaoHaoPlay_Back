@@ -26,5 +26,10 @@
         /// 主机地址
         /// </summary>
         public string HostName { get; set; }
+
+        /// <summary>
+        /// 数据库postgresql连接地址
+        /// </summary>
+        public string PostgreSqlConnection { get; set; }
     }
 }
