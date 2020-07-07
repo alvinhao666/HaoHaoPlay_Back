@@ -24,7 +24,7 @@ namespace Hao.Http
         /// </summary>
         /// <param name="url"></param>
         /// <param name="dic"></param>
-        /// <param name="mediaType"></param>
+        /// <param name="timeoutSeconds"></param>
         /// <returns></returns>
         public async Task<TResult> Post<TResult>(string url, Dictionary<string, string> dic, int timeoutSeconds = 30) where TResult : new()
         {
@@ -58,7 +58,7 @@ namespace Hao.Http
         /// <typeparam name="TResult"></typeparam>
         /// <param name="url"></param>
         /// <param name="t"></param>
-        /// <param name="contentType"></param>
+        /// <param name="timeoutSeconds"></param>
         /// <returns></returns>
         public async Task<TResult> Post<T, TResult>(string url, T t, int timeoutSeconds = 30) where T : new() where TResult : new()
         {
