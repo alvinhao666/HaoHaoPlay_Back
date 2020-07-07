@@ -23,7 +23,7 @@ namespace Hao.Repository
         /// <returns></returns>
         public async Task<List<SysUser>> GetUserByLoginName(string loginName, string password)
         {
-            string sql = "select * from  sysuser where loginname=@loginName and password=@password";
+            string sql = "select * from  sysuser where loginname=@loginName and password=@password and isdeleted=false";
 
             List<SugarParameter> param = new List<SugarParameter>();
             param.Add(new SugarParameter("@loginName", loginName));
