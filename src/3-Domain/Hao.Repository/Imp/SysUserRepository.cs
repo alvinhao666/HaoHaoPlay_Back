@@ -19,7 +19,7 @@ namespace Hao.Repository
         {
             string sql = "select * from  sysuser where loginname=@loginname and password=@password and isdeleted=false";
 
-            List<SugarParameter> param = new List<SugarParameter>();
+            var param = new List<SugarParameter>();
             param.Add(new SugarParameter("@loginname", loginName));
             param.Add(new SugarParameter("@password", password));
 
@@ -38,7 +38,7 @@ namespace Hao.Repository
         {
             string sql = "update  sysuser set authnumbers=@authnumbers where roleid=@roleid";
 
-            List<SugarParameter> param = new List<SugarParameter>();
+            var param = new List<SugarParameter>();
             param.Add(new SugarParameter("@authnumbers", authNumbers));
             param.Add(new SugarParameter("@roleid", roleId));
 
