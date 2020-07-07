@@ -8,12 +8,6 @@ namespace Hao.Repository
 {
     public class SysUserRepository : Repository<SysUser,long>, ISysUserRepository
     {
-        private readonly ISysLoginRecordRepository _loginRecordRep;
-
-        public SysUserRepository(ISysLoginRecordRepository loginRecordRep)
-        {
-            _loginRecordRep = loginRecordRep;
-        }
 
         /// <summary>
         /// 根据登录名密码查询用户
@@ -23,13 +17,15 @@ namespace Hao.Repository
         /// <returns></returns>
         public async Task<List<SysUser>> GetUserByLoginName(string loginName, string password)
         {
-            string sql = "select * from  sysuser where loginname=@loginName and password=@password and isdeleted=false";
+            string sql = "select * from  sysuser where loginname=@loginname and password=@password and isdeleted=false";
 
             List<SugarParameter> param = new List<SugarParameter>();
-            param.Add(new SugarParameter("@loginName", loginName));
+            param.Add(new SugarParameter("@loginname", loginName));
             param.Add(new SugarParameter("@password", password));
 
-            return await Db.Ado.SqlQueryAsync<SysUser>(sql, param);
+            var result = await Db.Ado.SqlQueryAsync<SysUser>(sql, param);
+
+            return result;
         }
 
         /// <summary>
@@ -40,11 +36,10 @@ namespace Hao.Repository
         /// <returns></returns>
         public async Task UpdateAuth(long roleId, string authNumbers)
         {
-
-            string sql = "update  sysuser set authNumbers=@authNumbers where roleid=@roleid";
+            string sql = "update  sysuser set authnumbers=@authnumbers where roleid=@roleid";
 
             List<SugarParameter> param = new List<SugarParameter>();
-            param.Add(new SugarParameter("@authNumbers", authNumbers));
+            param.Add(new SugarParameter("@authnumbers", authNumbers));
             param.Add(new SugarParameter("@roleid", roleId));
 
             await Db.Ado.ExecuteCommandAsync(sql, param);
