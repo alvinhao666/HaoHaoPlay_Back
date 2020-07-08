@@ -10,18 +10,18 @@ namespace Hao.Event
     /// <summary>
     /// 注销
     /// </summary>
-    public class LogoutEventDataConsumer : EventService, ILogoutEventDataConsumer
+    public class LogoutEventConsumer : EventService, ILogoutEventConsumer
     {
         private readonly H_AppSettingsConfig _appsettings;
 
-        public LogoutEventDataConsumer(IOptionsSnapshot<H_AppSettingsConfig> appsettingsOptions)
+        public LogoutEventConsumer(IOptionsSnapshot<H_AppSettingsConfig> appsettingsOptions)
         {
             _appsettings = appsettingsOptions.Value;
         }
 
-        public async Task LogoutForUpdateAuth(LogoutForUpdateAuthEventData person)
+        public async Task LogoutForUpdateAuth(LogoutForUpdateAuthEventData data)
         {
-            foreach(var userId in person.UserIds)
+            foreach(var userId in data.UserIds)
             {
                 var keys = await RedisHelper.KeysAsync($"{_appsettings.RedisPrefix.Login}{userId}_*");
                 foreach (var key in keys)

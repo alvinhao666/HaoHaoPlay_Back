@@ -12,12 +12,12 @@ namespace Hao.Event
         Task LogoutForUpdateAuth(LogoutForUpdateAuthEventData data);
     }
 
-    public class LogoutEventDataSubscribe : ILogoutEventDataSubscribe, ICapSubscribe
+    public class LogoutEventSubscribe : ILogoutEventDataSubscribe, ICapSubscribe
     {
 
-        private readonly ILogoutEventDataConsumer _consumer;
+        private readonly ILogoutEventConsumer _consumer;
 
-        public LogoutEventDataSubscribe(ILogoutEventDataConsumer consumer)
+        public LogoutEventSubscribe(ILogoutEventConsumer consumer)
         {
             _consumer = consumer;
         }

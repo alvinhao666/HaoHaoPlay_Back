@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 namespace Hao.Event
 {
     /// <summary>
-    /// 登录
+    /// 注销
     /// </summary>
-    public interface ILoginEventDataConsumer
+    public interface ILogoutEventConsumer
     {
-        Task UpdateLogin(LoginEventData person);
+        Task LogoutForUpdateAuth(LogoutForUpdateAuthEventData data);
     }
 }
