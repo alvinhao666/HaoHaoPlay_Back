@@ -20,8 +20,8 @@ namespace Hao.Repository
             string sql = "select * from  sysuser where loginname=@loginname and password=@password and isdeleted=false";
 
             var param = new List<SugarParameter>();
-            param.Add(new SugarParameter("@loginname", loginName));
-            param.Add(new SugarParameter("@password", password));
+            param.Add(new SugarParameter("loginname", loginName));
+            param.Add(new SugarParameter("password", password));
 
             var result = await Db.Ado.SqlQueryAsync<SysUser>(sql, param);
 
@@ -39,8 +39,8 @@ namespace Hao.Repository
             string sql = "update  sysuser set authnumbers=@authnumbers where roleid=@roleid";
 
             var param = new List<SugarParameter>();
-            param.Add(new SugarParameter("@authnumbers", authNumbers));
-            param.Add(new SugarParameter("@roleid", roleId));
+            param.Add(new SugarParameter("authnumbers", authNumbers));
+            param.Add(new SugarParameter("roleid", roleId));
 
             await Db.Ado.ExecuteCommandAsync(sql, param);
         }
