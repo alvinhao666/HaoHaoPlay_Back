@@ -41,7 +41,19 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <returns></returns>
         public static IServiceCollection AddSqlServerService(this IServiceCollection services, string connectionString, Dictionary<string, int> slaveConnectionStrings = null)
         {
-            return AddOrmService(services, DbType.MySql, connectionString, slaveConnectionStrings);
+            return AddOrmService(services, DbType.SqlServer, connectionString, slaveConnectionStrings);
+        }
+
+        /// <summary>
+        /// oracle
+        /// </summary>
+        /// <param name="services"></param>
+        /// <param name="connectionString"></param>
+        /// <param name="slaveConnectionStrings"></param>
+        /// <returns></returns>
+        public static IServiceCollection AddOracleService(this IServiceCollection services, string connectionString, Dictionary<string, int> slaveConnectionStrings = null)
+        {
+            return AddOrmService(services, DbType.Oracle, connectionString, slaveConnectionStrings);
         }
 
         /// <summary>
