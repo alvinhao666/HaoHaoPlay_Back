@@ -9,7 +9,7 @@ namespace Hao.Event
     /// </summary>
     public interface ILogoutEventDataSubscribe
     {
-        Task Logout(LogoutEventData data);
+        Task LogoutForUpdateAuth(LogoutForUpdateAuthEventData data);
     }
 
     public class LogoutEventDataSubscribe : ILogoutEventDataSubscribe, ICapSubscribe
@@ -22,10 +22,10 @@ namespace Hao.Event
             _consumer = consumer;
         }
 
-        [CapSubscribe(nameof(LogoutEventData))]
-        public async Task Logout(LogoutEventData data)
+        [CapSubscribe(nameof(LogoutForUpdateAuthEventData))]
+        public async Task LogoutForUpdateAuth(LogoutForUpdateAuthEventData data)
         {
-            await _consumer.Logout(data);
+            await _consumer.LogoutForUpdateAuth(data);
         }
     }
 }

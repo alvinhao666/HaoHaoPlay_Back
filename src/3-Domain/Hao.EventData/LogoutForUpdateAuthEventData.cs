@@ -2,7 +2,7 @@
 
 namespace Hao.EventData
 {
-    public class LogoutEventData
+    public class LogoutForUpdateAuthEventData
     {
         public List<long> UserIds { get; set; }
     }

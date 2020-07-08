@@ -19,7 +19,7 @@ namespace Hao.Event
             _appsettings = appsettingsOptions.Value;
         }
 
-        public async Task Logout(LogoutEventData person)
+        public async Task LogoutForUpdateAuth(LogoutForUpdateAuthEventData person)
         {
             foreach(var userId in person.UserIds)
             {

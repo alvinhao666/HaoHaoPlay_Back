@@ -131,7 +131,7 @@ namespace Hao.AppService
             //注销该角色下用户的登录信息
 
             if (ids.Count < 1) return;
-            await _publisher.PublishAsync(nameof(LogoutEventData), new LogoutEventData
+            await _publisher.PublishAsync(nameof(LogoutForUpdateAuthEventData), new LogoutForUpdateAuthEventData
             {
                 UserIds = ids
             });
