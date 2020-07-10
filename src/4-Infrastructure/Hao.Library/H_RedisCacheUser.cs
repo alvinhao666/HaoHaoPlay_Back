@@ -36,6 +36,11 @@ namespace Hao.Library
         /// 是否权限更新
         /// </summary>
         public bool? IsAuthUpdate { get; set; }
+
+        /// <summary>
+        /// ip地址
+        /// </summary>
+        public string Ip { get; set; }
     }
 
     /// <summary>

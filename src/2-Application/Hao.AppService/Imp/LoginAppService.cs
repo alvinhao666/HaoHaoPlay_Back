@@ -64,8 +64,9 @@ namespace Hao.AppService
         /// <param name="loginName"></param>
         /// <param name="password"></param>
         /// <param name="isRememberLogin"></param>
+        /// <param name="ip"></param>
         /// <returns></returns>
-        public async Task<LoginVM> Login(string loginName, string password, bool isRememberLogin)
+        public async Task<LoginVM> Login(string loginName, string password, bool isRememberLogin, string ip)
         {
             var timeNow = DateTime.Now;
             var expireTime = timeNow.AddDays(isRememberLogin ? 3 : 1);
@@ -103,14 +104,15 @@ namespace Hao.AppService
                 Name = user.Name,
                 AuthNumbers = authNums,
                 Jwt = jwt,
-                LoginStatus = LoginStatus.Online
+                LoginStatus = LoginStatus.Online,
+                Ip = ip
             };
 
             int expireSeconds = (int)expireTime.Subtract(timeNow).Duration().TotalSeconds + 1;
             await RedisHelper.SetAsync($"{_appsettings.RedisPrefix.Login}{user.Id}_{jti}", H_JsonSerializer.Serialize(userValue), expireSeconds);
 
             //同步登录信息，例如ip等等
-            await AsyncLoginInfo(user.Id, timeNow);
+            await AsyncLoginInfo(user.Id, timeNow,ip);
 
             return new LoginVM
             {
@@ -180,15 +182,8 @@ namespace Hao.AppService
         /// 同步登录信息
         /// </summary>
         /// <returns></returns>
-        private async Task AsyncLoginInfo(long userId, DateTime loginTime)
+        private async Task AsyncLoginInfo(long userId, DateTime loginTime, string ip)
         {
-            var ip = _httpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault();
-            if (string.IsNullOrWhiteSpace(ip))
-            {
-                ip = _httpContext.Connection.RemoteIpAddress.ToString();
-                if (ip == "::1" || ip.Contains("127.0.0.1")) ip = "127.0.0.1";
-            }
-
             await _publisher.PublishAsync(nameof(LoginEventData), new LoginEventData
             {
                 UserId = userId,

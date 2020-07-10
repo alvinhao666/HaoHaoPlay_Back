@@ -1,7 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Hao.AppService;
 using Hao.AppService.ViewModel;
+using Hao.Core.Extensions;
 using Hao.Log;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
 
@@ -20,9 +22,12 @@ namespace Hao.WebApi.Controllers
 
         private readonly ILoginAppService _loginAppService;
 
-        public LoginController(ILoginAppService loginService)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public LoginController(ILoginAppService loginService, IHttpContextAccessor httpContextAccessor)
         {
             _loginAppService = loginService;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         /// <summary>
@@ -33,11 +38,13 @@ namespace Hao.WebApi.Controllers
         [HttpPost]
         public async Task<LoginVM> Login(LoginRequest request)
         {
-            _logger.Info(new H_Log() { Method = "Login", Argument = request, Description = "登录请求" });
+            var ip = _httpContextAccessor.HttpContext.GetIp();
 
-            var result = await _loginAppService.Login(request.LoginName, request.Password, request.IsRememberLogin);
+            _logger.Info(new H_Log() { Method = "LoginRequest", Argument = new { request , ip }, Description = "登录请求" });
 
-            _logger.Info(new H_Log() { Method = "Login", Argument = request, Description = "登录成功" });
+            var result = await _loginAppService.Login(request.LoginName, request.Password, request.IsRememberLogin ,ip);
+
+            _logger.Info(new H_Log() { Method = "LoginResponse", Argument = new { request, ip }, Description = "登录成功" });
 
             return result;
         }

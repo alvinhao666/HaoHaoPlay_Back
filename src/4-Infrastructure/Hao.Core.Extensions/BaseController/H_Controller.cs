@@ -37,11 +37,15 @@ namespace Hao.Core.Extensions
 
             var jti = User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti)?.Value;
 
-            var argument = new { context.HttpContext.TraceIdentifier, UserId = userId, context.ActionArguments };
+            var ip = context.HttpContext.GetIp();
+
+            var argument = new { context.HttpContext.TraceIdentifier, UserId = userId, context.ActionArguments, IP = ip };
 
             _logger.Info(new H_Log{ Method = context.HttpContext.Request.Path.Value, Argument = argument, Description = "请求信息" });
 
             var cache = GetCacheUser(userId, jti);
+
+            if (ip != cache.Ip) throw new H_Exception("请重新登录", nameof(H_Error.E100004).GetErrorCode());
 
             CheckAuth(context, cache.AuthNumbers);
 
