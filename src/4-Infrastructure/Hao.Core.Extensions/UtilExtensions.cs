@@ -1,9 +1,5 @@
-﻿using Hao.Utility;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using System.Linq;
-using System.Net;
-using System.Net.NetworkInformation;
-using System.Net.Sockets;
 
 namespace Hao.Core.Extensions
 {
