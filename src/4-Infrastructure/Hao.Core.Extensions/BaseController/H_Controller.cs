@@ -37,7 +37,7 @@ namespace Hao.Core.Extensions
 
             var jti = User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti)?.Value;
 
-            var ip = context.HttpContext.GetIp();
+            var ip = HttpContext.GetIp();
 
             var argument = new { context.HttpContext.TraceIdentifier, UserId = userId, context.ActionArguments, IP = ip };
 
