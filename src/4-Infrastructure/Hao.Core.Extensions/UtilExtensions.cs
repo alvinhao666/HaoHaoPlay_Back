@@ -22,10 +22,12 @@ namespace Hao.Core.Extensions
             {
                 ip = httpContext.Connection.RemoteIpAddress.ToString();
 
+#if DEBUG  
                 if (ip.Contains("::ffff") || ip == "::1" || ip.Contains("127.0.0.1"))
                 {
                     ip = "127.0.0.1";
                 }
+#endif
             }
 
             return ip;
