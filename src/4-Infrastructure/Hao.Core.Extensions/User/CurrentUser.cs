@@ -47,9 +47,7 @@ namespace Hao.Core.Extensions
         {
             get
             {
-                if (_httpContext == null) return null;
-                var jti = _httpContext.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti)?.Value;
-                return jti;
+                return _httpContext?.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti)?.Value;
             }
         }
 

@@ -22,12 +22,9 @@ namespace Hao.WebApi.Controllers
 
         private readonly ILoginAppService _loginAppService;
 
-        private readonly IHttpContextAccessor _httpContextAccessor;
-
-        public LoginController(ILoginAppService loginService, IHttpContextAccessor httpContextAccessor)
+        public LoginController(ILoginAppService loginService)
         {
             _loginAppService = loginService;
-            _httpContextAccessor = httpContextAccessor;
         }
 
         /// <summary>
@@ -38,7 +35,7 @@ namespace Hao.WebApi.Controllers
         [HttpPost]
         public async Task<LoginVM> Login(LoginRequest request)
         {
-            var ip = _httpContextAccessor.HttpContext.GetIp();
+            var ip = HttpContext.GetIp();
 
             _logger.Info(new H_Log() { Method = "LoginRequest", Argument = new { request , ip }, Description = "登录请求" });
 

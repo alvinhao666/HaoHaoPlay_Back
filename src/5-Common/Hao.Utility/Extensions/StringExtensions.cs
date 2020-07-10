@@ -11,6 +11,16 @@ namespace Hao.Utility
     public static  class StringExtensions
     {
         /// <summary>
+        /// 安全转换为字符串，去除两端空格，当值为null时返回""
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public static string SafeString(this object input)
+        {
+            return input?.ToString().Trim() ?? string.Empty;
+        }
+
+        /// <summary>
         /// 字符串是否为空
         /// </summary>
         /// <param name="value"></param>
