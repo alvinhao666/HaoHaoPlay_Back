@@ -5,6 +5,7 @@ EXPOSE 8000
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /code
 COPY src/*/*/*.csproj ./
+
 # 根据项目文件名称创建项目文件夹，并移动项目文件到对应的项目目录下
 RUN for file in $(ls *.csproj); do mkdir -p src/${file%.*}/ && mv $file src/${file%.*}/; done 
 COPY . .
