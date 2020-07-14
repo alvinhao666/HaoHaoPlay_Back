@@ -6,7 +6,7 @@ FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /code
 COPY src/*/*/*.csproj ./
 
-# 根据项目文件名称创建项目文件夹，并移动项目文件到对应的项目目录下
+# 鏍规嵁椤圭洰鏂囦欢鍚嶇О鍒涘缓椤圭洰鏂囦欢澶癸紝骞剁Щ鍔ㄩ」鐩枃浠跺埌瀵瑰簲鐨勯」鐩洰褰曚笅
 RUN for file in $(ls *.csproj); do mkdir -p src/${file%.*}/ && mv $file src/${file%.*}/; done 
 COPY . .
 WORKDIR "/code/src/HaoHaoPlay_Back.ApiHost"
