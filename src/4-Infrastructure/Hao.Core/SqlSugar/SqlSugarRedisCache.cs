@@ -32,7 +32,7 @@ namespace Hao.Core
 
         public IEnumerable<string> GetAllKey<V>()
         {
-            return RedisHelper.Keys("SqlSugarDataCache.*");
+            return RedisHelper.Keys("SqlSugarDataCache.*"); //SqlSugarDataCache是定死的，不允许修改
         }
 
         public V GetOrCreate<V>(string cacheKey, Func<V> create, int cacheDurationInSeconds = int.MaxValue)
