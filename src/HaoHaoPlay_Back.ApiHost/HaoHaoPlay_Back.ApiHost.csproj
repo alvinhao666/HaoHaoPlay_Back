@@ -33,7 +33,7 @@
     <Content Update="ConfigFile\appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="nlog.Production.config">
+    <Content Update="ConfigFile\nlog.Production.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
