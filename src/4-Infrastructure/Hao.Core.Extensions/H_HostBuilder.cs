@@ -24,14 +24,11 @@ namespace Hao.Core.Extensions
         /// <param name="args"></param>
         public void Run<TStartup>(string[] args) where TStartup : H_Startup<TConfig>
         {
-            var configBuilder = new ConfigurationBuilder()
-                                //.SetBasePath(AppContext.BaseDirectory) //默认地址 可不写
-                                .AddJsonFile("appsettings.json", false, true) //optional:（Whether the file is optional）是否可选，意思是如果配置文件不存在的时候是否要抛异常。第三个参数 reloadOnChange  json文件更改后是否重新加载。
-#if DEBUG                       
-                                .AddJsonFile("appsettings.Development.json", false, true) //false，不可选， 文件不存在，则会报错
-#endif
-                                ;
-               
+
+            var configBuilder = new ConfigurationBuilder();
+
+            InitBuild(configBuilder);
+
             var configRoot = configBuilder.Build();
 
             var appSettings = new TConfig();
@@ -40,7 +37,7 @@ namespace Hao.Core.Extensions
             Host.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration(builder =>
                 {
-                    builder = configBuilder;
+                    InitBuild(builder);
                 })
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory(builder =>
                 {
@@ -84,5 +81,19 @@ namespace Hao.Core.Extensions
                 .Build()
                 .Run();
         }
+
+
+
+        public static void InitBuild(IConfigurationBuilder builder)
+        {
+            var basePath = AppContext.BaseDirectory + "Config";
+
+            builder.SetBasePath(basePath)
+                   .AddJsonFile("appsettings.json", false, true) //optional:（Whether the file is optional）是否可选，意思是如果配置文件不存在的时候是否要抛异常。第三个参数 reloadOnChange  json文件更改后是否重新加载。
+#if DEBUG
+                   .AddJsonFile("appsettings.Development.json", false, true) //false，不可选， 文件不存在，则会报错
+#endif
+                   ;
+        } 
     }
 }
