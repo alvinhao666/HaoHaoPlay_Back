@@ -84,7 +84,7 @@ namespace Hao.Core.Extensions
 
 
 
-        public static void InitBuild(IConfigurationBuilder builder)
+        private void InitBuild(IConfigurationBuilder builder)
         {
             var basePath = $"{AppContext.BaseDirectory}ConfigFile";
 
