@@ -71,7 +71,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 ConnectionString = connectionString,
                 DbType = dbType,
                 IsAutoCloseConnection = true,//开启自动释放模式和EF原理一样 自动释放数据务，如果存在事务，在事务结束后释放
-                InitKeyType = InitKeyType.SystemTable,  //如果不是SA等高权限数据库的账号,需要从实体读取主键或者自增列 InitKeyType要设成Attribute (不需要读取这些信息)
+                InitKeyType = InitKeyType.Attribute,  //SysTable  表示通过数据库系统表查询表主键，这种需要数据库最高权限，并且数据库表需有主键或能获取到主键。   Attribute 表示通过实体  [SugarColumn(IsPrimaryKey = true)]标签获取主键，而无需通过数据库表。
                 ConfigureExternalServices = new ConfigureExternalServices()
                 {
                     DataInfoCacheService = new SqlSugarRedisCache() //RedisCache是继承ICacheService自已实现的一个类
