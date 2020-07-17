@@ -82,7 +82,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 //new SlaveConnectionConfig() { HitRate=30, ConnectionString=Config.ConnectionString3 }
             };
 
-            if (slaveConnectionStrings != null && slaveConnectionStrings.Count() > 0)
+            if (slaveConnectionStrings?.Count() > 0)
             {
                 connectionConfig.SlaveConnectionConfigs = new List<SlaveConnectionConfig>();
                 foreach (var item in slaveConnectionStrings)
