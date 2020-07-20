@@ -73,11 +73,7 @@ namespace Hao.AppService
                 OrderFileds = nameof(SysRole.Level)
             });
             var result = _mapper.Map<List<RoleVM>>(roles);
-            //var roleUsers = await _roleRep.GetRoleUserCount();
-            //foreach (var item in result)
-            //{
-            //    item.UserCount = roleUsers.FirstOrDefault(a => a.RoleId == item.Id)?.UserCount ?? 0;
-            //}
+
             return result;
         }
 
