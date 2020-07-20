@@ -163,10 +163,10 @@ namespace Hao.AppService
                 var item = await _dictRep.GetAysnc(id);
 
                 var sameItems = await _dictRep.GetListAysnc(new DictQuery { ParentId = item.ParentId, EqualItemName = request.ItemName });
-                if (sameItems.Where(a => a.Id != id).Count() > 0) throw new H_Exception("数据项名称已存在，请重新输入");
+                if (sameItems.Any(a => a.Id != id)) throw new H_Exception("数据项名称已存在，请重新输入");
 
                 sameItems = await _dictRep.GetListAysnc(new DictQuery { ParentId = item.ParentId, ItemValue = request.ItemValue });
-                if (sameItems.Where(a => a.Id != id).Count() > 0) throw new H_Exception("数据项值已存在，请重新输入");
+                if (sameItems.Any(a => a.Id != id)) throw new H_Exception("数据项值已存在，请重新输入");
 
                 item.ItemName = request.ItemName;
                 item.ItemValue = request.ItemValue;
