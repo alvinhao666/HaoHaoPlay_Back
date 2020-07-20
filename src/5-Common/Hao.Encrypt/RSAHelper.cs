@@ -14,11 +14,11 @@ namespace Hao.Encrypt
         /// </summary>
         /// <param name="data">原始数据</param>
         /// <returns></returns>
-        public static string Sign(string privateKey,string data)
+        public static string Sign(string privateKey, string data)
         {
             byte[] dataBytes = Encoding.UTF8.GetBytes(data);
 
-            using (RSA privateKeyRsaProvider = CreateRsaProviderFromPrivateKey(privateKey)) 
+            using (RSA privateKeyRsaProvider = CreateRsaProviderFromPrivateKey(privateKey))
             {
                 var signatureBytes = privateKeyRsaProvider.SignData(dataBytes, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
 
@@ -36,7 +36,7 @@ namespace Hao.Encrypt
         /// <param name="data">原始数据</param>
         /// <param name="sign">签名</param>
         /// <returns></returns>
-        public static bool Verify(string publicKey,string data, string sign)
+        public static bool Verify(string publicKey, string data, string sign)
         {
             byte[] dataBytes = Encoding.UTF8.GetBytes(data);
             byte[] signBytes = Convert.FromBase64String(sign);
@@ -73,7 +73,7 @@ namespace Hao.Encrypt
 
         #region 加密
 
-        public static string Encrypt(string publicKey,string text)
+        public static string Encrypt(string publicKey, string text)
         {
             byte[] dataBytes = Encoding.UTF8.GetBytes(text); //对普通的文字操作，用Encoding.UTF8.GetBytes()
             using (RSA publicKeyRsaProvider = CreateRsaProviderFromPublicKey(publicKey))
