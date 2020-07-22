@@ -71,7 +71,7 @@ namespace Hao.WebApi.Controllers
         /// <returns></returns>
         [HttpGet("{id}")]
         [AuthCode("1_4")]
-        public async Task<UserDetailVM> Get(long id) => await _userAppService.GetUser(id);
+        public async Task<UserDetailVM> Get(long? id) => await _userAppService.GetUser(id.Value);
 
         /// <summary>
         /// 修改用户
@@ -81,7 +81,7 @@ namespace Hao.WebApi.Controllers
         /// <returns></returns>
         [HttpPut("{id}")]
         [AuthCode("1_64")]
-        public async Task Update(long id, [FromBody]UserUpdateRequest request) => await _userAppService.EditUser(id, request);
+        public async Task Update(long? id, [FromBody]UserUpdateRequest request) => await _userAppService.EditUser(id.Value, request);
 
         /// <summary>
         /// 注销用户
@@ -90,7 +90,7 @@ namespace Hao.WebApi.Controllers
         /// <returns></returns>
         [HttpPut("{id}")]
         [AuthCode("1_128")]
-        public async Task Disable(long id) => await _userAppService.UpdateUserStatus(id, false);
+        public async Task Disable(long? id) => await _userAppService.UpdateUserStatus(id.Value, false);
 
         /// <summary>
         /// 启用用户
@@ -99,7 +99,7 @@ namespace Hao.WebApi.Controllers
         /// <returns></returns>
         [HttpPut("{id}")]
         [AuthCode("1_256")]
-        public async Task Enable(long id) => await _userAppService.UpdateUserStatus(id, true);
+        public async Task Enable(long? id) => await _userAppService.UpdateUserStatus(id.Value, true);
 
         /// <summary>
         /// 删除用户
@@ -108,7 +108,7 @@ namespace Hao.WebApi.Controllers
         /// <returns></returns>
         [HttpDelete("{id}")]
         [AuthCode("1_512")]
-        public async Task Delete(long id) => await _userAppService.DeleteUser(id);
+        public async Task Delete(long? id) => await _userAppService.DeleteUser(id.Value);
 
 
         /// <summary>

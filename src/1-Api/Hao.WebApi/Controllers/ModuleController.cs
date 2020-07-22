@@ -44,7 +44,7 @@ namespace Hao.WebApi.Controllers
         /// <returns></returns>
         [HttpGet("{id}")]
         [AuthCode("1_8")]
-        public async Task<ModuleDetailVM> Get(long id) => await _moduleAppService.Get(id);
+        public async Task<ModuleDetailVM> Get(long? id) => await _moduleAppService.Get(id.Value);
 
         /// <summary>
         /// 更新模块信息
@@ -54,7 +54,7 @@ namespace Hao.WebApi.Controllers
         /// <returns></returns>
         [HttpPut("{id}")]
         [AuthCode("1_8192")]
-        public async Task Update(long id, [FromBody]ModuleUpdateRequest request) => await _moduleAppService.UpdateModule(id, request);
+        public async Task Update(long? id, [FromBody]ModuleUpdateRequest request) => await _moduleAppService.UpdateModule(id.Value, request);
 
 
         /// <summary>
@@ -64,6 +64,6 @@ namespace Hao.WebApi.Controllers
         /// <returns></returns>
         [HttpDelete("{id}")]
         [AuthCode("1_16384")]
-        public async Task Delete(long id) => await _moduleAppService.Delete(id);
+        public async Task Delete(long? id) => await _moduleAppService.Delete(id.Value);
     }
 }

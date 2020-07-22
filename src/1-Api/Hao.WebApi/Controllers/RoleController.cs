@@ -34,7 +34,7 @@ namespace Hao.WebApi.Controllers
         /// <returns></returns>
         [HttpGet("{id}")]
         [AuthCode("1_16")]
-        public async Task<RoleModuleVM> GetRoleModule(long id) => await _roleAppService.GetRoleModule(id);
+        public async Task<RoleModuleVM> GetRoleModule(long? id) => await _roleAppService.GetRoleModule(id.Value);
 
         /// <summary>
         /// 更新角色权限
@@ -44,7 +44,7 @@ namespace Hao.WebApi.Controllers
         /// <returns></returns>
         [HttpPut("{id}")]
         [AuthCode("1_262144")]
-        public async Task UpdateRoleAuth(long id, [FromBody]RoleUpdateRequest request) => await _roleAppService.UpdateRoleAuth(id, request);
+        public async Task UpdateRoleAuth(long? id, [FromBody]RoleUpdateRequest request) => await _roleAppService.UpdateRoleAuth(id.Value, request);
 
         ///// <summary>
         ///// 添加角色
