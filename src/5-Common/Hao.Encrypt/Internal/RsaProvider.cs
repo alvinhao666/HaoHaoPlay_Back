@@ -1,12 +1,9 @@
 ﻿using Hao.Encrypt.Extensions.Internal;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Hao.Encrypt.Internal
 {
