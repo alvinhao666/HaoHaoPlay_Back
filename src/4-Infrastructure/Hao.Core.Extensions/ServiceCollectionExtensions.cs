@@ -7,8 +7,6 @@ using Hao.Json;
 using Hao.Library;
 using Hao.Snowflake;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Caching.Redis;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
@@ -77,10 +75,8 @@ namespace Hao.Core.Extensions
             //初始化 RedisHelper
             RedisHelper.Initialization(csRedis);
 
-            //利用分布式缓存
-            //现在,ASP.NET Core引入了IDistributedCache分布式缓存接口，它是一个相当基本的分布式缓存标准API，可以让您对它进行编程，然后无缝地插入第三方分布式缓存
-            //DistributedCache将拷贝缓存的文件到Slave节点
-            services.AddSingleton<IDistributedCache>(new CSRedisCache(RedisHelper.Instance));
+            //利用IDistributedCache接口
+            //services.AddSingleton<IDistributedCache>(new CSRedisCache(RedisHelper.Instance)); //nuget caching.csredis
 
             #endregion
 
