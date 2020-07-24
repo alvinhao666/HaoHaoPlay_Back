@@ -28,9 +28,10 @@ namespace Hao.Core.Extensions
                     c.SwaggerEndpoint($"{appSettings.Swagger.Name}/swagger.json", appSettings.Swagger.Name);
                     //c.InjectStylesheet("/css/swagger_ui.css");
                 });
+
+                app.UseCors(x => x.AllowCredentials().AllowAnyMethod().AllowAnyHeader().WithOrigins(appSettings.CorsUrls));
             }
 
-            app.UseCors(x => x.AllowCredentials().AllowAnyMethod().AllowAnyHeader().WithOrigins(appSettings.CorsUrls));
 
             app.UseExceptionMiddleware();
 
