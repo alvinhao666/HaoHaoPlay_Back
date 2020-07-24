@@ -133,7 +133,7 @@ namespace Hao.Core.Extensions
 
 
             //模型验证 ApiBehaviorOptions 的统一模型验证配置一定要放到(.AddMvc)后面
-            services.AddCheckViewModelService();
+            services.AddValidateModelService();
 
             //Http
             services.AddHttpClient();
