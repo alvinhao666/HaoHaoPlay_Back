@@ -31,7 +31,7 @@ namespace Hao.Core.Extensions
 
             var configRoot = configBuilder.Build();
 
-            var appSettings = new TConfig();
+            var appSettings = new H_AppSettingsConfig();
             configRoot.Bind(appSettings);
 
             Host.CreateDefaultBuilder(args)
