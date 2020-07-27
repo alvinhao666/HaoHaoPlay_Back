@@ -5,8 +5,10 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Hao.Http
 {
@@ -79,6 +81,64 @@ namespace Hao.Http
             }
 
             return default;
+        }
+
+        /// <summary>
+        /// Get请求
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="url"></param>
+        /// <param name="obj"></param>
+        /// <param name="timeoutSeconds"></param>
+        /// <returns></returns>
+        public async Task<TResult> Get<TResult>(string url, object obj, int timeoutSeconds = 30)
+        {
+            var httpClient = _httpFactory.CreateClient();
+            httpClient.Timeout = new TimeSpan(0, 0, timeoutSeconds);
+
+            var response = await httpClient.GetAsync(url + ToUrlParam(obj));
+
+            if (response.IsSuccessStatusCode)
+            {
+                string content = await response.Content.ReadAsStringAsync();
+
+                var result = H_JsonSerializer.Deserialize<TResult>(content);
+
+                return result;
+            }
+
+            return default;
+        }
+
+
+
+        /// <summary>
+        /// 将对象组装成url参数 ?a=1&b=2&c=3&d=4
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        private string ToUrlParam(object obj)
+        {
+            PropertyInfo[] properties = obj.GetType().GetProperties();
+            var count = properties.Length;
+            var index = 1;
+            StringBuilder sb = new StringBuilder();
+            sb.Append("?");
+            foreach (var p in properties)
+            {
+                var v = p.GetValue(obj, null);
+
+                if (v == null) continue;
+
+                sb.Append($"{p.Name}={HttpUtility.UrlEncode(v.ToString())}");
+
+                if (index < count)
+                {
+                    sb.Append("&");
+                    index++;
+                }
+            }
+            return sb.ToString();
         }
     }
 }

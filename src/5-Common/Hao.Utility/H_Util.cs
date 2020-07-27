@@ -4,8 +4,10 @@ using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Web;
 
 namespace Hao.Utility
 {
@@ -248,5 +250,34 @@ namespace Hao.Utility
             return index;
         }
 
+
+        /// <summary>
+        /// 将对象组装成url参数 ?a=1&b=2&c=3&d=4
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public static string ToUrlParam(object obj)
+        {
+            PropertyInfo[] properties = obj.GetType().GetProperties();
+            var count = properties.Length;
+            var index = 1;
+            StringBuilder sb = new StringBuilder();
+            sb.Append("?");
+            foreach (var p in properties)
+            {
+                var v = p.GetValue(obj, null);
+
+                if (v == null) continue;
+
+                sb.Append($"{p.Name}={HttpUtility.UrlEncode(v.ToString())}");
+
+                if (index < count)
+                {
+                    sb.Append("&");
+                    index++;
+                }
+            }
+            return sb.ToString();
+        }
     }
 }

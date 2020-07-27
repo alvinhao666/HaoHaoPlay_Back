@@ -25,5 +25,16 @@ namespace Hao.Http
         /// <param name="timeoutSeconds"></param>
         /// <returns></returns>
         Task<TResult> Post<T, TResult>(string url, T t, int timeoutSeconds = 30) where T : new() where TResult : new();
+
+
+        /// <summary>
+        /// Get
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="url"></param>
+        /// <param name="dic"></param>
+        /// <param name="timeoutSeconds"></param>
+        /// <returns></returns>
+        Task<TResult> Get<TResult>(string url, object obj, int timeoutSeconds = 30);
     }
 }
