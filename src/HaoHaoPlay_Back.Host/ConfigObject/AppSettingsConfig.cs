@@ -1,6 +1,6 @@
 ﻿using Hao.Library;
 
-namespace HaoHaoPlay_Back.ApiHost
+namespace HaoHaoPlay_Back.Host
 {
     /// <summary>
     /// 配置文件映射实体

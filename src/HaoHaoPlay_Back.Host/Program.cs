@@ -1,6 +1,6 @@
 ﻿using Hao.Core.Extensions;
 
-namespace HaoHaoPlay_Back.ApiHost
+namespace HaoHaoPlay_Back.Host
 {
     public class Program
     {

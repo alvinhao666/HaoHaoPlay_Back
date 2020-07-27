@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Hao.Library;
 
-namespace HaoHaoPlay_Back.ApiHost
+namespace HaoHaoPlay_Back.Host
 {
     public class Startup<TConfig> : H_Startup<TConfig> where TConfig : H_AppSettingsConfig, new()
     {

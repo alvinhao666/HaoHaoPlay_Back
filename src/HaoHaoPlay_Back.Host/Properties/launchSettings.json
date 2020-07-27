@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "HaoHaoPlay_Back.ApiHost": {
+    "HaoHaoPlay_Back.Host": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",
