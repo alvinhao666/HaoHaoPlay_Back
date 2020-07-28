@@ -1,4 +1,4 @@
-﻿namespace Hao.Entity
+﻿namespace Hao.Core
 {
     /// <summary>
     /// 表示继承于该接口的类型是领域实体类。

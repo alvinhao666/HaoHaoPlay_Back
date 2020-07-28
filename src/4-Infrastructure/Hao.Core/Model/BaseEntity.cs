@@ -1,4 +1,3 @@
-using Hao.Entity;
 using SqlSugar;
 
 namespace Hao.Core

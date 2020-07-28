@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Hao.Entity
+namespace Hao.Core
 {
     public interface IsModifyAudited
     {

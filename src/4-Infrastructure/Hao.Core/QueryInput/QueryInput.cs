@@ -1,14 +1,17 @@
-﻿using Hao.Query;
-using SqlSugar;
-
-namespace Hao.Core
+﻿namespace Hao.Core
 {
-    public class QueryInput : IPagedQuery, IQueryInput
+    public class QueryInput : IPagedQuery
     {
         public int PageIndex { get; set; } = 1;
 
         public int PageSize { get; set; } = 10;
 
-        public OrderByType? OrderByType { get; set; }
+        public H_OrderByType? OrderByType { get; set; }
+    }
+
+    public enum H_OrderByType
+    {
+        Asc = 0,
+        Desc = 1
     }
 }

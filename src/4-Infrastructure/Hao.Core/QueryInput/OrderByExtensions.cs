@@ -1,5 +1,4 @@
-﻿using SqlSugar;
-using System;
+﻿using System;
 
 namespace Hao.Core
 {
@@ -11,7 +10,7 @@ namespace Hao.Core
         /// <param name="orderByType"></param>
         /// <param name="sortField"></param>
         /// <returns></returns>
-        public static string CombineNameWithSpace(this OrderByType? orderByType, Enum sortField)
+        public static string CombineNameWithSpace(this H_OrderByType? orderByType, Enum sortField)
         {
             if (orderByType.HasValue && sortField != null )
             { 
