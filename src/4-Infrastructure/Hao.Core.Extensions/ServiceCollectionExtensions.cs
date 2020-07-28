@@ -148,7 +148,7 @@ namespace Hao.Core.Extensions
             services.AddAutoMapper(appSettings.AutoMapperAssemblyNames.Select(name => Assembly.Load(name)));
 
             services.AddScoped<ICurrentUser, CurrentUser>();
-            services.AddScoped<IHttpProvider, HttpProvider>();
+            services.AddTransient<IHttpProvider, HttpProvider>();
 
             return services;
         }
