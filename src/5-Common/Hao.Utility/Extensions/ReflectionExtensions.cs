@@ -44,7 +44,7 @@ namespace Hao.Utility
             return (u != null) && u.IsEnum;
         }
 
-        //public static bool IsNullableEnum2(Type t)
+        //public static bool IsNullableEnum2(Type t)  可为空枚举 是 Nullable<> 泛型
         //{
         //    return t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Nullable<>) && t.GetGenericArguments()[0].IsEnum;
         //}
