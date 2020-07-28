@@ -113,7 +113,7 @@ namespace Hao.Http
         }
 
 
-
+        #region private
         /// <summary>
         /// 将对象组装成url参数 ?a=1&b=2&c=3&d=4
         /// </summary>
@@ -161,10 +161,12 @@ namespace Hao.Http
         /// </summary>
         /// <param name="t"></param>
         /// <returns></returns>
-        private static bool IsNullableEnum(Type t)
+        private bool IsNullableEnum(Type t)
         {
             Type u = Nullable.GetUnderlyingType(t);
             return (u != null) && u.IsEnum;
         }
+        #endregion
+
     }
 }
