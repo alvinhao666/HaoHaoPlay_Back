@@ -52,40 +52,6 @@ namespace Hao.Http
         }
 
         /// <summary>
-        /// Post提交 需要用[FromForm]接收
-        /// </summary>
-        /// <param name="url"></param>
-        /// <param name="dic"></param>
-        /// <param name="timeoutSeconds"></param>
-        /// <returns></returns>
-        public async Task<TResult> Post<TResult>(string url, Dictionary<string, string> dic, int timeoutSeconds = 30) where TResult : new()
-        {
-
-            var body = dic.Select(pair => pair.Key + "=" + WebUtility.UrlEncode(pair.Value))
-                          .DefaultIfEmpty("") //如果是空 返回 new List<string>(){""};
-                          .Aggregate((a, b) => a + "&" + b);
-
-            var stringContent = new StringContent(body, Encoding.UTF8);
-
-            stringContent.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
-
-            var httpClient = _httpFactory.CreateClient();
-            httpClient.Timeout = new TimeSpan(0, 0, timeoutSeconds);
-            var response = await httpClient.PostAsync(url, stringContent);
-
-            if (response.IsSuccessStatusCode)
-            {
-                var content = await response.Content.ReadAsStringAsync();
-
-                var result = H_JsonSerializer.Deserialize<TResult>(content);
-
-                return result;
-            }
-
-            return default;
-        }
-
-        /// <summary>
         /// Get请求
         /// </summary>
         /// <typeparam name="TResult"></typeparam>
@@ -112,6 +78,39 @@ namespace Hao.Http
             return default;
         }
 
+        ///// <summary>
+        ///// Post提交 需要用[FromForm]接收
+        ///// </summary>
+        ///// <param name="url"></param>
+        ///// <param name="dic"></param>
+        ///// <param name="timeoutSeconds"></param>
+        ///// <returns></returns>
+        //public async Task<TResult> Post<TResult>(string url, Dictionary<string, string> dic, int timeoutSeconds = 30) where TResult : new()
+        //{
+
+        //    var body = dic.Select(pair => pair.Key + "=" + WebUtility.UrlEncode(pair.Value))
+        //                  .DefaultIfEmpty("") //如果是空 返回 new List<string>(){""};
+        //                  .Aggregate((a, b) => a + "&" + b);
+
+        //    var stringContent = new StringContent(body, Encoding.UTF8);
+
+        //    stringContent.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
+
+        //    var httpClient = _httpFactory.CreateClient();
+        //    httpClient.Timeout = new TimeSpan(0, 0, timeoutSeconds);
+        //    var response = await httpClient.PostAsync(url, stringContent);
+
+        //    if (response.IsSuccessStatusCode)
+        //    {
+        //        var content = await response.Content.ReadAsStringAsync();
+
+        //        var result = H_JsonSerializer.Deserialize<TResult>(content);
+
+        //        return result;
+        //    }
+
+        //    return default;
+        //}
 
         #region private
         /// <summary>
