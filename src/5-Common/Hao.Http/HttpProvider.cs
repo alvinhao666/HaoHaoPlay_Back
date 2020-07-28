@@ -59,12 +59,12 @@ namespace Hao.Http
         /// <param name="obj"></param>
         /// <param name="timeoutSeconds"></param>
         /// <returns></returns>
-        public async Task<TResult> Get<TResult>(string url, object obj, int timeoutSeconds = 30)
+        public async Task<TResult> Get<T, TResult>(string url, T t, int timeoutSeconds = 30) where T : new() where TResult : new()
         {
             var httpClient = _httpFactory.CreateClient();
             httpClient.Timeout = new TimeSpan(0, 0, timeoutSeconds);
 
-            var response = await httpClient.GetAsync(url + ToUrlParam(obj));
+            var response = await httpClient.GetAsync(url + ToUrlParam(t));
 
             if (response.IsSuccessStatusCode)
             {
@@ -118,7 +118,7 @@ namespace Hao.Http
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        private string ToUrlParam(object obj)
+        private string ToUrlParam<T>(T obj) where T : new()
         {
             // 1、当字符串数据以url的形式传递给web服务器时,字符串中是不允许出现空格和特殊字符的
             // 2、因为 url 对字符有限制，比如把一个邮箱放入 url，就需要使用 urlencode 函数，因为 url 中不能包含 @ 字符。
