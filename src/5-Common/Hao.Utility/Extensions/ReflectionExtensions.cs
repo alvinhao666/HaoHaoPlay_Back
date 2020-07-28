@@ -38,11 +38,24 @@ namespace Hao.Utility
             return reval;
         }
 
+        public static bool IsNullableEnum(this Type t)
+        {
+            Type u = Nullable.GetUnderlyingType(t);
+            return (u != null) && u.IsEnum;
+        }
+
+        //public static bool IsNullableEnum2(Type t)
+        //{
+        //    return t.IsGenericType && t.GetGenericTypeDefinition() == typeof(Nullable<>) && t.GetGenericArguments()[0].IsEnum;
+        //}
+
+
         public static MethodInfo GetMethod(this Type type, string name)
         {
             var reval = type.GetTypeInfo().GetMethod(name);
             return reval;
         }
+
         public static MethodInfo GetMethod(this Type type, string name, Type[] types)
         {
             var reval = type.GetTypeInfo().GetMethod(name, types);

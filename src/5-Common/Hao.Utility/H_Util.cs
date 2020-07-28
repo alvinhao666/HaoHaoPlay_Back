@@ -269,7 +269,15 @@ namespace Hao.Utility
 
                 if (v == null) continue;
 
-                sb.Append($"{p.Name}={HttpUtility.UrlEncode(v.ToString())}");
+                if (p.PropertyType.IsEnum || p.PropertyType.IsNullableEnum())
+                {
+                    var enumInt = (int)v;
+                    sb.Append($"{p.Name}={enumInt}");
+                }
+                else
+                {
+                    sb.Append($"{p.Name}={HttpUtility.UrlEncode(v.ToString())}");
+                }
 
                 if (index < count)
                 {

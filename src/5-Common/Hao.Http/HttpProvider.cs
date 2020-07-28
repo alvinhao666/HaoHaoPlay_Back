@@ -132,7 +132,15 @@ namespace Hao.Http
 
                 if (v == null) continue;
 
-                sb.Append($"{p.Name}={HttpUtility.UrlEncode(v.ToString())}");
+                if (p.PropertyType.IsEnum || IsNullableEnum(p.PropertyType))
+                {
+                    var enumInt = (int)v;
+                    sb.Append($"{p.Name}={enumInt}");
+                }
+                else
+                {
+                    sb.Append($"{p.Name}={HttpUtility.UrlEncode(v.ToString())}");
+                }
 
                 if (index < count)
                 {
@@ -141,6 +149,17 @@ namespace Hao.Http
                 }
             }
             return sb.ToString();
+        }
+
+        /// <summary>
+        /// 判断是否是枚举
+        /// </summary>
+        /// <param name="t"></param>
+        /// <returns></returns>
+        private static bool IsNullableEnum(Type t)
+        {
+            Type u = Nullable.GetUnderlyingType(t);
+            return (u != null) && u.IsEnum;
         }
     }
 }
