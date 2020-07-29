@@ -263,8 +263,6 @@ namespace Hao.Utility
             // 3、url转义其实也只是为了符合url的规范而已。因为在标准的url规范中中文和很多的字符是不允许出现在url中的
             if (obj == null) return "";
             PropertyInfo[] properties = obj.GetType().GetProperties();
-            var count = properties.Length;
-            var index = 1;
             StringBuilder sb = new StringBuilder();
             sb.Append("?");
             foreach (var p in properties)
@@ -283,12 +281,9 @@ namespace Hao.Utility
                     sb.Append($"{p.Name}={HttpUtility.UrlEncode(v.ToString())}");
                 }
 
-                if (index < count)
-                {
-                    sb.Append("&");
-                    index++;
-                }
+                sb.Append("&");
             }
+            sb = sb.Remove(sb.Length - 1, 1);
             return sb.ToString();
         }
     }

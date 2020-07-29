@@ -126,8 +126,7 @@ namespace Hao.Http
 
             if (obj == null) return "";
             PropertyInfo[] properties = obj.GetType().GetProperties();
-            var count = properties.Length;
-            var index = 1;
+
             StringBuilder sb = new StringBuilder();
             sb.Append("?");
             foreach (var p in properties)
@@ -145,13 +144,9 @@ namespace Hao.Http
                 {
                     sb.Append($"{p.Name}={HttpUtility.UrlEncode(v.ToString())}");
                 }
-
-                if (index < count)
-                {
-                    sb.Append("&");
-                    index++;
-                }
+                sb.Append("&");
             }
+            sb = sb.Remove(sb.Length - 1, 1);
             return sb.ToString();
         }
 
