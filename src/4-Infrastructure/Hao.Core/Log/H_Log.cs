@@ -1,7 +1,7 @@
 using System.Text.Encodings.Web;
 using System.Text.Json;
 
-namespace Hao.Log
+namespace Hao.Core
 {
     public class H_Log
     {

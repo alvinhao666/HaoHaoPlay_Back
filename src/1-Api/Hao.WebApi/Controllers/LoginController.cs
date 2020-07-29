@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
 using Hao.AppService;
 using Hao.AppService.ViewModel;
+using Hao.Core;
 using Hao.Core.Extensions;
-using Hao.Log;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
