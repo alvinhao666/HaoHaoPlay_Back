@@ -1,0 +1,130 @@
+﻿using Hao.RunTimeException;
+using Microsoft.AspNetCore.Mvc.Filters;
+using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Hao.Core.Extensions
+{
+    /// <summary>
+    /// 防止重复提交过滤器
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Method)]
+    public class AntiDuplicateRequestAttribute : ActionFilterAttribute
+    {
+        /// <summary>
+        /// 业务标识
+        /// </summary>
+        public string Key { get; set; }
+
+        /// <summary>
+        /// 锁类型
+        /// </summary>
+        public LockType Type { get; set; } = LockType.User;
+
+        /// <summary>
+        /// 再次提交时间间隔，单位：秒
+        /// </summary>
+        public int Interval { get; set; }
+
+        /// <summary>
+        /// 执行
+        /// </summary>
+        public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
+        {
+            if (context == null)
+                throw new ArgumentNullException(nameof(context));
+            if (next == null)
+                throw new ArgumentNullException(nameof(next));
+
+            var isSuccess = false;
+
+            var cacheKey = GetKey(context);
+
+            try
+            {
+                isSuccess = Lock(cacheKey);
+
+                if (!isSuccess) throw new H_Exception(GetFailMessage());
+
+                OnActionExecuting(context);
+
+                if (context.Result != null)  return;
+
+                var executedContext = await next();
+
+                OnActionExecuted(executedContext);
+            }
+            finally
+            {
+                if (isSuccess) UnLock(cacheKey);
+            }
+        }
+
+
+        /// <summary>
+        /// 获取锁定标识
+        /// </summary>
+        protected virtual string GetKey(ActionExecutingContext context)
+        {
+            var userId = string.Empty;
+
+            if (Type == LockType.User)
+            {
+                userId = context.HttpContext.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sid)?.Value;
+            }
+     
+            return string.IsNullOrWhiteSpace(Key) ? $"{userId}{context.HttpContext.Request.Path}" : $"{userId}{Key}";
+        }
+
+        /// <summary>
+        /// 获取失败消息
+        /// </summary>
+        protected virtual string GetFailMessage()
+        {
+            if (Type == LockType.User)  return "请不要重复提交";
+
+            return "其他用户正在执行该操作,请稍后再试";
+        }
+
+
+        /// <summary>
+        /// 锁定，成功锁定返回true，false代表之前已被锁定
+        /// </summary>
+        /// <param name="key">锁定标识</param>
+        /// <param name="expiration">锁定时间间隔</param>
+        private bool Lock(string key)
+        {
+            if (RedisHelper.Exists(key)) return false;
+
+            return RedisHelper.Set(key, 1, Interval);
+        }
+
+        /// <summary>
+        /// 解除锁定
+        /// </summary>
+        private void UnLock(string key)
+        {
+            if (!RedisHelper.Exists(key)) return;
+            RedisHelper.Del(key);
+        }
+    }
+
+    /// <summary>
+    /// 锁类型
+    /// </summary>
+    public enum LockType
+    {
+        /// <summary>
+        /// 用户锁，当用户发出多个执行该操作的请求，只有第一个请求被执行，其它请求被抛弃，其它用户不受影响
+        /// </summary>
+        User = 0,
+        /// <summary>
+        /// 全局锁，该操作同时只有一个用户的请求被执行
+        /// </summary>
+        Global = 1
+    }
+}
