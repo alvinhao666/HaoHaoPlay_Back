@@ -1,10 +1,8 @@
 ﻿using Hao.RunTimeException;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Hao.Core.Extensions
