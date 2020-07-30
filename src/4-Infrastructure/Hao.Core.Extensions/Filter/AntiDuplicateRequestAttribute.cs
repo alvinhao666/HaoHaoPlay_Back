@@ -24,9 +24,9 @@ namespace Hao.Core.Extensions
         public LockType Type { get; set; } = LockType.User;
 
         /// <summary>
-        /// 再次提交时间间隔，单位：秒
+        /// 再次提交时间间隔
         /// </summary>
-        public int Interval { get; set; }
+        public TimeSpan Interval { get; set; }
 
         /// <summary>
         /// 执行
