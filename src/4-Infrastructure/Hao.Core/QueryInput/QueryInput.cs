@@ -1,5 +1,8 @@
 ﻿namespace Hao.Core
 {
+    /// <summary>
+    /// 输入的查询条件
+    /// </summary>
     public class QueryInput : IPagedQuery
     {
         public int PageIndex { get; set; } = 1;

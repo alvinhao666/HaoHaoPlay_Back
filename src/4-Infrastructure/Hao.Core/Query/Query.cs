@@ -20,7 +20,5 @@ namespace Hao.Core
         public virtual string QuerySql { get; }
 
         public virtual string OrderFileds { get; set; }
-
-        //public OrderByType? OrderByType { get; set; }
     }
 }

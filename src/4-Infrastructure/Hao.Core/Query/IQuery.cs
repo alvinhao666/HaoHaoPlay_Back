@@ -9,7 +9,5 @@ namespace Hao.Core
         List<Expression<Func<T, bool>>> QueryExpressions { get; }
 
         string OrderFileds { get; set; }
-
-        //OrderByType? OrderByType { get; set; }
     }
 }
