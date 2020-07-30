@@ -9,5 +9,7 @@ namespace Hao.Event
     public interface ILogoutEventConsumer
     {
         Task LogoutForUpdateAuth(LogoutForUpdateAuthEventData data);
+
+        Task Logout(LogoutEventData data);
     }
 }

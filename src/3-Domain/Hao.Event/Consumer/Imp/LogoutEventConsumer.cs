@@ -34,5 +34,22 @@ namespace Hao.Event
                 }
             }
         }
+
+        /// <summary>
+        /// 注销登录
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public async Task Logout(LogoutEventData data)
+        {
+            foreach (var userId in data.UserIds)
+            {
+                var keys = await RedisHelper.KeysAsync($"{_appsettings.RedisPrefix.Login}{userId}_*");
+                foreach (var key in keys)
+                {
+                    await RedisHelper.DelAsync(key);
+                }
+            }
+        }
     }
 }

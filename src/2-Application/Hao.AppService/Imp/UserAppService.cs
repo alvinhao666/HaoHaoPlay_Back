@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using DotNetCore.CAP;
 using Hao.AppService.ViewModel;
 using Hao.Core;
 using Hao.Encrypt;
 using Hao.Enum;
+using Hao.EventData;
 using Hao.Excel;
 using Hao.File;
 using Hao.Library;
@@ -39,6 +41,8 @@ namespace Hao.AppService
 
         private readonly ICurrentUser _currentUser;
 
+        private readonly ICapPublisher _publisher;
+
         private readonly ITimeLimitedDataProtector _protector;
 
         public UserAppService(ISysRoleRepository roleRep,
@@ -46,6 +50,7 @@ namespace Hao.AppService
             ISysUserRepository userRepository,
             IMapper mapper,
             ICurrentUser currentUser,
+            ICapPublisher publisher,
             IDataProtectionProvider provider)
         {
             _userRep = userRepository;
@@ -54,6 +59,7 @@ namespace Hao.AppService
             _currentUser = currentUser;
             _roleRep = roleRep;
             _protector = provider.CreateProtector(appsettingsOptions.Value.DataProtectorPurpose.FileDownload).ToTimeLimitedDataProtector();
+            _publisher = publisher;
         }
 
         /// <summary>
@@ -147,7 +153,10 @@ namespace Hao.AppService
                 await _userRep.DeleteAysnc(user.Id);               
                 await _roleRep.UpdateAsync(role, a => new { a.UserCount });
 
-                await RedisHelper.DelAsync(_appsettings.RedisPrefix.Login + userId);
+                await _publisher.PublishAsync(nameof(LogoutEventData), new LogoutEventData
+                {
+                    UserIds = new List<long> { userId }
+                });
             }
         }
 
@@ -164,7 +173,13 @@ namespace Hao.AppService
             user.Enabled = enabled;
             await _userRep.UpdateAsync(user, user => new { user.Enabled });
             // 注销用户，删除登录缓存
-            if(!enabled) await RedisHelper.DelAsync(_appsettings.RedisPrefix.Login + user.Id);
+            if (!enabled)
+            {
+                await _publisher.PublishAsync(nameof(LogoutEventData), new LogoutEventData
+                {
+                    UserIds = new List<long> { userId }
+                });
+            }
         }
 
         /// <summary>
