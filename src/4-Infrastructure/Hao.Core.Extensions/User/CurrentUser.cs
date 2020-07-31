@@ -21,7 +21,7 @@ namespace Hao.Core.Extensions
         /// </summary>
         public long? Id
         {
-            get => _httpContext == null ? null : H_Convert.ToLong(_httpContext.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sid)?.Value);
+            get => _httpContext == null ? null : H_Convert.ToLongOrNull(_httpContext.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sid)?.Value);
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace Hao.Core.Extensions
         /// </summary>
         public int? RoleLevel
         {
-            get => _httpContext == null ? null : H_Convert.ToInt(_httpContext.User.Claims.FirstOrDefault(x => x.Type == H_ClaimsName.RoleLevel)?.Value);
+            get => _httpContext == null ? null : H_Convert.ToIntOrNull(_httpContext.User.Claims.FirstOrDefault(x => x.Type == H_ClaimsName.RoleLevel)?.Value);
         }
 
         /// <summary>

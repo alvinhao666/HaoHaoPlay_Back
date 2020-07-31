@@ -232,7 +232,7 @@ namespace Hao.AppService
                 {"邮箱",a.Email},
                 {"微信",a.WeChat},
                 {"状态",a.Enabled.IsTrue()?"启用":"注销"},
-                {"最后登录时间",a.LastLoginTime.ToDateString()},
+                {"最后登录时间",a.LastLoginTime.ToDateTimeString()},
                 {"最后登录地点",a.LastLoginIP}
             });
 

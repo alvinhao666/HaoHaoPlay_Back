@@ -10,7 +10,7 @@ namespace Hao.Utility
         /// <param name="time"></param>
         /// <param name="format"></param>
         /// <returns></returns>
-        public static string ToDateString(this DateTime? time, string format = null)
+        public static string ToDateTimeString(this DateTime? time, string format = null)
         {
             if (time.HasValue)
             {
@@ -28,7 +28,7 @@ namespace Hao.Utility
         /// </summary>
         /// <param name="time"></param>
         /// <returns></returns>
-        public static string ToStartDateString(this DateTime? time)
+        public static string ToStartDateTimeString(this DateTime? time)
         {
             return time.HasValue ? time.Value.ToString("yyyy-MM-dd") + "00:00:00" : "";
         }
@@ -39,7 +39,7 @@ namespace Hao.Utility
         /// <param name="time"></param>
         /// <returns></returns>
 
-        public static string ToEndDateString(this DateTime? time)
+        public static string ToEndDateTimeString(this DateTime? time)
         {
             return time.HasValue ? time.Value.ToString("yyyy-MM-dd") + "23:59:59" : "";
         }
@@ -49,7 +49,7 @@ namespace Hao.Utility
         /// </summary>
         /// <param name="time"></param>
         /// <returns></returns>
-        public static DateTime? ToStartDate(this DateTime? time)
+        public static DateTime? ToStartDateTime(this DateTime? time)
         {
             if (!time.HasValue) return null;
             return DateTime.Parse(time.Value.ToString("yyyy-MM-dd") + "00:00:00");
@@ -60,7 +60,7 @@ namespace Hao.Utility
         /// </summary>
         /// <param name="time"></param>
         /// <returns></returns>
-        public static DateTime? ToEndDate(this DateTime? time)
+        public static DateTime? ToEndDateTime(this DateTime? time)
         {
             if (!time.HasValue) return null;
             return DateTime.Parse(time.Value.ToString("yyyy-MM-dd") + "23:59:59");

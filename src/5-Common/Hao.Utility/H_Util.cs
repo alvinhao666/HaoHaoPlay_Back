@@ -56,7 +56,7 @@ namespace Hao.Utility
         {
             var start = TimeZoneInfo.ConvertTime(new DateTime(1970, 1, 1), TimeZoneInfo.Local);
             long ticks = (time - start.Add(new TimeSpan(8, 0, 0))).Ticks;
-            return H_Convert.ToLong0(ticks / TimeSpan.TicksPerSecond);
+            return H_Convert.ToLong(ticks / TimeSpan.TicksPerSecond);
         }
 
         /// <summary>

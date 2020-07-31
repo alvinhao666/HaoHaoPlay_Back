@@ -5,115 +5,135 @@ namespace Hao.Utility
 {
     public static class H_Convert
     {
-        public static int? ToInt(this object value)
+        public static int? ToIntOrNull(this object value)
         {
-            if (value == null || value == DBNull.Value || string.IsNullOrWhiteSpace(value.ToString()) || !int.TryParse(value.ToString(), out var result)) 
-                return null;
-            else
-                return result;
+            if (int.TryParse(value.SafeString(), out var result)) return result;
+
+            return null;     
         }
 
-        public static int ToInt0(this object value)
+        public static int ToInt(this object value)
         {
-            int result = 0;
-            if (value != null && value != DBNull.Value)
-                int.TryParse(value.ToString(), out result);
-            return result;
+            return ToIntOrNull(value) ?? 0;
         }
 
-        public static float? ToFloat(this object value)
+        public static float? ToFloatOrNull(this object value)
         {
-            if (value == null || value == DBNull.Value || string.IsNullOrWhiteSpace(value.ToString()) || !float.TryParse(value.ToString(), out var result))
-                return null;
-            else
-                return result;
+            if (float.TryParse(value.SafeString(), out var result)) return result;
+
+            return null;
         }
 
-        public static float ToFloat0(this object value)
+        public static float ToFloat(this object value)
         {
-            float result = 0f;
-            if (value != null && value != DBNull.Value)
-                float.TryParse(value.ToString(), out result);
-            return result;
+            return ToFloatOrNull(value) ?? 0;
         }
 
-        public static decimal? ToDecimal(this object value)
+        public static decimal? ToDecimalOrNull(this object value)
         {
-            if (value == null || value == DBNull.Value || string.IsNullOrWhiteSpace(value.ToString()) || !decimal.TryParse(value.ToString(), out var result))
-                return null;
-            else
-                return result;
+            if (decimal.TryParse(value.SafeString(), out var result)) return result;
+
+            return null;
         }
 
-        public static decimal ToDecimal0(this object value)
+        public static decimal ToDecimal(this object value)
         {
-            decimal result = 0m;
-            if (value != null && value != DBNull.Value)
-                decimal.TryParse(value.ToString(), out result);
-            return result;
+            return ToDecimalOrNull(value) ?? 0;
         }
 
-        public static double? ToDouble(this object value)
+        public static double? ToDoubleOrNull(this object value)
         {
-            if (value == null || value == DBNull.Value || string.IsNullOrWhiteSpace(value.ToString()) || !double.TryParse(value.ToString(), out var result))
-                return null;
-            else
-                return result;
+            if (double.TryParse(value.SafeString(), out var result)) return result;
+
+            return null;
         }
 
-        public static double ToDouble0(this object value)
+        public static double ToDouble(this object value)
         {
-            double result = 0d;
-            if (value != null && value != DBNull.Value)
-                double.TryParse(value.ToString(), out result);
-            return result;
+            return ToDoubleOrNull(value) ?? 0;
         }
 
-        public static long? ToLong(this object value)
+        public static long? ToLongOrNull(this object value)
         {
-            if (value == null || value == DBNull.Value || string.IsNullOrWhiteSpace(value.ToString()) || !long.TryParse(value.ToString(), out var result))
-                return null;
-            else
-                return  result;
+            if (long.TryParse(value.SafeString(), out var result)) return result;
+
+            return null;
         }
 
-        public static long ToLong0(this object value)
+        public static long ToLong(this object value)
         {
-            long result = 0L;
-            if (value != null && value != DBNull.Value)
-                long.TryParse(value.ToString(), out result);
-            return result;
+            return ToLongOrNull(value) ?? 0;
         }
 
-        public static bool? ToBool(this object value)
+        public static bool? ToBoolOrNull(this object value)
         {
-            if (value == null || value == DBNull.Value || string.IsNullOrWhiteSpace(value.ToString()) || !bool.TryParse(value.ToString(), out var result))
-                return null;
-            else
-                return result;
+            bool? outPut = GetBool(value);
+
+            if (outPut != null) return outPut.Value;
+
+            return bool.TryParse(value.SafeString(), out var result) ? (bool?)result : null;
         }
 
-        public static bool ToBool0(this object value)
+        public static bool ToBool(this object value)
         {
-            var a = value?.ToString().ToLower();
-            var result = (a == "true" || a == "1");
-            return result;
+            return ToBoolOrNull(value) ?? false;
         }
 
-        public static Guid? ToGuid(this object value)
+        public static Guid? ToGuidOrNull(this object value)
         {
-            if (value == null || value == DBNull.Value || string.IsNullOrWhiteSpace(value.ToString()) || !Guid.TryParse(value.ToString(), out var result))
-                return null;
-            else
-                return result;
+            if (Guid.TryParse(value.SafeString(), out var result)) return result;
+
+            return null;
         }
 
-        public static DateTime? ToDateTime(this object value)
+        public static Guid ToGuid(this object input)
         {
-            if (value == null || value == DBNull.Value || string.IsNullOrWhiteSpace(value.ToString()) || !DateTime.TryParse(value.ToString(), out var result))
-                return null;
-            else
-                return result;
+            return ToGuidOrNull(input) ?? Guid.Empty;
+        }
+
+        public static DateTime? ToDateTimeOrNull(this object value)
+        {
+            if (DateTime.TryParse(value.SafeString(), out var result)) return result;
+
+            return null;
+        }
+
+        public static DateTime ToDate(this object value)
+        {
+            return ToDateTimeOrNull(value) ?? DateTime.MinValue;
+        }
+
+
+        /// <summary>
+        /// 获取布尔值
+        /// </summary>
+        private static bool? GetBool(object input)
+        {
+            if (input == DBNull.Value) return null;
+
+            switch (input.SafeString().ToLower())
+            {
+                case "0":
+                    return false;
+                case "否":
+                    return false;
+                case "不":
+                    return false;
+                case "no":
+                    return false;
+                case "fail":
+                    return false;
+                case "1":
+                    return true;
+                case "是":
+                    return true;
+                case "ok":
+                    return true;
+                case "yes":
+                    return true;
+                default:
+                    return null;
+            }
         }
 
         /// <summary> 
