@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Hao.Repository
 {
-    public class SysUserRepository : Repository<SysUser,long>, ISysUserRepository
+    public class SysUserRepository : Repository<SysUser, long>, ISysUserRepository
     {
 
         /// <summary>
@@ -17,13 +17,15 @@ namespace Hao.Repository
         /// <returns></returns>
         public async Task<List<SysUser>> GetUserByLoginName(string loginName, string password)
         {
-            string sql = "select * from  sysuser where loginname=@loginname and password=@password and isdeleted=false";
+            //string sql = "select * from  sysuser where loginname=@loginname and password=@password and isdeleted=false";
+            //var param = new List<SugarParameter>();
+            //param.Add(new SugarParameter("loginname", loginName));
+            //param.Add(new SugarParameter("password", password));
+            //var result = await Db.Ado.SqlQueryAsync<SysUser>(sql, param);
 
-            var param = new List<SugarParameter>();
-            param.Add(new SugarParameter("loginname", loginName));
-            param.Add(new SugarParameter("password", password));
-
-            var result = await Db.Ado.SqlQueryAsync<SysUser>(sql, param);
+            var result = await Db.Queryable<SysUser>()
+                                 .Where(a => a.LoginName == loginName && a.Password == password && a.IsDeleted == false)
+                                 .ToListAsync();
 
             return result;
         }
@@ -36,14 +38,19 @@ namespace Hao.Repository
         /// <returns></returns>
         public async Task UpdateAuth(long roleId, string authNumbers)
         {
-            string sql = "update  sysuser set authnumbers=@authnumbers where roleid=@roleid";
+            //string sql = "update  sysuser set authnumbers=@authnumbers where roleid=@roleid";
+            //var param = new List<SugarParameter>();
+            //param.Add(new SugarParameter("authnumbers", authNumbers));
+            //param.Add(new SugarParameter("roleid", roleId));
+            //await Db.Ado.ExecuteCommandAsync(sql, param);
 
-            var param = new List<SugarParameter>();
-            param.Add(new SugarParameter("authnumbers", authNumbers));
-            param.Add(new SugarParameter("roleid", roleId));
-
-            await Db.Ado.ExecuteCommandAsync(sql, param);
+            await Db.Updateable<SysUser>()
+                    .SetColumns(a => new SysUser { AuthNumbers = authNumbers })
+                    .Where(a => a.RoleId == roleId)
+                    .ExecuteCommandAsync();
         }
+
+
 
         //public override async Task<PagedList<Student>> GetPagedListAysnc(Query<Student> query)
         //{
