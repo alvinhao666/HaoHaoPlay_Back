@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
-using System.Text.RegularExpressions;
+using System.Linq;
 
 namespace Hao.Utility
 {
@@ -13,11 +14,11 @@ namespace Hao.Utility
         /// <summary>
         /// 安全转换为字符串，去除两端空格，当值为null时返回""
         /// </summary>
-        /// <param name="input"></param>
+        /// <param name="value"></param>
         /// <returns></returns>
-        public static string SafeString(this object input)
+        public static string SafeString(this object value)
         {
-            return input?.ToString().Trim() ?? string.Empty;
+            return value?.ToString().Trim() ?? string.Empty;
         }
 
         /// <summary>
@@ -28,65 +29,6 @@ namespace Hao.Utility
         public static bool IsNullOrWhiteSpace(this string value)
         {
             return string.IsNullOrWhiteSpace(value);
-        }
-
-
-        /// <summary>
-        /// Uses string.Split method to split given string by given separator.
-        /// </summary>
-        public static string[] Split(this string str, string separator)
-        {
-            return str.Split(new[] { separator }, StringSplitOptions.None);
-        }
-
-        /// <summary>
-        /// Uses string.Split method to split given string by given separator.
-        /// </summary>
-        public static string[] Split(this string str, string separator, StringSplitOptions options)
-        {
-            return str.Split(new[] { separator }, options);
-        }
-
-        /// <summary>
-        /// Converts string to enum value.
-        /// </summary>
-        /// <typeparam name="T">Type of enum</typeparam>
-        /// <param name="value">String value to convert</param>
-        /// <returns>Returns enum object</returns>
-        public static T ToEnum<T>(this string value) where T : struct
-        {
-            H_Check.Argument.NotNull(value, nameof(value));
-            return (T)Enum.Parse(typeof(T), value);
-        }
-
-        /// <summary>
-        /// Converts string to enum value.
-        /// </summary>
-        /// <typeparam name="T">Type of enum</typeparam>
-        /// <param name="value">String value to convert</param>
-        /// <param name="ignoreCase">Ignore case</param>
-        /// <returns>Returns enum object</returns>
-        public static T ToEnum<T>(this string value, bool ignoreCase) where T : struct
-        {
-            H_Check.Argument.NotNull(value, nameof(value));
-            return (T)Enum.Parse(typeof(T), value, ignoreCase);
-        }
-
-        public static string ToMd5(this string str)
-        {
-            using (var md5 = MD5.Create())
-            {
-                var inputBytes = Encoding.UTF8.GetBytes(str);
-                var hashBytes = md5.ComputeHash(inputBytes);
-
-                var sb = new StringBuilder();
-                foreach (var hashByte in hashBytes)
-                {
-                    sb.Append(hashByte.ToString("X2"));
-                }
-
-                return sb.ToString();
-            }
         }
 
         /// <summary>
@@ -100,37 +42,70 @@ namespace Hao.Utility
         }
 
         /// <summary>
-        /// 字符串是否满足正则
+        /// 转化成md5加密字符串
         /// </summary>
-        /// <param name="value"></param>
-        /// <param name="pattern"></param>
+        /// <param name="str"></param>
         /// <returns></returns>
-        public static bool IsMatch(this string value, string pattern)
+        public static string ToMd5(this string value)
         {
-            if (value == null) return false;
-            Regex reg = new Regex(pattern);
-            return reg.IsMatch(value.ToString());
+            using (var md5 = MD5.Create())
+            {
+                var inputBytes = Encoding.UTF8.GetBytes(value);
+                var hashBytes = md5.ComputeHash(inputBytes);
+
+                var sb = new StringBuilder();
+                foreach (var hashByte in hashBytes)
+                {
+                    sb.Append(hashByte.ToString("X2"));
+                }
+
+                return sb.ToString();
+            }
         }
 
         /// <summary>
-        /// 是否整数
+        /// 泛型集合转换
         /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public static bool IsInt(this string value)
+        /// <typeparam name="T">目标元素类型</typeparam>
+        /// <param name="input">以逗号分隔的元素集合字符串，范例:83B0233C-A24F-49FD-8083-1337209EBC9A,EAB523C6-2FE7-47BE-89D5-C6D440C3033A</param>
+        public static List<T> ToList<T>(string value)
         {
-            return new Regex("^(-){0,1}\\d+$").Match(value).Success && long.Parse(value) <= 2147483647L && long.Parse(value) >= -2147483648L;
+            var result = new List<T>();
+            if (string.IsNullOrWhiteSpace(value)) return result;
+            var array = value.Split(',');
+            result.AddRange(from each in array where !string.IsNullOrWhiteSpace(each) select To<T>(each));
+            return result;
         }
 
         /// <summary>
-        /// 字符串是否为时间格式
+        /// 通用泛型转换
         /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public static bool IsDate(this string value)
+        /// <typeparam name="T">目标类型</typeparam>
+        /// <param name="input">输入值</param>
+        public static T To<T>(object value)
         {
-            if (value == null) return false;
-            return DateTime.TryParse(value.ToString(), out var outValue);
+            if (value == null)
+                return default(T);
+            if (value is string && string.IsNullOrWhiteSpace(value.ToString()))
+                return default(T);
+            Type type = H_Common.GetType<T>();
+            var typeName = type.Name.ToLower();
+            try
+            {
+                if (typeName == "string")
+                    return (T)(object)value.ToString();
+                if (typeName == "guid")
+                    return (T)(object)new Guid(value.ToString());
+                if (type.IsEnum)
+                    return EnumExtensions.Parse<T>(value);
+                if (value is IConvertible)
+                    return (T)System.Convert.ChangeType(value, type);
+                return (T)value;
+            }
+            catch
+            {
+                return default(T);
+            }
         }
     }
 }

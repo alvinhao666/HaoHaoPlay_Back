@@ -139,7 +139,7 @@ namespace Hao.Utility
         /// <summary> 
         /// 将 Stream 转成 byte[] 
         /// </summary> 
-        public static byte[] StreamToBytes(this Stream stream)
+        public static byte[] ToBytes(this Stream stream)
         {
             byte[] bytes = new byte[stream.Length];
             stream.Read(bytes, 0, bytes.Length);
@@ -152,83 +152,10 @@ namespace Hao.Utility
         /// <summary> 
         /// 将 byte[] 转成 Stream 
         /// </summary> 
-        public static Stream BytesToStream(this byte[] bytes)
+        public static Stream ToStream(this byte[] bytes)
         {
             Stream stream = new MemoryStream(bytes);
             return stream;
         }
-
-
-        ///// <summary>
-        ///// 将指定集合按照“分隔符”拼成字符串
-        ///// </summary>
-        ///// <typeparam name="T"></typeparam>
-        ///// <param name="lst">List集合</param>
-        ///// <param name="separator">分隔符</param>
-        ///// <returns>字符串</returns>
-        //public static string ListToString<T>(IEnumerable<T> lst, char separator)
-        //{
-        //    if (lst == null || lst.Count<T>() == 0)
-        //    {
-        //        return string.Empty;
-        //    }
-        //    string result = string.Empty;
-        //    StringBuilder stringBuilder = new StringBuilder();
-        //    foreach (T item in lst)
-        //    {
-        //        stringBuilder.Append(separator.ToString() + item.ToString());
-        //    }
-        //    if (stringBuilder.ToString().Length > 0)
-        //    {
-        //        result = stringBuilder.ToString().Substring(1, stringBuilder.ToString().Length - 1);
-        //    }
-        //    return result;
-        //}
-
-        ///// <summary>
-        ///// 将字符串转变成List集合类型
-        ///// </summary>
-        ///// <param name="str">要转换的字符串</param>
-        ///// <param name="split">分隔符</param>
-        ///// <returns>List集合</returns>
-        //public static List<string> ToList(string str, char split)
-        //{
-        //    return HConvert.ToList<string>(str, split);
-        //}
-
-        ///// <summary>
-        ///// 将字符串转变成List集合类型
-        ///// </summary>
-        ///// <typeparam name="T">类型，目前只支持int,string</typeparam>
-        ///// <param name="str">要转换的字符串</param>
-        ///// <returns>List集合</returns>
-        //public static List<T> ToList<T>(string str)
-        //{
-        //    return HConvert.ToList<T>(str, ',');
-        //}
-
-        ///// <summary>
-        ///// 将字符串转变成List集合类型
-        ///// </summary>
-        ///// <typeparam name="T">类型，目前只支持int,string</typeparam>
-        ///// <param name="str">要转换的字符串</param>
-        ///// <param name="split">分隔符</param>
-        ///// <returns>List集合</returns>
-        //public static List<T> ToList<T>(string str, char split)
-        //{
-        //    if (!string.IsNullOrEmpty(str))
-        //    {
-        //        List<T> list = new List<T>();
-        //        foreach (string text in str.Trim(new char[] { split }).Split(new char[] { split }))
-        //        {
-        //            if (!string.IsNullOrEmpty(text))
-        //            {
-        //                list.Add(UtilCommon.ConvertTo<T>(text, UtilCommon.DefaultOf<T>()));
-        //            }
-        //        }
-        //        return list;
-        //    }
-        //    return new List<T>();
-        //}
     }
 }
