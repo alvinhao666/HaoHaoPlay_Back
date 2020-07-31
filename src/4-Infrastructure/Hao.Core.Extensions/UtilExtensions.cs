@@ -19,10 +19,9 @@ namespace Hao.Core.Extensions
                 ip = httpContext.Connection.RemoteIpAddress.ToString();
 
 #if DEBUG  
-                if (ip.Contains("::ffff") || ip == "::1" || ip.Contains("127.0.0.1"))
-                {
-                    ip = "127.0.0.1";
-                }
+                if (ip.Contains("::ffff:")) return ip.Split("::ffff:")[1];
+
+                if (ip == "::1" || ip.Contains("127.0.0.1")) return "127.0.0.1";
 #endif
             }
 

@@ -29,7 +29,7 @@ namespace Hao.Core.Extensions
         public int Interval { get; set; }
 
         /// <summary>
-        /// 提示消息
+        /// 提示信息
         /// </summary>
         public string Message { get; set; }
 
@@ -38,10 +38,6 @@ namespace Hao.Core.Extensions
         /// </summary>
         public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            if (context == null) throw new ArgumentNullException(nameof(context));
-
-            if (next == null) throw new ArgumentNullException(nameof(next));
-
             var isSuccess = false;
 
             var cacheKey = GetKey(context);
