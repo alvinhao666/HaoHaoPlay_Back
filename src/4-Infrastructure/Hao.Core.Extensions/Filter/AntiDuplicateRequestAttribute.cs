@@ -24,19 +24,23 @@ namespace Hao.Core.Extensions
         public LockType Type { get; set; } = LockType.User;
 
         /// <summary>
-        /// 再次提交时间间隔
+        /// 再次提交时间间隔，（时间间隔内请求处理完成，可以继续提交，请求未处理完成，则不允重复提交）
         /// </summary>
-        public TimeSpan Interval { get; set; }
+        public int Interval { get; set; }
+
+        /// <summary>
+        /// 提示消息
+        /// </summary>
+        public string Message { get; set; }
 
         /// <summary>
         /// 执行
         /// </summary>
         public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            if (context == null)
-                throw new ArgumentNullException(nameof(context));
-            if (next == null)
-                throw new ArgumentNullException(nameof(next));
+            if (context == null) throw new ArgumentNullException(nameof(context));
+
+            if (next == null) throw new ArgumentNullException(nameof(next));
 
             var isSuccess = false;
 
@@ -46,11 +50,13 @@ namespace Hao.Core.Extensions
             {
                 isSuccess = Lock(cacheKey);
 
-                if (!isSuccess) throw new H_Exception(GetFailMessage());
+                if (!isSuccess)
+                {
+                    if (!string.IsNullOrWhiteSpace(Message)) throw new H_Exception(Message);
+                    throw new H_Exception(GetFailMessage());
+                }
 
                 OnActionExecuting(context);
-
-                if (context.Result != null)  return;
 
                 var executedContext = await next();
 
@@ -74,7 +80,7 @@ namespace Hao.Core.Extensions
             {
                 userId = context.HttpContext.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sid)?.Value;
             }
-     
+
             return string.IsNullOrWhiteSpace(Key) ? $"{userId}{context.HttpContext.Request.Path}" : $"{userId}{Key}";
         }
 
@@ -83,7 +89,7 @@ namespace Hao.Core.Extensions
         /// </summary>
         protected virtual string GetFailMessage()
         {
-            if (Type == LockType.User)  return "请不要重复提交";
+            if (Type == LockType.User) return "请不要重复提交";
 
             return "其他用户正在执行该操作,请稍后再试";
         }
