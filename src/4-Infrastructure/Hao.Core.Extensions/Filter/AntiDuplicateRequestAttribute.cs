@@ -14,14 +14,14 @@ namespace Hao.Core.Extensions
     public class AntiDuplicateRequestAttribute : ActionFilterAttribute
     {
         /// <summary>
-        /// 业务标识
-        /// </summary>
-        public string Key { get; set; }
-
-        /// <summary>
         /// 锁类型
         /// </summary>
         public LockType Type { get; set; } = LockType.User;
+
+        /// <summary>
+        /// 全局锁业务标识
+        /// </summary>
+        public string GlobalLockKey { get; set; }
 
         /// <summary>
         /// 再次提交时间间隔，（时间间隔内请求处理完成，可以继续提交，请求未处理完成，则不允重复提交）
@@ -70,14 +70,14 @@ namespace Hao.Core.Extensions
         /// </summary>
         protected virtual string GetKey(ActionExecutingContext context)
         {
-            var userId = string.Empty;
-
             if (Type == LockType.User)
             {
-                userId = context.HttpContext.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sid)?.Value;
+                var userId = context.HttpContext.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sid)?.Value;
+
+                return $"{userId}{context.HttpContext.Request.Path}";
             }
 
-            return string.IsNullOrWhiteSpace(Key) ? $"{userId}{context.HttpContext.Request.Path}" : $"{userId}{Key}";
+            return GlobalLockKey;
         }
 
         /// <summary>
@@ -109,6 +109,7 @@ namespace Hao.Core.Extensions
         private void UnLock(string key)
         {
             if (!RedisHelper.Exists(key)) return;
+
             RedisHelper.Del(key);
         }
     }
@@ -122,8 +123,9 @@ namespace Hao.Core.Extensions
         /// 用户锁，当用户发出多个执行该操作的请求，只有第一个请求被执行，其它请求被抛弃，其它用户不受影响
         /// </summary>
         User = 0,
+
         /// <summary>
-        /// 全局锁，该操作同时只有一个用户的请求被执行
+        /// 全局锁，该操作同时只有一个用户的请求被执行，结合全局锁使用
         /// </summary>
         Global = 1
     }
