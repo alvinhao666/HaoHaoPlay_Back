@@ -67,7 +67,40 @@ namespace Hao.Utility
 
         public static bool? ToBoolOrNull(this object value)
         {
-            bool? outPut = GetBool(value);
+            bool? outPut;
+            switch (value.SafeString().ToLower())
+            {
+                case "0":
+                    outPut=false;
+                    break;
+                case "否":
+                    outPut = false;
+                    break;
+                case "不":
+                    outPut = false;
+                    break;
+                case "no":
+                    outPut = false;
+                    break;
+                case "fail":
+                    outPut = false;
+                    break;
+                case "1":
+                    outPut = true;
+                    break;
+                case "是":
+                    outPut = true;
+                    break;
+                case "ok":
+                    outPut = true;
+                    break;
+                case "yes":
+                    outPut = true;
+                    break;
+                default:
+                    outPut = null;
+                    break;
+            }
 
             if (outPut != null) return outPut.Value;
 
@@ -104,38 +137,6 @@ namespace Hao.Utility
         }
 
 
-        /// <summary>
-        /// 获取布尔值
-        /// </summary>
-        private static bool? GetBool(object input)
-        {
-            if (input == DBNull.Value) return null;
-
-            switch (input.SafeString().ToLower())
-            {
-                case "0":
-                    return false;
-                case "否":
-                    return false;
-                case "不":
-                    return false;
-                case "no":
-                    return false;
-                case "fail":
-                    return false;
-                case "1":
-                    return true;
-                case "是":
-                    return true;
-                case "ok":
-                    return true;
-                case "yes":
-                    return true;
-                default:
-                    return null;
-            }
-        }
-
         /// <summary> 
         /// 将 Stream 转成 byte[] 
         /// </summary> 
@@ -144,7 +145,6 @@ namespace Hao.Utility
             byte[] bytes = new byte[stream.Length];
             stream.Read(bytes, 0, bytes.Length);
 
-            // 设置当前流的位置为流的开始 
             stream.Seek(0, SeekOrigin.Begin);
             return bytes;
         }
