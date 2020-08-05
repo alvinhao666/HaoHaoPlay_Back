@@ -1,9 +1,8 @@
 ﻿using Hao.Core;
-using Hao.Model;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Hao.Repository
+namespace Hao.Model
 {
     public interface ISysUserRepository : IRepository<SysUser,long>
     {

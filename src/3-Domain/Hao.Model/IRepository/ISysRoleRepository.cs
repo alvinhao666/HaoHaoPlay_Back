@@ -1,7 +1,6 @@
 using Hao.Core;
-using Hao.Model;
 
-namespace Hao.Repository
+namespace Hao.Model
 {
     public interface ISysRoleRepository: IRepository<SysRole, long>
     {

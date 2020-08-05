@@ -1,7 +1,6 @@
 ﻿using Hao.Core;
 using Hao.EventData;
 using Hao.Model;
-using Hao.Repository;
 using System.Threading.Tasks;
 
 namespace Hao.Event

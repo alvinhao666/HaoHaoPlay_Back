@@ -10,7 +10,6 @@ using Hao.EventData;
 using Hao.Json;
 using Hao.Library;
 using Hao.Model;
-using Hao.Repository;
 using Hao.RunTimeException;
 using Npgsql;
 

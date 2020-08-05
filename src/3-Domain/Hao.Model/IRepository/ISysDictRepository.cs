@@ -1,7 +1,6 @@
 ﻿using Hao.Core;
-using Hao.Model;
 
-namespace Hao.Repository
+namespace Hao.Model
 {
     public interface ISysDictRepository : IRepository<SysDict, long>
     {

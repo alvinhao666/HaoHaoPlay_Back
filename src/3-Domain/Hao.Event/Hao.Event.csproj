@@ -13,7 +13,7 @@
     <ProjectReference Include="..\..\4-Infrastructure\Hao.Library\Hao.Library.csproj" />
     <ProjectReference Include="..\..\5-Common\Hao.Json\Hao.Json.csproj" />
     <ProjectReference Include="..\Hao.EventData\Hao.EventData.csproj" />
-    <ProjectReference Include="..\Hao.Repository\Hao.Repository.csproj" />
+    <ProjectReference Include="..\Hao.Model\Hao.Model.csproj" />
   </ItemGroup>
 
 </Project>

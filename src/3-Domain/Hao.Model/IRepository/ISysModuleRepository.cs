@@ -1,8 +1,7 @@
 ﻿using Hao.Core;
-using Hao.Model;
 using System.Threading.Tasks;
 
-namespace Hao.Repository
+namespace Hao.Model
 {
     public interface ISysModuleRepository : IRepository<SysModule, long>
     {

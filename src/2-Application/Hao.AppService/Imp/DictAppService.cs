@@ -1,7 +1,6 @@
 using AutoMapper;
 using Hao.Core;
 using Hao.Model;
-using Hao.Repository;
 using Hao.RunTimeException;
 using System.Threading.Tasks;
 using Hao.AppService.ViewModel;

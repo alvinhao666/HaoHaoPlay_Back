@@ -2,7 +2,6 @@
 using Hao.AppService.ViewModel;
 using Hao.Core;
 using Hao.Model;
-using Hao.Repository;
 using Hao.RunTimeException;
 using System;
 using System.Collections.Generic;

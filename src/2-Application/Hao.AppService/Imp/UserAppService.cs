@@ -9,7 +9,6 @@ using Hao.Excel;
 using Hao.File;
 using Hao.Library;
 using Hao.Model;
-using Hao.Repository;
 using Hao.RunTimeException;
 using Hao.Utility;
 using Microsoft.AspNetCore.DataProtection;
