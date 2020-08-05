@@ -136,7 +136,7 @@ namespace Hao.AppService
                     module.Layer = max.Layer;
                     module.Number = Convert.ToInt64(Math.Pow(2, max.Count.Value));
                 }
-                else if (max.Count == 31) //js  位运算 32位
+                else if (max.Count == 31) //0次方 到 30次方 共31个数              js语言的限制 导致  位运算 32位  
                 {
                     module.Layer = ++max.Layer;
                     module.Number = 1;
