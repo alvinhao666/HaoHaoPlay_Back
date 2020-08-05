@@ -46,7 +46,7 @@ namespace Hao.Repository
 
             await Db.Updateable<SysUser>()
                     .SetColumns(a => new SysUser { AuthNumbers = authNumbers })
-                    .Where(a => a.RoleId == roleId)
+                    .Where(a => a.RoleId == roleId && a.IsDeleted == false)
                     .ExecuteCommandAsync();
         }
 
