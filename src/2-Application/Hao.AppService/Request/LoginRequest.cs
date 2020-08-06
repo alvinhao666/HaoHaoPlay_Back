@@ -3,7 +3,7 @@
 namespace Hao.AppService
 {
     /// <summary>
-    /// 登录请求
+    /// 登录请求  abp框架 用户输入参数的验证工作也应该在应用层实现
     /// </summary>
     public class LoginRequest
     {

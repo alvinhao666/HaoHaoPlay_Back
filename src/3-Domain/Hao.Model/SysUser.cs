@@ -4,6 +4,9 @@ using Hao.Enum;
 
 namespace Hao.Model
 {
+    /// <summary>
+    /// 系统用户 
+    /// </summary>
     public class SysUser : FullAuditedEntity<long>
     {
         /// <summary>
