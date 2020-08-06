@@ -28,9 +28,9 @@ namespace Hao.AppService
         /// <summary>
         /// 查询用户列表
         /// </summary>
-        /// <param name="query"></param>
+        /// <param name="queryInput"></param>
         /// <returns></returns>
-        Task<PagedList<UserVM>> GetUserPagedList(UserQuery query);
+        Task<PagedList<UserVM>> GetUserPagedList(UserQueryInput queryInput);
 
         /// <summary>
         /// 用户详情
@@ -57,16 +57,16 @@ namespace Hao.AppService
         /// <summary>
         /// 导出excel
         /// </summary>
-        /// <param name="query"></param>
+        /// <param name="queryInput"></param>
         /// <returns></returns>
-        Task<UserExcelVM> ExportUser(UserQuery query);
+        Task<UserExcelVM> ExportUser(UserQueryInput queryInput);
 
         /// <summary>
         /// 是否存在用户
         /// </summary>
-        /// <param name="query"></param>
+        /// <param name="queryInput"></param>
         /// <returns></returns>
-        Task<bool> IsExistUser(UserQuery query);
+        Task<bool> IsExistUser(UserQueryInput queryInput);
 
         /// <summary>
         /// 导入excel

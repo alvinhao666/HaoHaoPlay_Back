@@ -109,10 +109,12 @@ namespace Hao.AppService
         /// <summary>
         /// 获取用户列表
         /// </summary>
-        /// <param name="query"></param>
+        /// <param name="queryInput"></param>
         /// <returns></returns>
-        public async Task<PagedList<UserVM>> GetUserPagedList(UserQuery query)
+        public async Task<PagedList<UserVM>> GetUserPagedList(UserQueryInput queryInput)
         {
+            var query = _mapper.Map<UserQuery>(queryInput);
+
             query.CurrentRoleLevel = _currentUser.RoleLevel; //只能获取角色等级低用户
 
             var users = await _userRep.GetPagedListAysnc(query);
@@ -205,10 +207,11 @@ namespace Hao.AppService
         /// <summary>
         /// 是否存在用户
         /// </summary>
-        /// <param name="query"></param>
+        /// <param name="queryInput"></param>
         /// <returns></returns>
-        public async Task<bool> IsExistUser(UserQuery query)
+        public async Task<bool> IsExistUser(UserQueryInput queryInput)
         {
+            var query = _mapper.Map<UserQuery>(queryInput);
             var users = await _userRep.GetListAysnc(query);
             return users.Count > 0;
         }
@@ -217,10 +220,11 @@ namespace Hao.AppService
         /// <summary>
         /// 导出用户
         /// </summary>
-        /// <param name="query"></param>
+        /// <param name="queryInput"></param>
         /// <returns></returns>
-        public async Task<UserExcelVM> ExportUser(UserQuery query)
+        public async Task<UserExcelVM> ExportUser(UserQueryInput queryInput)
         {
+            var query = _mapper.Map<UserQuery>(queryInput);
             var users = await _userRep.GetListAysnc(query);
 
             var exportData = users.Select(a => new Dictionary<string, string>{

@@ -54,7 +54,7 @@ namespace Hao.WebApi.Controllers
         /// <returns></returns>
         [HttpGet]
         [AuthCode("1_4")]
-        public async Task<bool> IsExistUser([FromQuery]UserQueryInput query) => await _userAppService.IsExistUser(_mapper.Map<UserQuery>(query));
+        public async Task<bool> IsExistUser([FromQuery]UserQueryInput queryInput) => await _userAppService.IsExistUser(queryInput);
 
         /// <summary>
         /// 查询用户分页列表
@@ -62,7 +62,7 @@ namespace Hao.WebApi.Controllers
         /// <returns></returns>
         [HttpGet]
         [AuthCode("1_4")]
-        public async Task<PagedList<UserVM>> GetPagedList([FromQuery]UserQueryInput query) => await _userAppService.GetUserPagedList(_mapper.Map<UserQuery>(query));
+        public async Task<PagedList<UserVM>> GetPagedList([FromQuery]UserQueryInput queryInput) => await _userAppService.GetUserPagedList(queryInput);
 
         /// <summary>
         /// 根据id获取用户
@@ -118,7 +118,7 @@ namespace Hao.WebApi.Controllers
         /// <returns></returns>
         [HttpGet]
         [AuthCode("1_2048")]
-        public async Task<UserExcelVM> Export([FromQuery]UserQueryInput query) => await _userAppService.ExportUser(_mapper.Map<UserQuery>(query));
+        public async Task<UserExcelVM> Export([FromQuery]UserQueryInput queryInput) => await _userAppService.ExportUser(queryInput);
 
 
         /// <summary>

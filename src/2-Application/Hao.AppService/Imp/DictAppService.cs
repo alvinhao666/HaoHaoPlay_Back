@@ -95,10 +95,12 @@ namespace Hao.AppService
         /// <summary>
         /// 查询字典
         /// </summary>
-        /// <param name="query"></param>
+        /// <param name="queryInput"></param>
         /// <returns></returns>
-        public async Task<PagedList<DictVM>> GetDictPagedList(DictQuery query)
+        public async Task<PagedList<DictVM>> GetDictPagedList(DictQueryInput queryInput)
         {
+            var query = _mapper.Map<DictQuery>(queryInput);
+
             var dicts = await _dictRep.GetPagedListAysnc(query);
 
             return _mapper.Map<PagedList<DictVM>>(dicts);
@@ -141,9 +143,12 @@ namespace Hao.AppService
         /// 获取字典数据
         /// </summary>
         /// <returns></returns>
-        public async Task<PagedList<DictItemVM>> GetDictItemPagedList(DictQuery query)
+        public async Task<PagedList<DictItemVM>> GetDictItemPagedList(DictQueryInput queryInput)
         {
+            var query = _mapper.Map<DictQuery>(queryInput);
+
             query.OrderFileds = $"{nameof(SysDict.Sort)},{nameof(SysDict.CreateTime)}";
+
             var dicts = await _dictRep.GetPagedListAysnc(query);
 
             return _mapper.Map<PagedList<DictItemVM>>(dicts);

@@ -35,6 +35,9 @@ namespace Hao.AppService
                .ForMember(x => x.PasswordLevel, a => a.MapFrom(x => x.PasswordLevel.GetDescription()))
                .ForMember(x => x.Phone, a => a.MapFrom(x => H_Util.HidePhoneNumber(x.Phone)))
                .ForMember(x => x.Email, a => a.MapFrom(x => H_Util.HideEmailNumber(x.Email)));
+
+            CreateMap<UserQueryInput, UserQuery>()
+               .ForMember(x => x.OrderFileds, a => a.MapFrom(x => x.OrderByType.CombineNameWithSpace(x.SortField)));
             #endregion
 
 
@@ -76,6 +79,8 @@ namespace Hao.AppService
             CreateMap<SysDict, DictItemVM>();
 
             CreateMap<SysDict, DictDataItemVM>();
+
+            CreateMap<DictQueryInput, DictQuery>();
             #endregion
 
         }

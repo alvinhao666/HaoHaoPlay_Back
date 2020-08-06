@@ -2,7 +2,7 @@
 using Hao.Enum;
 using System;
 
-namespace Hao.WebApi
+namespace Hao.AppService
 {
     /// <summary>
     /// 用户列表查询

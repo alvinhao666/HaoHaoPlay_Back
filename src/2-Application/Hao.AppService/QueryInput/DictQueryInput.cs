@@ -1,6 +1,6 @@
 using Hao.Core;
 
-namespace Hao.WebApi
+namespace Hao.AppService
 {
     /// <summary>
     /// 字典列表查询

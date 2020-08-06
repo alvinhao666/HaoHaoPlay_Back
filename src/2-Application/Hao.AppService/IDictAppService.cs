@@ -16,13 +16,13 @@ namespace Hao.AppService
         /// <param name="request"></param>
         /// <returns></returns>
         Task AddDict(DictAddRequest request);
-        
+
         /// <summary>
         /// 查询字典
         /// </summary>
-        /// <param name="query"></param>
+        /// <param name="queryInput"></param>
         /// <returns></returns>
-        Task<PagedList<DictVM>> GetDictPagedList(DictQuery query);
+        Task<PagedList<DictVM>> GetDictPagedList(DictQueryInput queryInput);
 
         /// <summary>
         /// 修改字典
@@ -50,7 +50,7 @@ namespace Hao.AppService
         /// 查询字典数据项
         /// </summary>
         /// <returns></returns>
-        Task<PagedList<DictItemVM>> GetDictItemPagedList(DictQuery query);
+        Task<PagedList<DictItemVM>> GetDictItemPagedList(DictQueryInput queryInput);
 
         /// <summary>
         /// 更新数据项
