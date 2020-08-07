@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace Hao.Utility
 {
@@ -85,6 +86,17 @@ namespace Hao.Utility
         public static bool IsClass(this Type type)
         {
             return type != H_Util.StringType && type.IsEntity();
+        }
+
+
+        /// <summary>
+        /// 判断是否时异步方法或者异步的泛型方法
+        /// </summary>
+        /// <param name="method"></param>
+        /// <returns></returns>
+        public static bool IsAsyncMethod(MethodInfo method)
+        {
+            return method.ReturnType == typeof(Task) || (method.ReturnType.IsGenericType && method.ReturnType.GetGenericTypeDefinition() == typeof(Task<>));
         }
     }
 }
