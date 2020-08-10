@@ -70,137 +70,67 @@ namespace Hao.Core
         /// <returns></returns>
         Task<T> InsertAysnc(T entity);
 
-        ///// <summary>
-        ///// 写入实体数据
-        ///// </summary>
-        ///// <param name="entity"></param>
-        ///// <returns></returns>
-        //T Insert(T entity);
-
         /// <summary>
         /// 异步写入实体数据（批量）
         /// </summary>
         /// <param name="entities"></param>
         /// <returns></returns>
-        Task<bool> InsertAysnc(List<T> entities);
-
-        /// <summary>
-        ///// 写入实体数据（批量）
-        ///// </summary>
-        ///// <param name="entities"></param>
-        ///// <returns></returns>
-        //bool Insert(List<T> entities);
+        Task<int> InsertAysnc(List<T> entities);
 
         /// <summary>
         /// 异步删除数据
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        Task<bool> DeleteAysnc(T entity);
-
-        ///// <summary>
-        ///// 删除数据
-        ///// </summary>
-        ///// <param name="entity"></param>
-        ///// <returns></returns>
-        //bool Delete(T entity);
+        Task<int> DeleteAysnc(T entity);
 
         /// <summary>
         /// 异步删除数据
         /// </summary>
         /// <param name="pkValue"></param>
         /// <returns></returns>
-        Task<bool> DeleteAysnc(TKey pkValue);
-
-        ///// <summary>
-        ///// 删除数据
-        ///// </summary>
-        ///// <param name="pkValue"></param>
-        ///// <returns></returns>
-        //bool Delete(TKey pkValue);
+        Task<int> DeleteAysnc(TKey pkValue);
 
         /// <summary>
         /// 异步删除数据
         /// </summary>
         /// <param name="pkValues"></param>
         /// <returns></returns>
-        Task<bool> DeleteAysnc(List<TKey> pkValues);
-
-        ///// <summary>
-        ///// 删除数据
-        ///// </summary>
-        ///// <param name="pkValues"></param>
-        ///// <returns></returns>
-        //bool Delete(List<TKey> pkValues);
+        Task<int> DeleteAysnc(List<TKey> pkValues);
 
         /// <summary>
         /// 异步删除数据
         /// </summary>
         /// <param name="entities"></param>
         /// <returns></returns>
-        Task<bool> DeleteAysnc(List<T> entities);
-
-        ///// <summary>
-        ///// 删除数据
-        ///// </summary>
-        ///// <param name="entities"></param>
-        ///// <returns></returns>
-        //bool Delete(List<T> entities);
+        Task<int> DeleteAysnc(List<T> entities);
 
         /// <summary>
         /// 异步更新实体数据
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        Task<bool> UpdateAsync(T entity);
-
-        ///// <summary>
-        ///// 更新实体数据
-        ///// </summary>
-        ///// <param name="entity"></param>
-        ///// <returns></returns>
-        //bool Update(T entity);
+        Task<int> UpdateAsync(T entity);
 
         /// <summary>
         /// 异步更新实体数据（指定列）
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        Task<bool> UpdateAsync(T entity, Expression<Func<T, object>> columns);
-
-        ///// <summary>
-        ///// 更新实体数据（指定列）
-        ///// </summary>
-        ///// <param name="entity"></param>
-        ///// <returns></returns>
-        //bool Update(T entity, Expression<Func<T, object>> columns);
+        Task<int> UpdateAsync(T entity, Expression<Func<T, object>> columns);
 
         /// <summary>
         /// 异步更新实体数据（批量）
         /// </summary>
         /// <param name="entities"></param>
         /// <returns></returns>
-        Task<bool> UpdateAsync(List<T> entities);
-
-        ///// <summary>
-        ///// 更新实体数据
-        ///// </summary>
-        ///// <param name="entities"></param>
-        ///// <returns></returns>
-        //bool Update(List<T> entities);
+        Task<int> UpdateAsync(List<T> entities);
 
         /// <summary>
         /// 异步更新实体数据
         /// </summary>
         /// <param name="entities"></param>
         /// <returns></returns>
-        Task<bool> UpdateAsync(List<T> entities, Expression<Func<T, object>> columns);
-
-        ///// <summary>
-        ///// 更新实体数据
-        ///// </summary>
-        ///// <param name="entities"></param>
-        ///// <returns></returns>
-        //bool Update(List<T> entities, Expression<Func<T, object>> columns);
+        Task<int> UpdateAsync(List<T> entities, Expression<Func<T, object>> columns);
     }
 }

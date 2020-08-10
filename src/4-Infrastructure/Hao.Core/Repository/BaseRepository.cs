@@ -138,39 +138,14 @@ namespace Hao.Core
             return obj;
         }
 
-        ///// <summary>
-        ///// 异步写入实体数据
-        ///// </summary>
-        ///// <param name="entity">实体类</param>
-        ///// <returns></returns>
-        //public virtual T Insert(T entity)
-        //{
-        //    H_Check.Argument.NotNull(entity, nameof(entity));
-
-        //    var type = typeof(T);
-        //    var isGuid = typeof(TKey) == typeof(Guid);
-        //    var id = type.GetProperty(nameof(BaseEntity<TKey>.Id));
-
-        //    if (isGuid)
-        //    {
-        //        if (id != null) id.SetValue(entity, Guid.NewGuid());
-        //    }
-        //    else if (id != null) id.SetValue(entity, IdWorker.NextId());
-
-        //    var obj =  Db.Insertable(entity).ExecuteReturnEntity();
-        //    return obj;
-        //}
-
         /// <summary>
         /// 异步写入实体数据（批量）
         /// </summary>
         /// <param name="entities">实体类</param>
         /// <returns></returns>
-        public virtual async Task<bool> InsertAysnc(List<T> entities)
+        public virtual async Task<int> InsertAysnc(List<T> entities)
         {
-            H_Check.Argument.NotNull(entities, nameof(entities));
-
-            if (entities.Count == 0) return true;
+            H_Check.Argument.IsNotEmpty(entities, nameof(entities));
 
             var isGuid = typeof(TKey) == typeof(Guid);
             var type = typeof(T);
@@ -185,59 +160,20 @@ namespace Hao.Core
                 else if (id != null) id.SetValue(item, IdWorker.NextId());
                 
             });
-            return await Db.Insertable(entities).ExecuteCommandAsync() > 0;
+            return await Db.Insertable(entities).ExecuteCommandAsync();
         }
-
-        ///// <summary>
-        ///// 写入实体数据（批量）
-        ///// </summary>
-        ///// <param name="entities">实体类</param>
-        ///// <returns></returns>
-        //public virtual bool Insert(List<T> entities)
-        //{
-        //    H_Check.Argument.NotNull(entities, nameof(entities));
-
-        //    if (entities.Count == 0) return true;
-
-        //    var isGuid = typeof(TKey) == typeof(Guid);
-        //    var type = typeof(T);
-        //    var id = type.GetProperty(nameof(BaseEntity<TKey>.Id));
-        //    var timeNow = DateTime.Now;
-        //    entities.ForEach(item =>
-        //    {
-        //        if (isGuid)
-        //        {
-        //            if (id != null) id.SetValue(item, Guid.NewGuid());
-        //        }
-        //        else if (id != null) id.SetValue(item, IdWorker.NextId());
-
-        //    });
-        //    return Db.Insertable(entities).ExecuteCommand() > 0;
-        //}
 
         /// <summary>
         /// 异步更新数据
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public virtual async Task<bool> UpdateAsync(T entity)
+        public virtual async Task<int> UpdateAsync(T entity)
         {
             H_Check.Argument.NotNull(entity, nameof(entity));
 
-            return await Db.Updateable(entity).ExecuteCommandAsync() > 0;
+            return await Db.Updateable(entity).ExecuteCommandAsync();
         }
-
-        ///// <summary>
-        ///// 更新数据
-        ///// </summary>
-        ///// <param name="entity"></param>
-        ///// <returns></returns>
-        //public virtual bool Update(T entity)
-        //{
-        //    H_Check.Argument.NotNull(entity, nameof(entity));
-
-        //    return Db.Updateable(entity).ExecuteCommand() > 0;
-        //}
 
         /// <summary>
         /// 异步更新数据（指定列名）
@@ -245,7 +181,7 @@ namespace Hao.Core
         /// <param name="entity"></param>
         /// <param name="columns"></param>
         /// <returns></returns>
-        public virtual async Task<bool> UpdateAsync(T entity, Expression<Func<T, object>> columns)
+        public virtual async Task<int> UpdateAsync(T entity, Expression<Func<T, object>> columns)
         {
             H_Check.Argument.NotNull(entity, nameof(entity));
 
@@ -253,55 +189,21 @@ namespace Hao.Core
 
             var properties = columns.Body.Type.GetProperties();
             var updateColumns = properties.Select(a => a.Name);
-            if (updateColumns.Count() == 0) return true;
 
-            return await Db.Updateable(entity).UpdateColumns(updateColumns.ToArray()).ExecuteCommandAsync() > 0;
+            return await Db.Updateable(entity).UpdateColumns(updateColumns.ToArray()).ExecuteCommandAsync();
         }
-
-        ///// <summary>
-        ///// 异步更新数据（指定列名）
-        ///// </summary>
-        ///// <param name="entity"></param>
-        ///// <param name="columns"></param>
-        ///// <returns></returns>
-        //public virtual bool Update(T entity, Expression<Func<T, object>> columns)
-        //{
-        //    H_Check.Argument.NotNull(entity, nameof(entity));
-
-        //    H_Check.Argument.NotNull(columns, nameof(columns));
-
-        //    var properties = columns.Body.Type.GetProperties();
-        //    var updateColumns = properties.Select(a => a.Name);
-        //    return Db.Updateable(entity).UpdateColumns(updateColumns.ToArray()).ExecuteCommand() > 0;
-        //}
 
         /// <summary>
         /// 异步更新数据（批量）
         /// </summary>
         /// <param name="entities">实体类</param>
         /// <returns></returns>
-        public virtual async Task<bool> UpdateAsync(List<T> entities)
+        public virtual async Task<int> UpdateAsync(List<T> entities)
         {
-            H_Check.Argument.NotNull(entities, nameof(entities));
+            H_Check.Argument.IsNotEmpty(entities, nameof(entities));
 
-            if (entities.Count == 0) return true;
-
-            return await Db.Updateable(entities).ExecuteCommandAsync() > 0;
+            return await Db.Updateable(entities).ExecuteCommandAsync();
         }
-
-        ///// <summary>
-        ///// 更新数据（批量）
-        ///// </summary>
-        ///// <param name="entities">实体类</param>
-        ///// <returns></returns>
-        //public virtual bool Update(List<T> entities)
-        //{
-        //    H_Check.Argument.NotNull(entities, nameof(entities));
-
-        //    if (entities.Count == 0) return true;
-
-        //    return Db.Updateable(entities).ExecuteCommand() > 0;
-        //}
 
         /// <summary>
         /// 异步更新数据（批量）（指定列名）
@@ -309,85 +211,38 @@ namespace Hao.Core
         /// <param name="entities"></param>
         /// <param name="columns"></param>
         /// <returns></returns>
-        public virtual async Task<bool> UpdateAsync(List<T> entities, Expression<Func<T, object>> columns)
+        public virtual async Task<int> UpdateAsync(List<T> entities, Expression<Func<T, object>> columns)
         {
-            H_Check.Argument.NotNull(entities, nameof(entities));
+            H_Check.Argument.IsNotEmpty(entities, nameof(entities));
 
             H_Check.Argument.NotNull(columns, nameof(columns));
 
-            if (entities.Count == 0) return true;
-
             var properties = columns.Body.Type.GetProperties();
             var updateColumns = properties.Select(a => a.Name);
-            if (updateColumns.Count() == 0) return true;
 
-            return await Db.Updateable(entities).UpdateColumns(updateColumns.ToArray()).ExecuteCommandAsync() > 0;
+            return await Db.Updateable(entities).UpdateColumns(updateColumns.ToArray()).ExecuteCommandAsync();
         }
-
-        ///// <summary>
-        ///// 更新数据（批量）（指定列名）
-        ///// </summary>
-        ///// <param name="entities"></param>
-        ///// <param name="columns"></param>
-        ///// <returns></returns>
-        //public virtual bool Update(List<T> entities, Expression<Func<T, object>> columns)
-        //{
-        //    H_Check.Argument.NotNull(entities, nameof(entities));
-
-        //    H_Check.Argument.NotNull(columns, nameof(columns));
-
-        //    if (entities.Count == 0) return true;
-
-        //    var properties = columns.Body.Type.GetProperties();
-        //    var updateColumns = properties.Select(a => a.Name);
-        //    return Db.Updateable(entities).UpdateColumns(updateColumns.ToArray()).ExecuteCommand() > 0;
-        //}
 
         /// <summary>
         /// 异步删除数据
         /// </summary>
         /// <param name="pkValue"></param>
         /// <returns></returns>
-        public virtual async Task<bool> DeleteAysnc(TKey pkValue)
+        public virtual async Task<int> DeleteAysnc(TKey pkValue)
         {
-            return await Db.Deleteable<T>().In(pkValue).ExecuteCommandAsync() > 0;
+            return await Db.Deleteable<T>().In(pkValue).ExecuteCommandAsync();
         }
-
-        ///// <summary>
-        ///// 删除数据
-        ///// </summary>
-        ///// <param name="pkValue"></param>
-        ///// <returns></returns>
-        //public virtual bool Delete(TKey pkValue)
-        //{
-        //    return Db.Deleteable<T>().In(pkValue).ExecuteCommand() > 0;
-        //}
 
         /// <summary>
         /// 异步删除数据
         /// </summary>
         /// <param name="pkValues"></param>
         /// <returns></returns>
-        public virtual async Task<bool> DeleteAysnc(List<TKey> pkValues)
+        public virtual async Task<int> DeleteAysnc(List<TKey> pkValues)
         {
-            H_Check.Argument.NotNull(pkValues, nameof(pkValues));
+            H_Check.Argument.IsNotEmpty(pkValues, nameof(pkValues));
 
-            if (pkValues.Count == 0) return true;
-
-            return await Db.Deleteable<T>().In(pkValues).ExecuteCommandAsync() > 0;
+            return await Db.Deleteable<T>().In(pkValues).ExecuteCommandAsync();
         }
-
-        ///// <summary>
-        ///// 删除数据
-        ///// </summary>
-        ///// <param name="pkValues"></param>
-        ///// <returns></returns>
-        //public virtual bool Delete(List<TKey> pkValues)
-        //{
-        //    H_Check.Argument.NotNull(pkValues, nameof(pkValues));
-
-        //    if (pkValues.Count == 0) return true;
-        //    return Db.Deleteable<T>().In(pkValues).ExecuteCommand() > 0;
-        //}
     }
 }
