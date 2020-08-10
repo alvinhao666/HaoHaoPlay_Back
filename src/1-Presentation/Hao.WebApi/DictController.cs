@@ -15,13 +15,9 @@ namespace Hao.WebApi.Controllers
     {
         private readonly IDictAppService _dictAppService;
 
-        private readonly IMapper _mapper;
-
-
-        public DictController(IMapper mapper, IDictAppService dictAppService)
+        public DictController(IDictAppService dictAppService)
         {
             _dictAppService = dictAppService;
-            _mapper = mapper;
         }
 
 

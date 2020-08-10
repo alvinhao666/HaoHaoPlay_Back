@@ -19,15 +19,10 @@ namespace Hao.WebApi.Controllers
 
         private readonly IRoleAppService _roleAppService;
 
-        private readonly IMapper _mapper;
-
-
-        public UserController(IMapper mapper, IUserAppService userService, IRoleAppService roleAppService)
+        public UserController(IUserAppService userService, IRoleAppService roleAppService)
         {
             _userAppService = userService;
             _roleAppService = roleAppService;
-            _mapper = mapper;
-
         }
 
         /// <summary>
