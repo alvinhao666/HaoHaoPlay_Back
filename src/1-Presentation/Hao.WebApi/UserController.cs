@@ -50,7 +50,7 @@ namespace Hao.WebApi.Controllers
         /// <summary>
         /// 是否存在用户
         /// </summary>
-        /// <param name="query"></param>
+        /// <param name="queryInput"></param>
         /// <returns></returns>
         [HttpGet]
         [AuthCode("1_4")]
@@ -114,7 +114,7 @@ namespace Hao.WebApi.Controllers
         /// <summary>
         /// 导出用户
         /// </summary>
-        /// <param name="query"></param>
+        /// <param name="queryInput"></param>
         /// <returns></returns>
         [HttpGet]
         [AuthCode("1_2048")]
