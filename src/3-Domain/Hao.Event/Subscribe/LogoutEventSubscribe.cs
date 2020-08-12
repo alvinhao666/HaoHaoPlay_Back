@@ -7,14 +7,14 @@ namespace Hao.Event
     /// <summary>
     /// 注销
     /// </summary>
-    public interface ILogoutEventDataSubscribe
+    public interface ILogoutEventSubscribe
     {
         Task LogoutForUpdateAuth(LogoutForUpdateAuthEventData data);
 
         Task Logout(LogoutEventData data);
     }
 
-    public class LogoutEventSubscribe : ILogoutEventDataSubscribe, ICapSubscribe
+    public class LogoutEventSubscribe : ILogoutEventSubscribe, ICapSubscribe
     {
 
         private readonly ILogoutEventConsumer _consumer;

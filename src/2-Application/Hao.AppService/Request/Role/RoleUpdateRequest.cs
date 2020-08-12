@@ -6,6 +6,6 @@ namespace Hao.AppService
 {
     public class RoleUpdateRequest
     {
-        public List<string> ModuleIds { get; set; }
+        public List<long> ModuleIds { get; set; }
     }
 }

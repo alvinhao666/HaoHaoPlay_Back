@@ -12,7 +12,7 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 x.UseDashboard(a =>
                 {
-                    a.PathMatch = "/haohaoplay_back_capdashboard";
+                    a.PathMatch = "/haohaoplay_back_capdashboard"; //地址http://localhost:8000/haohaoplay_back_capdashboard
                 }); 
 
                 x.UsePostgreSql(cfg => { cfg.ConnectionString = config.PostgreSqlConnection; });
