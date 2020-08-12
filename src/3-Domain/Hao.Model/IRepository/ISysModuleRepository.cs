@@ -1,4 +1,5 @@
 ﻿using Hao.Core;
+using Hao.Enum;
 using System.Threading.Tasks;
 
 namespace Hao.Model
@@ -10,5 +11,14 @@ namespace Hao.Model
         /// </summary>
         /// <returns></returns>
         Task<ModuleLayerCountDto> GetLayerCount();
+
+
+        /// <summary>
+        /// 是否存在相同名字的模块
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<bool> IsExistSameNameModule(string name, ModuleType? moduleType, long? parentId, long? id = null);
     }
 }

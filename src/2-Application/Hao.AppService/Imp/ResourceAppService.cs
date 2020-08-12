@@ -19,12 +19,18 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task AddResource(ResourceAddRequest vm)
         {
-            var parentNode = await GetModuleDetail(vm.ParentId.Value);
-            if (parentNode.Type != ModuleType.Sub) throw new H_Exception("非子菜单无法添加资源");
-            var module = _mapper.Map<SysModule>(vm);
-            module.Type = ModuleType.Resource;
-            module.Sort = 0; 
-            await AddModule(module);
+
+            using (var redisLock = Lock("ModuleAppService_AddResource")) //redis 分布式锁
+            {
+                var parentNode = await GetModuleDetail(vm.ParentId.Value);
+
+                if (parentNode.Type != ModuleType.Sub) throw new H_Exception("非子菜单无法添加资源");
+
+                var module = _mapper.Map<SysModule>(vm);
+                module.Type = ModuleType.Resource;
+                module.Sort = 0;
+                await AddModule(module);
+            }
         }
 
         /// <summary>

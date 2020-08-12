@@ -1,4 +1,5 @@
 ﻿using Hao.Core;
+using Hao.Enum;
 using Hao.Model;
 using SqlSugar;
 using System.Threading.Tasks;
@@ -22,6 +23,24 @@ namespace Hao.Repository
                 .Select(a => new ModuleLayerCountDto { Layer = a.Layer, Count = SqlFunc.AggregateCount(a.Layer) })
                 .OrderBy(a => a.Layer, OrderByType.Desc)
                 .FirstAsync();
+        }
+
+        /// <summary>
+        /// 是否存在相同名字的模块
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<bool> IsExistSameNameModule(string name, ModuleType? moduleType, long? parentId, long? id = null)
+        {
+            var modules = await Db.Queryable<SysModule>()
+                .Where(a => a.Name == name)
+                .WhereIF(moduleType.HasValue, a => a.Type == moduleType)
+                .WhereIF(parentId.HasValue, a => a.ParentId == parentId)
+                .WhereIF(id.HasValue, a => a.Id != id)
+                .ToListAsync();
+
+            return modules.Count > 0;
         }
     }
 }

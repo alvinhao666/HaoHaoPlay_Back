@@ -36,11 +36,19 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task AddModule(ModuleAddRequest vm)
         {
-            var parentNode = await GetModuleDetail(vm.ParentId.Value);
-            if (parentNode.Type == ModuleType.Sub) throw new H_Exception("叶子节点无法继续添加节点");
-            var module = _mapper.Map<SysModule>(vm);
+            using (var redisLock = Lock("ModuleAppService_AddModule")) //redis 分布式锁
+            {
+                var parentNode = await GetModuleDetail(vm.ParentId.Value);
+                if (parentNode.Type == ModuleType.Sub) throw new H_Exception("子菜单无法继续添加节点");
 
-            await AddModule(module);
+                var isExistSameName = await _moduleRep.IsExistSameNameModule(vm.Name, vm.Type, vm.ParentId);
+
+                if (isExistSameName) throw new H_Exception("存在相同名称的模块，请重新输入");
+
+                var module = _mapper.Map<SysModule>(vm);
+                await AddModule(module);
+            }
+
         }
 
         /// <summary>
@@ -86,19 +94,27 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task UpdateModule(long id, ModuleUpdateRequest vm)
         {
-            if (id == 0) throw new H_Exception("无法操作系统根节点");
-            var module = await GetModuleDetail(id);
-            module.Name = vm.Name;
-            module.Sort = vm.Sort;
-            if (module.Type == ModuleType.Main)
+            using (var redisLock = Lock("ModuleAppService_UpdateModule")) //redis 分布式锁
             {
-                module.Icon = vm.Icon;
-                await _moduleRep.UpdateAsync(module, user => new {module.Name, module.Icon, module.Sort});
-            }
-            else if (module.Type == ModuleType.Sub)
-            {
-                module.RouterUrl = vm.RouterUrl;
-                await _moduleRep.UpdateAsync(module, user => new {module.Name, module.RouterUrl, module.Sort});
+                if (id == 0) throw new H_Exception("无法操作系统根节点");
+                var module = await GetModuleDetail(id);
+
+                var isExistSameName = await _moduleRep.IsExistSameNameModule(vm.Name, module.Type, module.ParentId, id);
+
+                if (isExistSameName) throw new H_Exception("存在相同名称的模块，请重新输入");
+
+                module.Name = vm.Name;
+                module.Sort = vm.Sort;
+                if (module.Type == ModuleType.Main)
+                {
+                    module.Icon = vm.Icon;
+                    await _moduleRep.UpdateAsync(module, user => new { module.Name, module.Icon, module.Sort });
+                }
+                else if (module.Type == ModuleType.Sub)
+                {
+                    module.RouterUrl = vm.RouterUrl;
+                    await _moduleRep.UpdateAsync(module, user => new { module.Name, module.RouterUrl, module.Sort });
+                }
             }
         }
 
@@ -126,33 +142,29 @@ namespace Hao.AppService
 
         private async Task AddModule(SysModule module)
         {
-            using (var redisLock = Lock("ModuleAppService_AddModule")) //redis 分布式锁
+            var max = await _moduleRep.GetLayerCount();
+            if (max.Count < 31)
             {
+                module.Layer = max.Layer;
+                module.Number = Convert.ToInt64(Math.Pow(2, max.Count.Value));
+            }
+            else if (max.Count == 31) //0次方 到 30次方 共31个数              js语言的限制 导致  位运算 32位  
+            {
+                module.Layer = ++max.Layer;
+                module.Number = 1;
+            }
+            else
+            {
+                throw new H_Exception("数据库数据异常，请检查");
+            }
 
-                var max = await _moduleRep.GetLayerCount();
-                if (max.Count < 31)
-                {
-                    module.Layer = max.Layer;
-                    module.Number = Convert.ToInt64(Math.Pow(2, max.Count.Value));
-                }
-                else if (max.Count == 31) //0次方 到 30次方 共31个数              js语言的限制 导致  位运算 32位  
-                {
-                    module.Layer = ++max.Layer;
-                    module.Number = 1;
-                }
-                else
-                {
-                    throw new H_Exception("数据库数据异常，请检查");
-                }
-
-                try
-                {
-                    await _moduleRep.InsertAysnc(module);
-                }
-                catch (PostgresException ex)
-                {
-                    if (ex.SqlState == H_PostgresSqlState.E23505) throw new H_Exception("添加失败，请重新添加");//违反唯一键
-                }
+            try
+            {
+                await _moduleRep.InsertAysnc(module);
+            }
+            catch (PostgresException ex)
+            {
+                if (ex.SqlState == H_PostgresSqlState.E23505) throw new H_Exception("添加失败，请重新添加");//违反唯一键
             }
         }
 
