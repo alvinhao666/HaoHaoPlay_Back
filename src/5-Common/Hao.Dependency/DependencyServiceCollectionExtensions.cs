@@ -13,14 +13,24 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AutoDependency(this IServiceCollection services, IEnumerable<Type> types)
         {
             services.Scan(scan => scan.FromAssembliesOf(types)
-                                      .AddClasses()
-                                      .AsMatchingInterface((x, p) => typeof(ITransientDependency).IsAssignableFrom(p.GetType())) //直接或间接实现了ITransientDependency
+                                      .AddClasses(x => typeof(ITransientDependency).IsAssignableFrom(x.GetType()))  //直接或间接实现了ICapSubscribe
+                                      .AsImplementedInterfaces()
                                       .WithTransientLifetime())
 
                     .Scan(scan => scan.FromAssembliesOf(types)
-                                      .AddClasses()
-                                      .AsMatchingInterface((x, p) => typeof(ISingletonDependency).IsAssignableFrom(p.GetType()))
+                                      .AddClasses(x => typeof(ISingletonDependency).IsAssignableFrom(x.GetType()))  //直接或间接实现了ICapSubscribe
+                                      .AsImplementedInterfaces()
                                       .WithSingletonLifetime());
+
+            //services.Scan(scan => scan.FromAssembliesOf(types)
+            //              .AddClasses()
+            //              .AsMatchingInterface((x, p) => typeof(ITransientDependency).IsAssignableFrom(p.GetType())) //直接或间接实现了ITransientDependency
+            //              .WithTransientLifetime())
+
+            //        .Scan(scan => scan.FromAssembliesOf(types)
+            //              .AddClasses()
+            //              .AsMatchingInterface((x, p) => typeof(ISingletonDependency).IsAssignableFrom(p.GetType()))
+            //              .WithSingletonLifetime());
             return services;
         }
 

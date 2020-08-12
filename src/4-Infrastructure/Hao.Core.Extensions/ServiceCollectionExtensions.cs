@@ -93,8 +93,8 @@ namespace Hao.Core.Extensions
             services.Scan(a =>
             {
                 a.FromAssemblies(appSettings.EventSubscribeAssemblyNames.Select(name => Assembly.Load(name)))
-                 .AddClasses()
-                 .AsMatchingInterface((x, p) => typeof(ICapSubscribe).IsAssignableFrom(p.GetType())) //直接或间接实现了ICapSubscribe
+                 .AddClasses(x=> typeof(ICapSubscribe).IsAssignableFrom(x.GetType()))  //直接或间接实现了ICapSubscribe
+                 .AsImplementedInterfaces()
                  .WithTransientLifetime();
             });
 
