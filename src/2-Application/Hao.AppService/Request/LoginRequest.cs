@@ -20,6 +20,11 @@ namespace Hao.AppService
         /// 是否选择三天免登录
         /// </summary>
         public bool IsRememberLogin { get; set; }
+
+        /// <summary>
+        /// 登录ip
+        /// </summary>
+        public string Ip { get; set; }
     }
 
     /// <summary>

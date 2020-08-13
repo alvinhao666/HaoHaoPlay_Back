@@ -60,22 +60,20 @@ namespace Hao.AppService
         /// <summary>
         /// 登录
         /// </summary>
-        /// <param name="loginName"></param>
-        /// <param name="password"></param>
-        /// <param name="isRememberLogin"></param>
+        /// <param name="request"></param>
         /// <param name="ip"></param>
         /// <returns></returns>
-        public async Task<LoginVM> Login(string loginName, string password, bool isRememberLogin, string ip)
+        public async Task<LoginVM> Login(LoginRequest request)
         {
             var timeNow = DateTime.Now;
-            var expireTime = timeNow.AddDays(isRememberLogin ? 3 : 1);
+            var expireTime = timeNow.AddDays(request.IsRememberLogin ? 3 : 1);
             //rsa解密
-            password = RsaHelper.Decrypt(_appsettings.Key.RsaPrivateKey, password);
+            var password = RsaHelper.Decrypt(_appsettings.Key.RsaPrivateKey, request.Password);
             //sha256加密
             password = EncryptProvider.HMACSHA256(password, _appsettings.Key.Sha256Key); 
 
             //根据账号密码查询用户
-            var user = await GetUserByLoginName(loginName, password);
+            var user = await GetUserByLoginName(request.LoginName, password);
 
             if (string.IsNullOrWhiteSpace(user.AuthNumbers)) throw new H_Exception(_noAuthTip);
 
@@ -104,14 +102,14 @@ namespace Hao.AppService
                 AuthNumbers = authNums,
                 Jwt = jwt,
                 LoginStatus = LoginStatus.Online,
-                Ip = ip
+                Ip = request.Ip
             };
 
             int expireSeconds = (int)expireTime.Subtract(timeNow).Duration().TotalSeconds + 1;
             await RedisHelper.SetAsync($"{_appsettings.RedisPrefix.Login}{user.Id}_{jti}", H_JsonSerializer.Serialize(userValue), expireSeconds);
 
             //同步登录信息，例如ip等等
-            await AsyncLoginInfo(user.Id, timeNow,ip);
+            await AsyncLoginInfo(user.Id, timeNow, request.Ip);
 
             return new LoginVM
             {

@@ -35,13 +35,13 @@ namespace Hao.WebApi.Controllers
         [HttpPost]
         public async Task<LoginVM> Login(LoginRequest request)
         {
-            var ip = HttpContext.GetIp();
+            request.Ip = HttpContext.GetIp();
 
-            _logger.Info(new H_Log() { Method = "LoginRequest", Argument = new { request , ip }, Description = "登录请求" });
+            _logger.Info(new H_Log() { Method = "LoginRequest", Argument = request, Description = "登录请求" });
 
-            var result = await _loginAppService.Login(request.LoginName, request.Password, request.IsRememberLogin ,ip);
+            var result = await _loginAppService.Login(request);
 
-            _logger.Info(new H_Log() { Method = "LoginResponse", Argument = new { request, ip }, Description = "登录成功" });
+            _logger.Info(new H_Log() { Method = "LoginResponse", Argument = request, Description = "登录成功" });
 
             return result;
         }
