@@ -26,7 +26,7 @@ namespace Hao.AppService
         {
             RuleFor(x => x.OldPassword).MustHasValue("旧密码");
 
-            RuleFor(x => x.NewPassword).MustHasFixedLength("新密码", 6, 16);
+            RuleFor(x => x.NewPassword).MustFixedLength("新密码", 6, 16);
 
             RuleFor(x => x.RePassword).MustHasValue("重复密码").When(a => a.RePassword != a.NewPassword).WithMessage("两次输入密码不匹配");
         }
