@@ -2,7 +2,7 @@
 
 namespace Hao.Enum
 {
-    public enum RoleType
+    public enum RoleLevelType
     {
         [H_Description("超级管理员")]
         SuperAdministrator,

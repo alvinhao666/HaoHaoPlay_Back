@@ -69,7 +69,7 @@ namespace Hao.AppService
         {
             var query = new RoleQuery() { OrderFileds = nameof(SysRole.Level) };
 
-            if (_currentUser.RoleLevel != (int)RoleType.SuperAdministrator) //超级管理员能看见所有，其他用户只能看见比自己等级低的用户列表
+            if (_currentUser.RoleLevel != (int)RoleLevelType.SuperAdministrator) //超级管理员能看见所有，其他用户只能看见比自己等级低的用户列表
             {
                 query.CurrentRoleLevel = _currentUser.RoleLevel;
             }
