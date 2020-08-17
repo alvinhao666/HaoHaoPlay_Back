@@ -69,7 +69,8 @@ namespace Hao.AppService
         {
             var roles = await _roleRep.GetListAysnc(new RoleQuery()
             {
-                OrderFileds = nameof(SysRole.Level)
+                OrderFileds = nameof(SysRole.Level),
+                CurrentRoleLevel = _currentUser.RoleLevel
             });
             var result = _mapper.Map<List<RoleVM>>(roles);
 
