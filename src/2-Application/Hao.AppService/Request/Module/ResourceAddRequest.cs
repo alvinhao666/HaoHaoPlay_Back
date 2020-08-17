@@ -25,9 +25,9 @@ namespace Hao.AppService
     {
         public ResourceAddValidator()
         {
-            RuleFor(x => x.Name).NotEmpty().WithMessage("资源名称不能为空");
+            RuleFor(x => x.Name).MustHasValue("资源名称");
 
-            RuleFor(x => x.ParentId).NotEmpty().WithMessage("父节点Id不能为空");
+            RuleFor(x => x.ParentId).MustHasValue("父节点Id");
         }
     }
 }

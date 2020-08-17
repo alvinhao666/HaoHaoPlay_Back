@@ -64,15 +64,15 @@ namespace Hao.AppService
         public UserAddValidator()
         {
 
-            RuleFor(x => x.Name).NotEmpty().WithMessage("姓名不能为空");
+            RuleFor(x => x.Name).MustHasValue("姓名");
 
-            RuleFor(x => x.Password).NotEmpty().WithMessage("密码不能为空").Length(6, 16).WithMessage("密码长度应在6~16个字符");
+            RuleFor(x => x.Password).MustHasValue("密码").Length(6, 16).WithMessage("密码长度应在6~16个字符");
 
-            RuleFor(x => x.Gender).NotEmpty().WithMessage("性别不能为空").IsInEnum().WithMessage("性别数据有误");
+            RuleFor(x => x.Gender).MustHasValue("性别").IsInEnum().WithMessage("性别数据有误");
 
-            RuleFor(x => x.Age).NotEmpty().WithMessage("年龄不能为空");
+            RuleFor(x => x.Age).MustHasValue("年龄");
 
-            RuleFor(x => x.RoleId).NotEmpty().WithMessage("角色Id不能为空");
+            RuleFor(x => x.RoleId).MustHasValue("角色Id");
 
             //RuleFor(x => x.Data).SetCollectionValidator(new BoxOrderItemVMValidator()); // 集合子项数据验证
         }

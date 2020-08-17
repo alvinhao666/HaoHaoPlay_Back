@@ -32,9 +32,9 @@ namespace Hao.AppService
     {
         public DictItemUpdateRequestValidator()
         {
-            RuleFor(x => x.ItemName).NotEmpty().WithMessage("数据项名称不能为空");
+            RuleFor(x => x.ItemName).MustHasValue("数据项名称");
 
-            RuleFor(x => x.ItemValue).NotEmpty().WithMessage("数据项值不能为空");
+            RuleFor(x => x.ItemValue).MustHasValue("数据项值");
 
         }
     }

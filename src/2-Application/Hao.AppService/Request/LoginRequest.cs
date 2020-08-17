@@ -8,7 +8,7 @@ namespace Hao.AppService
     public class LoginRequest
     {
         /// <summary>
-        /// 登录名
+        /// 账号
         /// </summary>
         public string LoginName { get; set; }
         /// <summary>
@@ -34,9 +34,9 @@ namespace Hao.AppService
     {
         public LoginValidator()
         {
-            RuleFor(x => x.LoginName).NotEmpty().WithMessage("账号不能为空");
+            RuleFor(x => x.LoginName).MustHasValue("账号");
 
-            RuleFor(x => x.Password).NotEmpty().WithMessage("密码不能为空");
+            RuleFor(x => x.Password).MustHasValue("密码");
         }
     }
 }

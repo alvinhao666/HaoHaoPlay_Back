@@ -16,7 +16,7 @@ namespace Hao.AppService
         public string Name { get; set; }
 
         /// <summary>
-        /// 排序
+        /// 排序值
         /// </summary>
         public int? Sort { get; set; }
     }
@@ -28,9 +28,9 @@ namespace Hao.AppService
     {
         public ResourceUpdateValidator()
         {
-            RuleFor(x => x.Name).NotEmpty().WithMessage("资源名称不能为空");
+            RuleFor(x => x.Name).MustHasValue("资源名称");
 
-            RuleFor(x => x.Sort).NotEmpty().WithMessage("排序值不能为空");
+            RuleFor(x => x.Sort).MustHasValue("排序值");
         }
     }
 }

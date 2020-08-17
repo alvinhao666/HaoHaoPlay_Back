@@ -42,15 +42,15 @@ namespace Hao.AppService
         public ModuleUpdateValidator()
         {
 
-            RuleFor(x => x.Name).NotEmpty().WithMessage("模块名称不能为空");
+            RuleFor(x => x.Name).MustHasValue("模块名称");
 
-            RuleFor(x => x.Type).NotEmpty().WithMessage("模块类型不能为空");
+            RuleFor(x => x.Type).MustHasValue("模块类型");
 
-            RuleFor(x => x.Icon).NotEmpty().WithMessage("模块图标不能为空").When(a => a.Type == ModuleType.Main);
+            RuleFor(x => x.Icon).MustHasValue("模块图标").When(a => a.Type == ModuleType.Main);
 
-            RuleFor(x => x.RouterUrl).NotEmpty().WithMessage("子应用路由地址不能为空").When(a => a.Type == ModuleType.Sub);
+            RuleFor(x => x.RouterUrl).MustHasValue("子应用路由地址").When(a => a.Type == ModuleType.Sub);
 
-            RuleFor(x => x.Sort).NotEmpty().WithMessage("排序值不能为空");
+            RuleFor(x => x.Sort).MustHasValue("排序值");
         }
     }
 }

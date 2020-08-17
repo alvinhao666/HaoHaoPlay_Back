@@ -17,7 +17,7 @@ namespace Hao.AppService
     {
         public UpdateHeadImgValidator()
         {
-            RuleFor(x => x.Base64Str).NotEmpty().WithMessage("头像不能为空");
+            RuleFor(x => x.Base64Str).MustHasValue("头像");
         }
     }
 }

@@ -40,11 +40,11 @@ namespace Hao.AppService
     {
         public DictItemAddRequestValidator()
         {
-            RuleFor(x => x.ItemName).NotEmpty().WithMessage("数据项名称不能为空");
+            RuleFor(x => x.ItemName).MustHasValue("数据项名称");
 
-            RuleFor(x => x.ItemValue).NotEmpty().WithMessage("数据项值不能为空");
+            RuleFor(x => x.ItemValue).MustHasValue("数据项值");
 
-            RuleFor(x => x.ParentId).NotEmpty().WithMessage("字典id不能为空");
+            RuleFor(x => x.ParentId).MustHasValue("字典id");
         }
     }
 }

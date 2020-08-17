@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Http;
 using System.Linq;
 
-namespace Hao.Core.Extensions
+namespace Hao.Core
 {
     public static class UtilExtensions
     {

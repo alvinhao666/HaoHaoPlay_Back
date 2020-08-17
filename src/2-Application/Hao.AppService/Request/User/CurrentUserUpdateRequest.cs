@@ -67,11 +67,11 @@ namespace Hao.AppService
         public CurrentUserUpdateValidator()
         {
 
-            RuleFor(x => x.Name).NotEmpty().WithMessage("姓名不能为空");
+            RuleFor(x => x.Name).MustHasValue("姓名");
 
-            RuleFor(x => x.Gender).NotEmpty().WithMessage("性别不能为空").IsInEnum().WithMessage("性别数据有误");
+            RuleFor(x => x.Gender).MustHasValue("性别").IsInEnum().WithMessage("性别数据有误");
 
-            RuleFor(x => x.Age).NotEmpty().WithMessage("年龄不能为空");
+            RuleFor(x => x.Age).MustHasValue("年龄");
         }
     }
 }

@@ -35,9 +35,9 @@ namespace Hao.AppService
     {
         public DictUpdateRequestValidator()
         {
-            RuleFor(x => x.DictName).NotEmpty().WithMessage("字典名称不能为空");
+            RuleFor(x => x.DictName).MustHasValue("字典名称");
 
-            RuleFor(x => x.DictCode).NotEmpty().WithMessage("字典编码不能为空");
+            RuleFor(x => x.DictCode).MustHasValue("字典编码");
         }
     }
 }
