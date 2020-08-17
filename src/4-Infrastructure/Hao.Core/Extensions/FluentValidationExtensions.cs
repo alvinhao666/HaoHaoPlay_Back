@@ -19,7 +19,7 @@ namespace FluentValidation
         }
 
         /// <summary>
-        /// 判断提示不能为空，且指定字符串长度
+        /// 判断提示不能为空，且指定字符串长度范围
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="TProperty"></typeparam>
@@ -46,7 +46,7 @@ namespace FluentValidation
         {
             return ruleBuilder
                 .NotEmpty().WithMessage($"{enumName}不能为空")
-                .IsInEnum().WithMessage($"{enumName}数据值有误");
+                .IsInEnum().WithMessage($"{enumName}值有误");
         }
 
 
