@@ -133,7 +133,7 @@ namespace Hao.AppService
             //     item.Gender = Gender.Women;
             // }
             // var usr = users.First();
-            await _userRep.DeleteAysnc(users.Select(a=>a.Id).ToList());
+            // await _userRep.DeleteAysnc(users.Select(a=>a.Id).ToList());
 
             //注销该角色下用户的登录信息
 
