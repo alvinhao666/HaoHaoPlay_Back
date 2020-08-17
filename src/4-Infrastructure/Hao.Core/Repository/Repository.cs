@@ -221,7 +221,7 @@ namespace Hao.Core
             var columns = new string[] { nameof(FullAuditedEntity<TKey>.ModifierId), nameof(FullAuditedEntity<TKey>.ModifyTime), nameof(FullAuditedEntity<TKey>.IsDeleted) };
 
             return await Db.Updateable(entity).UpdateColumns(columns.ToArray())
-                .Where($"{nameof(FullAuditedEntity<TKey>.Id)}='{entity.Id}'")
+                .WhereColumns(a => new {a.Id})
                 .Where(a => a.IsDeleted == false)
                 .ExecuteCommandAsync();
         }
@@ -271,7 +271,8 @@ namespace Hao.Core
             var columns = new string[] { nameof(FullAuditedEntity<TKey>.ModifierId), nameof(FullAuditedEntity<TKey>.ModifyTime), nameof(FullAuditedEntity<TKey>.IsDeleted) };
 
             return await Db.Updateable(entities).UpdateColumns(columns)
-                                .ExecuteCommandAsync();
+                .WhereColumns(a => new {a.Id, a.IsDeleted})
+                .ExecuteCommandAsync();
         }
 
         /// <summary>
@@ -286,9 +287,9 @@ namespace Hao.Core
             entity.ModifierId = CurrentUser.Id;
             entity.ModifyTime = DateTime.Now;
             return await Db.Updateable(entity)
-                        .Where($"{nameof(FullAuditedEntity<TKey>.Id)}='{entity.Id}'")
-                        .Where(a => a.IsDeleted == false)
-                        .ExecuteCommandAsync();
+                .WhereColumns(a => new {a.Id})
+                .Where(a => a.IsDeleted == false)
+                .ExecuteCommandAsync();
         }
 
         /// <summary>
@@ -312,9 +313,9 @@ namespace Hao.Core
             updateColumns.Add(nameof(entity.ModifyTime));
 
             return await Db.Updateable(entity).UpdateColumns(updateColumns.ToArray())
-                        .Where($"{nameof(FullAuditedEntity<TKey>.Id)}='{entity.Id}'")
-                        .Where(a => a.IsDeleted == false)
-                        .ExecuteCommandAsync();
+                .WhereColumns(a => new {a.Id})
+                .Where(a => a.IsDeleted == false)
+                .ExecuteCommandAsync();
         }
 
         /// <summary>
@@ -334,6 +335,7 @@ namespace Hao.Core
             });
 
             return await Db.Updateable(entities)
+                .WhereColumns(a => new {a.Id, a.IsDeleted})
                 .ExecuteCommandAsync();
         }
 
@@ -360,8 +362,10 @@ namespace Hao.Core
             var updateColumns = properties.Select(a => a.Name).ToList();
             updateColumns.Add(nameof(FullAuditedEntity<TKey>.ModifierId));
             updateColumns.Add(nameof(FullAuditedEntity<TKey>.ModifyTime));
+            updateColumns.Add(nameof(FullAuditedEntity<TKey>.IsDeleted));
 
             return await Db.Updateable(entities).UpdateColumns(updateColumns.ToArray())
+                .WhereColumns(a => new {a.Id, a.IsDeleted})
                 .ExecuteCommandAsync();
         }
     }
