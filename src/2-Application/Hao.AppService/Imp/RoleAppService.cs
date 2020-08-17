@@ -128,6 +128,12 @@ namespace Hao.AppService
             await _roleRep.UpdateAsync(role, a => new { a.AuthNumbers });
             await _userRep.UpdateAuth(role.Id, role.AuthNumbers);
 
+            //foreach(var item in users)
+            //{
+            //    item.Gender = Gender.Women;
+            //}
+            //await _userRep.UpdateAsync(users, a => new { a.Gender });
+
             //注销该角色下用户的登录信息
 
             if (ids.Count < 1) return;
