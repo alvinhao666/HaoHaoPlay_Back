@@ -68,7 +68,7 @@ namespace Hao.AppService
 
             RuleFor(x => x.Password).MustHasValue("密码").Length(6, 16).WithMessage("密码长度应在6~16个字符");
 
-            RuleFor(x => x.Gender).MustHasValue("性别").IsInEnum().WithMessage("性别数据有误");
+            RuleFor(x => x.Gender).EnumMustHasValue("性别");
 
             RuleFor(x => x.Age).MustHasValue("年龄");
 

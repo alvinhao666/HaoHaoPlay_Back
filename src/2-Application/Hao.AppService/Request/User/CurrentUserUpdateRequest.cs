@@ -69,7 +69,7 @@ namespace Hao.AppService
 
             RuleFor(x => x.Name).MustHasValue("姓名");
 
-            RuleFor(x => x.Gender).MustHasValue("性别").IsInEnum().WithMessage("性别数据有误");
+            RuleFor(x => x.Gender).EnumMustHasValue("性别");
 
             RuleFor(x => x.Age).MustHasValue("年龄");
         }
