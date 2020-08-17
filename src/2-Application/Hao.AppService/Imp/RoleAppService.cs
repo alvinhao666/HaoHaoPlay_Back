@@ -132,7 +132,8 @@ namespace Hao.AppService
             // {
             //     item.Gender = Gender.Women;
             // }
-            // await _userRep.UpdateAsync(users);
+            // var usr = users.First();
+            await _userRep.DeleteAysnc(users.Select(a=>a.Id).ToList());
 
             //注销该角色下用户的登录信息
 
