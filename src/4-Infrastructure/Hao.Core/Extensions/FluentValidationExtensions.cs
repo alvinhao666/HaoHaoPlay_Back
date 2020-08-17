@@ -31,7 +31,7 @@ namespace FluentValidation
         public static IRuleBuilderOptions<T, string> MustFixedLength<T>(this IRuleBuilder<T, string> ruleBuilder, string fieldName, int minLength, int maxLength)
         {
             return ruleBuilder
-                .NotEmpty().WithMessage($"{fieldName}不能为空").Length(minLength, maxLength).WithMessage($"{fieldName}字符长度必须在{minLength}~{maxLength}");
+                .NotEmpty().WithMessage($"{fieldName}不能为空").Length(minLength, maxLength).WithMessage($"{fieldName}的长度必须在{minLength}~{maxLength}个字符");
         }
 
         /// <summary>
