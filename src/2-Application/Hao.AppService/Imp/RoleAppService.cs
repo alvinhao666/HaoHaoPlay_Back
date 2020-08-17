@@ -62,16 +62,20 @@ namespace Hao.AppService
         }
 
         /// <summary>
-        /// 获取所有角色列表
+        /// 获取角色列表
         /// </summary>
         /// <returns></returns>
         public async Task<List<RoleVM>> GetRoleList()
         {
-            var roles = await _roleRep.GetListAysnc(new RoleQuery()
+            var query = new RoleQuery() { OrderFileds = nameof(SysRole.Level) };
+
+            if (_currentUser.RoleLevel != (int)RoleType.SuperAdministrator) //超级管理员能看见所有，其他用户只能看见比自己等级低的用户列表
             {
-                OrderFileds = nameof(SysRole.Level),
-                CurrentRoleLevel = _currentUser.RoleLevel
-            });
+                query.CurrentRoleLevel = _currentUser.RoleLevel;
+            }
+
+            var roles = await _roleRep.GetListAysnc(query);
+
             var result = _mapper.Map<List<RoleVM>>(roles);
 
             return result;
