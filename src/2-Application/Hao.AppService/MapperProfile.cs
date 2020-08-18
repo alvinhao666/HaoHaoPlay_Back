@@ -13,7 +13,20 @@ namespace Hao.AppService
     {
         public MapperProfile()
         {
-            #region 用户
+            MapUser();
+
+            MapModule();
+
+            MapRole();
+
+            MapDict();
+        }
+
+        /// <summary>
+        /// 用户
+        /// </summary>
+        private void MapUser()
+        {
             CreateMap<SysUser, LoginVM>();
 
             CreateMap<PagedList<SysUser>, PagedList<UserVM>>();
@@ -38,9 +51,13 @@ namespace Hao.AppService
 
             CreateMap<UserQueryInput, UserQuery>()
                .ForMember(x => x.OrderFileds, a => a.MapFrom(x => x.OrderByType.CombineNameWithSpace(x.SortField)));
-            #endregion
+        }
 
-
+        /// <summary>
+        /// 模块
+        /// </summary>
+        private void MapModule()
+        {
             #region 模块
 
             CreateMap<SysModule, ModuleDetailVM>()
@@ -58,30 +75,38 @@ namespace Hao.AppService
             #endregion
 
 
-            #region 角色
+        }
+
+        /// <summary>
+        /// 角色
+        /// </summary>
+        private void MapRole()
+        {
             CreateMap<SysRole, RoleVM>();
 
             CreateMap<SysRole, RoleSelectVM>();
-            #endregion
+        }
 
-
-            #region 数据字典
+        /// <summary>
+        /// 字典
+        /// </summary>
+        private void MapDict()
+        {
             CreateMap<DictAddRequest, SysDict>();
 
             CreateMap<DictItemAddRequest, SysDict>();
 
             CreateMap<PagedList<SysDict>, PagedList<DictVM>>();
-            
+
             CreateMap<SysDict, DictVM>();
-            
+
             CreateMap<PagedList<SysDict>, PagedList<DictItemVM>>();
-            
+
             CreateMap<SysDict, DictItemVM>();
 
             CreateMap<SysDict, DictDataItemVM>();
 
             CreateMap<DictQueryInput, DictQuery>();
-            #endregion
 
         }
     }
