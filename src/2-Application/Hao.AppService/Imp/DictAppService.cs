@@ -30,22 +30,18 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
+        [DistributedLock("DictAppService_AddDict")]
         public async Task AddDict(DictAddRequest request)
         {
-            //Setnx就是，如果没有这个key，那么就set一个key-value, 但是如果这个key已经存在，那么将不会再次设置，get出来的value还是最开始set进去的那个value.
+            var sameItems = await _dictRep.GetListAysnc(new DictQuery { EqualDictName = request.DictName });
+            if (sameItems.Count > 0) throw new H_Exception("字典名称已存在，请重新输入");
 
-            using (var redisLock = Lock("DictAppService_AddDict")) //redis 分布式锁
-            {
-                var sameItems = await _dictRep.GetListAysnc(new DictQuery { EqualDictName = request.DictName });
-                if (sameItems.Count > 0) throw new H_Exception("字典名称已存在，请重新输入");
+            sameItems = await _dictRep.GetListAysnc(new DictQuery { EqualDictCode = request.DictCode });
+            if (sameItems.Count > 0) throw new H_Exception("字典编码已存在，请重新输入");
 
-                sameItems = await _dictRep.GetListAysnc(new DictQuery { EqualDictCode = request.DictCode });
-                if (sameItems.Count > 0) throw new H_Exception("字典编码已存在，请重新输入");
-
-                var dict = _mapper.Map<SysDict>(request);
-                dict.Sort = 0;
-                await _dictRep.InsertAysnc(dict);
-            }
+            var dict = _mapper.Map<SysDict>(request);
+            dict.Sort = 0;
+            await _dictRep.InsertAysnc(dict);
         }
 
         /// <summary>
@@ -54,24 +50,21 @@ namespace Hao.AppService
         /// <param name="id"></param>
         /// <param name="request"></param>
         /// <returns></returns>
+        [DistributedLock("DictAppService_UpdateDict")]
         public async Task UpdateDict(long id, DictUpdateRequest request)
         {
-            using (var redisLock = Lock("DictAppService_UpdateDict")) //redis 分布式锁
-            {
+            var sameItems = await _dictRep.GetListAysnc(new DictQuery { EqualDictName = request.DictName });
+            if (sameItems.Where(a => a.Id != id).Count() > 0) throw new H_Exception("字典名称已存在，请重新输入");
 
-                var sameItems = await _dictRep.GetListAysnc(new DictQuery { EqualDictName = request.DictName });
-                if (sameItems.Where(a => a.Id != id).Count() > 0) throw new H_Exception("字典名称已存在，请重新输入");
+            sameItems = await _dictRep.GetListAysnc(new DictQuery { EqualDictCode = request.DictCode });
+            if (sameItems.Where(a => a.Id != id).Count() > 0) throw new H_Exception("字典编码已存在，请重新输入");
 
-                sameItems = await _dictRep.GetListAysnc(new DictQuery { EqualDictCode = request.DictCode });
-                if (sameItems.Where(a => a.Id != id).Count() > 0) throw new H_Exception("字典编码已存在，请重新输入");
-
-                var dict = await _dictRep.GetAysnc(id);
-                dict.DictCode = request.DictCode;
-                dict.DictName = request.DictName;
-                dict.Remark = request.Remark;
-                dict.Sort = request.Sort;
-                await _dictRep.UpdateAsync(dict, a => new { a.DictCode, a.DictName, a.Remark, a.Sort });
-            }
+            var dict = await _dictRep.GetAysnc(id);
+            dict.DictCode = request.DictCode;
+            dict.DictName = request.DictName;
+            dict.Remark = request.Remark;
+            dict.Sort = request.Sort;
+            await _dictRep.UpdateAsync(dict, a => new { a.DictCode, a.DictName, a.Remark, a.Sort });
         }
 
         /// <summary>
@@ -111,32 +104,28 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
+        [DistributedLock("DictAppService_AddDictItem")]
         public async Task AddDictItem(DictItemAddRequest request)
         {
+            var sameItems = await _dictRep.GetListAysnc(new DictQuery { ParentId = request.ParentId, EqualItemName = request.ItemName });
+            if (sameItems.Count > 0) throw new H_Exception("数据项名称已存在，请重新输入");
 
-            using (var redisLock = Lock("DictAppService_AddDictItem")) //redis 分布式锁
+
+            sameItems = await _dictRep.GetListAysnc(new DictQuery { ParentId = request.ParentId, ItemValue = request.ItemValue });
+            if (sameItems.Count > 0) throw new H_Exception("数据项值已存在，请重新输入");
+
+
+            var parentDict = await GetDictDetail(request.ParentId.Value);
+            var dict = _mapper.Map<SysDict>(request);
+            dict.ParentId = parentDict.Id;
+            dict.DictCode = parentDict.DictCode;
+            dict.DictName = parentDict.DictName;
+            if (!dict.Sort.HasValue)
             {
-
-                var sameItems = await _dictRep.GetListAysnc(new DictQuery { ParentId = request.ParentId, EqualItemName = request.ItemName });
-                if (sameItems.Count > 0) throw new H_Exception("数据项名称已存在，请重新输入");
-
-
-                sameItems = await _dictRep.GetListAysnc(new DictQuery { ParentId = request.ParentId, ItemValue = request.ItemValue });
-                if (sameItems.Count > 0) throw new H_Exception("数据项值已存在，请重新输入");
-
-
-                var parentDict = await GetDictDetail(request.ParentId.Value);
-                var dict = _mapper.Map<SysDict>(request);
-                dict.ParentId = parentDict.Id;
-                dict.DictCode = parentDict.DictCode;
-                dict.DictName = parentDict.DictName;
-                if (!dict.Sort.HasValue)
-                {
-                    var dictItems = await _dictRep.GetListAysnc(new DictQuery { ParentId = request.ParentId.Value });
-                    dict.Sort = dictItems.Count + 1;
-                }
-                await _dictRep.InsertAysnc(dict);
+                var dictItems = await _dictRep.GetListAysnc(new DictQuery { ParentId = request.ParentId.Value });
+                dict.Sort = dictItems.Count + 1;
             }
+            await _dictRep.InsertAysnc(dict);
         }
 
         /// <summary>
@@ -160,24 +149,22 @@ namespace Hao.AppService
         /// <param name="id"></param>
         /// <param name="request"></param>
         /// <returns></returns>
+        [DistributedLock("DictAppService_UpdateDictItem")]
         public async Task UpdateDictItem(long id, DictItemUpdateRequest request)
         {
-            using (var redisLock = Lock("DictAppService_UpdateDictItem"))
-            {
-                var item = await _dictRep.GetAysnc(id);
+            var item = await _dictRep.GetAysnc(id);
 
-                var sameItems = await _dictRep.GetListAysnc(new DictQuery { ParentId = item.ParentId, EqualItemName = request.ItemName });
-                if (sameItems.Any(a => a.Id != id)) throw new H_Exception("数据项名称已存在，请重新输入");
+            var sameItems = await _dictRep.GetListAysnc(new DictQuery { ParentId = item.ParentId, EqualItemName = request.ItemName });
+            if (sameItems.Any(a => a.Id != id)) throw new H_Exception("数据项名称已存在，请重新输入");
 
-                sameItems = await _dictRep.GetListAysnc(new DictQuery { ParentId = item.ParentId, ItemValue = request.ItemValue });
-                if (sameItems.Any(a => a.Id != id)) throw new H_Exception("数据项值已存在，请重新输入");
+            sameItems = await _dictRep.GetListAysnc(new DictQuery { ParentId = item.ParentId, ItemValue = request.ItemValue });
+            if (sameItems.Any(a => a.Id != id)) throw new H_Exception("数据项值已存在，请重新输入");
 
-                item.ItemName = request.ItemName;
-                item.ItemValue = request.ItemValue;
-                item.Remark = request.Remark;
-                item.Sort = request.Sort;
-                await _dictRep.UpdateAsync(item, a => new { a.ItemName, a.ItemValue, a.Remark, a.Sort });
-            }
+            item.ItemName = request.ItemName;
+            item.ItemValue = request.ItemValue;
+            item.Remark = request.Remark;
+            item.Sort = request.Sort;
+            await _dictRep.UpdateAsync(item, a => new { a.ItemName, a.ItemValue, a.Remark, a.Sort });
         }
 
         /// <summary>

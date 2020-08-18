@@ -66,44 +66,42 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="vm"></param>
         /// <returns></returns>
+        [DistributedLock("UserAppService_AddUser")]
         [UnitOfWork]
         public async Task AddUser(UserAddRequest vm)
         {
-            using (var redisLock = Lock("UserAppService_AddUser"))
+            var users = await _userRep.GetAllAysnc(new UserQuery()
             {
-                var users = await _userRep.GetAllAysnc(new UserQuery()
-                {
-                    LoginName = vm.LoginName
-                });
-                if (users.Count > 0) throw new H_Exception("账号已存在，请重新输入");
+                LoginName = vm.LoginName
+            });
+            if (users.Count > 0) throw new H_Exception("账号已存在，请重新输入");
 
-                var role = await _roleRep.GetAysnc(vm.RoleId.Value);
-                if (role == null) throw new H_Exception("角色不存在，请重新选择");
-                if (role.IsDeleted) throw new H_Exception("角色已删除，请重新选择");
-                if (role.Level <= _currentUser.RoleLevel) throw new H_Exception("无法添加同级及高级角色用户");
+            var role = await _roleRep.GetAysnc(vm.RoleId.Value);
+            if (role == null) throw new H_Exception("角色不存在，请重新选择");
+            if (role.IsDeleted) throw new H_Exception("角色已删除，请重新选择");
+            if (role.Level <= _currentUser.RoleLevel) throw new H_Exception("无法添加同级及高级角色用户");
 
-                var user = _mapper.Map<SysUser>(vm);
-                user.FirstNameSpell = H_Spell.GetFirstLetter(user.Name.ToCharArray()[0]);
-                user.PasswordLevel = (PasswordLevel)H_Util.CheckPasswordLevel(user.Password);
-                user.Password = EncryptProvider.HMACSHA256(user.Password, _appsettings.Key.Sha256Key);
-                user.Enabled = true;
-                user.RoleId = role.Id;
-                user.RoleName = role.Name;
-                user.AuthNumbers = role.AuthNumbers;
-                user.RoleLevel = role.Level;
+            var user = _mapper.Map<SysUser>(vm);
+            user.FirstNameSpell = H_Spell.GetFirstLetter(user.Name.ToCharArray()[0]);
+            user.PasswordLevel = (PasswordLevel)H_Util.CheckPasswordLevel(user.Password);
+            user.Password = EncryptProvider.HMACSHA256(user.Password, _appsettings.Key.Sha256Key);
+            user.Enabled = true;
+            user.RoleId = role.Id;
+            user.RoleName = role.Name;
+            user.AuthNumbers = role.AuthNumbers;
+            user.RoleLevel = role.Level;
 
-                role.UserCount = role.UserCount.HasValue ? ++role.UserCount : 1; 
-                try
-                {
-                    await _userRep.InsertAysnc(user);
+            role.UserCount = role.UserCount.HasValue ? ++role.UserCount : 1;
+            try
+            {
+                await _userRep.InsertAysnc(user);
 
-                    await _roleRep.UpdateAsync(role, a => new { a.UserCount });
-                }
-                catch (PostgresException ex)
-                {
-                    if (ex.SqlState == H_PostgresSqlState.E23505) throw new H_Exception("账号已存在，请重新输入");//违反唯一键
-                }
-            } 
+                await _roleRep.UpdateAsync(role, a => new { a.UserCount });
+            }
+            catch (PostgresException ex)
+            {
+                if (ex.SqlState == H_PostgresSqlState.E23505) throw new H_Exception("账号已存在，请重新输入");//违反唯一键
+            }
         }
 
         /// <summary>
@@ -140,25 +138,23 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
+        [DistributedLock("UserAppService_DeleteUser")]
         [UnitOfWork]
         public async Task DeleteUser(long userId)
         {
-            using (var redisLock = Lock("UserAppService_DeleteUser"))
+            CheckUser(userId);
+            var user = await GetUserDetail(userId);
+
+            var role = await _roleRep.GetAysnc(user.RoleId.Value);
+            role.UserCount--;
+
+            await _userRep.DeleteAysnc(user.Id);
+            await _roleRep.UpdateAsync(role, a => new { a.UserCount });
+
+            await _publisher.PublishAsync(nameof(LogoutEventData), new LogoutEventData
             {
-                CheckUser(userId);
-                var user = await GetUserDetail(userId);
-
-                var role = await _roleRep.GetAysnc(user.RoleId.Value);
-                role.UserCount--;
-
-                await _userRep.DeleteAysnc(user.Id);               
-                await _roleRep.UpdateAsync(role, a => new { a.UserCount });
-
-                await _publisher.PublishAsync(nameof(LogoutEventData), new LogoutEventData
-                {
-                    UserIds = new List<long> { userId }
-                });
-            }
+                UserIds = new List<long> { userId }
+            });
         }
 
         /// <summary>

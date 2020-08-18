@@ -34,21 +34,18 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="vm"></param>
         /// <returns></returns>
+        [DistributedLock("ModuleAppService_AddModule")]
         public async Task AddModule(ModuleAddRequest vm)
         {
-            using (var redisLock = Lock("ModuleAppService_AddModule")) //redis 分布式锁
-            {
-                var parentNode = await GetModuleDetail(vm.ParentId.Value);
-                if (parentNode.Type == ModuleType.Sub) throw new H_Exception("子菜单无法继续添加节点");
+            var parentNode = await GetModuleDetail(vm.ParentId.Value);
+            if (parentNode.Type == ModuleType.Sub) throw new H_Exception("子菜单无法继续添加节点");
 
-                var isExistSameName = await _moduleRep.IsExistSameNameModule(vm.Name, vm.Type, vm.ParentId);
+            var isExistSameName = await _moduleRep.IsExistSameNameModule(vm.Name, vm.Type, vm.ParentId);
 
-                if (isExistSameName) throw new H_Exception("存在相同名称的模块，请重新输入");
+            if (isExistSameName) throw new H_Exception("存在相同名称的模块，请重新输入");
 
-                var module = _mapper.Map<SysModule>(vm);
-                await AddModule(module);
-            }
-
+            var module = _mapper.Map<SysModule>(vm);
+            await AddModule(module);
         }
 
         /// <summary>
@@ -92,29 +89,27 @@ namespace Hao.AppService
         /// <param name="id"></param>
         /// <param name="vm"></param>
         /// <returns></returns>
+        [DistributedLock("ModuleAppService_UpdateModule")]
         public async Task UpdateModule(long id, ModuleUpdateRequest vm)
         {
-            using (var redisLock = Lock("ModuleAppService_UpdateModule")) //redis 分布式锁
+            if (id == 0) throw new H_Exception("无法操作系统根节点");
+            var module = await GetModuleDetail(id);
+
+            var isExistSameName = await _moduleRep.IsExistSameNameModule(vm.Name, module.Type, module.ParentId, id);
+
+            if (isExistSameName) throw new H_Exception("存在相同名称的模块，请重新输入");
+
+            module.Name = vm.Name;
+            module.Sort = vm.Sort;
+            if (module.Type == ModuleType.Main)
             {
-                if (id == 0) throw new H_Exception("无法操作系统根节点");
-                var module = await GetModuleDetail(id);
-
-                var isExistSameName = await _moduleRep.IsExistSameNameModule(vm.Name, module.Type, module.ParentId, id);
-
-                if (isExistSameName) throw new H_Exception("存在相同名称的模块，请重新输入");
-
-                module.Name = vm.Name;
-                module.Sort = vm.Sort;
-                if (module.Type == ModuleType.Main)
-                {
-                    module.Icon = vm.Icon;
-                    await _moduleRep.UpdateAsync(module, user => new { module.Name, module.Icon, module.Sort });
-                }
-                else if (module.Type == ModuleType.Sub)
-                {
-                    module.RouterUrl = vm.RouterUrl;
-                    await _moduleRep.UpdateAsync(module, user => new { module.Name, module.RouterUrl, module.Sort });
-                }
+                module.Icon = vm.Icon;
+                await _moduleRep.UpdateAsync(module, user => new { module.Name, module.Icon, module.Sort });
+            }
+            else if (module.Type == ModuleType.Sub)
+            {
+                module.RouterUrl = vm.RouterUrl;
+                await _moduleRep.UpdateAsync(module, user => new { module.Name, module.RouterUrl, module.Sort });
             }
         }
 
