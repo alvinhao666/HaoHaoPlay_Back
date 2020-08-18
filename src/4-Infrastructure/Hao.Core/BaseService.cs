@@ -11,7 +11,7 @@ namespace Hao.Core
     {
 
         /// <summary>
-        /// 工作单元
+        /// 工作单元，事务，原子操作
         /// </summary>
         [AttributeUsage(AttributeTargets.Method)]
         protected class UnitOfWorkAttribute : AbstractInterceptorAttribute
@@ -50,7 +50,7 @@ namespace Hao.Core
 
 
         /// <summary>
-        /// 分布式锁
+        /// 分布式锁，防并发
         /// </summary>
         [AttributeUsage(AttributeTargets.Method)]
         protected class DistributedLockAttribute : AbstractInterceptorAttribute
