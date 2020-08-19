@@ -1,5 +1,5 @@
 ﻿using AspectCore.DynamicProxy;
-using CSRedis;
+using Hao.RunTimeException;
 using Microsoft.Extensions.Configuration;
 using SqlSugar;
 using System;
@@ -74,11 +74,11 @@ namespace Hao.Core
 
                 var prefix = config["RedisPrefix:Lock"];
 
-                if (string.IsNullOrWhiteSpace(prefix)) throw new Exception("请配置分布式锁名称的前缀字符");
+                if (string.IsNullOrWhiteSpace(prefix)) throw new H_Exception("请配置分布式锁名称的前缀字符");
 
                 using (var redisLock = RedisHelper.Lock(prefix + _lockName, _timeoutSeconds, _autoDelay))
                 {
-                    if (redisLock == null) throw new Exception("开启分布式锁异常");
+                    if (redisLock == null) throw new H_Exception("开启分布式锁异常");
 
                     //if (redisLock == null) throw new H_Exception("系统异常"); //开启分布式锁超时 //对象为null，不占资源 ，编译后的代码没有fianlly,不执行dispose()方法
                     //锁超时是什么意思呢？如果一个得到锁的线程在执行任务的过程中挂掉，来不及显式地释放锁，这块资源将会永远被锁住，别的线程再也别想进来。
