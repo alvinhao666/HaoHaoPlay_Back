@@ -19,7 +19,7 @@ namespace Hao.Core.Extensions
     [Route("[controller]/[action]")]
     public class H_Controller : Controller
     {
-        private readonly ILogger _logger = LogManager.GetCurrentClassLogger();
+        protected readonly static ILogger Logger = LogManager.GetCurrentClassLogger();
 
         //IOptionsSnapshot修改即更新  和IConfiguration效果一样  热更新
         public IOptionsSnapshot<H_AppSettingsConfig> AppsettingsOptions { get; set; } //属性注入必须public
@@ -39,7 +39,7 @@ namespace Hao.Core.Extensions
 
             var argument = new { context.HttpContext.TraceIdentifier, UserId = userId, context.ActionArguments, IP = ip };
 
-            _logger.Info(new H_Log{ Method = context.HttpContext.Request.Path.Value, Argument = argument, Description = "请求信息" });
+            Logger.Info(new H_Log{ Method = context.HttpContext.Request.Path.Value, Argument = argument, Description = "请求信息" });
 
             var cache = GetCacheUser(userId, jti);
 
@@ -74,7 +74,7 @@ namespace Hao.Core.Extensions
                 Result = result
             };
 
-            _logger.Info(new H_Log{ Method = HttpContext.Request.Path.Value, Argument = param, Description = "返回信息" });
+            Logger.Info(new H_Log{ Method = HttpContext.Request.Path.Value, Argument = param, Description = "返回信息" });
 
             base.OnActionExecuted(context);
         }
