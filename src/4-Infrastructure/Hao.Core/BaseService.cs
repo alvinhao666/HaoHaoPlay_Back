@@ -57,6 +57,8 @@ namespace Hao.Core
         [AttributeUsage(AttributeTargets.Method)]
         protected class DistributedLockAttribute : AbstractInterceptorAttribute
         {
+            protected readonly ILogger Logger = LogManager.GetCurrentClassLogger();
+
             private string _lockName;
 
             private int _timeoutSeconds;
@@ -80,7 +82,11 @@ namespace Hao.Core
 
                 using (var redisLock = RedisHelper.Lock(prefix + _lockName, _timeoutSeconds, _autoDelay))
                 {
-                    if (redisLock == null) throw new H_Exception("开启分布式锁异常");
+                    if (redisLock == null)
+                    {
+                        Logger.Error("系统异常：开启分布式锁失败");
+                        throw new H_Exception("系统异常");
+                    }
 
                     //if (redisLock == null) throw new H_Exception("系统异常"); //开启分布式锁超时 //对象为null，不占资源 ，编译后的代码没有fianlly,不执行dispose()方法
                     //锁超时是什么意思呢？如果一个得到锁的线程在执行任务的过程中挂掉，来不及显式地释放锁，这块资源将会永远被锁住，别的线程再也别想进来。
