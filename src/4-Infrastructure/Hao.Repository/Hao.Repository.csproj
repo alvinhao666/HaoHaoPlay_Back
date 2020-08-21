@@ -5,10 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="sqlSugarCore" Version="5.0.0.15" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\3-Domain\Hao.Model\Hao.Model.csproj" />
     <ProjectReference Include="..\..\4-Infrastructure\Hao.Core\Hao.Core.csproj" />
   </ItemGroup>
