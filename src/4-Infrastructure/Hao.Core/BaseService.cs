@@ -10,7 +10,7 @@ namespace Hao.Core
 {
     public abstract class BaseService
     {
-        protected readonly static ILogger Logger = LogManager.GetCurrentClassLogger();
+        protected readonly ILogger Logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
         /// 工作单元，事务，原子操作

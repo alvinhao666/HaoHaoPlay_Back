@@ -31,6 +31,9 @@ namespace Hao.Core.Extensions
             }
         }
 
+        //静态方法效率上要比实例化高，静态方法的缺点是不自动进行销毁，而实例化的则可以做销毁。
+
+        //静态方法和静态变量创建后始终使用同一块内存，而使用实例的方式会创建多个内存。
         private static async Task Invoke(HttpContext context)
         {
             context.Response.StatusCode = StatusCodes.Status200OK;

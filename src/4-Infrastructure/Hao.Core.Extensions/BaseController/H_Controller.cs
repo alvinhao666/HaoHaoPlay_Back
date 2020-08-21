@@ -19,7 +19,7 @@ namespace Hao.Core.Extensions
     [Route("[controller]/[action]")]
     public class H_Controller : Controller
     {
-        protected readonly static ILogger Logger = LogManager.GetCurrentClassLogger();
+        protected readonly ILogger Logger = LogManager.GetCurrentClassLogger();
 
         //IOptionsSnapshot修改即更新  和IConfiguration效果一样  热更新
         public IOptionsSnapshot<H_AppSettingsConfig> AppsettingsOptions { get; set; } //属性注入必须public
