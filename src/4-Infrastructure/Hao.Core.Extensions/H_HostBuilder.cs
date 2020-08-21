@@ -15,50 +15,21 @@ using NLog.Web;
 
 namespace Hao.Core.Extensions
 {
-    public class H_HostBuilder<TConfig> where TConfig : H_AppSettingsConfig, new()
+    public class H_HostBuilder
     {
         /// <summary>
         /// 启动
         /// </summary>
         /// <typeparam name="TStartup"></typeparam>
         /// <param name="args"></param>
-        public void Run<TStartup>(string[] args) where TStartup : H_Startup<TConfig>
+        public void Run<TStartup>(string[] args) where TStartup : class
         {
-
-            var configBuilder = new ConfigurationBuilder();
-
-            InitBuild(configBuilder);
-
-            var configRoot = configBuilder.Build();
-
-            var appSettings = new H_AppSettingsConfig();
-            configRoot.Bind(appSettings);
-
             Host.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration(builder =>
                 {
                     InitBuild(builder);
                 })
-                .UseServiceProviderFactory(new AutofacServiceProviderFactory(builder =>
-                {
-                    var diAssemblies = appSettings.DiAssemblyNames.Select(name => Assembly.Load(name)).ToArray();
-
-                    builder.RegisterAssemblyTypes(diAssemblies).Where(m => typeof(ITransientDependency).IsAssignableFrom(m) && m != typeof(ITransientDependency)) //直接或间接实现了ITransientDependency
-                        .AsImplementedInterfaces().InstancePerDependency().PropertiesAutowired();
-
-                    builder.RegisterAssemblyTypes(diAssemblies).Where(m => typeof(ISingletonDependency).IsAssignableFrom(m) && m != typeof(ISingletonDependency))
-                        .AsImplementedInterfaces().SingleInstance().PropertiesAutowired();
-
-                    var controllerAssemblies = appSettings.ControllerAssemblyNames.Select(name => Assembly.Load(name));
-
-                    var controllerTypes = controllerAssemblies.SelectMany(a => a.GetExportedTypes()).Where(type => typeof(ControllerBase).IsAssignableFrom(type)).ToArray();
-
-                    builder.RegisterTypes(controllerTypes).PropertiesAutowired();
-
-                    //调用RegisterDynamicProxy扩展方法在Autofac中注册动态代理服务和动态代理配置 aop
-                    //在一般情况下可以使用抽象的AbstractInterceptorAttribute自定义特性类，它实现IInterceptor接口。AspectCore默认实现了基于Attribute的拦截器配置
-                    builder.RegisterDynamicProxy();
-                }))
+                .UseServiceProviderFactory(new AutofacServiceProviderFactory())
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.ConfigureLogging((hostingContext, logBuilder) =>
@@ -74,7 +45,6 @@ namespace Hao.Core.Extensions
 #endif                            
                                   .AddNLog($"ConfigFile/nlog.{hostingContext.HostingEnvironment.EnvironmentName}.config");
                     })
-                    .UseUrls(appSettings.ServiceStartUrl)
                     .UseKestrel()
                     .UseStartup<TStartup>();
                 })

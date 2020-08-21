@@ -1,10 +1,16 @@
-﻿using Hao.Library;
+﻿using AspectCore.Extensions.Autofac;
+using Autofac;
+using Hao.Dependency;
+using Hao.Library;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 
 namespace Hao.Core.Extensions
 {
@@ -52,6 +58,28 @@ namespace Hao.Core.Extensions
         public virtual void Configure(IApplicationBuilder app)
         {
             app.Configure(_env, _appSettings);
+        }
+
+
+        public virtual void ConfigureContainer(ContainerBuilder builder)
+        {
+            var diAssemblies = _appSettings.DiAssemblyNames.Select(name => Assembly.Load(name)).ToArray();
+
+            builder.RegisterAssemblyTypes(diAssemblies).Where(m => typeof(ITransientDependency).IsAssignableFrom(m) && m != typeof(ITransientDependency)) //直接或间接实现了ITransientDependency
+                .AsImplementedInterfaces().InstancePerDependency().PropertiesAutowired();
+
+            builder.RegisterAssemblyTypes(diAssemblies).Where(m => typeof(ISingletonDependency).IsAssignableFrom(m) && m != typeof(ISingletonDependency))
+                .AsImplementedInterfaces().SingleInstance().PropertiesAutowired();
+
+            var controllerAssemblies = _appSettings.ControllerAssemblyNames.Select(name => Assembly.Load(name));
+
+            var controllerTypes = controllerAssemblies.SelectMany(a => a.GetExportedTypes()).Where(type => typeof(ControllerBase).IsAssignableFrom(type)).ToArray();
+
+            builder.RegisterTypes(controllerTypes).PropertiesAutowired();
+
+            //调用RegisterDynamicProxy扩展方法在Autofac中注册动态代理服务和动态代理配置 aop
+            //在一般情况下可以使用抽象的AbstractInterceptorAttribute自定义特性类，它实现IInterceptor接口。AspectCore默认实现了基于Attribute的拦截器配置
+            builder.RegisterDynamicProxy();
         }
     }
 }

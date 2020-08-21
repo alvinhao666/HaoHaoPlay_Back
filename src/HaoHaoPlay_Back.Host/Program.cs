@@ -6,7 +6,7 @@ namespace HaoHaoPlay_Back.Host
     {
         public static void Main(string[] args)
         {
-            new H_HostBuilder<AppSettingsConfig>().Run<Startup<AppSettingsConfig>>(args);
+            new H_HostBuilder().Run<Startup<AppSettingsConfig>>(args);
         }
     }
 }
