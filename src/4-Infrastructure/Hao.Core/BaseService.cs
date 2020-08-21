@@ -57,7 +57,7 @@ namespace Hao.Core
         [AttributeUsage(AttributeTargets.Method)]
         protected class DistributedLockAttribute : AbstractInterceptorAttribute
         {
-            protected readonly ILogger Logger = LogManager.GetCurrentClassLogger();
+            private readonly ILogger _logger = LogManager.GetCurrentClassLogger();
 
             private string _lockName;
 
@@ -84,7 +84,7 @@ namespace Hao.Core
                 {
                     if (redisLock == null)
                     {
-                        Logger.Error("系统异常：开启分布式锁失败");
+                        _logger.Error("系统异常：开启分布式锁失败");
                         throw new H_Exception("系统异常");
                     }
 
