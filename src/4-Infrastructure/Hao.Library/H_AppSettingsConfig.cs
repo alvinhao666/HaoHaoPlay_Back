@@ -81,11 +81,6 @@ namespace Hao.Library
         public List<string> ControllerAssemblyNames { get; set; }
 
         /// <summary>
-        /// 服务启动地址
-        /// </summary>
-        public string ServiceStartUrl { get; set; }
-
-        /// <summary>
         /// 请求地址
         /// </summary>
         public RequestPathConfig RequestPath { get; set; }
