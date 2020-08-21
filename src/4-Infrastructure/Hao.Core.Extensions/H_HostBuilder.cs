@@ -1,16 +1,9 @@
-﻿using AspectCore.Extensions.Autofac;
-using Autofac;
-using Autofac.Extensions.DependencyInjection;
-using Hao.Dependency;
-using Hao.Library;
-using Microsoft.AspNetCore.Mvc;
+﻿using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Linq;
-using System.Reflection;
 using NLog.Web;
 
 namespace Hao.Core.Extensions
