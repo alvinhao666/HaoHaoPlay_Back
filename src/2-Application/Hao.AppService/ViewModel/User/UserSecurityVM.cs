@@ -1,4 +1,4 @@
-﻿namespace Hao.AppService.ViewModel
+﻿namespace Hao.AppService
 {
     /// <summary>
     /// 用户安全信息

@@ -1,5 +1,4 @@
-﻿using Hao.AppService.ViewModel;
-using Hao.Enum;
+﻿using Hao.Enum;
 using Hao.Model;
 using Hao.RunTimeException;
 using System.Collections.Generic;

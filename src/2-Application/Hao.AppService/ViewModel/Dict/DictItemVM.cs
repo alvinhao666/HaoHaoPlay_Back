@@ -1,6 +1,6 @@
 using System;
 
-namespace Hao.AppService.ViewModel
+namespace Hao.AppService
 {
     public class DictItemVM
     {

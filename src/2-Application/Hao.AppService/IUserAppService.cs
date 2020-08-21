@@ -1,5 +1,4 @@
-﻿using Hao.AppService.ViewModel;
-using Hao.Core;
+﻿using Hao.Core;
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 

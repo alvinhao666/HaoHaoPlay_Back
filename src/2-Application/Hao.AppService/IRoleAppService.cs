@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using Hao.AppService.ViewModel;
 using System.Collections.Generic;
 
 namespace Hao.AppService

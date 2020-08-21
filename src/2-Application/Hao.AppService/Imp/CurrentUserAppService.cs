@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Hao.AppService.ViewModel;
 using Hao.Core;
 using Hao.Encrypt;
 using Hao.Enum;

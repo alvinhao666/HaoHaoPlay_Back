@@ -1,7 +1,7 @@
 ﻿using Hao.Enum;
 using System;
 
-namespace Hao.AppService.ViewModel
+namespace Hao.AppService
 {
     /// <summary>
     /// 用户-列表项

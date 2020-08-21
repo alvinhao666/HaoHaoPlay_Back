@@ -1,5 +1,4 @@
-﻿using Hao.AppService.ViewModel;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace Hao.AppService
 {

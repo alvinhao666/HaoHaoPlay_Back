@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using DotNetCore.CAP;
-using Hao.AppService.ViewModel;
 using Hao.Core;
 using Hao.Enum;
 using Hao.EventData;

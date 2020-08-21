@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Hao.AppService.ViewModel;
 using Hao.Core;
 
 namespace Hao.AppService

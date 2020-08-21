@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Hao.AppService.ViewModel
+namespace Hao.AppService
 {
     public class LoginVM
     {

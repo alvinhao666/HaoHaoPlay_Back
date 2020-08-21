@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Hao.AppService.ViewModel
+namespace Hao.AppService
 {
     /// <summary>
     /// 角色下拉框数据

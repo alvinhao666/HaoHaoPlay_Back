@@ -1,6 +1,6 @@
 ﻿using Hao.Enum;
 
-namespace Hao.AppService.ViewModel
+namespace Hao.AppService
 {
     public class UserDetailVM
     {

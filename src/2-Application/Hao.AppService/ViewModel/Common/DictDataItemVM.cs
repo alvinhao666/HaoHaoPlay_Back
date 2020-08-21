@@ -1,4 +1,4 @@
-﻿namespace Hao.AppService.ViewModel
+﻿namespace Hao.AppService
 {
     /// <summary>
     /// 字典数据项
