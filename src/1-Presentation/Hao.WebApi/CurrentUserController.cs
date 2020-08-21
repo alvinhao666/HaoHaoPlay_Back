@@ -4,7 +4,7 @@ using Hao.Core.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
-namespace Hao.WebApi.Controllers
+namespace Hao.WebApi
 {
     /// <summary>
     /// 当前用户

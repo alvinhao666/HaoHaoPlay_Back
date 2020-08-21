@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Hao.AppService;
+﻿using Hao.AppService;
 using Hao.AppService.ViewModel;
 using Hao.Core;
 using Hao.Core.Extensions;
@@ -8,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Hao.WebApi.Controllers
+namespace Hao.WebApi
 {
     /// <summary>
     /// 用户

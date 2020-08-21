@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
 
-namespace Hao.WebApi.Controllers
+namespace Hao.WebApi
 {
     /// <summary>
     /// 登录

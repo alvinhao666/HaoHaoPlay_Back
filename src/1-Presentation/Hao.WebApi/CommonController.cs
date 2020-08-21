@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Hao.WebApi.Controllers
+namespace Hao.WebApi
 {
     /// <summary>
     /// 通用接口
