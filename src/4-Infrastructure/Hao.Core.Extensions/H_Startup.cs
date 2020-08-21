@@ -40,6 +40,10 @@ namespace Hao.Core.Extensions
             _appSettings.FilePath.AvatarPath = Path.Combine(parentDir.FullName, _appSettings.FilePath.AvatarPath);
         }
 
+        /// <summary>
+        /// 用于配置依赖注入以在运行时根据依赖关系创建对象
+        /// </summary>
+        /// <param name="services"></param>
         public virtual void ConfigureServices(IServiceCollection services)
         {
             var filePathOption = _cfg.GetSection(nameof(H_AppSettingsConfig.FilePath));
@@ -55,12 +59,19 @@ namespace Hao.Core.Extensions
             services.ConfigureServices(_env, _appSettings);
         }
 
+        /// <summary>
+        /// 用于配置中间件，以构建请求处理流水线
+        /// </summary>
+        /// <param name="app"></param>
         public virtual void Configure(IApplicationBuilder app)
         {
             app.Configure(_env, _appSettings);
         }
 
-
+        /// <summary>
+        /// autofac实现ioc，aop
+        /// </summary>
+        /// <param name="builder"></param>
         public virtual void ConfigureContainer(ContainerBuilder builder)
         {
             var diAssemblies = _appSettings.DiAssemblyNames.Select(name => Assembly.Load(name)).ToArray();

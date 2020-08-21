@@ -23,7 +23,7 @@ namespace HaoHaoPlay_Back.Host
         }
 
         /// <summary>
-        /// 用于配置中间件（middleware）以构建请求处理流水线
+        /// 用于配置中间件，以构建请求处理流水线
         /// </summary>
         /// <param name="app"></param>
         public override void Configure(IApplicationBuilder app)
