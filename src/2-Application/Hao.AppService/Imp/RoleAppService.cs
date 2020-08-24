@@ -105,6 +105,9 @@ namespace Hao.AppService
         public async Task UpdateRoleAuth(long id, RoleUpdateRequest vm)
         {
             var role = await GetRoleDetail(id);
+
+            if (role.Level != (int)RoleLevelType.SuperAdministrator && _currentUser.RoleLevel >= role.Level) throw new H_Exception("无法操作该角色的权限");
+
             var modules = await _moduleRep.GetListAysnc(vm.ModuleIds);
             var maxLayer = modules.Max(a => a.Layer);
 
@@ -126,13 +129,6 @@ namespace Hao.AppService
 
             await _roleRep.UpdateAsync(role, a => new { a.AuthNumbers });
             await _userRep.UpdateAuth(role.Id, role.AuthNumbers);
-            
-            // foreach(var item in users)
-            // {
-            //     item.Gender = Gender.Women;
-            // }
-            // var usr = users.First();
-            // await _userRep.DeleteAysnc(users.Select(a=>a.Id).ToList());
 
             //注销该角色下用户的登录信息
 
