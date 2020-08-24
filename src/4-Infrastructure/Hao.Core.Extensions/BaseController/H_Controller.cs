@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using NLog;
 using System;
@@ -21,8 +22,8 @@ namespace Hao.Core.Extensions
     {
         protected readonly ILogger Logger = LogManager.GetCurrentClassLogger();
 
-        //IOptionsSnapshot修改即更新  和IConfiguration效果一样  热更新
-        public IOptionsSnapshot<H_AppSettingsConfig> AppsettingsOptions { get; set; } //属性注入必须public
+        ////IOptionsSnapshot修改即更新  和IConfiguration效果一样  热更新
+        //public IOptionsSnapshot<H_AppSettingsConfig> AppsettingsOptions { get; set; } //属性注入必须public
 
         /// <summary>
         /// 控制器中的操作执行之前调用此方法（先执行这个方法 再执行模型验证）
@@ -30,7 +31,7 @@ namespace Hao.Core.Extensions
         /// <param name="context"></param>
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-
+            
             var userId = User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sid)?.Value; //Security Identifiers安全标识符
 
             var jti = User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti)?.Value;
@@ -88,7 +89,13 @@ namespace Hao.Core.Extensions
         /// <returns></returns>
         private H_RedisCacheUser GetCacheUser(string userId, string jti)
         {
-            var value = RedisHelper.Get($"{AppsettingsOptions.Value.RedisPrefix.Login}{userId}_{jti}");
+            var config = HttpContext.RequestServices.GetService(typeof(IConfiguration)) as IConfiguration;
+
+            var prefix = config["RedisPrefix:Login"];
+
+            if (string.IsNullOrWhiteSpace(prefix)) throw new H_Exception("登录缓存前缀字符不能为空");
+
+            var value = RedisHelper.Get($"{prefix}{userId}_{jti}");
 
             if (string.IsNullOrWhiteSpace(value)) throw new H_Exception(H_Error.E100002, nameof(H_Error.E100002).GetErrorCode());
 
