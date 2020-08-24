@@ -38,7 +38,6 @@ namespace Hao.Core.Extensions
 #endif                            
                                   .AddNLog($"ConfigFile/nlog.{hostingContext.HostingEnvironment.EnvironmentName}.config");
                     })
-                    .UseKestrel()
                     .UseStartup<TStartup>();
                 })
                 .Build()
