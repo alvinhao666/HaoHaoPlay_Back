@@ -11,14 +11,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="wwwroot\css\swagger_ui.css" />
     <Content Remove="wwwroot\file_template\user.xlsx" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="wwwroot\css\swagger_ui.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
     <EmbeddedResource Include="wwwroot\file_template\user.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
