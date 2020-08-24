@@ -124,7 +124,7 @@ namespace Hao.AppService
             }
 
             role.AuthNumbers = H_JsonSerializer.Serialize(authNumbers);
-            var users = await _userRep.GetListAysnc(new UserQuery() { RoleId = role.Id });
+            var users = await _userRep.GetListAysnc(new UserQuery() { RoleLevel = role.Level });
             var ids = users.Where(a => a.AuthNumbers != role.AuthNumbers).Select(a => a.Id).ToList();
 
             await _roleRep.UpdateAsync(role, a => new { a.AuthNumbers });
@@ -163,7 +163,8 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task DeleteRole(long id)
         {
-            var users = await _userRep.GetListAysnc(new UserQuery() { RoleId = id });
+            var role = await GetRoleDetail(id);
+            var users = await _userRep.GetListAysnc(new UserQuery() { RoleLevel = role.Level });
             if (users.Count > 0) throw new H_Exception("该角色下存在用户，暂时无法删除");
             await _roleRep.DeleteAysnc(id);
         }
