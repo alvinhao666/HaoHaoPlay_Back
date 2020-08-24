@@ -76,7 +76,7 @@ namespace Hao.Core
             {
                 var config = context.ServiceProvider.GetService(typeof(IConfiguration)) as IConfiguration;
 
-                var prefix = config["RedisPrefix:Lock"];
+                var prefix = config["RedisPrefix:DistributedLock"];
 
                 if (string.IsNullOrWhiteSpace(prefix)) throw new H_Exception("请配置分布式锁名称的前缀字符");
 

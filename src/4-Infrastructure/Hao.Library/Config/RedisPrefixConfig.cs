@@ -10,6 +10,6 @@ namespace Hao.Library
         /// <summary>
         /// 分布式锁前缀
         /// </summary>
-        public string Lock { get; set; }
+        public string DistributedLock { get; set; }
     }
 }
