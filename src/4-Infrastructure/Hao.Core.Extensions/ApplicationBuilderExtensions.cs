@@ -70,19 +70,17 @@ namespace Hao.Core.Extensions
             #endregion
 
 
-            #region  Nginx 获取ip
+            // Nginx 获取ip
             app.UseForwardedHeaders(new ForwardedHeadersOptions()
             {
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             });
-            #endregion
 
             app.UseRouting();
 
-            #region 权限 .net core3.0需要放UseRouting后面
+            //权限 .net core3.0需要放UseRouting后面
             app.UseAuthentication();
             app.UseAuthorization();
-            #endregion
 
             app.UseEndpoints(endpoints =>
             {
