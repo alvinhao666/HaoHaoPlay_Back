@@ -35,6 +35,9 @@ namespace Hao.Core.Extensions
             _appSettings = new TConfig();
             cfg.Bind(_appSettings);
 
+            //检查配置项
+            CheckAppSettings(_appSettings);
+
             _appSettings.FilePath.ExportExcelPath = Path.Combine(parentDir.FullName, _appSettings.FilePath.ExportExcelPath);
             _appSettings.FilePath.ImportExcelPath = Path.Combine(parentDir.FullName, _appSettings.FilePath.ImportExcelPath);
             _appSettings.FilePath.AvatarPath = Path.Combine(parentDir.FullName, _appSettings.FilePath.AvatarPath);
@@ -60,15 +63,6 @@ namespace Hao.Core.Extensions
         }
 
         /// <summary>
-        /// 用于配置中间件，以构建请求处理流水线
-        /// </summary>
-        /// <param name="app"></param>
-        public virtual void Configure(IApplicationBuilder app)
-        {
-            app.Configure(_env, _appSettings);
-        }
-
-        /// <summary>
         /// autofac实现ioc，aop
         /// </summary>
         /// <param name="builder"></param>
@@ -91,6 +85,30 @@ namespace Hao.Core.Extensions
             //调用RegisterDynamicProxy扩展方法在Autofac中注册动态代理服务和动态代理配置 aop
             //在一般情况下可以使用抽象的AbstractInterceptorAttribute自定义特性类，它实现IInterceptor接口。AspectCore默认实现了基于Attribute的拦截器配置
             builder.RegisterDynamicProxy();
+        }
+
+        /// <summary>
+        /// 用于配置中间件，以构建请求处理流水线
+        /// </summary>
+        /// <param name="app"></param>
+        public virtual void Configure(IApplicationBuilder app)
+        {
+            //执行顺序 ConfigureContainer - Configure
+            app.Configure(_env, _appSettings);
+        }
+
+
+        /// <summary>
+        /// 检查配置
+        /// </summary>
+        /// <param name="config"></param>
+        public virtual void CheckAppSettings(H_AppSettingsConfig config)
+        {
+            var message = "配置异常：";
+
+            if (string.IsNullOrWhiteSpace(config.RedisPrefix.Login)) throw new Exception($"{message}RedisPrefix.Login");
+
+            if (string.IsNullOrWhiteSpace(config.RedisPrefix.DistributedLock)) throw new Exception($"{message}RedisPrefix.DistributedLock");
         }
     }
 }

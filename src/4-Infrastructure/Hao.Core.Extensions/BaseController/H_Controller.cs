@@ -93,8 +93,6 @@ namespace Hao.Core.Extensions
 
             var prefix = config["RedisPrefix:Login"];
 
-            if (string.IsNullOrWhiteSpace(prefix)) throw new H_Exception("登录缓存前缀字符不能为空");
-
             var value = RedisHelper.Get($"{prefix}{userId}_{jti}");
 
             if (string.IsNullOrWhiteSpace(value)) throw new H_Exception(H_Error.E100002, nameof(H_Error.E100002).GetErrorCode());
