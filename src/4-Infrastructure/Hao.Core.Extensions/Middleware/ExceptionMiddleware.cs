@@ -41,7 +41,7 @@ namespace Hao.Core.Extensions
             var response = new H_Response
             {
                 Success = false,
-                ErrorMsg = "未知错误"
+                ErrorMsg = "系统异常"
             };
 
             var ex = context.Features.Get<IExceptionHandlerFeature>().Error;
