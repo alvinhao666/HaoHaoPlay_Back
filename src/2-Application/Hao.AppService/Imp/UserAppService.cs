@@ -240,7 +240,7 @@ namespace Hao.AppService
             H_File.CreateDirectory(rootPath);
             string filePath = Path.Combine(rootPath, $"{fileName}");
 
-            await H_Excel.ExportToExcelEPPlus(filePath, exportData);
+            await H_Excel.ExportByEPPlus(filePath, exportData);
 
             return new UserExcelVM { FileName = fileName, FileId = _protector.Protect(fileName.Split('.')[0], TimeSpan.FromSeconds(5)) };
         }

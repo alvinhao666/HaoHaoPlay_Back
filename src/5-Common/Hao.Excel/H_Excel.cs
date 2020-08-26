@@ -18,7 +18,7 @@ namespace Hao.Excel
         /// <param name="exportData"></param>
         /// <param name="tableTitle"></param>
         /// <returns></returns>
-        public static async Task ExportToExcelEPPlus(string filePath, IEnumerable<Dictionary<string, string>> exportData, string tableTitle = null)
+        public static async Task ExportByEPPlus(string filePath, IEnumerable<Dictionary<string, string>> exportData, string tableTitle = null)
         {
             await Task.Factory.StartNew(() =>
             {
@@ -67,7 +67,7 @@ namespace Hao.Excel
         /// <param name="tableTitle"></param>
         /// <param name="exportData"></param>
         /// <returns></returns>
-        public static async Task ExportToExcelNPOI(string filePath, IEnumerable<Dictionary<string, string>> exportData, string tableTitle = null)
+        public static async Task ExportByNPOI(string filePath, IEnumerable<Dictionary<string, string>> exportData, string tableTitle = null)
         {
             await Task.Factory.StartNew(() =>
             {
