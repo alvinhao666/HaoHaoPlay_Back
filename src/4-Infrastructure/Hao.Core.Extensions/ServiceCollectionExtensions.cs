@@ -7,6 +7,8 @@ using Hao.Json;
 using Hao.Library;
 using Hao.Snowflake;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.Redis;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
@@ -76,7 +78,7 @@ namespace Hao.Core.Extensions
             RedisHelper.Initialization(csRedis);
 
             //利用IDistributedCache接口
-            //services.AddSingleton<IDistributedCache>(new CSRedisCache(RedisHelper.Instance)); //nuget caching.csredis
+            services.AddSingleton<IDistributedCache>(new CSRedisCache(RedisHelper.Instance)); //nuget caching.csredis
 
             #endregion
 
