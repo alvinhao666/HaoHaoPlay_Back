@@ -8,11 +8,11 @@ namespace Hao.Core.Extensions
 {
     public class CurrentUser : ICurrentUser
     {
-        private readonly HttpContext _httpContext;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public CurrentUser(IHttpContextAccessor httpContextAccessor)
         {
-            _httpContext = httpContextAccessor.HttpContext;
+            _httpContextAccessor = httpContextAccessor;
         }
 
 
@@ -21,7 +21,7 @@ namespace Hao.Core.Extensions
         /// </summary>
         public long? Id
         {
-            get => _httpContext == null ? null : H_Convert.ToLongOrNull(_httpContext.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sid)?.Value);
+            get => _httpContextAccessor?.HttpContext == null ? null : H_Convert.ToLongOrNull(_httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sid)?.Value);
         }
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace Hao.Core.Extensions
         /// </summary>
         public string Name
         {
-            get => _httpContext == null ? null : _httpContext.User.Claims.FirstOrDefault(x => x.Type == H_ClaimsName.Name)?.Value.ToString();
+            get => _httpContextAccessor?.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == H_ClaimsName.Name)?.Value.ToString();
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace Hao.Core.Extensions
         /// </summary>
         public int? RoleLevel
         {
-            get => _httpContext == null ? null : H_Convert.ToIntOrNull(_httpContext.User.Claims.FirstOrDefault(x => x.Type == H_ClaimsName.RoleLevel)?.Value);
+            get => _httpContextAccessor?.HttpContext == null ? null : H_Convert.ToIntOrNull(_httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(x => x.Type == H_ClaimsName.RoleLevel)?.Value);
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace Hao.Core.Extensions
         {
             get
             {
-                return _httpContext?.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti)?.Value;
+                return _httpContextAccessor?.HttpContext?.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti)?.Value;
             }
         }
 
