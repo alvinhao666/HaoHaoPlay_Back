@@ -43,7 +43,7 @@ namespace Hao.Core.Extensions
 
             var cache = GetCacheUser(userId, jti);
 
-            if (ip != cache.Ip) throw new H_Exception("请重新登录", nameof(H_Error.E100004).GetErrorCode());
+            //if (ip != cache.Ip) throw new H_Exception("请重新登录", nameof(H_Error.E100004).GetErrorCode());
 
             CheckAuth(context, cache.AuthNumbers);
 
