@@ -5,20 +5,21 @@ using Hao.EventData;
 namespace Hao.Event
 {
     /// <summary>
-    /// 登录
+    /// 登录事件订阅接口
     /// </summary>
-    public interface ILoginEventSubscribe
+    public interface ILoginEventSubscriber
     {
         Task UpdateLogin(LoginEventData person);
     }
 
-    public class LoginEventSubscribe : ILoginEventSubscribe, ICapSubscribe
+    /// <summary>
+    /// 登录事件订阅实现
+    /// </summary>
+    public class LoginEventSubscriber : ILoginEventSubscriber, ICapSubscribe
     {
-
         private readonly ILoginEventConsumer _consumer;
 
-
-        public LoginEventSubscribe(ILoginEventConsumer consumer)
+        public LoginEventSubscriber(ILoginEventConsumer consumer)
         {
             _consumer = consumer;
         }
