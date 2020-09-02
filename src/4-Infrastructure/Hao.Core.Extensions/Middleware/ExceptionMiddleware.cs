@@ -1,7 +1,6 @@
 ﻿using AspectCore.DynamicProxy;
 using Hao.Json;
 using Hao.Response;
-using Hao.RunTimeException;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;

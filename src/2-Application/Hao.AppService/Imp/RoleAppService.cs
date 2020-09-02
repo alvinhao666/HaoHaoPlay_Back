@@ -9,7 +9,6 @@ using Hao.EventData;
 using Hao.Json;
 using Hao.Library;
 using Hao.Model;
-using Hao.RunTimeException;
 using Npgsql;
 
 namespace Hao.AppService

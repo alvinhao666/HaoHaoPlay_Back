@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Hao.Core;
 using Hao.Model;
-using Hao.RunTimeException;
 using System;
 using System.Collections.Generic;
 using System.Linq;

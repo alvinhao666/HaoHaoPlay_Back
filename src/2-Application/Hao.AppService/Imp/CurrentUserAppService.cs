@@ -5,7 +5,6 @@ using Hao.Enum;
 using Hao.File;
 using Hao.Library;
 using Hao.Model;
-using Hao.RunTimeException;
 using Hao.Utility;
 using Microsoft.Extensions.Options;
 using SixLabors.ImageSharp;

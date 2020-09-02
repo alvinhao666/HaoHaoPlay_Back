@@ -1,5 +1,4 @@
 ﻿using AspectCore.DynamicProxy;
-using Hao.RunTimeException;
 using Microsoft.Extensions.Configuration;
 using NLog;
 using SqlSugar;

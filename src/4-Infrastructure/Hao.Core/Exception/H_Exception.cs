@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Hao.RunTimeException
+namespace Hao.Core
 {
     public class H_Exception : Exception
     {

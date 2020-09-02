@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.DataProtection;
-using Hao.RunTimeException;
 using Microsoft.Extensions.Options;
 
 namespace Hao.Core.Extensions

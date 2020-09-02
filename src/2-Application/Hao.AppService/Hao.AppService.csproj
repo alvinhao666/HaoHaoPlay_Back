@@ -14,7 +14,6 @@
     <ProjectReference Include="..\..\4-Infrastructure\Hao.Library\Hao.Library.csproj" />
     <ProjectReference Include="..\..\5-Common\Hao.Encrypt\Hao.Encrypt.csproj" />
     <ProjectReference Include="..\..\5-Common\Hao.Excel\Hao.Excel.csproj" />
-    <ProjectReference Include="..\..\5-Common\Hao.Exception\Hao.Exception.csproj" />
     <ProjectReference Include="..\..\5-Common\Hao.File\Hao.File.csproj" />
     <ProjectReference Include="..\..\5-Common\Hao.Json\Hao.Json.csproj" />
   </ItemGroup>
