@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Hao.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Hao.Dependency;
 
 namespace Microsoft.Extensions.DependencyInjection
 {

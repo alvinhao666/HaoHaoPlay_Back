@@ -1,7 +1,7 @@
 ﻿using System.Text.Encodings.Web;
 using System.Text.Json;
 
-namespace Hao.Json
+namespace Hao.Utility
 {
     public class H_JsonSerializer
     {

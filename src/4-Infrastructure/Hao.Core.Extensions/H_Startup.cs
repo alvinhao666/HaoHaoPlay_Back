@@ -1,6 +1,5 @@
 ﻿using AspectCore.Extensions.Autofac;
 using Autofac;
-using Hao.Dependency;
 using Hao.Library;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;

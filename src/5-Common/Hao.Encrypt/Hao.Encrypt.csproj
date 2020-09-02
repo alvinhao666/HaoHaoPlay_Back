@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Hao.Json\Hao.Json.csproj" />
+    <ProjectReference Include="..\Hao.Utility\Hao.Utility.csproj" />
   </ItemGroup>
 
 </Project>

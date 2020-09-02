@@ -6,9 +6,9 @@ using DotNetCore.CAP;
 using Hao.Core;
 using Hao.Enum;
 using Hao.EventData;
-using Hao.Json;
 using Hao.Library;
 using Hao.Model;
+using Hao.Utility;
 using Npgsql;
 
 namespace Hao.AppService

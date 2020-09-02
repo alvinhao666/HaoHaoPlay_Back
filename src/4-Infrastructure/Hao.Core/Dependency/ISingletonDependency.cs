@@ -1,4 +1,4 @@
-﻿namespace Hao.Dependency
+﻿namespace Hao.Core
 {
     /// <summary>
     /// 全局共用一个实例，单例

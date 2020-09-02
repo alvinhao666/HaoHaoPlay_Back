@@ -1,6 +1,4 @@
-﻿using Hao.Dependency;
-
-namespace Hao.Core
+﻿namespace Hao.Core
 {
     public interface IEventService : ITransientDependency
     {

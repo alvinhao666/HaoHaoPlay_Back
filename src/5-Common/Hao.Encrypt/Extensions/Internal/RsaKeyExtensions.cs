@@ -3,7 +3,7 @@ using System.Security.Cryptography;
 using System.Xml;
 using Hao.Encrypt.Shared;
 using Hao.Encrypt.Internal;
-using Hao.Json;
+using Hao.Utility;
 
 namespace Hao.Encrypt.Extensions.Internal
 {

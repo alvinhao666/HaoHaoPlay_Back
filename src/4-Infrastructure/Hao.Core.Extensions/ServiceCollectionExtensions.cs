@@ -2,10 +2,9 @@
 using CSRedis;
 using DotNetCore.CAP;
 using FluentValidation.AspNetCore;
-using Hao.Http;
-using Hao.Json;
 using Hao.Library;
 using Hao.Snowflake;
+using Hao.Utility;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Redis;
@@ -150,7 +149,6 @@ namespace Hao.Core.Extensions
             services.AddAutoMapper(appSettings.AutoMapperAssemblyNames.Select(name => Assembly.Load(name)));
 
             services.AddScoped<ICurrentUser, CurrentUser>();
-            services.AddTransient<IHttpProvider, HttpProvider>();
 
             return services;
         }

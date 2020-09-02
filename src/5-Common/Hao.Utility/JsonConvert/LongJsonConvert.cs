@@ -2,7 +2,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Hao.Json
+namespace Hao.Utility
 {
     public class LongJsonConvert : JsonConverter<long>
     {

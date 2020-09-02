@@ -1,26 +1,14 @@
-﻿using Hao.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace Hao.Http
+namespace Hao.Utility
 {
-    public class HttpProvider : IHttpProvider
+    public static class HttpExtensions
     {
-        private readonly IHttpClientFactory _httpFactory;
-
-        public HttpProvider(IHttpClientFactory httpFactory)
-        {
-            _httpFactory = httpFactory;
-        }
-
         /// <summary>
         /// Post提交 需要用[FromBody]接收
         /// </summary>
@@ -30,11 +18,10 @@ namespace Hao.Http
         /// <param name="t"></param>
         /// <param name="timeoutSeconds"></param>
         /// <returns></returns>
-        public async Task<TResult> Post<T, TResult>(string url, T t, int timeoutSeconds = 30) where T : new() where TResult : new()
+        public static async Task<TResult> Post<T, TResult>(this HttpClient httpClient, string url, T t, int timeoutSeconds = 30) where T : new() where TResult : new()
         {
             var json = H_JsonSerializer.Serialize(t);
 
-            var httpClient = _httpFactory.CreateClient();
             httpClient.Timeout = new TimeSpan(0, 0, timeoutSeconds);
 
             var response = await httpClient.PostAsync(url, new StringContent(json, Encoding.UTF8, "application/json"));
@@ -59,12 +46,11 @@ namespace Hao.Http
         /// <param name="obj"></param>
         /// <param name="timeoutSeconds"></param>
         /// <returns></returns>
-        public async Task<TResult> Get<T, TResult>(string url, T t, int timeoutSeconds = 30) where T : new() where TResult : new()
+        public static async Task<TResult> Get<T, TResult>(this HttpClient httpClient, string url, T t, int timeoutSeconds = 30) where T : new() where TResult : new()
         {
-            var httpClient = _httpFactory.CreateClient();
             httpClient.Timeout = new TimeSpan(0, 0, timeoutSeconds);
 
-            var response = await httpClient.GetAsync(url + ToUrlParam(t));
+            var response = await httpClient.GetAsync(url + H_Util.ToUrlParam(t));
 
             if (response.IsSuccessStatusCode)
             {
@@ -111,56 +97,5 @@ namespace Hao.Http
 
         //    return default;
         //}
-
-        #region private
-        /// <summary>
-        /// 将对象组装成url参数 ?a=1&b=2&c=3&d=4
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
-        private string ToUrlParam<T>(T obj) where T : new()
-        {
-            // 1、当字符串数据以url的形式传递给web服务器时,字符串中是不允许出现空格和特殊字符的
-            // 2、因为 url 对字符有限制，比如把一个邮箱放入 url，就需要使用 urlencode 函数，因为 url 中不能包含 @ 字符。
-            // 3、url转义其实也只是为了符合url的规范而已。因为在标准的url规范中中文和很多的字符是不允许出现在url中的
-
-            if (obj == null) return "";
-            PropertyInfo[] properties = obj.GetType().GetProperties();
-
-            StringBuilder sb = new StringBuilder();
-            sb.Append("?");
-            foreach (var p in properties)
-            {
-                var v = p.GetValue(obj, null);
-
-                if (v == null) continue;
-
-                if (p.PropertyType.IsEnum || IsNullableEnum(p.PropertyType))
-                {
-                    var enumInt = (int)v;
-                    sb.Append($"{p.Name}={enumInt}");
-                }
-                else
-                {
-                    sb.Append($"{p.Name}={HttpUtility.UrlEncode(v.ToString())}");
-                }
-                sb.Append("&");
-            }
-            sb = sb.Remove(sb.Length - 1, 1);
-            return sb.ToString();
-        }
-
-        /// <summary>
-        /// 判断是否是枚举
-        /// </summary>
-        /// <param name="t"></param>
-        /// <returns></returns>
-        private bool IsNullableEnum(Type t)
-        {
-            Type u = Nullable.GetUnderlyingType(t);
-            return (u != null) && u.IsEnum;
-        }
-        #endregion
-
     }
 }

@@ -2,9 +2,9 @@
 using System.IO;
 using System.Text;
 
-namespace Hao.File
+namespace Hao.Utility
 {
-    public partial class H_File
+    public class H_File
     {
         #region 文件相关操作
         /// <summary>
