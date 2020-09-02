@@ -9,17 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="10.0.0" />
-    <PackageReference Include="DotNetCore.CAP" Version="3.1.0" />
-    <PackageReference Include="EPPlus" Version="4.5.3.3" />
-    <PackageReference Include="FluentValidation" Version="9.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.DataProtection.Extensions" Version="3.1.7" />
-    <PackageReference Include="Npgsql" Version="4.1.4" />
-    <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta0010" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.7.1" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\3-Domain\Hao.EventData\Hao.EventData.csproj" />
     <ProjectReference Include="..\..\3-Domain\Hao.Model\Hao.Model.csproj" />
     <ProjectReference Include="..\..\4-Infrastructure\Hao.Library\Hao.Library.csproj" />
