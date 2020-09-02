@@ -96,7 +96,7 @@ namespace Hao.Utility
         /// <returns></returns>
         public static bool IsExistFile(string filePath)
         {
-            return System.IO.File.Exists(filePath);
+            return File.Exists(filePath);
         }
         #endregion
     }
