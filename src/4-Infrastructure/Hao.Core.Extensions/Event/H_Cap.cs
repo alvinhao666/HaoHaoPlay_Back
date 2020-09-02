@@ -26,6 +26,8 @@ namespace Microsoft.Extensions.DependencyInjection
                     cfg.Password = config.Password;
                 });
 
+                x.DefaultGroup = config.DefaultGroup;
+
                 x.FailedRetryCount = 10; //失败重试机会，默认50次
                 x.FailedRetryInterval = 30; //每60秒重试一次   50次*60秒  50分钟后放弃失败重试
                 //x.SucceedMessageExpiredAfter = 24 * 3600;
