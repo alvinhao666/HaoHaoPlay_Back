@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using System.Collections.Generic;
 
 namespace Hao.AppService
 {
@@ -25,6 +26,9 @@ namespace Hao.AppService
         /// 登录ip
         /// </summary>
         public string Ip { get; set; }
+
+
+        //public List<int> Codes { get; set; }
     }
 
     /// <summary>
@@ -37,6 +41,8 @@ namespace Hao.AppService
             RuleFor(x => x.LoginName).MustHasValue("账号");
 
             RuleFor(x => x.Password).MustHasValue("密码");
+
+            //RuleFor(x => x.Codes).NotEmpty().WithMessage("Codes不能为空"); //Codes 为null和空集合 报错
         }
     }
 }
