@@ -23,7 +23,7 @@ namespace Hao.Core.Extensions
 
         public IModelBinder GetBinder(ModelBinderProviderContext context)
         {
-            if (context.Metadata.UnderlyingOrModelType == typeof(string))
+            if (!context.Metadata.IsComplexType && context.Metadata.UnderlyingOrModelType == typeof(string))
             {
                 return new QueryStringTrimModelBinder();
             }
