@@ -117,7 +117,7 @@ namespace Hao.Core.Extensions
 
             services.AddControllers(x =>
             {
-                x.ModelBinderProviders.Insert(0, new StringTrimModelBinderProvider()); //去除模型字符串空格
+                x.ModelBinderProviders.Insert(0, new StringTrimModelBinderProvider(x.InputFormatters)); //去除模型字符串空格
                 x.Filters.Add(typeof(H_ResultFilter));
             })
             .AddControllersAsServices() //controller属性注入 .net core 3.1版本   //实现了两件事情 - 它将您应用程序中的所有控制器注册到 DI 容器（如果尚未注册），并将IControllerActivator注册为ServiceBasedControllerActivator
