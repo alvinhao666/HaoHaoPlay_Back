@@ -114,21 +114,21 @@ namespace Hao.Core.Extensions
             //替换控制器所有者,详见有道笔记,放AddMvc前面 controller属性注入
             //services.Replace(ServiceDescriptor.Transient<IControllerActivator, ServiceBasedControllerActivator>());
 
-
             services.AddControllers(x =>
             {
-                x.ModelBinderProviders.Insert(0, new StringTrimModelBinderProvider(x.InputFormatters)); //去除模型字符串空格
+                x.ModelBinderProviders.Insert(0, new StringTrimModelBinderProvider()); //去除模型字符串空格 fromquery
                 x.Filters.Add(typeof(H_ResultFilter));
             })
             .AddControllersAsServices() //controller属性注入 .net core 3.1版本   //实现了两件事情 - 它将您应用程序中的所有控制器注册到 DI 容器（如果尚未注册），并将IControllerActivator注册为ServiceBasedControllerActivator
             .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblies(appSettings.ValidatorAssemblyNames.Select(name => Assembly.Load(name))))
             .AddJsonOptions(o =>
             {
-                //不加这个 接口接收参数 string类型的时间 转换 datetime类型报错 system.text.json不支持隐式转化
-                //Newtonsoft.Json 等默认支持隐式转换, 不一定是个合理的方式
+                //frombody的数据
+                //不加这个 接口接收参数 string类型的时间 转换 datetime类型报错 system.text.json不支持隐式转化    //Newtonsoft.Json 等默认支持隐式转换, 不一定是个合理的方式
+                //o.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase //开头字母小写 默认
                 o.JsonSerializerOptions.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
                 o.JsonSerializerOptions.PropertyNamingPolicy = null;
-                //o.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase //开头字母小写 默认
+                o.JsonSerializerOptions.Converters.Add(new StringJsonConvert()); //去除模型字符串空格
                 o.JsonSerializerOptions.Converters.Add(new DatetimeJsonConverter());
                 o.JsonSerializerOptions.Converters.Add(new LongJsonConvert());
             }); //.AddWebApiConventions() 处理HttpResponseMessage类型返回值的问题
