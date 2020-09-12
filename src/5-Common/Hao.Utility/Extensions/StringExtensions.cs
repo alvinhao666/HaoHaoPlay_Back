@@ -16,7 +16,7 @@ namespace Hao.Utility
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static string SafeString(this object value)
+        public static string ToSafeString(this object value)
         {
             return value?.ToString().Trim() ?? string.Empty;
         }

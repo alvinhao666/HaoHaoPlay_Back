@@ -7,7 +7,7 @@ namespace Hao.Utility
     {
         public static int? ToIntOrNull(this object value)
         {
-            if (int.TryParse(value.SafeString(), out var result)) return result;
+            if (int.TryParse(value.ToSafeString(), out var result)) return result;
 
             return null;     
         }
@@ -19,7 +19,7 @@ namespace Hao.Utility
 
         public static float? ToFloatOrNull(this object value)
         {
-            if (float.TryParse(value.SafeString(), out var result)) return result;
+            if (float.TryParse(value.ToSafeString(), out var result)) return result;
 
             return null;
         }
@@ -31,7 +31,7 @@ namespace Hao.Utility
 
         public static decimal? ToDecimalOrNull(this object value)
         {
-            if (decimal.TryParse(value.SafeString(), out var result)) return result;
+            if (decimal.TryParse(value.ToSafeString(), out var result)) return result;
 
             return null;
         }
@@ -43,7 +43,7 @@ namespace Hao.Utility
 
         public static double? ToDoubleOrNull(this object value)
         {
-            if (double.TryParse(value.SafeString(), out var result)) return result;
+            if (double.TryParse(value.ToSafeString(), out var result)) return result;
 
             return null;
         }
@@ -55,7 +55,7 @@ namespace Hao.Utility
 
         public static long? ToLongOrNull(this object value)
         {
-            if (long.TryParse(value.SafeString(), out var result)) return result;
+            if (long.TryParse(value.ToSafeString(), out var result)) return result;
 
             return null;
         }
@@ -68,7 +68,7 @@ namespace Hao.Utility
         public static bool? ToBoolOrNull(this object value)
         {
             bool? outPut;
-            switch (value.SafeString().ToLower())
+            switch (value.ToSafeString().ToLower())
             {
                 case "0":
                     outPut=false;
@@ -104,7 +104,7 @@ namespace Hao.Utility
 
             if (outPut != null) return outPut.Value;
 
-            return bool.TryParse(value.SafeString(), out var result) ? (bool?)result : null;
+            return bool.TryParse(value.ToSafeString(), out var result) ? (bool?)result : null;
         }
 
         public static bool ToBool(this object value)
@@ -114,7 +114,7 @@ namespace Hao.Utility
 
         public static Guid? ToGuidOrNull(this object value)
         {
-            if (Guid.TryParse(value.SafeString(), out var result)) return result;
+            if (Guid.TryParse(value.ToSafeString(), out var result)) return result;
 
             return null;
         }
@@ -126,7 +126,7 @@ namespace Hao.Utility
 
         public static DateTime? ToDateTimeOrNull(this object value)
         {
-            if (DateTime.TryParse(value.SafeString(), out var result)) return result;
+            if (DateTime.TryParse(value.ToSafeString(), out var result)) return result;
 
             return null;
         }
