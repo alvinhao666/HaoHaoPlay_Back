@@ -6,7 +6,7 @@ using Microsoft.Extensions.Options;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Hao.Event
+namespace Hao.EventBus
 {
     /// <summary>
     /// 注销

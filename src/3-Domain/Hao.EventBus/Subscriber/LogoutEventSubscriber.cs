@@ -2,7 +2,7 @@
 using Hao.EventData;
 using System.Threading.Tasks;
 
-namespace Hao.Event
+namespace Hao.EventBus
 {
     /// <summary>
     /// 注销事件订阅接口

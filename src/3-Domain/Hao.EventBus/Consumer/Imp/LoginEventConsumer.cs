@@ -3,7 +3,7 @@ using Hao.EventData;
 using Hao.Model;
 using System.Threading.Tasks;
 
-namespace Hao.Event
+namespace Hao.EventBus
 {
     /// <summary>
     /// 登录
