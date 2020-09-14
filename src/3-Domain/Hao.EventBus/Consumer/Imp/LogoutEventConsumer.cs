@@ -11,7 +11,7 @@ namespace Hao.EventBus
     /// <summary>
     /// 注销
     /// </summary>
-    public class LogoutEventConsumer : EventService, ILogoutEventConsumer
+    public class LogoutEventConsumer : EventBusService, ILogoutEventConsumer
     {
         private readonly H_AppSettingsConfig _appsettings;
 
