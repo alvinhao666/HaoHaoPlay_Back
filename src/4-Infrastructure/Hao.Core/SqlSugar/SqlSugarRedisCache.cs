@@ -10,7 +10,7 @@ namespace Hao.Core
 
     public class SqlSugarRedisCache : ICacheService
     {
-        private string _prefix;
+        private readonly string _prefix;
 
         public SqlSugarRedisCache(string prefix)
         {
