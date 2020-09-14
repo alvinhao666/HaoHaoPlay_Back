@@ -8,13 +8,13 @@ namespace Hao.EventBus
     /// <summary>
     /// 登录
     /// </summary>
-    public class LoginEventConsumer : EventBusService, ILoginEventConsumer
+    public class LoginEventHandler : EventBusService, ILoginEventHandler
     {
         private readonly ISysUserRepository _userRep;
 
         private readonly ISysLoginRecordRepository _recordRep;
 
-        public LoginEventConsumer(ISysUserRepository userRep, ISysLoginRecordRepository recordRep)
+        public LoginEventHandler(ISysUserRepository userRep, ISysLoginRecordRepository recordRep)
         {
             _userRep = userRep;
             _recordRep = recordRep;

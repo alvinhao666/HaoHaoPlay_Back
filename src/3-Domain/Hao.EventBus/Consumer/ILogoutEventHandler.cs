@@ -6,7 +6,7 @@ namespace Hao.EventBus
     /// <summary>
     /// 注销
     /// </summary>
-    public interface ILogoutEventConsumer
+    public interface ILogoutEventHandler
     {
         Task LogoutForUpdateAuth(LogoutForUpdateAuthEventData data);
 

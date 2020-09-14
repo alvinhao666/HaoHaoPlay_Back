@@ -17,17 +17,17 @@ namespace Hao.EventBus
     /// </summary>
     public class LoginEventSubscriber : ILoginEventSubscriber, ICapSubscribe
     {
-        private readonly ILoginEventConsumer _consumer;
+        private readonly ILoginEventHandler _handler;
 
-        public LoginEventSubscriber(ILoginEventConsumer consumer)
+        public LoginEventSubscriber(ILoginEventHandler handler)
         {
-            _consumer = consumer;
+            _handler = handler;
         }
 
         [CapSubscribe(nameof(LoginEventData))]
         public async Task UpdateLogin(LoginEventData data)
         {
-            await _consumer.UpdateLogin(data);
+            await _handler.UpdateLogin(data);
         }
     }
 }

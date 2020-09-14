@@ -11,11 +11,11 @@ namespace Hao.EventBus
     /// <summary>
     /// 注销
     /// </summary>
-    public class LogoutEventConsumer : EventBusService, ILogoutEventConsumer
+    public class LogoutEventHandler : EventBusService, ILogoutEventHandler
     {
         private readonly H_AppSettingsConfig _appsettings;
 
-        public LogoutEventConsumer(IOptionsSnapshot<H_AppSettingsConfig> appsettingsOptions)
+        public LogoutEventHandler(IOptionsSnapshot<H_AppSettingsConfig> appsettingsOptions)
         {
             _appsettings = appsettingsOptions.Value;
         }

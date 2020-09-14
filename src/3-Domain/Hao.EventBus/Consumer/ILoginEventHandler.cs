@@ -6,7 +6,7 @@ namespace Hao.EventBus
     /// <summary>
     /// 登录
     /// </summary>
-    public interface ILoginEventConsumer
+    public interface ILoginEventHandler
     {
         Task UpdateLogin(LoginEventData data);
     }

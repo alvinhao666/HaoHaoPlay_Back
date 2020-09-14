@@ -20,11 +20,11 @@ namespace Hao.EventBus
     public class LogoutEventSubscriber : ILogoutEventSubscriber, ICapSubscribe
     {
 
-        private readonly ILogoutEventConsumer _consumer;
+        private readonly ILogoutEventHandler _handler;
 
-        public LogoutEventSubscriber(ILogoutEventConsumer consumer)
+        public LogoutEventSubscriber(ILogoutEventHandler handler)
         {
-            _consumer = consumer;
+            _handler = handler;
         }
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace Hao.EventBus
         [CapSubscribe(nameof(LogoutForUpdateAuthEventData))]
         public async Task LogoutForUpdateAuth(LogoutForUpdateAuthEventData data)
         {
-            await _consumer.LogoutForUpdateAuth(data);
+            await _handler.LogoutForUpdateAuth(data);
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace Hao.EventBus
         [CapSubscribe(nameof(LogoutEventData))]
         public async Task Logout(LogoutEventData data)
         {
-            await _consumer.Logout(data);
+            await _handler.Logout(data);
         }
     }
 }
