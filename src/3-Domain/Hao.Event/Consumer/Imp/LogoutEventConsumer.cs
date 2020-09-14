@@ -24,11 +24,11 @@ namespace Hao.Event
         {
             foreach(var userId in data.UserIds)
             {
-                var keys = await RedisHelper.KeysAsync($"{_appsettings.RedisPrefix.GlobalKey}{_appsettings.RedisPrefix.Login}{userId}_*");
+                var keys = await RedisHelper.KeysAsync($"{_appsettings.RedisPrefix.GlobalKey}{_appsettings.RedisPrefix.Login}{userId}_*"); //不会自动加globalkey
                 keys = keys.Select(a => a.Split('_', 2)[1]).ToArray(); //去除globalkey
                 foreach (var key in keys)
                 {
-                    var value = await RedisHelper.GetAsync(key);
+                    var value = await RedisHelper.GetAsync(key); //会自动加globkey
                     var cacheUser = H_JsonSerializer.Deserialize<H_RedisCacheUser>(value);
                     cacheUser.IsAuthUpdate = true;
                     cacheUser.LoginStatus = LoginStatus.Offline;
