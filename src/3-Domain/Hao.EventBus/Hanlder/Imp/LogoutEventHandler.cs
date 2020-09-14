@@ -25,9 +25,13 @@ namespace Hao.EventBus
             foreach(var userId in data.UserIds)
             {
                 var keys = await RedisHelper.KeysAsync($"{_appsettings.RedisPrefix.GlobalKey}{_appsettings.RedisPrefix.Login}{userId}_*"); //不会自动加globalkey
+
+                var length = _appsettings.RedisPrefix.GlobalKey.Length;
                 foreach (var key in keys)
                 {
-                    var newKey = key.Replace(_appsettings.RedisPrefix.GlobalKey, ""); //去除globalkey
+                    var index = key.IndexOf(_appsettings.RedisPrefix.GlobalKey);
+
+                    var newKey = key.Remove(index, length); //去除globalkey
 
                     var value = await RedisHelper.GetAsync(newKey); 
                     var cacheUser = H_JsonSerializer.Deserialize<H_RedisCacheUser>(value);
@@ -48,9 +52,14 @@ namespace Hao.EventBus
             foreach (var userId in data.UserIds)
             {
                 var keys = await RedisHelper.KeysAsync($"{_appsettings.RedisPrefix.GlobalKey}{_appsettings.RedisPrefix.Login}{userId}_*");
+
+                var length = _appsettings.RedisPrefix.GlobalKey.Length;
                 foreach (var key in keys)
                 {
-                    var newKey = key.Replace(_appsettings.RedisPrefix.GlobalKey, "");
+                    var index = key.IndexOf(_appsettings.RedisPrefix.GlobalKey);
+
+                    var newKey = key.Remove(index, length); //去除globalkey
+
                     await RedisHelper.DelAsync(newKey);
                 }
             }
