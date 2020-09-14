@@ -10,13 +10,6 @@ namespace Hao.Core
 
     public class SqlSugarRedisCache : ICacheService
     {
-        private readonly string _prefix;
-
-        public SqlSugarRedisCache(string prefix)
-        {
-            _prefix = prefix;
-        }
-
         public void Add<V>(string key, V value)
         {
             RedisHelper.Set(key, value);
@@ -39,7 +32,7 @@ namespace Hao.Core
 
         public IEnumerable<string> GetAllKey<V>()
         {
-            return RedisHelper.Keys($"{_prefix}SqlSugarDataCache.*"); //SqlSugarDataCache是定死的，不允许修改
+            return RedisHelper.Keys("SqlSugarDataCache.*"); //SqlSugarDataCache是定死的，不允许修改
         }
 
         public V GetOrCreate<V>(string cacheKey, Func<V> create, int cacheDurationInSeconds = int.MaxValue)

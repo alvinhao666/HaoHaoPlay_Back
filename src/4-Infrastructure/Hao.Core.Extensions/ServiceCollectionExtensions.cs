@@ -84,7 +84,7 @@ namespace Hao.Core.Extensions
 
             #region Orm
 
-            services.AddPostgreSqlService(appSettings.ConnectionString.PostgreSql_Master, appSettings.ConnectionString.PostgreSql_Slave.ToDictionary(a => a.Connection, a => a.Weight), appSettings.RedisPrefix.GlobalKey);
+            services.AddPostgreSqlService(appSettings.ConnectionString.PostgreSql_Master, appSettings.ConnectionString.PostgreSql_Slave.ToDictionary(a => a.Connection, a => a.Weight));
 
             #endregion
 

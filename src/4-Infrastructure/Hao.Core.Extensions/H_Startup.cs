@@ -105,8 +105,6 @@ namespace Hao.Core.Extensions
         {
             var message = "配置异常：";
 
-            if (string.IsNullOrWhiteSpace(config.RedisPrefix.GlobalKey)) throw new Exception($"{message}RedisPrefix.Login");
-
             if (string.IsNullOrWhiteSpace(config.RedisPrefix.Login)) throw new Exception($"{message}RedisPrefix.Login");
 
             if (string.IsNullOrWhiteSpace(config.RedisPrefix.DistributedLock)) throw new Exception($"{message}RedisPrefix.DistributedLock");

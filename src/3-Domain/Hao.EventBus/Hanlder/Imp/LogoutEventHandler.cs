@@ -24,20 +24,15 @@ namespace Hao.EventBus
         {
             foreach(var userId in data.UserIds)
             {
-                var keys = await RedisHelper.KeysAsync($"{_appsettings.RedisPrefix.GlobalKey}{_appsettings.RedisPrefix.Login}{userId}_*"); //不会自动加prefix
+                var keys = await RedisHelper.KeysAsync($"{_appsettings.RedisPrefix.Login}{userId}_*"); //不会自动加prefix
 
-                var length = _appsettings.RedisPrefix.GlobalKey.Length;
                 foreach (var key in keys)
                 {
-                    var index = key.IndexOf(_appsettings.RedisPrefix.GlobalKey);
-
-                    var newKey = key.Remove(index, length); //去除globalkey
-
-                    var value = await RedisHelper.GetAsync(newKey); 
+                    var value = await RedisHelper.GetAsync(key); 
                     var cacheUser = H_JsonSerializer.Deserialize<H_RedisCacheUser>(value);
                     cacheUser.IsAuthUpdate = true;
                     cacheUser.LoginStatus = LoginStatus.Offline;
-                    await RedisHelper.SetAsync(newKey, H_JsonSerializer.Serialize(cacheUser));
+                    await RedisHelper.SetAsync(key, H_JsonSerializer.Serialize(cacheUser));
                 }
             }
         }
@@ -51,16 +46,11 @@ namespace Hao.EventBus
         {
             foreach (var userId in data.UserIds)
             {
-                var keys = await RedisHelper.KeysAsync($"{_appsettings.RedisPrefix.GlobalKey}{_appsettings.RedisPrefix.Login}{userId}_*"); //不会自动加prefix
+                var keys = await RedisHelper.KeysAsync($"{_appsettings.RedisPrefix.Login}{userId}_*"); //不会自动加prefix
 
-                var length = _appsettings.RedisPrefix.GlobalKey.Length;
                 foreach (var key in keys)
                 {
-                    var index = key.IndexOf(_appsettings.RedisPrefix.GlobalKey);
-
-                    var newKey = key.Remove(index, length); //去除globalkey
-
-                    await RedisHelper.DelAsync(newKey);
+                    await RedisHelper.DelAsync(key);
                 }
             }
         }
