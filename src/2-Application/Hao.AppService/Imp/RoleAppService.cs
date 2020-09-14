@@ -219,6 +219,8 @@ namespace Hao.AppService
                         checkedKeys.Add(node.key);
                     }
                 }
+                
+                if (item.Type == ModuleType.Main && node.children.Count < 1) result.Remove(node);
             }
         }
         #endregion

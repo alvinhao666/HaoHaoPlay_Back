@@ -23,7 +23,7 @@ namespace Hao.Event
         {
             foreach(var userId in data.UserIds)
             {
-                var keys = await RedisHelper.KeysAsync($"{_appsettings.RedisPrefix.Login}{userId}_*");
+                var keys = await RedisHelper.KeysAsync($"{_appsettings.RedisPrefix.GlobalKey}{_appsettings.RedisPrefix.Login}{userId}_*");
                 foreach (var key in keys)
                 {
                     var value = await RedisHelper.GetAsync(key);
@@ -44,7 +44,7 @@ namespace Hao.Event
         {
             foreach (var userId in data.UserIds)
             {
-                var keys = await RedisHelper.KeysAsync($"{_appsettings.RedisPrefix.Login}{userId}_*");
+                var keys = await RedisHelper.KeysAsync($"{_appsettings.RedisPrefix.GlobalKey}{_appsettings.RedisPrefix.Login}{userId}_*");
                 foreach (var key in keys)
                 {
                     await RedisHelper.DelAsync(key);

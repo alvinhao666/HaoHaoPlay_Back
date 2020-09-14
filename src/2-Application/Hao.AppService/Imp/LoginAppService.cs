@@ -2,6 +2,7 @@
 using DotNetCore.CAP;
 using Hao.Core;
 using Hao.Encrypt;
+using Hao.Enum;
 using Hao.EventData;
 using Hao.Library;
 using Hao.Model;
@@ -213,6 +214,7 @@ namespace Hao.AppService
                 };
                 result.Add(node);
                 InitMenuTree(node.ChildMenus, item.Id, sources, authNums, userId);
+                if (item.Type == ModuleType.Main &&node.ChildMenus.Count < 1) result.Remove(node);
             }
         }
     }
