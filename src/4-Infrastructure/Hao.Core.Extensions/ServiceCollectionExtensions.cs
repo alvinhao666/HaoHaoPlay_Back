@@ -84,7 +84,7 @@ namespace Hao.Core.Extensions
 
             #region Orm
 
-            services.AddPostgreSqlService(appSettings.ConnectionString.PostgreSql_Master, appSettings.ConnectionString.PostgreSql_Slave.ToDictionary(a => a.Connection, a => a.Weight));
+            services.AddPostgreSqlService(appSettings.ConnectionString.PostgreSql_Master, appSettings.ConnectionString.PostgreSql_Slave.ToDictionary(a => a.Connection, a => a.Weight), appSettings.RedisPrefix.GlobalKey);
 
             #endregion
 
@@ -94,7 +94,7 @@ namespace Hao.Core.Extensions
             services.Scan(a =>
             {
                 a.FromAssemblies(appSettings.EventSubscribeAssemblyNames.Select(name => Assembly.Load(name)))
-                 .AddClasses(x=> typeof(ICapSubscribe).IsAssignableFrom(x.GetType()))  //直接或间接实现了ICapSubscribe
+                 .AddClasses(x => typeof(ICapSubscribe).IsAssignableFrom(x.GetType()))  //直接或间接实现了ICapSubscribe
                  .AsImplementedInterfaces()
                  .WithTransientLifetime();
             });

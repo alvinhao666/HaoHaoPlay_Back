@@ -15,9 +15,9 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="connectionString"></param>
         /// <param name="slaveConnectionStrings"></param>
         /// <returns></returns>
-        public static IServiceCollection AddPostgreSqlService(this IServiceCollection services, string connectionString, Dictionary<string, int> slaveConnectionStrings = null)
+        public static IServiceCollection AddPostgreSqlService(this IServiceCollection services, string connectionString, Dictionary<string, int> slaveConnectionStrings, string redisPrefix)
         {
-            return AddOrmService(services, DbType.PostgreSQL, connectionString, slaveConnectionStrings);
+            return AddOrmService(services, DbType.PostgreSQL, connectionString, slaveConnectionStrings, redisPrefix);
         }
 
         /// <summary>
@@ -27,9 +27,9 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="connectionString"></param>
         /// <param name="slaveConnectionStrings"></param>
         /// <returns></returns>
-        public static IServiceCollection AddMySqlService(this IServiceCollection services, string connectionString, Dictionary<string, int> slaveConnectionStrings = null)
+        public static IServiceCollection AddMySqlService(this IServiceCollection services, string connectionString, Dictionary<string, int> slaveConnectionStrings, string redisPrefix)
         {
-            return AddOrmService(services, DbType.MySql, connectionString, slaveConnectionStrings);
+            return AddOrmService(services, DbType.MySql, connectionString, slaveConnectionStrings, redisPrefix);
         }
 
         /// <summary>
@@ -39,9 +39,9 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="connectionString"></param>
         /// <param name="slaveConnectionStrings"></param>
         /// <returns></returns>
-        public static IServiceCollection AddSqlServerService(this IServiceCollection services, string connectionString, Dictionary<string, int> slaveConnectionStrings = null)
+        public static IServiceCollection AddSqlServerService(this IServiceCollection services, string connectionString, Dictionary<string, int> slaveConnectionStrings, string redisPrefix)
         {
-            return AddOrmService(services, DbType.SqlServer, connectionString, slaveConnectionStrings);
+            return AddOrmService(services, DbType.SqlServer, connectionString, slaveConnectionStrings, redisPrefix);
         }
 
         /// <summary>
@@ -51,9 +51,9 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="connectionString"></param>
         /// <param name="slaveConnectionStrings"></param>
         /// <returns></returns>
-        public static IServiceCollection AddOracleService(this IServiceCollection services, string connectionString, Dictionary<string, int> slaveConnectionStrings = null)
+        public static IServiceCollection AddOracleService(this IServiceCollection services, string connectionString, Dictionary<string, int> slaveConnectionStrings, string redisPrefix)
         {
-            return AddOrmService(services, DbType.Oracle, connectionString, slaveConnectionStrings);
+            return AddOrmService(services, DbType.Oracle, connectionString, slaveConnectionStrings, redisPrefix);
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <param name="connectionString"></param>
         /// <param name="slaveConnectionStrings"></param>
         /// <returns></returns>
-        private static IServiceCollection AddOrmService(IServiceCollection services, DbType dbType, string connectionString, Dictionary<string, int> slaveConnectionStrings = null)
+        private static IServiceCollection AddOrmService(IServiceCollection services, DbType dbType, string connectionString, Dictionary<string, int> slaveConnectionStrings, string redisPrefix)
         {
             var connectionConfig = new ConnectionConfig()
             {
@@ -74,7 +74,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 InitKeyType = InitKeyType.Attribute,  //SysTable  表示通过数据库系统表查询表主键，这种需要数据库最高权限，并且数据库表需有主键或能获取到主键。   Attribute 表示通过实体  [SugarColumn(IsPrimaryKey = true)]标签获取主键，而无需通过数据库表。
                 ConfigureExternalServices = new ConfigureExternalServices()
                 {
-                    DataInfoCacheService = new SqlSugarRedisCache() //RedisCache是继承ICacheService自已实现的一个类
+                    DataInfoCacheService = new SqlSugarRedisCache(redisPrefix) //RedisCache是继承ICacheService自已实现的一个类
                 }
                 //MoreSettings = new ConnMoreSettings(){ PgSqlIsAutoToLower = false}
                 //config.SlaveConnectionConfigs = new List<SlaveConnectionConfig>() { //= 如果配置了 SlaveConnectionConfigs那就是主从模式,所有的写入删除更新都走主库，查询走从库，事务内都走主库，HitRate表示权重 值越大执行的次数越高，如果想停掉哪个连接可以把HitRate设为0 

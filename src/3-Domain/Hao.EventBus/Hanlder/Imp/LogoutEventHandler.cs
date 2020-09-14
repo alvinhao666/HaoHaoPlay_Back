@@ -24,7 +24,7 @@ namespace Hao.EventBus
         {
             foreach(var userId in data.UserIds)
             {
-                var keys = await RedisHelper.KeysAsync($"{_appsettings.RedisPrefix.GlobalKey}{_appsettings.RedisPrefix.Login}{userId}_*"); //不会自动加globalkey
+                var keys = await RedisHelper.KeysAsync($"{_appsettings.RedisPrefix.GlobalKey}{_appsettings.RedisPrefix.Login}{userId}_*"); //不会自动加prefix
 
                 var length = _appsettings.RedisPrefix.GlobalKey.Length;
                 foreach (var key in keys)
@@ -51,7 +51,7 @@ namespace Hao.EventBus
         {
             foreach (var userId in data.UserIds)
             {
-                var keys = await RedisHelper.KeysAsync($"{_appsettings.RedisPrefix.GlobalKey}{_appsettings.RedisPrefix.Login}{userId}_*");
+                var keys = await RedisHelper.KeysAsync($"{_appsettings.RedisPrefix.GlobalKey}{_appsettings.RedisPrefix.Login}{userId}_*"); //不会自动加prefix
 
                 var length = _appsettings.RedisPrefix.GlobalKey.Length;
                 foreach (var key in keys)
