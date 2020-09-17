@@ -70,9 +70,9 @@ namespace Hao.AppService
         {
             if (id == 0) throw new H_Exception("无法操作系统根节点");
             var module = await GetModuleDetail(id);
+            if (module.Type != ModuleType.Resource) throw new H_Exception("非资源项无法更新");
             module.Name = vm.Name;
             module.Sort = vm.Sort;
-            if (module.Type != ModuleType.Resource) throw new H_Exception("非资源项无法更新");
             await _moduleRep.UpdateAsync(module, user => new { module.Name, module.Sort });
         }
     }
