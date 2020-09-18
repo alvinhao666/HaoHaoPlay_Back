@@ -230,8 +230,8 @@ namespace Hao.Core
 
             if (CurrentUser.Id.HasValue)
             {
-                updateColumnObject.Add($"{nameof(FullAuditedEntity<TKey>.ModifyTime)}", true);
-                updateColumnObject.Add($"{nameof(FullAuditedEntity<TKey>.ModifierId)}", true);
+                updateColumnObject.Add($"{nameof(FullAuditedEntity<TKey>.ModifyTime)}", DateTime.Now);
+                updateColumnObject.Add($"{nameof(FullAuditedEntity<TKey>.ModifierId)}", CurrentUser.Id);
             }
 
             return await Db.Updateable<T>(updateColumnObject)
@@ -255,8 +255,8 @@ namespace Hao.Core
 
             if (CurrentUser.Id.HasValue)
             {
-                updateColumnObject.Add($"{nameof(FullAuditedEntity<TKey>.ModifyTime)}", true);
-                updateColumnObject.Add($"{nameof(FullAuditedEntity<TKey>.ModifierId)}", true);
+                updateColumnObject.Add($"{nameof(FullAuditedEntity<TKey>.ModifyTime)}", DateTime.Now);
+                updateColumnObject.Add($"{nameof(FullAuditedEntity<TKey>.ModifierId)}", CurrentUser.Id);
             }
 
             return await Db.Updateable<T>(updateColumnObject)
