@@ -9,12 +9,12 @@ using System.Linq;
 
 namespace Hao.Core
 {
-    public abstract class Repository<T, TKey> : IRepository<T, TKey>  where T : FullAuditedEntity<TKey>, new() where TKey : struct
+    public abstract class Repository<T, TKey> : IRepository<T, TKey> where T : FullAuditedEntity<TKey>, new() where TKey : struct
     {
         public ICurrentUser CurrentUser { get; set; }
-        
+
         public ISqlSugarClient Db { get; set; }
-        
+
         public IdWorker IdWorker { get; set; }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace Hao.Core
         public virtual async Task<List<T>> GetListAysnc(List<TKey> pkValues)
         {
             H_Check.Argument.NotNull(pkValues, nameof(pkValues));
-           
+
             if (pkValues.Count == 0) return new List<T>();
 
             //Type type = typeof(T); 类型判断，主要包括 is 和 typeof 两个操作符及对象实例上的 GetType 调用。这是最轻型的消耗，可以无需考虑优化问题。注意 typeof 运算符比对象实例上的 GetType 方法要快，只要可能则优先使用 typeof 运算符。 
@@ -215,15 +215,7 @@ namespace Hao.Core
         {
             H_Check.Argument.NotNull(entity, nameof(entity));
 
-            entity.ModifierId = CurrentUser.Id;
-            entity.ModifyTime = DateTime.Now;
-            entity.IsDeleted = true;
-            var columns = new string[] { nameof(FullAuditedEntity<TKey>.ModifierId), nameof(FullAuditedEntity<TKey>.ModifyTime), nameof(FullAuditedEntity<TKey>.IsDeleted) };
-
-            return await Db.Updateable(entity).UpdateColumns(columns.ToArray())
-                .WhereColumns(a => new {a.Id})
-                .Where(a => a.IsDeleted == false)
-                .ExecuteCommandAsync();
+            return await DeleteAysnc(entity.Id);
         }
 
         /// <summary>
@@ -273,11 +265,16 @@ namespace Hao.Core
         {
             H_Check.Argument.NotNull(entity, nameof(entity));
 
-            entity.ModifierId = CurrentUser.Id;
-            entity.ModifyTime = DateTime.Now;
+            if (CurrentUser.Id.HasValue)
+            {
+                entity.ModifierId = CurrentUser.Id;
+                entity.ModifyTime = DateTime.Now;
+            }
+
             return await Db.Updateable(entity)
-                .WhereColumns(a => new {a.Id, a.IsDeleted})
-                .ExecuteCommandAsync();
+                    .Where($"{nameof(FullAuditedEntity<TKey>.Id)}='{entity.Id}'")
+                    .Where(a => a.IsDeleted == false)
+                    .ExecuteCommandAsync();
         }
 
         /// <summary>
@@ -292,17 +289,19 @@ namespace Hao.Core
 
             H_Check.Argument.NotNull(columns, nameof(columns));
 
-            entity.ModifierId = CurrentUser.Id;
-            entity.ModifyTime = DateTime.Now;
-
             var properties = columns.Body.Type.GetProperties();
             var updateColumns = properties.Select(a => a.Name).ToList();
-            updateColumns.Add(nameof(entity.ModifierId));
-            updateColumns.Add(nameof(entity.ModifyTime));
-            updateColumns.Add(nameof(entity.IsDeleted));
+            if (CurrentUser.Id.HasValue)
+            {
+                entity.ModifierId = CurrentUser.Id;
+                entity.ModifyTime = DateTime.Now;
+                updateColumns.Add(nameof(entity.ModifierId));
+                updateColumns.Add(nameof(entity.ModifyTime));
+            }
 
             return await Db.Updateable(entity).UpdateColumns(updateColumns.ToArray())
-                .WhereColumns(a => new {a.Id, a.IsDeleted})
+                .Where($"{nameof(FullAuditedEntity<TKey>.Id)}='{entity.Id}'")
+                .Where(a => a.IsDeleted == false)
                 .ExecuteCommandAsync();
         }
 
@@ -315,15 +314,18 @@ namespace Hao.Core
         {
             H_Check.Argument.IsNotEmpty(entities, nameof(entities));
 
-            var timeNow = DateTime.Now;
-            entities.ForEach(item =>
+            if (CurrentUser.Id.HasValue)
             {
-                item.ModifierId = CurrentUser.Id;
-                item.ModifyTime = timeNow;
-            });
+                var timeNow = DateTime.Now;
+                entities.ForEach(item =>
+                {
+                    item.ModifierId = CurrentUser.Id;
+                    item.ModifyTime = timeNow;
+                });
+            }
 
             return await Db.Updateable(entities)
-                .WhereColumns(a => new {a.Id, a.IsDeleted})
+                .WhereColumns(a => new { a.Id, a.IsDeleted })
                 .ExecuteCommandAsync();
         }
 
@@ -340,20 +342,24 @@ namespace Hao.Core
 
             H_Check.Argument.NotNull(columns, nameof(columns));
 
-            var timeNow = DateTime.Now;
-            entities.ForEach(item =>
-            {
-                item.ModifierId = CurrentUser.Id;
-                item.ModifyTime = timeNow;
-            });
             var properties = columns.Body.Type.GetProperties();
             var updateColumns = properties.Select(a => a.Name).ToList();
-            updateColumns.Add(nameof(FullAuditedEntity<TKey>.ModifierId));
-            updateColumns.Add(nameof(FullAuditedEntity<TKey>.ModifyTime));
+            if (CurrentUser.Id.HasValue)
+            {
+                var timeNow = DateTime.Now;
+                entities.ForEach(item =>
+                {
+                    item.ModifierId = CurrentUser.Id;
+                    item.ModifyTime = timeNow;
+                });
+                updateColumns.Add(nameof(FullAuditedEntity<TKey>.ModifierId));
+                updateColumns.Add(nameof(FullAuditedEntity<TKey>.ModifyTime));
+            }
+
             updateColumns.Add(nameof(FullAuditedEntity<TKey>.IsDeleted));
 
             return await Db.Updateable(entities).UpdateColumns(updateColumns.ToArray())
-                .WhereColumns(a => new {a.Id, a.IsDeleted})
+                .WhereColumns(a => new { a.Id, a.IsDeleted })
                 .ExecuteCommandAsync();
         }
     }
