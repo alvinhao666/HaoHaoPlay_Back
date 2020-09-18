@@ -242,16 +242,16 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<int> DeleteAysnc(TKey pkValue)
         {
-            var updateColumnObject = new Dictionary<string, object>();
-            updateColumnObject.Add($"{nameof(FullAuditedEntity<TKey>.IsDeleted)}", true);
+            var dic = new Dictionary<string, object>();
+            dic.Add($"{nameof(FullAuditedEntity<TKey>.IsDeleted)}", true);
 
             if (CurrentUser.Id.HasValue)
             {
-                updateColumnObject.Add($"{nameof(FullAuditedEntity<TKey>.ModifyTime)}", DateTime.Now);
-                updateColumnObject.Add($"{nameof(FullAuditedEntity<TKey>.ModifierId)}", CurrentUser.Id);
+                dic.Add($"{nameof(FullAuditedEntity<TKey>.ModifyTime)}", DateTime.Now);
+                dic.Add($"{nameof(FullAuditedEntity<TKey>.ModifierId)}", CurrentUser.Id);
             }
 
-            return await Db.Updateable<T>(updateColumnObject)
+            return await Db.Updateable<T>(dic)
                 .Where($"{nameof(FullAuditedEntity<TKey>.Id)}='{pkValue}'")
                 .Where(a => a.IsDeleted == false)
                 .ExecuteCommandAsync();
@@ -267,16 +267,16 @@ namespace Hao.Core
             H_Check.Argument.IsNotEmpty(pkValues, nameof(pkValues));
 
 
-            var updateColumnObject = new Dictionary<string, object>();
-            updateColumnObject.Add($"{nameof(FullAuditedEntity<TKey>.IsDeleted)}", true);
+            var dic = new Dictionary<string, object>();
+            dic.Add($"{nameof(FullAuditedEntity<TKey>.IsDeleted)}", true);
 
             if (CurrentUser.Id.HasValue)
             {
-                updateColumnObject.Add($"{nameof(FullAuditedEntity<TKey>.ModifyTime)}", DateTime.Now);
-                updateColumnObject.Add($"{nameof(FullAuditedEntity<TKey>.ModifierId)}", CurrentUser.Id);
+                dic.Add($"{nameof(FullAuditedEntity<TKey>.ModifyTime)}", DateTime.Now);
+                dic.Add($"{nameof(FullAuditedEntity<TKey>.ModifierId)}", CurrentUser.Id);
             }
 
-            return await Db.Updateable<T>(updateColumnObject)
+            return await Db.Updateable<T>(dic)
                 .Where(it => pkValues.Contains(it.Id)).Where(a => a.IsDeleted == false).ExecuteCommandAsync();
         }
 
