@@ -217,6 +217,18 @@ namespace Hao.Core
 
             return await DeleteAysnc(entity.Id);
         }
+        
+        /// <summary>
+        /// 异步删除数据（批量）
+        /// </summary>
+        /// <param name="entities">实体类</param>
+        /// <returns></returns>
+        public virtual async Task<int> DeleteAysnc(List<T> entities)
+        {
+            H_Check.Argument.IsNotEmpty(entities, nameof(entities));
+
+            return await DeleteAysnc(entities.Select(a => a.Id).ToList());
+        }
 
         /// <summary>
         /// 删除数据
@@ -261,18 +273,6 @@ namespace Hao.Core
 
             return await Db.Updateable<T>(updateColumnObject)
                     .Where(it => pkValues.Contains(it.Id)).Where(a => a.IsDeleted == false).ExecuteCommandAsync();
-        }
-
-        /// <summary>
-        /// 异步删除数据（批量）
-        /// </summary>
-        /// <param name="entities">实体类</param>
-        /// <returns></returns>
-        public virtual async Task<int> DeleteAysnc(List<T> entities)
-        {
-            H_Check.Argument.IsNotEmpty(entities, nameof(entities));
-
-            return await DeleteAysnc(entities.Select(a => a.Id).ToList());
         }
 
         /// <summary>
@@ -344,7 +344,7 @@ namespace Hao.Core
             }
 
             return await Db.Updateable(entities)
-                .WhereColumns(a => new { a.Id, a.IsDeleted })
+                .WhereColumns(a => new { a.Id, a.IsDeleted })// 以id和isdeleted为条件更新，如果数据isdeleted发生变化则不更新
                 .ExecuteCommandAsync();
         }
 
@@ -374,11 +374,10 @@ namespace Hao.Core
                 updateColumns.Add(nameof(FullAuditedEntity<TKey>.ModifierId));
                 updateColumns.Add(nameof(FullAuditedEntity<TKey>.ModifyTime));
             }
-
             updateColumns.Add(nameof(FullAuditedEntity<TKey>.IsDeleted));
 
             return await Db.Updateable(entities).UpdateColumns(updateColumns.ToArray())
-                .WhereColumns(a => new { a.Id, a.IsDeleted })
+                .WhereColumns(a => new {a.Id,a.IsDeleted})// 以id和isdeleted为条件更新，如果数据isdeleted发生变化则不更新
                 .ExecuteCommandAsync();
         }
     }

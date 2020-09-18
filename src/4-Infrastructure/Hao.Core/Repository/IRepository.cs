@@ -82,6 +82,13 @@ namespace Hao.Core
         /// <param name="entity"></param>
         /// <returns></returns>
         Task<int> DeleteAysnc(T entity);
+        
+        /// <summary>
+        /// 异步删除数据
+        /// </summary>
+        /// <param name="entities"></param>
+        /// <returns></returns>
+        Task<int> DeleteAysnc(List<T> entities);
 
         /// <summary>
         /// 异步删除数据
@@ -96,13 +103,6 @@ namespace Hao.Core
         /// <param name="pkValues"></param>
         /// <returns></returns>
         Task<int> DeleteAysnc(List<TKey> pkValues);
-
-        /// <summary>
-        /// 异步删除数据
-        /// </summary>
-        /// <param name="entities"></param>
-        /// <returns></returns>
-        Task<int> DeleteAysnc(List<T> entities);
 
         /// <summary>
         /// 异步更新实体数据
