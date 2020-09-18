@@ -225,8 +225,16 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<int> DeleteAysnc(TKey pkValue)
         {
+            var updateColumnObject = new Dictionary<string, object>();
+            updateColumnObject.Add($"{nameof(FullAuditedEntity<TKey>.IsDeleted)}", true);
 
-            return await Db.Updateable<T>(new { LastModifyTime = DateTime.Now, LastModifyUserId = CurrentUser.Id, IsDeleted = true })
+            if (CurrentUser.Id.HasValue)
+            {
+                updateColumnObject.Add($"{nameof(FullAuditedEntity<TKey>.ModifyTime)}", true);
+                updateColumnObject.Add($"{nameof(FullAuditedEntity<TKey>.ModifierId)}", true);
+            }
+
+            return await Db.Updateable<T>(updateColumnObject)
                         .Where($"{nameof(FullAuditedEntity<TKey>.Id)}='{pkValue}'")
                         .Where(a => a.IsDeleted == false)
                         .ExecuteCommandAsync();
@@ -241,7 +249,17 @@ namespace Hao.Core
         {
             H_Check.Argument.IsNotEmpty(pkValues, nameof(pkValues));
 
-            return await Db.Updateable<T>(new { LastModifyTime = DateTime.Now, LastModifyUserId = CurrentUser.Id, IsDeleted = true })
+
+            var updateColumnObject = new Dictionary<string, object>();
+            updateColumnObject.Add($"{nameof(FullAuditedEntity<TKey>.IsDeleted)}", true);
+
+            if (CurrentUser.Id.HasValue)
+            {
+                updateColumnObject.Add($"{nameof(FullAuditedEntity<TKey>.ModifyTime)}", true);
+                updateColumnObject.Add($"{nameof(FullAuditedEntity<TKey>.ModifierId)}", true);
+            }
+
+            return await Db.Updateable<T>(updateColumnObject)
                     .Where(it => pkValues.Contains(it.Id)).Where(a => a.IsDeleted == false).ExecuteCommandAsync();
         }
 
