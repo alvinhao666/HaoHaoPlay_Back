@@ -1,8 +1,10 @@
 ﻿using Hao.Core;
+using Newtonsoft.Json;
 using SqlSugar;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -94,30 +96,85 @@ namespace Microsoft.Extensions.DependencyInjection
                     });
                 }
             }
-#if DEBUG
+
             connectionConfig.AopEvents = new AopEvents
             {
-                OnLogExecuting = (sql, p) =>
+#if DEBUG
+                OnLogExecuting = (sql, pars) =>
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.Write("SQL：");
                     Console.ForegroundColor = ConsoleColor.Cyan;
-                    Console.WriteLine(sql);
-
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.Write("参数：");
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine(string.Join(",", p?.Select(it => string.Format("{0}:{1}", it.ParameterName, it.Value))));
+                    Console.WriteLine(LookSQL(sql, pars).ToString());
                     Console.ForegroundColor = ConsoleColor.White;
+                },
+#endif
+                OnError = (exp) =>//执行SQL 错误事件
+                {
+                    //exp.sql exp.parameters 可以拿到参数和错误Sql  
+                    StringBuilder sb_SugarParameterStr = new StringBuilder("###SugarParameter参数为:");
+                    var parametres = exp.Parametres as SugarParameter[];
+                    if (parametres != null)
+                    {
+                        sb_SugarParameterStr.Append(JsonConvert.SerializeObject(parametres));
+                    }
+
+                    StringBuilder sb_error = new StringBuilder();
+                    sb_error.AppendLine("SqlSugarClient执行sql异常信息:" + exp.Message);
+                    sb_error.AppendLine("###赋值后sql:" + LookSQL(exp.Sql, parametres));
+                    sb_error.AppendLine("###带参数的sql:" + exp.Sql);
+                    sb_error.AppendLine("###参数信息:" + sb_SugarParameterStr.ToString());
+                    sb_error.AppendLine("###StackTrace信息:" + exp.StackTrace);
+                },
+                OnExecutingChangeSql = (sql, pars) => //SQL执行前 可以修改SQL
+                {
+                    //判断update或delete方法是否有where条件。如果真的想删除所有数据，请where(p=>true)或where(p=>p.id>0)
+                    if (sql.TrimStart().IndexOf("delete ", StringComparison.CurrentCultureIgnoreCase) == 0)
+                    {
+                        if (sql.IndexOf("where", StringComparison.CurrentCultureIgnoreCase) <= 0)
+                        {
+                            throw new Exception("delete删除方法需要有where条件！！");
+                        }
+                    }
+                    else if (sql.TrimStart().IndexOf("update ", StringComparison.CurrentCultureIgnoreCase) == 0)
+                    {
+                        if (sql.IndexOf("where", StringComparison.CurrentCultureIgnoreCase) <= 0
+                            && sql.IndexOf(" join ", StringComparison.CurrentCultureIgnoreCase) <= 0 //连表查询
+                            )
+                        {
+                            throw new Exception("update更新方法需要有where条件或连表更新！！");
+                        }
+                    }
+
+                    return new KeyValuePair<string, SugarParameter[]>(sql, pars);
                 }
             };
-#endif
+
+
             services.AddScoped<ISqlSugarClient>(o => new SqlSugarClient(connectionConfig));
 
             return services;
         }
 
+        /// <summary>
+        /// 查看赋值后的sql
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <param name="pars">参数</param>
+        /// <returns></returns>
+        private static string LookSQL(string sql, SugarParameter[] pars)
+        {
+            if (pars == null || pars.Length == 0) return sql;
 
+            StringBuilder sb_sql = new StringBuilder(sql);
+            var tempOrderPars = pars.Where(p => p.Value != null).OrderByDescending(p => p.ParameterName.Length).ToList();//防止 @par1错误替换@par12
+            for (var index = 0; index < tempOrderPars.Count; index++)
+            {
+                sb_sql.Replace(tempOrderPars[index].ParameterName, "'" + tempOrderPars[index].Value.ToString() + "'");
+            }
+
+            return sb_sql.ToString();
+        }
 
 
         //public static IServiceCollection AddSqlSugarClient(this IServiceCollection services, Action<ConnectionConfig> configAction, ServiceLifetime contextLifetime = ServiceLifetime.Scoped, ServiceLifetime configLifetime = ServiceLifetime.Scoped)
