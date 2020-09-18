@@ -225,6 +225,7 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<int> DeleteAysnc(TKey pkValue)
         {
+
             return await Db.Updateable<T>(new { LastModifyTime = DateTime.Now, LastModifyUserId = CurrentUser.Id, IsDeleted = true })
                         .Where($"{nameof(FullAuditedEntity<TKey>.Id)}='{pkValue}'")
                         .Where(a => a.IsDeleted == false)
