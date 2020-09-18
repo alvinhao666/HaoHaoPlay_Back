@@ -10,7 +10,7 @@ namespace Hao.Core
     /// </summary>
     /// <typeparam name="T">泛型实体类</typeparam>
     /// <typeparam name="TKey"></typeparam>
-    public interface IBaseRepository<T, TKey> : ITransientDependency where T :IEntity<TKey>, new() where TKey : struct
+    public interface IBaseRepository<T, TKey> : ITransientDependency where T : IEntity<TKey>, new() where TKey : struct
     {
         /// <summary>
         /// 根据主键值查询单条数据
@@ -37,7 +37,7 @@ namespace Hao.Core
         /// </summary>
         /// <returns></returns>
         Task<List<T>> GetListAysnc(Query<T> query);
-        
+
         /// <summary>
         /// 根据条件查询所有数据数量（未删除）
         /// </summary>

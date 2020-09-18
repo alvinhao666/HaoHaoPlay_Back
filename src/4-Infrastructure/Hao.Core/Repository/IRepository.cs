@@ -82,7 +82,7 @@ namespace Hao.Core
         /// <param name="entity"></param>
         /// <returns></returns>
         Task<int> DeleteAysnc(T entity);
-        
+
         /// <summary>
         /// 异步删除数据
         /// </summary>

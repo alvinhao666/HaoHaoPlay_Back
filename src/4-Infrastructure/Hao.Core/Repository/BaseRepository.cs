@@ -9,7 +9,8 @@ using Hao.Utility;
 
 namespace Hao.Core
 {
-    public abstract class BaseRepository<T, TKey> : IBaseRepository<T, TKey>  where T : BaseEntity<TKey>, new() where TKey : struct
+    public abstract class BaseRepository<T, TKey> : IBaseRepository<T, TKey>
+        where T : BaseEntity<TKey>, new() where TKey : struct
     {
         public ISqlSugarClient Db { get; set; }
 
@@ -57,7 +58,6 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<List<T>> GetListAysnc(Query<T> query)
         {
-
             H_Check.Argument.NotNull(query, nameof(query));
 
             var flag = string.IsNullOrWhiteSpace(query.OrderFileds);
@@ -66,9 +66,10 @@ namespace Hao.Core
             {
                 q.Where(item);
             }
+
             return await q.OrderByIF(!flag, query.OrderFileds).ToListAsync();
         }
-        
+
         /// <summary>
         /// 根据条件查询所有数据数量（未删除）（单表）
         /// </summary>
@@ -83,6 +84,7 @@ namespace Hao.Core
             {
                 q.Where(item);
             }
+
             return await q.CountAsync();
         }
 
@@ -102,7 +104,9 @@ namespace Hao.Core
             {
                 q.Where(item);
             }
-            var items = await q.OrderByIF(!flag, query.OrderFileds).ToPageListAsync(query.PageIndex, query.PageSize, totalNumber);
+
+            var items = await q.OrderByIF(!flag, query.OrderFileds)
+                .ToPageListAsync(query.PageIndex, query.PageSize, totalNumber);
 
             var pageList = new PagedList<T>()
             {
@@ -133,7 +137,7 @@ namespace Hao.Core
                 if (id != null) id.SetValue(entity, Guid.NewGuid());
             }
             else if (id != null) id.SetValue(entity, IdWorker.NextId());
-            
+
             var obj = await Db.Insertable(entity).ExecuteReturnEntityAsync();
             return obj;
         }
@@ -158,7 +162,6 @@ namespace Hao.Core
                     if (id != null) id.SetValue(item, Guid.NewGuid());
                 }
                 else if (id != null) id.SetValue(item, IdWorker.NextId());
-                
             });
             return await Db.Insertable(entities).ExecuteCommandAsync();
         }

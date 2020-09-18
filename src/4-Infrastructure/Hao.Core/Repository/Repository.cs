@@ -9,7 +9,8 @@ using System.Linq;
 
 namespace Hao.Core
 {
-    public abstract class Repository<T, TKey> : IRepository<T, TKey> where T : FullAuditedEntity<TKey>, new() where TKey : struct
+    public abstract class Repository<T, TKey> : IRepository<T, TKey>
+        where T : FullAuditedEntity<TKey>, new() where TKey : struct
     {
         public ICurrentUser CurrentUser { get; set; }
 
@@ -67,10 +68,11 @@ namespace Hao.Core
             {
                 q.Where(item);
             }
+
             return await q.Where(a => a.IsDeleted == false)
-                                    .OrderByIF(flag, a => a.CreateTime, OrderByType.Desc)
-                                    .OrderByIF(!flag, query.OrderFileds)
-                                    .ToListAsync();
+                .OrderByIF(flag, a => a.CreateTime, OrderByType.Desc)
+                .OrderByIF(!flag, query.OrderFileds)
+                .ToListAsync();
         }
 
         /// <summary>
@@ -96,9 +98,10 @@ namespace Hao.Core
             {
                 q.Where(item);
             }
+
             return await q.OrderByIF(flag, a => a.CreateTime, OrderByType.Desc)
-                          .OrderByIF(!flag, query.OrderFileds)
-                          .ToListAsync();
+                .OrderByIF(!flag, query.OrderFileds)
+                .ToListAsync();
         }
 
         /// <summary>
@@ -115,6 +118,7 @@ namespace Hao.Core
             {
                 q.Where(item);
             }
+
             return await q.Where(a => a.IsDeleted == false).CountAsync();
         }
 
@@ -134,10 +138,11 @@ namespace Hao.Core
             {
                 q.Where(item);
             }
+
             var items = await q.Where(a => a.IsDeleted == false)
-                                            .OrderByIF(flag, a => a.CreateTime, OrderByType.Desc)
-                                            .OrderByIF(!flag, query.OrderFileds)
-                                            .ToPageListAsync(query.PageIndex, query.PageSize, totalNumber);
+                .OrderByIF(flag, a => a.CreateTime, OrderByType.Desc)
+                .OrderByIF(!flag, query.OrderFileds)
+                .ToPageListAsync(query.PageIndex, query.PageSize, totalNumber);
 
             var pageList = new PagedList<T>()
             {
@@ -217,7 +222,7 @@ namespace Hao.Core
 
             return await DeleteAysnc(entity.Id);
         }
-        
+
         /// <summary>
         /// 异步删除数据（批量）
         /// </summary>
@@ -247,9 +252,9 @@ namespace Hao.Core
             }
 
             return await Db.Updateable<T>(updateColumnObject)
-                        .Where($"{nameof(FullAuditedEntity<TKey>.Id)}='{pkValue}'")
-                        .Where(a => a.IsDeleted == false)
-                        .ExecuteCommandAsync();
+                .Where($"{nameof(FullAuditedEntity<TKey>.Id)}='{pkValue}'")
+                .Where(a => a.IsDeleted == false)
+                .ExecuteCommandAsync();
         }
 
         /// <summary>
@@ -272,7 +277,7 @@ namespace Hao.Core
             }
 
             return await Db.Updateable<T>(updateColumnObject)
-                    .Where(it => pkValues.Contains(it.Id)).Where(a => a.IsDeleted == false).ExecuteCommandAsync();
+                .Where(it => pkValues.Contains(it.Id)).Where(a => a.IsDeleted == false).ExecuteCommandAsync();
         }
 
         /// <summary>
@@ -291,9 +296,9 @@ namespace Hao.Core
             }
 
             return await Db.Updateable(entity)
-                    .Where($"{nameof(FullAuditedEntity<TKey>.Id)}='{entity.Id}'")
-                    .Where(a => a.IsDeleted == false)
-                    .ExecuteCommandAsync();
+                .Where($"{nameof(FullAuditedEntity<TKey>.Id)}='{entity.Id}'")
+                .Where(a => a.IsDeleted == false)
+                .ExecuteCommandAsync();
         }
 
         /// <summary>
@@ -344,7 +349,7 @@ namespace Hao.Core
             }
 
             return await Db.Updateable(entities)
-                .WhereColumns(a => new { a.Id, a.IsDeleted })// 以id和isdeleted为条件更新，如果数据isdeleted发生变化则不更新
+                .WhereColumns(a => new {a.Id, a.IsDeleted}) //以id和isdeleted为条件更新，如果数据isdeleted发生变化则不更新
                 .ExecuteCommandAsync();
         }
 
@@ -356,7 +361,6 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<int> UpdateAsync(List<T> entities, Expression<Func<T, object>> columns)
         {
-
             H_Check.Argument.IsNotEmpty(entities, nameof(entities));
 
             H_Check.Argument.NotNull(columns, nameof(columns));
@@ -374,10 +378,11 @@ namespace Hao.Core
                 updateColumns.Add(nameof(FullAuditedEntity<TKey>.ModifierId));
                 updateColumns.Add(nameof(FullAuditedEntity<TKey>.ModifyTime));
             }
+
             updateColumns.Add(nameof(FullAuditedEntity<TKey>.IsDeleted));
 
             return await Db.Updateable(entities).UpdateColumns(updateColumns.ToArray())
-                .WhereColumns(a => new {a.Id,a.IsDeleted})// 以id和isdeleted为条件更新，如果数据isdeleted发生变化则不更新
+                .WhereColumns(a => new {a.Id, a.IsDeleted}) //以id和isdeleted为条件更新，如果数据isdeleted发生变化则不更新
                 .ExecuteCommandAsync();
         }
     }
