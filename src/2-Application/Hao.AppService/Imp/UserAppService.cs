@@ -115,7 +115,6 @@ namespace Hao.AppService
             var users = await _userRep.GetPagedListAysnc(query);
             var result = _mapper.Map<PagedList<UserVM>>(users);
 
-            var user = _currentUser.Name;
             return result;
         }
 
