@@ -191,6 +191,8 @@ namespace Hao.Core
             H_Check.Argument.NotNull(columns, nameof(columns));
 
             var properties = columns.Body.Type.GetProperties();
+            H_Check.Argument.IsNotEmpty(properties, nameof(columns));
+
             var updateColumns = properties.Select(a => a.Name);
 
             return await Db.Updateable(entity).UpdateColumns(updateColumns.ToArray()).ExecuteCommandAsync();
@@ -221,6 +223,8 @@ namespace Hao.Core
             H_Check.Argument.NotNull(columns, nameof(columns));
 
             var properties = columns.Body.Type.GetProperties();
+            H_Check.Argument.IsNotEmpty(properties, nameof(columns));
+
             var updateColumns = properties.Select(a => a.Name);
 
             return await Db.Updateable(entities).UpdateColumns(updateColumns.ToArray()).ExecuteCommandAsync();

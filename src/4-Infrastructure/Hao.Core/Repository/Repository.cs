@@ -314,7 +314,11 @@ namespace Hao.Core
             H_Check.Argument.NotNull(columns, nameof(columns));
 
             var properties = columns.Body.Type.GetProperties();
+            H_Check.Argument.IsNotEmpty(properties, nameof(columns));
+
             var updateColumns = properties.Select(a => a.Name).ToList();
+
+
             if (CurrentUser.Id.HasValue)
             {
                 entity.ModifierId = CurrentUser.Id;
@@ -366,6 +370,8 @@ namespace Hao.Core
             H_Check.Argument.NotNull(columns, nameof(columns));
 
             var properties = columns.Body.Type.GetProperties();
+            H_Check.Argument.IsNotEmpty(properties, nameof(columns));
+
             var updateColumns = properties.Select(a => a.Name).ToList();
             if (CurrentUser.Id.HasValue)
             {

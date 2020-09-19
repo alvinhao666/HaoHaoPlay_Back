@@ -28,7 +28,7 @@ namespace Hao.EventBus
             user.LastLoginTime = data.LastLoginTime;
             user.LastLoginIP = data.LastLoginIP;
 
-            await _userRep.UpdateAsync(user, user => new { user.LastLoginTime, user.LastLoginIP });
+            await _userRep.UpdateAsync(user, user => new {  });
             await _recordRep.InsertAysnc(new SysLoginRecord() { UserId = user.Id, IP = user.LastLoginIP, Time = user.LastLoginTime });
         }
     }
