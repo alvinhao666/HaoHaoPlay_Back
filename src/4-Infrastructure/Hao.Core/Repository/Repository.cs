@@ -379,7 +379,7 @@ namespace Hao.Core
                 updateColumns.Add(nameof(FullAuditedEntity<TKey>.ModifyTime));
             }
 
-            updateColumns.Add(nameof(FullAuditedEntity<TKey>.IsDeleted));
+            updateColumns.Add(nameof(FullAuditedEntity<TKey>.IsDeleted)); //需要注意 当WhereColumns和UpdateColumns一起用时，需要把wherecolumns中的列加到UpdateColumns中
 
             return await Db.Updateable(entities).UpdateColumns(updateColumns.ToArray())
                 .WhereColumns(a => new {a.Id, a.IsDeleted}) //以id和isdeleted为条件更新，如果数据isdeleted发生变化则不更新
