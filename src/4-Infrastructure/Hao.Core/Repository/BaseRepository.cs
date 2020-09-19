@@ -23,7 +23,7 @@ namespace Hao.Core
         /// <returns>泛型实体</returns>
         public virtual async Task<T> GetAysnc(TKey pkValue)
         {
-            var entity = await Db.Queryable<T>().InSingleAsync(pkValue);
+            var entity = await Db.Queryable<T>().Where($"{nameof(BaseEntity<TKey>.Id)}='{pkValue}'").SingleAsync();
             return entity;
         }
 
@@ -233,7 +233,7 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<int> DeleteAysnc(TKey pkValue)
         {
-            return await Db.Deleteable<T>().In(pkValue).ExecuteCommandAsync();
+            return await Db.Deleteable<T>().Where($"{nameof(BaseEntity<TKey>.Id)}='{pkValue}'").ExecuteCommandAsync();
         }
 
         /// <summary>
