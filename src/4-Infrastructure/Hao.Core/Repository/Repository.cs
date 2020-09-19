@@ -323,7 +323,7 @@ namespace Hao.Core
                 updateColumns.Add(nameof(entity.ModifyTime));
             }
 
-            return await Db.Updateable<T>().UpdateColumns(updateColumns.ToArray())
+            return await Db.Updateable(entity).UpdateColumns(updateColumns.ToArray())
                 .Where($"{nameof(FullAuditedEntity<TKey>.Id)}='{entity.Id}'")
                 .Where(a => a.IsDeleted == false)
                 .ExecuteCommandAsync();
