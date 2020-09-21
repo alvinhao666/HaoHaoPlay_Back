@@ -13,12 +13,12 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AutoDependency(this IServiceCollection services, IEnumerable<Type> types)
         {
             services.Scan(scan => scan.FromAssembliesOf(types)
-                                      .AddClasses(x => typeof(ITransientDependency).IsAssignableFrom(x.GetType()))  //直接或间接实现了ICapSubscribe
+                                      .AddClasses(x => typeof(ITransientDependency).IsAssignableFrom(x.GetType()))  //直接或间接实现了ITransientDependency
                                       .AsImplementedInterfaces()
                                       .WithTransientLifetime())
 
                     .Scan(scan => scan.FromAssembliesOf(types)
-                                      .AddClasses(x => typeof(ISingletonDependency).IsAssignableFrom(x.GetType()))  //直接或间接实现了ICapSubscribe
+                                      .AddClasses(x => typeof(ISingletonDependency).IsAssignableFrom(x.GetType()))  //直接或间接实现了ISingletonDependency
                                       .AsImplementedInterfaces()
                                       .WithSingletonLifetime());
 
