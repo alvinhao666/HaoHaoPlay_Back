@@ -34,7 +34,6 @@ namespace Hao.WebApi
         [HttpPost]
         public async Task<LoginVM> Login(LoginRequest request)
         {
-            throw new Exception("123123");
             request.Ip = HttpContext.GetIp();
 
             _logger.Info(new H_Log() { Method = "LoginRequest", Argument = new { HttpContext.TraceIdentifier, request }, Description = "登录请求" });
