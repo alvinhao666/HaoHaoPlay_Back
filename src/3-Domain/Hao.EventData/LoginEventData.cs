@@ -6,7 +6,7 @@ namespace Hao.EventData
     {
         public long? UserId { get; set; }
 
-        public DateTime LastLoginTime { get; set; }
+        public DateTime? LastLoginTime { get; set; }
 
         public string LastLoginIP { get; set; }
     }
