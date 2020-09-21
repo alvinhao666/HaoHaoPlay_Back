@@ -59,10 +59,12 @@ namespace Hao.Core.Extensions
                     response.ErrorMsg = aspectException.Message.Split(errorSplit)[1].Trim().TrimEnd('.');
                 }
             }
+#if DEBUG  //开发环境 能看具体错误
             else
             {
                 response.ErrorMsg = ex.Message;
             }
+#endif
 
             var errorLog = new
             {

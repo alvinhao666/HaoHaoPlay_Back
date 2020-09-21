@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Hao.AppService;
 using Hao.Core;
 using Microsoft.AspNetCore.Http;
@@ -33,6 +34,7 @@ namespace Hao.WebApi
         [HttpPost]
         public async Task<LoginVM> Login(LoginRequest request)
         {
+            throw new Exception("123123");
             request.Ip = HttpContext.GetIp();
 
             _logger.Info(new H_Log() { Method = "LoginRequest", Argument = new { HttpContext.TraceIdentifier, request }, Description = "登录请求" });
