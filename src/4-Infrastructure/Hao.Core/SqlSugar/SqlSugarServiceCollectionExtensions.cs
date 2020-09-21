@@ -125,6 +125,8 @@ namespace Microsoft.Extensions.DependencyInjection
                     sb_error.AppendLine("###带参数的sql:" + exp.Sql);
                     sb_error.AppendLine("###参数信息:" + sb_SugarParameterStr.ToString());
                     sb_error.AppendLine("###StackTrace信息:" + exp.StackTrace);
+
+                    throw new Exception(sb_error.ToString());
                 },
                 OnExecutingChangeSql = (sql, pars) => //SQL执行前 可以修改SQL
                 {
