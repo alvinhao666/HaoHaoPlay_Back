@@ -13,7 +13,7 @@
     <PackageReference Include="DotNetCore.CAP.Dashboard" Version="3.1.0" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="9.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.8" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.2" />
   </ItemGroup>
 
   <ItemGroup>
