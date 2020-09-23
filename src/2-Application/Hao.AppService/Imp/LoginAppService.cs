@@ -97,6 +97,7 @@ namespace Hao.AppService
             {
                 Id = user.Id,
                 Name = user.Name,
+                RoleLevel = user.RoleLevel,
                 AuthNumbers = authNums,
                 Jwt = jwt,
                 LoginStatus = LoginStatus.Online,
@@ -155,8 +156,6 @@ namespace Hao.AppService
                 new Claim(JwtRegisteredClaimNames.Jti, jti), //针对当前 token 的唯一标识 jwt的唯一身份标识，避免重复
                 new Claim(JwtRegisteredClaimNames.Sid, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Iat, timeNow.Ticks.ToString(), ClaimValueTypes.Integer64), //token 创建时间
-                new Claim(H_ClaimsName.Name, user.Name),
-                new Claim(H_ClaimsName.RoleLevel, user.RoleLevel.ToString())
             };
 
             var secretKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_appsettings.Jwt.SecretKey));

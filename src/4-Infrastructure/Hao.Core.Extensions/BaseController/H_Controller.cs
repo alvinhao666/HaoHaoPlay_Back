@@ -38,12 +38,19 @@ namespace Hao.Core.Extensions
             var argument = new { context.HttpContext.TraceIdentifier, UserId = userId, context.ActionArguments, IP = ip };
 
             Logger.Info(new H_Log{ Method = context.HttpContext.Request.Path.Value, Argument = argument, Description = "请求信息" });
-
+            
             var cache = GetCacheUser(userId, jti);
 
             //if (ip != cache.Ip) throw new H_Exception("请重新登录", nameof(H_Error.E100004).GetErrorCode());
 
             CheckAuth(context, cache.AuthNumbers);
+            
+            var currentUser = context.HttpContext.RequestServices.GetService(typeof(ICurrentUser)) as ICurrentUser;
+
+            currentUser.Id = userId.ToLongOrNull();
+            currentUser.Name = cache.Name;
+            currentUser.Jti = jti;
+            currentUser.RoleLevel = cache.RoleLevel;
 
             base.OnActionExecuting(context);
         }

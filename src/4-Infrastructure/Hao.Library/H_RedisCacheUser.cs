@@ -16,6 +16,11 @@ namespace Hao.Library
         /// 姓名
         /// </summary>
         public string Name { get; set; }
+        
+        /// <summary>
+        /// 角色等级
+        /// </summary>
+        public int? RoleLevel { get; set; }
 
         /// <summary>
         /// 权限
