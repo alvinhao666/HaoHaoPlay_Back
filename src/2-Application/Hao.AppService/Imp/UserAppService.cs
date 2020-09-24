@@ -186,13 +186,9 @@ namespace Hao.AppService
         {
             CheckUser(userId);
             var user = await GetUserDetail(userId);
-            user.Name = vm.Name;
-            user.Age = vm.Age;
-            user.Gender = vm.Gender;
-            user.Phone = vm.Phone;
-            user.Email = vm.Email;
-            user.WeChat = vm.WeChat;
-            user.QQ = vm.QQ;
+
+            user = _mapper.Map(vm, user);
+
             await _userRep.UpdateAsync(user,
                 user => new { user.Name, user.Age, user.Gender, user.Phone, user.Email, user.WeChat, user.QQ, user.RoleId, user.RoleName });
         }
