@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -37,9 +38,18 @@ namespace Microsoft.Extensions.DependencyInjection
         /// <summary>
         /// 自动IOC扫描注入
         /// </summary>
-        public static IServiceCollection AutoDependency(this IServiceCollection services, params Type[] types)
+        public static IServiceCollection AutoDependency(this IServiceCollection services, IEnumerable<Assembly> assemblies)
         {
-            return services.AutoDependency(types.ToList());
+            services.Scan(scan => scan.FromAssemblies(assemblies)
+                                      .AddClasses(x => typeof(ITransientDependency).IsAssignableFrom(x.GetType()))  //直接或间接实现了ITransientDependency
+                                      .AsImplementedInterfaces()
+                                      .WithTransientLifetime())
+
+                    .Scan(scan => scan.FromAssemblies(assemblies)
+                                      .AddClasses(x => typeof(ISingletonDependency).IsAssignableFrom(x.GetType()))  //直接或间接实现了ISingletonDependency
+                                      .AsImplementedInterfaces()
+                                      .WithSingletonLifetime());
+            return services;
         }
     }
 }
