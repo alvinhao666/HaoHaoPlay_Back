@@ -3,7 +3,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
-using AspectCore.Extensions.DependencyInjection;
 using AspectCore.Extensions.Hosting;
 using NLog.Web;
 
