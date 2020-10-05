@@ -151,9 +151,7 @@ namespace Hao.Core.Extensions
 
             //当前用户信息
             services.AddScoped<ICurrentUser, CurrentUser>();
-
-            //批量注入
-            services.AutoDependency(appSettings.DiAssemblyNames.Select(name => Assembly.Load(name)));
+            
 
             return services;
         }
