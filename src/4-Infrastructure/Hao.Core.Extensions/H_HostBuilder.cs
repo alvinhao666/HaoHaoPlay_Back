@@ -18,10 +18,7 @@ namespace Hao.Core.Extensions
         public void Run<TStartup>(string[] args) where TStartup : class
         {
             Host.CreateDefaultBuilder(args)
-                .ConfigureAppConfiguration(builder =>
-                {
-                    InitBuild(builder);
-                })
+                .ConfigureAppConfiguration(InitBuild)
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory()) //用Autofac替换默认的IOC容器
                 .ConfigureWebHostDefaults(webBuilder =>
                 {

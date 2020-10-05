@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Hao.Core.Dependency;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -17,21 +18,22 @@ namespace Microsoft.Extensions.DependencyInjection
                                       .AddClasses(x => typeof(ITransientDependency).IsAssignableFrom(x.GetType()))  //直接或间接实现了ITransientDependency
                                       .AsImplementedInterfaces()
                                       .WithTransientLifetime())
-
+                
                     .Scan(scan => scan.FromAssembliesOf(types)
-                                      .AddClasses(x => typeof(ISingletonDependency).IsAssignableFrom(x.GetType()))  //直接或间接实现了ISingletonDependency
+                            .AddClasses(x => typeof(IScopeDependency).IsAssignableFrom(x.GetType()))  
+                            .AsImplementedInterfaces()
+                            .WithScopedLifetime())
+                
+                    .Scan(scan => scan.FromAssembliesOf(types)
+                                      .AddClasses(x => typeof(ISingletonDependency).IsAssignableFrom(x.GetType()))  
                                       .AsImplementedInterfaces()
                                       .WithSingletonLifetime());
 
             //services.Scan(scan => scan.FromAssembliesOf(types)
             //              .AddClasses()
-            //              .AsMatchingInterface((x, p) => typeof(ITransientDependency).IsAssignableFrom(p.GetType())) //直接或间接实现了ITransientDependency
-            //              .WithTransientLifetime())
-
-            //        .Scan(scan => scan.FromAssembliesOf(types)
-            //              .AddClasses()
-            //              .AsMatchingInterface((x, p) => typeof(ISingletonDependency).IsAssignableFrom(p.GetType()))
-            //              .WithSingletonLifetime());
+            //              .AsMatchingInterface((x, p) => typeof(ITransientDependency).IsAssignableFrom(p.GetType())) 
+            //              .WithTransientLifetime());
+            
             return services;
         }
 
@@ -46,7 +48,12 @@ namespace Microsoft.Extensions.DependencyInjection
                                       .WithTransientLifetime())
 
                     .Scan(scan => scan.FromAssemblies(assemblies)
-                                      .AddClasses(x => typeof(ISingletonDependency).IsAssignableFrom(x.GetType()))  //直接或间接实现了ISingletonDependency
+                        .AddClasses(x => typeof(IScopeDependency).IsAssignableFrom(x.GetType()))  
+                        .AsImplementedInterfaces()
+                        .WithScopedLifetime())
+                    
+                    .Scan(scan => scan.FromAssemblies(assemblies)
+                                      .AddClasses(x => typeof(ISingletonDependency).IsAssignableFrom(x.GetType()))
                                       .AsImplementedInterfaces()
                                       .WithSingletonLifetime());
             return services;

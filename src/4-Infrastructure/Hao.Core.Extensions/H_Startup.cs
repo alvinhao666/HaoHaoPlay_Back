@@ -68,19 +68,24 @@ namespace Hao.Core.Extensions
         public virtual void ConfigureContainer(ContainerBuilder builder)
         {
             var diAssemblies = _appSettings.DiAssemblyNames.Select(name => Assembly.Load(name)).ToArray();
+            
+            //ITransientDependency
+            var transientTypes=diAssemblies.SelectMany(a => a.GetExportedTypes()).Where(type => typeof(ITransientDependency).IsAssignableFrom(type)).ToArray();
         
-            builder.RegisterAssemblyTypes(diAssemblies).Where(m => typeof(ITransientDependency).IsAssignableFrom(m) && m != typeof(ITransientDependency)) //直接或间接实现了ITransientDependency
-                .AsImplementedInterfaces().InstancePerDependency().PropertiesAutowired();
+            builder.RegisterTypes(transientTypes).AsImplementedInterfaces().InstancePerDependency().PropertiesAutowired();
+            
+            //ISingletonDependency
+            var singleTypes=diAssemblies.SelectMany(a => a.GetExportedTypes()).Where(type => typeof(ISingletonDependency).IsAssignableFrom(type)).ToArray();
         
-            builder.RegisterAssemblyTypes(diAssemblies).Where(m => typeof(ISingletonDependency).IsAssignableFrom(m) && m != typeof(ISingletonDependency))
-                .AsImplementedInterfaces().SingleInstance().PropertiesAutowired();
+            builder.RegisterTypes(singleTypes).AsImplementedInterfaces().SingleInstance().PropertiesAutowired();
         
+            //controller
             var controllerAssemblies = _appSettings.ControllerAssemblyNames.Select(name => Assembly.Load(name));
         
             var controllerTypes = controllerAssemblies.SelectMany(a => a.GetExportedTypes()).Where(type => typeof(ControllerBase).IsAssignableFrom(type)).ToArray();
         
             builder.RegisterTypes(controllerTypes).PropertiesAutowired();
-        
+            
             //调用RegisterDynamicProxy扩展方法在Autofac中注册动态代理服务和动态代理配置 aop
             //在一般情况下可以使用抽象的AbstractInterceptorAttribute自定义特性类，它实现IInterceptor接口。AspectCore默认实现了基于Attribute的拦截器配置
             builder.RegisterDynamicProxy();
