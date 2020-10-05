@@ -1,9 +1,9 @@
-﻿using Autofac.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
+using AspectCore.Extensions.Hosting;
 using NLog.Web;
 
 namespace Hao.Core.Extensions
@@ -22,20 +22,20 @@ namespace Hao.Core.Extensions
                 {
                     InitBuild(builder);
                 })
-                .UseServiceProviderFactory(new AutofacServiceProviderFactory())
+                //.UseServiceProviderFactory(new AutofacServiceProviderFactory()) //用Autofac替换默认的IOC容器
+                //.UseServiceProviderFactory(new DynamicProxyServiceProviderFactory()) //用AspectCore替换默认的IOC容器
+                .UseServiceContext() // 用AspectCore替换默认的IOC容器,并且支持[FromServiceContext]属性注入
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.ConfigureLogging((hostingContext, logBuilder) =>
                     {
                         logBuilder.ClearProviders()
-#if DEBUG
                                   .SetMinimumLevel(LogLevel.Information)
                                   .AddFilter("Microsoft.Hosting", LogLevel.Information)
                                   .AddFilter("Microsoft", LogLevel.Error)
                                   .AddFilter("System", LogLevel.Error) //过滤Error等级以下（不报括Error）的信息
                                   //.AddFilter("DotNetCore.CAP", LogLevel.Information)
                                   .AddConsole()
-#endif                            
                                   .AddNLog($"ConfigFile/nlog.{hostingContext.HostingEnvironment.EnvironmentName}.config");
                     })
                     .UseStartup<TStartup>();

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Linq.Expressions;
 using Hao.Snowflake;
 using System.Linq;
+using AspectCore.DependencyInjection;
 using Hao.Utility;
 
 namespace Hao.Core
@@ -12,8 +13,10 @@ namespace Hao.Core
     public abstract class BaseRepository<T, TKey> : IBaseRepository<T, TKey>
         where T : BaseEntity<TKey>, new() where TKey : struct
     {
+        [FromServiceContext]
         public ISqlSugarClient Db { get; set; }
 
+        [FromServiceContext]
         public IdWorker IdWorker { get; set; }
 
         /// <summary>

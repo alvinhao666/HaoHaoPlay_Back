@@ -18,6 +18,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.Encodings.Web;
+using AspectCore.Extensions.DependencyInjection;
 
 namespace Hao.Core.Extensions
 {
@@ -149,7 +150,14 @@ namespace Hao.Core.Extensions
             //AutoMapper
             services.AddAutoMapper(appSettings.AutoMapperAssemblyNames.Select(name => Assembly.Load(name)));
 
+            //当前用户信息
             services.AddScoped<ICurrentUser, CurrentUser>();
+
+            //批量注入
+            services.AutoDependency(appSettings.DiAssemblyNames.Select(name => Assembly.Load(name)));
+            
+            //AOP
+            services.ConfigureDynamicProxy();
 
             return services;
         }
