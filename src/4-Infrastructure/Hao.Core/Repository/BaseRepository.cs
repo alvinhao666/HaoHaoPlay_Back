@@ -13,10 +13,8 @@ namespace Hao.Core
     public abstract class BaseRepository<T, TKey> : IBaseRepository<T, TKey>
         where T : BaseEntity<TKey>, new() where TKey : struct
     {
-        [FromServiceContext]
         public ISqlSugarClient Db { get; set; }
 
-        [FromServiceContext]
         public IdWorker IdWorker { get; set; }
 
         /// <summary>

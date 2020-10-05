@@ -18,7 +18,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.Encodings.Web;
-using AspectCore.Extensions.DependencyInjection;
 
 namespace Hao.Core.Extensions
 {
@@ -155,9 +154,6 @@ namespace Hao.Core.Extensions
 
             //批量注入
             services.AutoDependency(appSettings.DiAssemblyNames.Select(name => Assembly.Load(name)));
-            
-            //AOP
-            services.ConfigureDynamicProxy();
 
             return services;
         }

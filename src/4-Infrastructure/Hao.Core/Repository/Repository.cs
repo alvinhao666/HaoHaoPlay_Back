@@ -13,13 +13,10 @@ namespace Hao.Core
     public abstract class Repository<T, TKey> : IRepository<T, TKey>
         where T : FullAuditedEntity<TKey>, new() where TKey : struct
     {
-        [FromServiceContext]
         public ICurrentUser CurrentUser { get; set; }
-
-        [FromServiceContext]
+        
         public ISqlSugarClient Db { get; set; }
-
-        [FromServiceContext]
+        
         public IdWorker IdWorker { get; set; }
 
         /// <summary>
