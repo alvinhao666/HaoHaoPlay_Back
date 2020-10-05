@@ -6,7 +6,6 @@ using System.Linq.Expressions;
 using Hao.Snowflake;
 using Hao.Utility;
 using System.Linq;
-using AspectCore.DependencyInjection;
 
 namespace Hao.Core
 {
