@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AspectCore.Extensions.Autofac" Version="2.1.0" />
-    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="AspectCore.Extensions.DependencyInjection" Version="2.1.0" />
+    <PackageReference Include="AspectCore.Extensions.Hosting" Version="2.1.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.0.1" />
     <PackageReference Include="Caching.CSRedis" Version="3.6.5" />
     <PackageReference Include="DotNetCore.CAP.Dashboard" Version="3.1.1" />

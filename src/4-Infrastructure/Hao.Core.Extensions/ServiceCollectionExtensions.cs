@@ -18,6 +18,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.Encodings.Web;
+using AspectCore.Extensions.DependencyInjection;
 
 namespace Hao.Core.Extensions
 {
@@ -151,8 +152,11 @@ namespace Hao.Core.Extensions
 
             //当前用户信息
             services.AddScoped<ICurrentUser, CurrentUser>();
-            
 
+            services.AutoDependency(appSettings.DiAssemblyNames.Select(name => Assembly.Load(name)));
+
+            services.ConfigureDynamicProxy();
+            
             return services;
         }
     }

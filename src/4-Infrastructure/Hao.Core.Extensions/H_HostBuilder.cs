@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
-using Autofac.Extensions.DependencyInjection;
+using AspectCore.Extensions.Hosting;
 using NLog.Web;
 
 namespace Hao.Core.Extensions
@@ -19,7 +19,7 @@ namespace Hao.Core.Extensions
         {
             Host.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration(InitBuild)
-                .UseServiceProviderFactory(new AutofacServiceProviderFactory()) //用Autofac替换默认的IOC容器
+                .UseServiceContext()  //aspectcore di容器 [fromservicecontext] 属性注入
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.ConfigureLogging((hostingContext, logBuilder) =>
