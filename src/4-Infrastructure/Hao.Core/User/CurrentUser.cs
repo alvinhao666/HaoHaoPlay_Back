@@ -1,10 +1,4 @@
-﻿using Hao.Library;
-using Hao.Utility;
-using Microsoft.AspNetCore.Http;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-
-namespace Hao.Core.Extensions
+﻿namespace Hao.Core
 {
     public class CurrentUser : ICurrentUser
     {

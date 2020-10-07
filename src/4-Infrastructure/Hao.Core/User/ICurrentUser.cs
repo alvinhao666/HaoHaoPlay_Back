@@ -1,6 +1,8 @@
-﻿namespace Hao.Core
+﻿using Hao.Core.Dependency;
+
+namespace Hao.Core
 {
-    public interface ICurrentUser
+    public interface ICurrentUser : IScopeDependency
     {
         /// <summary>
         /// 主键id
