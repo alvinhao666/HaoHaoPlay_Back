@@ -5,19 +5,9 @@ using System.Threading.Tasks;
 namespace Hao.EventBus
 {
     /// <summary>
-    /// 注销事件订阅接口
-    /// </summary>
-    public interface ILogoutEventSubscriber
-    {
-        Task LogoutForUpdateAuth(LogoutForUpdateAuthEventData data);
-
-        Task Logout(LogoutEventData data);
-    }
-
-    /// <summary>
     /// 注销事件订阅实现
     /// </summary>
-    public class LogoutEventSubscriber : ILogoutEventSubscriber, ICapSubscribe
+    public class LogoutEventSubscriber : ICapSubscribe
     {
 
         private readonly ILogoutEventHandler _handler;

@@ -95,7 +95,7 @@ namespace Hao.Core.Extensions
             {
                 a.FromAssemblies(appSettings.EventSubscribeAssemblyNames.Select(name => Assembly.Load(name)))
                  .AddClasses(x => x.AssignableTo(typeof(ICapSubscribe)))  //直接或间接实现了ICapSubscribe
-                 .AsImplementedInterfaces()
+                 .AsSelf()
                  .WithTransientLifetime();
             });
 
