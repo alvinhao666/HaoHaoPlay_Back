@@ -1,4 +1,4 @@
-﻿using Hao.Core;
+using Hao.Core;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
