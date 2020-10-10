@@ -52,6 +52,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.WebApi", "src\1-Present
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.EventBus", "src\3-Domain\Hao.EventBus\Hao.EventBus.csproj", "{4C3CEA2A-2F53-41DB-A8B0-682DA632D6EA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hao.TencentCloud.Cos", "src\5-Common\Hao.TencentCloud.Cos\Hao.TencentCloud.Cos.csproj", "{392F805F-962E-412E-A257-622ACEBCB96F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -118,6 +120,10 @@ Global
 		{4C3CEA2A-2F53-41DB-A8B0-682DA632D6EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C3CEA2A-2F53-41DB-A8B0-682DA632D6EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C3CEA2A-2F53-41DB-A8B0-682DA632D6EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{392F805F-962E-412E-A257-622ACEBCB96F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{392F805F-962E-412E-A257-622ACEBCB96F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{392F805F-962E-412E-A257-622ACEBCB96F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{392F805F-962E-412E-A257-622ACEBCB96F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -142,6 +148,7 @@ Global
 		{783F6148-AF03-412E-86B1-95EE2ADC71C5} = {2F74256B-F2C2-494A-82AE-97722C2A4F4B}
 		{8B9FC11F-058B-4691-BDBE-0C70FC65D983} = {68CCE9AA-0E76-4F43-9C77-1AC05A755176}
 		{4C3CEA2A-2F53-41DB-A8B0-682DA632D6EA} = {D4FE854B-07DD-4C60-81D3-5B75912CE2F8}
+		{392F805F-962E-412E-A257-622ACEBCB96F} = {042FD3BE-DA74-462B-8F16-E6D1ADFC7454}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5BAAEA79-B086-4D1C-AC3A-B029DF5FA31A}

@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Hao.TencentCloud.Cos;
+using TencentCloud.Sts.V20180813.Models;
 
 namespace Hao.WebApi
 {
@@ -34,5 +36,20 @@ namespace Hao.WebApi
         /// <returns></returns>
         [HttpGet("{dictCode}")]
         public async Task<List<DictDataItemVM>> GetDictItemList(string dictCode) => await _dictAppService.GetDictDataItem(dictCode);
+
+
+        /// <summary>
+        /// 获取腾讯云cos联合身份临时访问凭证
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public GetFederationTokenResponse GetTencentCosFederationToken()
+        {
+            var provider = new TencentCosProvider();
+            
+            var result = provider.GetFederationToken();
+            
+            return result;
+        }
     }
 }
