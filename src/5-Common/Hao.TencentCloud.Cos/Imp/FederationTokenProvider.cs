@@ -36,6 +36,7 @@ namespace Hao.TencentCloud.Cos
             req.Name = _cfg.Name;
             req.Policy = HttpUtility.UrlEncode(_cfg.Policy);
             req.DurationSeconds = _cfg.DurationSeconds;
+            
             GetFederationTokenResponse resp = client.GetFederationTokenSync(req);
 
             return resp;

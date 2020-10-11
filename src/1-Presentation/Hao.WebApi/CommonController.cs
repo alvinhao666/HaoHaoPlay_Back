@@ -4,8 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Hao.Core;
 using Hao.TencentCloud.Cos;
-using TencentCloud.Sts.V20180813.Models;
+using Hao.Utility;
 
 namespace Hao.WebApi
 {
@@ -17,10 +18,13 @@ namespace Hao.WebApi
         private readonly IDictAppService _dictAppService;
 
         private readonly IFederationTokenProvider _tencentCosProvider;
-        public CommonController(IDictAppService dictAppService,IFederationTokenProvider tencentCosProvider)
+
+        private readonly ICurrentUser _currentUser;
+        public CommonController(IDictAppService dictAppService,ICurrentUser currentUser,IFederationTokenProvider tencentCosProvider)
         {
             _dictAppService = dictAppService;
             _tencentCosProvider = tencentCosProvider;
+            _currentUser = currentUser;
         }
 
         /// <summary>
@@ -41,15 +45,22 @@ namespace Hao.WebApi
 
 
         /// <summary>
+        /// 获取头像文件名称
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public string GetAvatarName() => $"{_currentUser.Id}_{H_Util.GetUnixTimestamp()}";
+        
+        /// <summary>
         /// 获取腾讯云cos联合身份临时访问凭证
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public GetFederationTokenResponse GetTencentCosFederationToken()
+        public object GetTencentCosFederationToken()
         {
             var result = _tencentCosProvider.GetFederationToken();
-            
-            return result;
+
+            return new {result.Credentials, result.ExpiredTime, StartTime = H_Util.GetUnixTimestamp(DateTime.Now), result.RequestId};
         }
     }
 }

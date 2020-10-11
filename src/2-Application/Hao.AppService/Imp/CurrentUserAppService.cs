@@ -46,33 +46,45 @@ namespace Hao.AppService
             return _mapper.Map<CurrentUserVM>(user);
         }
 
+        // /// <summary>
+        // /// 更新头像地址 (ImageSharp)
+        // /// </summary>
+        // /// <param name="request"></param>
+        // /// <returns></returns>
+        // public async Task UpdateHeadImg(UpdateHeadImgRequest request)
+        // {
+        //     string[] str = request.Base64Str.Split(','); //base64Str为base64完整的字符串，先处理一下得到我们所需要的字符串
+        //     if (str.Length < 2) throw new H_Exception("图片格式不对");
+        //     byte[] imageBytes = Convert.FromBase64String(str[1]);
+        //
+        //     H_File.CreateDirectory(_appsettings.FilePath.AvatarPath);
+        //     string imgName = $"{_currentUser.Id}_{H_Util.GetUnixTimestamp()}.png";
+        //     string imgPath = Path.Combine(_appsettings.FilePath.AvatarPath, imgName);
+        //     using (SixLabors.ImageSharp.Image image = SixLabors.ImageSharp.Image.Load(imageBytes))
+        //     {
+        //         image.Save(imgPath);
+        //     }
+        //
+        //     var user = await _userRep.GetAysnc(_currentUser.Id.Value);
+        //     string oldImgUrl = user.HeadImgUrl;
+        //     user.HeadImgUrl = imgName;
+        //     await _userRep.UpdateAsync(user, user => new { user.HeadImgUrl });
+        //     if (!string.IsNullOrWhiteSpace(oldImgUrl))
+        //     {
+        //         H_File.DeleteFile(Path.Combine(_appsettings.FilePath.AvatarPath, oldImgUrl));
+        //     }
+        // }
+        
         /// <summary>
-        /// 更新头像地址 (ImageSharp)
+        /// 更新头像地址 (腾讯COS)
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
         public async Task UpdateHeadImg(UpdateHeadImgRequest request)
         {
-            string[] str = request.Base64Str.Split(','); //base64Str为base64完整的字符串，先处理一下得到我们所需要的字符串
-            if (str.Length < 2) throw new H_Exception("图片格式不对");
-            byte[] imageBytes = Convert.FromBase64String(str[1]);
-
-            H_File.CreateDirectory(_appsettings.FilePath.AvatarPath);
-            string imgName = $"{_currentUser.Id}_{H_Util.GetUnixTimestamp()}.png";
-            string imgPath = Path.Combine(_appsettings.FilePath.AvatarPath, imgName);
-            using (SixLabors.ImageSharp.Image image = SixLabors.ImageSharp.Image.Load(imageBytes))
-            {
-                image.Save(imgPath);
-            }
-
             var user = await _userRep.GetAysnc(_currentUser.Id.Value);
-            string oldImgUrl = user.HeadImgUrl;
-            user.HeadImgUrl = imgName;
+            user.HeadImgUrl = $"https://{request.HeadImageUrl}";
             await _userRep.UpdateAsync(user, user => new { user.HeadImgUrl });
-            if (!string.IsNullOrWhiteSpace(oldImgUrl))
-            {
-                H_File.DeleteFile(Path.Combine(_appsettings.FilePath.AvatarPath, oldImgUrl));
-            }
         }
 
         /// <summary>

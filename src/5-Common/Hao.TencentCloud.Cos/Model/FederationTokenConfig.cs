@@ -35,6 +35,6 @@ namespace Hao.TencentCloud.Cos
         /// <summary>
         /// 指定临时证书的有效期
         /// </summary>
-        public ulong? DurationSeconds { get; set; } = 1800;
+        public ulong? DurationSeconds { get; set; }
     }
 }

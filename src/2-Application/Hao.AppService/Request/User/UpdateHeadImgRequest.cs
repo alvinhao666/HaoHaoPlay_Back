@@ -3,21 +3,26 @@ using FluentValidation;
 namespace Hao.AppService
 {
     /// <summary>
-    /// 修改头像请求
+    /// 鏇存柊澶村儚璇锋眰
     /// </summary>
     public class UpdateHeadImgRequest
     {
-        public string Base64Str { get; set; } 
+        // public string Base64Str { get; set; } 
+        
+        /// <summary>
+        /// 澶村儚鍦板潃
+        /// </summary>
+        public string HeadImageUrl { get; set; }
     }
 
     /// <summary>
-    /// 验证
+    /// 锟斤拷证
     /// </summary>
     public class UpdateHeadImgValidator : AbstractValidator<UpdateHeadImgRequest>
     {
         public UpdateHeadImgValidator()
         {
-            RuleFor(x => x.Base64Str).MustHasValue("头像");
+            RuleFor(x => x.HeadImageUrl).MustHasValue("澶村儚鍦板潃");
         }
     }
 }
