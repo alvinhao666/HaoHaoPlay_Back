@@ -4,6 +4,7 @@ using Hao.Core.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Hao.Library;
+using Hao.TencentCloud.Cos;
 
 namespace HaoHaoPlay_Back.Host
 {
@@ -20,6 +21,11 @@ namespace HaoHaoPlay_Back.Host
         public override void ConfigureServices(IServiceCollection services)
         {
             base.ConfigureServices(services);
+            
+            var cosConfig = new FederationTokenConfig();
+            Configuration.GetSection("TencentCos").Bind(cosConfig);
+            
+            services.AddSingleton<IFederationTokenProvider>(o => new FederationTokenProvider(cosConfig));
         }
 
         /// <summary>

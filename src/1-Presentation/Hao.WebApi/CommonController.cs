@@ -16,9 +16,11 @@ namespace Hao.WebApi
     {
         private readonly IDictAppService _dictAppService;
 
-        public CommonController(IDictAppService dictAppService)
+        private readonly IFederationTokenProvider _tencentCosProvider;
+        public CommonController(IDictAppService dictAppService,IFederationTokenProvider tencentCosProvider)
         {
             _dictAppService = dictAppService;
+            _tencentCosProvider = tencentCosProvider;
         }
 
         /// <summary>
@@ -45,9 +47,7 @@ namespace Hao.WebApi
         [HttpGet]
         public GetFederationTokenResponse GetTencentCosFederationToken()
         {
-            var provider = new TencentCosProvider();
-            
-            var result = provider.GetFederationToken();
+            var result = _tencentCosProvider.GetFederationToken();
             
             return result;
         }

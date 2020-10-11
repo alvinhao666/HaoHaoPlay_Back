@@ -11,9 +11,9 @@ namespace Hao.Core.Extensions
 {
     public abstract class H_Startup<TConfig> where TConfig : H_AppSettingsConfig, new()
     {
-        private readonly IHostEnvironment _env;
+        protected readonly IHostEnvironment Env;
 
-        private readonly IConfiguration _cfg;
+        protected readonly IConfiguration Configuration;
 
         private readonly TConfig _appSettings;
 
@@ -24,8 +24,8 @@ namespace Hao.Core.Extensions
             //parentDir = currentDir?.Parent.Parent.Parent.Parent.Parent; 验证是null 而不是抛出异常
             if (parentDir == null) throw new Exception("项目安置路径有误，请检查");
 
-            _env = env;
-            _cfg = cfg;
+            Env = env;
+            Configuration = cfg;
 
             _appSettings = new TConfig();
             cfg.Bind(_appSettings);
@@ -44,17 +44,17 @@ namespace Hao.Core.Extensions
         /// <param name="services"></param>
         public virtual void ConfigureServices(IServiceCollection services)
         {
-            var filePathOption = _cfg.GetSection(nameof(H_AppSettingsConfig.FilePath));
+            var filePathOption = Configuration.GetSection(nameof(H_AppSettingsConfig.FilePath));
 
             filePathOption.GetSection(nameof(H_AppSettingsConfig.FilePath.ExportExcelPath)).Value = _appSettings.FilePath.ExportExcelPath;
             filePathOption.GetSection(nameof(H_AppSettingsConfig.FilePath.ImportExcelPath)).Value = _appSettings.FilePath.ImportExcelPath;
             filePathOption.GetSection(nameof(H_AppSettingsConfig.FilePath.AvatarPath)).Value = _appSettings.FilePath.AvatarPath;
 
-            services.Configure<TConfig>(_cfg); //绑定配置对象 子类 （新增配置信息）
+            services.Configure<TConfig>(Configuration); //绑定配置对象 子类 （新增配置信息）
 
-            services.Configure<H_AppSettingsConfig>(_cfg); //绑定配置对象 基类
+            services.Configure<H_AppSettingsConfig>(Configuration); //绑定配置对象 基类
 
-            services.ConfigureServices(_env, _appSettings);
+            services.ConfigureServices(Env, _appSettings);
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace Hao.Core.Extensions
         public virtual void Configure(IApplicationBuilder app)
         {
             //执行顺序 ConfigureContainer - Configure
-            app.Configure(_env, _appSettings);
+            app.Configure(Env, _appSettings);
         }
 
 
