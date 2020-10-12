@@ -68,7 +68,7 @@ namespace Hao.WebApi
             if (tokenCache.IsNullOrWhiteSpace())
             {
                 result = _tencentCosProvider.GetFederationToken();
-                await RedisHelper.SetAsync(key, H_JsonSerializer.Serialize(result), 1800);
+                await RedisHelper.SetAsync(key, H_JsonSerializer.Serialize(result), 7200);
             }
             else
             {
