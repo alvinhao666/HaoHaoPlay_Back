@@ -25,7 +25,7 @@ namespace HaoHaoPlay_Back.Host
             var cosConfig = new FederationTokenConfig();
             Configuration.GetSection("TencentCos").Bind(cosConfig);
             
-            services.AddSingleton<IFederationTokenProvider>(o => new FederationTokenProvider(cosConfig));
+            services.AddTransient<IFederationTokenProvider>(o => new FederationTokenProvider(cosConfig));
         }
 
         /// <summary>
