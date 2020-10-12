@@ -1,4 +1,4 @@
-﻿using Hao.Core.Dependency;
+﻿using Hao.Dependency;
 
 namespace Hao.Core
 {

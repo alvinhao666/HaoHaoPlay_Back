@@ -1,4 +1,4 @@
-﻿namespace Hao.Core
+﻿namespace Hao.Dependency
 {
     /// <summary>
     /// 每次都是一个新实例

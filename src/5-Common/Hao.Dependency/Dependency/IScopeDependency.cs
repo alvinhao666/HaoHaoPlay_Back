@@ -1,4 +1,4 @@
-namespace Hao.Core.Dependency
+namespace Hao.Dependency
 {
     public interface IScopeDependency
     {

@@ -1,5 +1,8 @@
 namespace Hao.TencentCloud.Cos
 {
+    /// <summary>
+    /// 获取联合身份临时访问凭证 配置项
+    /// </summary>
     public class FederationTokenConfig
     {
         /// <summary>

@@ -1,4 +1,6 @@
-﻿namespace Hao.Core
+﻿using Hao.Dependency;
+
+namespace Hao.Core
 {
     /// <summary>
     /// 应用服务 
