@@ -21,6 +21,7 @@ namespace Hao.WebApi
         private readonly IFederationTokenProvider _tencentCosProvider;
 
         private readonly ICurrentUser _currentUser;
+
         public CommonController(IDictAppService dictAppService,ICurrentUser currentUser,IFederationTokenProvider tencentCosProvider)
         {
             _dictAppService = dictAppService;
@@ -51,6 +52,7 @@ namespace Hao.WebApi
         /// <returns></returns>
         [HttpGet]
         public string GetAvatarName() => $"{_currentUser.Id}_{H_Util.GetUnixTimestamp()}";
+
         
         /// <summary>
         /// 获取腾讯云cos联合身份临时访问凭证
@@ -59,7 +61,7 @@ namespace Hao.WebApi
         [HttpGet]
         public async Task<object> GetTencentCosFederationToken()
         {
-            string key = "HaoHaoPlayBack_FederationToken";
+            string key = "HaoHaoPlay_Back_FederationToken";
 
             GetFederationTokenResponse result;
 
