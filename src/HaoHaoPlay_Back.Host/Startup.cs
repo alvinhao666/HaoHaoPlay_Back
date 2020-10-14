@@ -22,10 +22,10 @@ namespace HaoHaoPlay_Back.Host
         {
             base.ConfigureServices(services);
             
-            var cosConfig = new FederationTokenConfig();
+            var cosConfig = new TencentCosConfig();
             Configuration.GetSection("TencentCos").Bind(cosConfig);
             
-            services.AddTransient<IFederationTokenProvider>(o => new FederationTokenProvider(cosConfig));
+            services.AddSingleton<ITencentCosProvider>(o => new TencentCosProvider(cosConfig));
         }
 
         /// <summary>

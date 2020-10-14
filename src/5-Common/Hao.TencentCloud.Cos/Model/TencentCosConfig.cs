@@ -3,8 +3,18 @@ namespace Hao.TencentCloud.Cos
     /// <summary>
     /// 获取联合身份临时访问凭证 配置项
     /// </summary>
-    public class FederationTokenConfig
+    public class TencentCosConfig
     {
+        /// <summary>
+        /// 存储桶名称
+        /// </summary>
+        public string Bucket { get; set; }
+
+        /// <summary>
+        /// 对象在存储桶中的位置标识符，即称对象键
+        /// </summary>
+        public string UploadKey { get; set; }
+
         /// <summary>
         /// SecretId
         /// </summary>

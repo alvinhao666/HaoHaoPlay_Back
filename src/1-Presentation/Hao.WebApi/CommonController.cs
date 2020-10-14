@@ -8,6 +8,7 @@ using Hao.Core;
 using Hao.TencentCloud.Cos;
 using Hao.Utility;
 using TencentCloud.Sts.V20180813.Models;
+using Microsoft.Extensions.Configuration;
 
 namespace Hao.WebApi
 {
@@ -18,15 +19,18 @@ namespace Hao.WebApi
     {
         private readonly IDictAppService _dictAppService;
 
-        private readonly IFederationTokenProvider _tencentCosProvider;
+        private readonly ITencentCosProvider _tencentCosProvider;
 
         private readonly ICurrentUser _currentUser;
 
-        public CommonController(IDictAppService dictAppService,ICurrentUser currentUser,IFederationTokenProvider tencentCosProvider)
+        private readonly IConfiguration _config;
+
+        public CommonController(IConfiguration config,IDictAppService dictAppService,ICurrentUser currentUser,ITencentCosProvider tencentCosProvider)
         {
             _dictAppService = dictAppService;
             _tencentCosProvider = tencentCosProvider;
             _currentUser = currentUser;
+            _config = config;
         }
 
         /// <summary>
@@ -51,7 +55,7 @@ namespace Hao.WebApi
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public string GetAvatarName() => $"{_currentUser.Id}_{H_Util.GetUnixTimestamp()}";
+        public object GetUploadAvatarInfo() => new {Bucket = _config["TencentCos:Bucket"], Key = _config["TencentCos:AvatarKey"]+ $"/{_currentUser.Id}_{H_Util.GetUnixTimestamp()}", Region= _config["TencentCos:Region"] };
 
         
         /// <summary>
@@ -77,7 +81,12 @@ namespace Hao.WebApi
                 result = H_JsonSerializer.Deserialize<GetFederationTokenResponse>(tokenCache);
             }
 
-            return new {result.Credentials, result.ExpiredTime, StartTime = H_Util.GetUnixTimestamp(DateTime.Now), result.RequestId};
+            return new {
+                result.Credentials, 
+                result.ExpiredTime, 
+                StartTime = H_Util.GetUnixTimestamp(DateTime.Now), 
+                result.RequestId,
+            };
         }
     }
 }
