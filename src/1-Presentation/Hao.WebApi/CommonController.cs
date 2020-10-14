@@ -51,7 +51,7 @@ namespace Hao.WebApi
 
 
         /// <summary>
-        /// 获取头像文件名称
+        /// 获取上传头像所需信息
         /// </summary>
         /// <returns></returns>
         [HttpGet]
