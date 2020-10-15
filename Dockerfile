@@ -1,5 +1,9 @@
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim AS base
 WORKDIR /app
+
+ENV TZ=Asia/Shanghai
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezoness
+
 EXPOSE 8000
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
