@@ -37,6 +37,8 @@ namespace Hao.EventBus
                 {
                     var key = $"{_appsettings.RedisPrefix.Login}{userId}_{item.JwtJti}";
                     var value = await RedisHelper.GetAsync(key);
+                    if (value.IsNullOrWhiteSpace()) continue;
+
                     var cacheUser = H_JsonSerializer.Deserialize<H_RedisCacheUser>(value);
                     cacheUser.IsAuthUpdate = true;
                     cacheUser.LoginStatus = LoginStatus.Offline;
