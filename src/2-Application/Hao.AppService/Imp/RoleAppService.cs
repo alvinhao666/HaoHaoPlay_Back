@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -134,7 +135,8 @@ namespace Hao.AppService
             if (ids.Count < 1) return;
             await _publisher.PublishAsync(nameof(LogoutForUpdateAuthEventData), new LogoutForUpdateAuthEventData
             {
-                UserIds = ids
+                UserIds = ids,
+                TimeNow = DateTime.Now
             });
         }
 

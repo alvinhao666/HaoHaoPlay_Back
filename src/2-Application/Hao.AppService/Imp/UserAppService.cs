@@ -150,7 +150,8 @@ namespace Hao.AppService
 
             await _publisher.PublishAsync(nameof(LogoutEventData), new LogoutEventData
             {
-                UserIds = new List<long> { userId }
+                UserIds = new List<long> { userId },
+                TimeNow = DateTime.Now
             });
         }
 
@@ -171,7 +172,8 @@ namespace Hao.AppService
             {
                 await _publisher.PublishAsync(nameof(LogoutEventData), new LogoutEventData
                 {
-                    UserIds = new List<long> { userId }
+                    UserIds = new List<long> { userId },
+                    TimeNow = DateTime.Now
                 });
             }
         }

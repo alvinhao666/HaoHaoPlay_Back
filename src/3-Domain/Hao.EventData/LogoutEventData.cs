@@ -10,5 +10,7 @@ namespace Hao.EventData
         /// 用户id
         /// </summary>
         public List<long> UserIds { get; set; }
+
+        public DateTime TimeNow { get; set; } = DateTime.Now;
     }
 }

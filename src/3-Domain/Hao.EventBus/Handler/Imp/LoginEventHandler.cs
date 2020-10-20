@@ -25,11 +25,21 @@ namespace Hao.EventBus
         {
             var user = await _userRep.GetAysnc(data.UserId.Value);
             if (user == null) return;
-            user.LastLoginTime = data.LastLoginTime;
-            user.LastLoginIP = data.LastLoginIP;
+            user.LastLoginTime = data.LoginTime;
+            user.LastLoginIP = data.LoginIP;
 
             await _userRep.UpdateAsync(user, user => new { user.LastLoginTime, user.LastLoginIP });
-            await _recordRep.InsertAysnc(new SysLoginRecord() { UserId = user.Id, IP = user.LastLoginIP, Time = user.LastLoginTime });
+
+
+            var record = new SysLoginRecord();
+
+            record.UserId = user.Id;
+            record.IP = user.LastLoginIP;
+            record.Time = user.LastLoginTime;
+            record.JwtExpireTime = data.JwtExpireTime;
+            record.JwtJti = data.JwtJti;
+
+            await _recordRep.InsertAysnc(record);
         }
     }
 }

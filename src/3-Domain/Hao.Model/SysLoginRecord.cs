@@ -19,5 +19,15 @@ namespace Hao.Model
         /// 登录时间
         /// </summary>
         public DateTime? Time { get; set; }
+
+        /// <summary>
+        /// Json Web Token唯一标识
+        /// </summary>
+        public Guid? JwtJti { get; set; }
+
+        /// <summary>
+        /// Jwt过期时间
+        /// </summary>
+        public DateTime? JwtExpireTime { get; set; }
     }
 }

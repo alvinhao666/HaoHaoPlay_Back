@@ -89,7 +89,7 @@ namespace Hao.AppService
             if (menus.Count == 0) throw new H_Exception(_noAuthTip);
 
             //jwt的唯一身份标识，避免重复
-            var jti = Guid.NewGuid().ToString();
+            var jti = Guid.NewGuid();
             var jwt = CreateJwt(timeNow, expireTime, jti, user);
 
             //存入redis
@@ -108,7 +108,7 @@ namespace Hao.AppService
             await RedisHelper.SetAsync($"{_appsettings.RedisPrefix.Login}{user.Id}_{jti}", H_JsonSerializer.Serialize(userValue), expireSeconds);
 
             //同步登录信息，例如ip等等
-            await AsyncLoginInfo(user.Id, timeNow, request.Ip);
+            await AsyncLoginInfo(user.Id, timeNow, request.Ip, expireTime, jti);
 
             return new LoginVM
             {
@@ -148,12 +148,12 @@ namespace Hao.AppService
         /// <param name="jti"></param>
         /// <param name="user"></param>
         /// <returns></returns>
-        private string CreateJwt(DateTime timeNow, DateTime expireTime,string jti, SysUser user)
+        private string CreateJwt(DateTime timeNow, DateTime expireTime,Guid jti, SysUser user)
         {
             var claims = new Claim[]
             {
                 new Claim(JwtRegisteredClaimNames.Sub, _appsettings.Jwt.Subject), //主题
-                new Claim(JwtRegisteredClaimNames.Jti, jti), //针对当前 token 的唯一标识 jwt的唯一身份标识，避免重复
+                new Claim(JwtRegisteredClaimNames.Jti, jti.ToString()), //针对当前 token 的唯一标识 jwt的唯一身份标识，避免重复
                 new Claim(JwtRegisteredClaimNames.Sid, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Iat, timeNow.Ticks.ToString(), ClaimValueTypes.Integer64), //token 创建时间
             };
@@ -176,13 +176,15 @@ namespace Hao.AppService
         /// 同步登录信息
         /// </summary>
         /// <returns></returns>
-        private async Task AsyncLoginInfo(long userId, DateTime loginTime, string ip)
+        private async Task AsyncLoginInfo(long userId, DateTime loginTime, string ip, DateTime expireTime, Guid jwtJti)
         {
             await _publisher.PublishAsync(nameof(LoginEventData), new LoginEventData
             {
                 UserId = userId,
-                LastLoginTime = loginTime,
-                LastLoginIP = ip
+                LoginTime = loginTime,
+                LoginIP = ip,
+                JwtExpireTime = expireTime,
+                JwtJti = jwtJti
             });
         }
 
