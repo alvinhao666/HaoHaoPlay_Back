@@ -31,6 +31,9 @@ namespace Hao.EventBus
             {
                 //var keys = await RedisHelper.KeysAsync($"{_appsettings.RedisPrefix.Login}{userId}_*"); //不会自动加prefix
 
+                //一般在测试环境中，可以使用keys命令，模糊查询到需要的key，但这个操作只适合在测试环境中使用，不适合在生产环境中使用
+                //原因是redis是单线程运行的，当redis中的数据量很大时，由于此操作会遍历所有数据，并将结果一次性全部返回，执行时间会比较长，从而导致后续操作等待，直接影响系统的正常运行
+                
                 var records = await _loginRecordRep.GetLoginRecords(userId, data.TimeNow);
 
                 foreach(var item in records)
