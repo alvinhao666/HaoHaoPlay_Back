@@ -155,7 +155,7 @@ namespace Hao.AppService
                 new Claim(JwtRegisteredClaimNames.Sub, _appsettings.Jwt.Subject), //主题
                 new Claim(JwtRegisteredClaimNames.Jti, jti.ToString()), //针对当前 token 的唯一标识 jwt的唯一身份标识，避免重复
                 new Claim(JwtRegisteredClaimNames.Sid, user.Id.ToString()),
-                new Claim(JwtRegisteredClaimNames.Iat, timeNow.Ticks.ToString(), ClaimValueTypes.Integer64), //token 创建时间
+                new Claim(JwtRegisteredClaimNames.Iat, H_Util.GetUnixTimestamp(timeNow).ToString(), ClaimValueTypes.Integer64), //token 创建时间
             };
 
             var secretKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_appsettings.Jwt.SecretKey));
