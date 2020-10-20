@@ -46,7 +46,7 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="vm"></param>
         /// <returns></returns>
-        public async Task AddRole(RoleAddRequest vm)
+        public async Task Add(RoleAddRequest vm)
         {
             var role = new SysRole() { Name = vm.Name };
             try
@@ -63,7 +63,7 @@ namespace Hao.AppService
         /// 获取角色列表
         /// </summary>
         /// <returns></returns>
-        public async Task<List<RoleVM>> GetRoleList()
+        public async Task<List<RoleVM>> GetList()
         {
             var query = new RoleQuery() { OrderFileds = nameof(SysRole.Level) };
 
@@ -160,7 +160,7 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task DeleteRole(long id)
+        public async Task Delete(long id)
         {
             var role = await GetRoleDetail(id);
             var users = await _userRep.GetListAysnc(new UserQuery() { RoleLevel = role.Level });

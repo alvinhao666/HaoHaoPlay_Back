@@ -33,7 +33,7 @@ namespace Hao.AppService
         /// <param name="vm"></param>
         /// <returns></returns>
         [DistributedLock("ModuleAppService_AddModule")]
-        public async Task AddModule(ModuleAddRequest vm)
+        public async Task Add(ModuleAddRequest vm)
         {
             var parentNode = await GetModuleDetail(vm.ParentId.Value);
             if (parentNode.Type == ModuleType.Sub) throw new H_Exception("子菜单无法继续添加节点");
@@ -50,7 +50,7 @@ namespace Hao.AppService
         /// 获取所有模块列表
         /// </summary>
         /// <returns></returns>
-        public async Task<List<ModuleVM>> GetList()
+        public async Task<List<ModuleVM>> GetTreeList()
         {
             var modules = await _moduleRep.GetListAysnc(new ModuleQuery() { IncludeResource = false });
             var result = new List<ModuleVM>();
@@ -88,7 +88,7 @@ namespace Hao.AppService
         /// <param name="vm"></param>
         /// <returns></returns>
         [DistributedLock("ModuleAppService_UpdateModule")]
-        public async Task UpdateModule(long id, ModuleUpdateRequest vm)
+        public async Task Update(long id, ModuleUpdateRequest vm)
         {
             if (id == 0) throw new H_Exception("无法操作系统根节点");
             var module = await GetModuleDetail(id);

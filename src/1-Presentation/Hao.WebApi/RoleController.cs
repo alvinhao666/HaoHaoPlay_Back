@@ -24,7 +24,7 @@ namespace Hao.WebApi
         /// <returns></returns>
         [HttpGet]
         [AuthCode("1_16")]
-        public async Task<List<RoleVM>> GetRoleList() => await _roleAppService.GetRoleList();
+        public async Task<List<RoleVM>> GetRoleList() => await _roleAppService.GetList();
 
         /// <summary>
         /// 获取角色用户的模块

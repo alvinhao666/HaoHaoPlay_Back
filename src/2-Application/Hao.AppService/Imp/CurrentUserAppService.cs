@@ -40,7 +40,7 @@ namespace Hao.AppService
         /// 获取当前用户信息
         /// </summary>
         /// <returns></returns>
-        public async Task<CurrentUserVM> GetUser()
+        public async Task<CurrentUserVM> Get()
         {
             var user = await _userRep.GetAysnc(_currentUser.Id.Value);
             return _mapper.Map<CurrentUserVM>(user);

@@ -26,7 +26,7 @@ namespace Hao.WebApi
         /// <returns></returns>
         [HttpPost]
         [AuthCode("1_1048576")]
-        public async Task AddDict([FromBody]DictAddRequest request) => await _dictAppService.AddDict(request);
+        public async Task AddDict([FromBody]DictAddRequest request) => await _dictAppService.Add(request);
 
         /// <summary>
         /// 查询字典
@@ -35,7 +35,7 @@ namespace Hao.WebApi
         /// <returns></returns>
         [HttpGet]
         [AuthCode("1_524288")]
-        public async Task<PagedList<DictVM>> GetDictPagedList([FromQuery]DictQueryInput queryInput) => await _dictAppService.GetDictPagedList(queryInput);
+        public async Task<PagedList<DictVM>> GetDictPagedList([FromQuery]DictQueryInput queryInput) => await _dictAppService.GetPagedList(queryInput);
 
         /// <summary>
         /// 修改字典
@@ -45,7 +45,7 @@ namespace Hao.WebApi
         /// <returns></returns>
         [HttpPut("{id}")]
         [AuthCode("1_2097152")]
-        public async Task UpdateDict(long? id, [FromBody]DictUpdateRequest request) => await _dictAppService.UpdateDict(id.Value, request);
+        public async Task UpdateDict(long? id, [FromBody]DictUpdateRequest request) => await _dictAppService.Update(id.Value, request);
 
         /// <summary>
         /// 删除字典
@@ -54,7 +54,7 @@ namespace Hao.WebApi
         /// <returns></returns>
         [HttpDelete("{id}")]
         [AuthCode("1_4194304")]
-        public async Task DeleteDict(long? id) => await _dictAppService.DeleteDict(id.Value);
+        public async Task DeleteDict(long? id) => await _dictAppService.Delete(id.Value);
 
         /// <summary>
         /// 添加字典项

@@ -14,36 +14,36 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="vm"></param>
         /// <returns></returns>
-        Task AddUser(UserAddRequest vm);
+        Task Add(UserAddRequest vm);
                 
         /// <summary>
-        /// 编辑用户
+        /// 更新编辑用户
         /// </summary>
         /// <param name="userId"></param>
         /// <param name="vm"></param>
         /// <returns></returns>
-        Task EditUser(long userId, UserUpdateRequest vm);
+        Task Update(long userId, UserUpdateRequest vm);
 
         /// <summary>
         /// 查询用户列表
         /// </summary>
         /// <param name="queryInput"></param>
         /// <returns></returns>
-        Task<PagedList<UserVM>> GetUserPagedList(UserQueryInput queryInput);
+        Task<PagedList<UserVM>> GetPagedList(UserQueryInput queryInput);
 
         /// <summary>
         /// 用户详情
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<UserDetailVM> GetUser(long id);
+        Task<UserDetailVM> Get(long id);
 
         /// <summary>
         /// 删除用户
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        Task DeleteUser(long userId);
+        Task Delete(long userId);
 
         /// <summary>
         /// 注销启
@@ -51,27 +51,27 @@ namespace Hao.AppService
         /// <param name="userId"></param>
         /// <param name="enabled"></param>
         /// <returns></returns>
-        Task UpdateUserStatus(long userId,bool enabled);
+        Task UpdateStatus(long userId,bool enabled);
 
         /// <summary>
         /// 导出excel
         /// </summary>
         /// <param name="queryInput"></param>
         /// <returns></returns>
-        Task<UserExcelVM> ExportUser(UserQueryInput queryInput);
+        Task<UserExcelVM> Export(UserQueryInput queryInput);
 
         /// <summary>
         /// 是否存在用户
         /// </summary>
         /// <param name="queryInput"></param>
         /// <returns></returns>
-        Task<bool> IsExistUser(UserQueryInput queryInput);
+        Task<bool> IsExist(UserQueryInput queryInput);
 
         /// <summary>
         /// 导入excel
         /// </summary>
         /// <param name="files"></param>
         /// <returns></returns>
-        Task ImportUser(IFormFileCollection files);
+        Task Import(IFormFileCollection files);
     }
 }

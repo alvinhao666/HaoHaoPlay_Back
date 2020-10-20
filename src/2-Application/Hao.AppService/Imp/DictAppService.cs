@@ -29,7 +29,7 @@ namespace Hao.AppService
         /// <param name="request"></param>
         /// <returns></returns>
         [DistributedLock("DictAppService_AddDict")]
-        public async Task AddDict(DictAddRequest request)
+        public async Task Add(DictAddRequest request)
         {
             var sameItems = await _dictRep.GetListAysnc(new DictQuery { EqualDictName = request.DictName });
             if (sameItems.Count > 0) throw new H_Exception("字典名称已存在，请重新输入");
@@ -49,7 +49,7 @@ namespace Hao.AppService
         /// <param name="request"></param>
         /// <returns></returns>
         [DistributedLock("DictAppService_UpdateDict")]
-        public async Task UpdateDict(long id, DictUpdateRequest request)
+        public async Task Update(long id, DictUpdateRequest request)
         {
             var sameItems = await _dictRep.GetListAysnc(new DictQuery { EqualDictName = request.DictName });
             if (sameItems.Where(a => a.Id != id).Count() > 0) throw new H_Exception("字典名称已存在，请重新输入");
@@ -71,7 +71,7 @@ namespace Hao.AppService
         /// <param name="id"></param>
         /// <returns></returns>
         [UnitOfWork]
-        public async Task DeleteDict(long id)
+        public async Task Delete(long id)
         {
             var dictItems = await _dictRep.GetListAysnc(new DictQuery { ParentId = id });
             await _dictRep.DeleteAysnc(id);
@@ -88,7 +88,7 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="queryInput"></param>
         /// <returns></returns>
-        public async Task<PagedList<DictVM>> GetDictPagedList(DictQueryInput queryInput)
+        public async Task<PagedList<DictVM>> GetPagedList(DictQueryInput queryInput)
         {
             var query = _mapper.Map<DictQuery>(queryInput);
 

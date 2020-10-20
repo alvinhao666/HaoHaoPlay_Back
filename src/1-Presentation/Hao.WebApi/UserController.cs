@@ -30,7 +30,7 @@ namespace Hao.WebApi
         /// <returns></returns>
         [HttpPost]
         [AuthCode("1_32")]
-        public async Task Add([FromBody]UserAddRequest request) => await _userAppService.AddUser(request);
+        public async Task Add([FromBody]UserAddRequest request) => await _userAppService.Add(request);
 
         /// <summary>
         /// 获取角色列表
@@ -47,7 +47,7 @@ namespace Hao.WebApi
         /// <returns></returns>
         [HttpGet]
         [AuthCode("1_4")]
-        public async Task<bool> IsExistUser([FromQuery]UserQueryInput queryInput) => await _userAppService.IsExistUser(queryInput);
+        public async Task<bool> IsExistUser([FromQuery]UserQueryInput queryInput) => await _userAppService.IsExist(queryInput);
 
         /// <summary>
         /// 查询用户分页列表
@@ -55,7 +55,7 @@ namespace Hao.WebApi
         /// <returns></returns>
         [HttpGet]
         [AuthCode("1_4")]
-        public async Task<PagedList<UserVM>> GetPagedList([FromQuery]UserQueryInput queryInput) => await _userAppService.GetUserPagedList(queryInput);
+        public async Task<PagedList<UserVM>> GetPagedList([FromQuery]UserQueryInput queryInput) => await _userAppService.GetPagedList(queryInput);
 
         /// <summary>
         /// 根据id获取用户
@@ -64,7 +64,7 @@ namespace Hao.WebApi
         /// <returns></returns>
         [HttpGet("{id}")]
         [AuthCode("1_4")]
-        public async Task<UserDetailVM> Get(long? id) => await _userAppService.GetUser(id.Value);
+        public async Task<UserDetailVM> Get(long? id) => await _userAppService.Get(id.Value);
 
         /// <summary>
         /// 修改用户
@@ -74,7 +74,7 @@ namespace Hao.WebApi
         /// <returns></returns>
         [HttpPut("{id}")]
         [AuthCode("1_64")]
-        public async Task Update(long? id, [FromBody]UserUpdateRequest request) => await _userAppService.EditUser(id.Value, request);
+        public async Task Update(long? id, [FromBody]UserUpdateRequest request) => await _userAppService.Update(id.Value, request);
 
         /// <summary>
         /// 注销用户
@@ -83,7 +83,7 @@ namespace Hao.WebApi
         /// <returns></returns>
         [HttpPut("{id}")]
         [AuthCode("1_128")]
-        public async Task Disable(long? id) => await _userAppService.UpdateUserStatus(id.Value, false);
+        public async Task Disable(long? id) => await _userAppService.UpdateStatus(id.Value, false);
 
         /// <summary>
         /// 启用用户
@@ -92,7 +92,7 @@ namespace Hao.WebApi
         /// <returns></returns>
         [HttpPut("{id}")]
         [AuthCode("1_256")]
-        public async Task Enable(long? id) => await _userAppService.UpdateUserStatus(id.Value, true);
+        public async Task Enable(long? id) => await _userAppService.UpdateStatus(id.Value, true);
 
         /// <summary>
         /// 删除用户
@@ -101,7 +101,7 @@ namespace Hao.WebApi
         /// <returns></returns>
         [HttpDelete("{id}")]
         [AuthCode("1_512")]
-        public async Task Delete(long? id) => await _userAppService.DeleteUser(id.Value);
+        public async Task Delete(long? id) => await _userAppService.Delete(id.Value);
 
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace Hao.WebApi
         /// <returns></returns>
         [HttpGet]
         [AuthCode("1_2048")]
-        public async Task<UserExcelVM> Export([FromQuery]UserQueryInput queryInput) => await _userAppService.ExportUser(queryInput);
+        public async Task<UserExcelVM> Export([FromQuery]UserQueryInput queryInput) => await _userAppService.Export(queryInput);
 
 
         /// <summary>
@@ -121,6 +121,6 @@ namespace Hao.WebApi
         /// <returns></returns>
         [HttpPost]
         [AuthCode("1_1024")]
-        public async Task Import() => await _userAppService.ImportUser(HttpContext.Request.Form.Files);
+        public async Task Import() => await _userAppService.Import(HttpContext.Request.Form.Files);
     }
 }

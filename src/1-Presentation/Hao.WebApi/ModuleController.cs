@@ -26,15 +26,15 @@ namespace Hao.WebApi
         /// <returns></returns>
         [HttpPost]
         [AuthCode("1_4096")]
-        public async Task Add([FromBody]ModuleAddRequest request) => await _moduleAppService.AddModule(request);
+        public async Task Add([FromBody]ModuleAddRequest request) => await _moduleAppService.Add(request);
 
         /// <summary>
-        /// 获取模块列表
+        /// 获取模块树列表
         /// </summary>
         /// <returns></returns>
         [HttpGet]
         [AuthCode("1_8")]
-        public async Task<List<ModuleVM>> GetList() => await _moduleAppService.GetList();
+        public async Task<List<ModuleVM>> GetList() => await _moduleAppService.GetTreeList();
 
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace Hao.WebApi
         /// <returns></returns>
         [HttpPut("{id}")]
         [AuthCode("1_8192")]
-        public async Task Update(long? id, [FromBody]ModuleUpdateRequest request) => await _moduleAppService.UpdateModule(id.Value, request);
+        public async Task Update(long? id, [FromBody]ModuleUpdateRequest request) => await _moduleAppService.Update(id.Value, request);
 
 
         /// <summary>

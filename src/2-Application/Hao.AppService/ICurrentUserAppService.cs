@@ -12,7 +12,7 @@ namespace Hao.AppService
         /// 当前用户信息
         /// </summary>
         /// <returns></returns>
-        Task<CurrentUserVM> GetUser();
+        Task<CurrentUserVM> Get();
 
         /// <summary>
         /// 更新头像

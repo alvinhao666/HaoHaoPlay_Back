@@ -13,13 +13,13 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="vm"></param>
         /// <returns></returns>
-        Task AddRole(RoleAddRequest vm);
+        Task Add(RoleAddRequest vm);
 
         /// <summary>
         /// 获取所有角色列表
         /// </summary>
         /// <returns></returns>
-        Task<List<RoleVM>>  GetRoleList();
+        Task<List<RoleVM>> GetList();
 
         /// <summary>
         /// 根据当前用户角色，获取可以操作得角色列表
@@ -47,6 +47,6 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task DeleteRole(long id);
+        Task Delete(long id);
     }
 }

@@ -13,31 +13,7 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="vm"></param>
         /// <returns></returns>
-        Task AddModule(ModuleAddRequest vm);
-
-        /// <summary>
-        /// 获取模块列表
-        /// </summary>
-        /// <returns></returns>
-        Task<List<ModuleVM>> GetList();
-
-
-        /// <summary>
-        /// 获取模块详情
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        Task<ModuleDetailVM> Get(long id);
-
-
-        /// <summary>
-        /// 更新模块信息
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="vm"></param>
-        /// <returns></returns>
-        Task UpdateModule(long id, ModuleUpdateRequest vm);
-
+        Task Add(ModuleAddRequest vm);
 
         /// <summary>
         /// 删除模块
@@ -46,6 +22,26 @@ namespace Hao.AppService
         /// <returns></returns>
         Task Delete(long id);
 
+        /// <summary>
+        /// 更新模块信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="vm"></param>
+        /// <returns></returns>
+        Task Update(long id, ModuleUpdateRequest vm);
+
+        /// <summary>
+        /// 获取模块列表
+        /// </summary>
+        /// <returns></returns>
+        Task<List<ModuleVM>> GetTreeList();
+
+        /// <summary>
+        /// 获取模块详情
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<ModuleDetailVM> Get(long id);
 
         #region 资源
         /// <summary>
@@ -63,18 +59,19 @@ namespace Hao.AppService
         Task DeleteResource(long id);
 
         /// <summary>
-        /// 获取资源列表
-        /// </summary>
-        /// <returns></returns>
-        Task<List<ResourceItemVM>> GetResourceList(long parentId);
-
-        /// <summary>
         /// 更新资源信息
         /// </summary>
         /// <param name="id"></param>
         /// <param name="vm"></param>
         /// <returns></returns>
         Task UpdateResource(long id, ResourceUpdateRequest vm);
+
+        /// <summary>
+        /// 获取资源列表
+        /// </summary>
+        /// <returns></returns>
+        Task<List<ResourceItemVM>> GetResourceList(long parentId);
+
         #endregion
 
     }

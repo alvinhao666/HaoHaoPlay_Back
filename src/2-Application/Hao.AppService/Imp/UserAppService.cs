@@ -65,7 +65,7 @@ namespace Hao.AppService
         /// <returns></returns>
         [DistributedLock("UserAppService_AddUser")]
         [UnitOfWork]
-        public async Task AddUser(UserAddRequest vm)
+        public async Task Add(UserAddRequest vm)
         {
             var users = await _userRep.GetAllAysnc(new UserQuery()
             {
@@ -106,7 +106,7 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="queryInput"></param>
         /// <returns></returns>
-        public async Task<PagedList<UserVM>> GetUserPagedList(UserQueryInput queryInput)
+        public async Task<PagedList<UserVM>> GetPagedList(UserQueryInput queryInput)
         {
             var query = _mapper.Map<UserQuery>(queryInput);
 
@@ -123,7 +123,7 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<UserDetailVM> GetUser(long id)
+        public async Task<UserDetailVM> Get(long id)
         {
             var user = await GetUserDetail(id);
             return _mapper.Map<UserDetailVM>(user);
@@ -137,7 +137,7 @@ namespace Hao.AppService
         /// <returns></returns>
         [DistributedLock("UserAppService_DeleteUser")]
         [UnitOfWork]
-        public async Task DeleteUser(long userId)
+        public async Task Delete(long userId)
         {
             CheckUser(userId);
             var user = await GetUserDetail(userId);
@@ -160,7 +160,7 @@ namespace Hao.AppService
         /// <param name="userId"></param>
         /// <param name="enabled"></param>
         /// <returns></returns>
-        public async Task UpdateUserStatus(long userId, bool enabled)
+        public async Task UpdateStatus(long userId, bool enabled)
         {
             CheckUser(userId);
             var user = await GetUserDetail(userId);
@@ -177,12 +177,12 @@ namespace Hao.AppService
         }
 
         /// <summary>
-        /// 编辑用户
+        /// 更新编辑用户
         /// </summary>
         /// <param name="userId"></param>
         /// <param name="vm"></param>
         /// <returns></returns>
-        public async Task EditUser(long userId, UserUpdateRequest vm)
+        public async Task Update(long userId, UserUpdateRequest vm)
         {
             CheckUser(userId);
             var user = await GetUserDetail(userId);
@@ -198,7 +198,7 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="queryInput"></param>
         /// <returns></returns>
-        public async Task<bool> IsExistUser(UserQueryInput queryInput)
+        public async Task<bool> IsExist(UserQueryInput queryInput)
         {
             var query = _mapper.Map<UserQuery>(queryInput);
             var users = await _userRep.GetListAysnc(query);
@@ -211,7 +211,7 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="queryInput"></param>
         /// <returns></returns>
-        public async Task<UserExcelVM> ExportUser(UserQueryInput queryInput)
+        public async Task<UserExcelVM> Export(UserQueryInput queryInput)
         {
             var query = _mapper.Map<UserQuery>(queryInput);
             var users = await _userRep.GetListAysnc(query);
@@ -244,7 +244,7 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="files"></param>
         /// <returns></returns>
-        public async Task ImportUser(IFormFileCollection files)
+        public async Task Import(IFormFileCollection files)
         {
             if (files == null || files.Count == 0) throw new H_Exception("请选择Excel文件");
 

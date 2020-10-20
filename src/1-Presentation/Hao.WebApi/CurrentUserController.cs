@@ -22,7 +22,7 @@ namespace Hao.WebApi
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<CurrentUserVM> GetUser() => await _currentUserAppService.GetUser();
+        public async Task<CurrentUserVM> GetUser() => await _currentUserAppService.Get();
 
         /// <summary>
         /// 更新当前用户头像

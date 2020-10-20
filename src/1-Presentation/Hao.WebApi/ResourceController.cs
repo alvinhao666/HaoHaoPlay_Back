@@ -38,7 +38,7 @@ namespace Hao.WebApi
         public async Task Delete(long? id) => await _moduleAppService.DeleteResource(id.Value);
 
         /// <summary>
-        /// 查询资源分页列表
+        /// 查询资源列表
         /// </summary>
         /// <returns></returns>
         [HttpGet("{parentId}")]
