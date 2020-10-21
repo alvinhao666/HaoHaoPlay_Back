@@ -66,6 +66,15 @@ namespace Hao.WebApi
         [AuthCode("1_4")]
         public async Task<UserDetailVM> Get(long? id) => await _userAppService.Get(id.Value);
 
+        ///// <summary>
+        ///// 根据id获取用户 [Required]
+        ///// </summary>
+        ///// <param name="id"></param>
+        ///// <returns></returns>
+        //[HttpGet]
+        //[AuthCode("1_4")]
+        //public async Task<UserDetailVM> Get([Required] long? id) => await _userAppService.Get(id.Value);
+
         /// <summary>
         /// 修改用户
         /// </summary>
