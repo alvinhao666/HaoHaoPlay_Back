@@ -11,8 +11,10 @@ namespace Hao.Utility
         /// <typeparam name="TValue"></typeparam>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static string Serialize<TValue>(TValue value)
+        public static string Serialize(object value)
         {
+            if (value == null) return string.Empty;
+
             return JsonSerializer.Serialize(value, new JsonSerializerOptions()
             {
                 //在默认情况下，System.Text.Json 序列化程序对所有非 ASCII 字符进行转义；这就是中文被转义的根本原因
@@ -31,6 +33,8 @@ namespace Hao.Utility
         /// <returns></returns>
         public static TValue Deserialize<TValue>(string json)
         {
+            if (string.IsNullOrWhiteSpace(json)) return default;
+
             return JsonSerializer.Deserialize<TValue>(json, new JsonSerializerOptions()
             {
                 Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
