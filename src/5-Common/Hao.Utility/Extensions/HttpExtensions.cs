@@ -16,7 +16,8 @@ namespace Hao.Utility
         /// <param name="t"></param>
         /// <param name="timeoutSeconds"></param>
         /// <returns></returns>
-        public static async Task<TResult> Post<T, TResult>(this HttpClient httpClient, string url, T t, int timeoutSeconds = 30) where T : new() where TResult : new()
+        public static async Task<TResult> Post<T, TResult>(this HttpClient httpClient, string url, T t,
+            int timeoutSeconds = 30) where T : class, new() where TResult : class, new()
         {
             var json = H_JsonSerializer.Serialize(t);
 
@@ -44,7 +45,8 @@ namespace Hao.Utility
         /// <param name="obj"></param>
         /// <param name="timeoutSeconds"></param>
         /// <returns></returns>
-        public static async Task<TResult> Get<T, TResult>(this HttpClient httpClient, string url, T t, int timeoutSeconds = 30) where T : new() where TResult : new()
+        public static async Task<TResult> Get<T, TResult>(this HttpClient httpClient, string url, T t,
+            int timeoutSeconds = 30) where T : class, new() where TResult : class, new()
         {
             httpClient.Timeout = new TimeSpan(0, 0, timeoutSeconds);
 

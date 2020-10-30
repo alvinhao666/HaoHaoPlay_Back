@@ -256,7 +256,7 @@ namespace Hao.Utility
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public static string ToUrlParam<T>(T obj) where T : new()
+        public static string ToUrlParam<T>(T obj) where T : class, new()
         {
             // 1、当字符串数据以url的形式传递给web服务器时,字符串中是不允许出现空格和特殊字符的
             // 2、因为 url 对字符有限制，比如把一个邮箱放入 url，就需要使用 urlencode 函数，因为 url 中不能包含 @ 字符。
