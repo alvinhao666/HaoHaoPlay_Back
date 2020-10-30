@@ -73,7 +73,7 @@ namespace Hao.Utility
         {
             if (IsExistFile(filePath))
             {
-                System.IO.File.Delete(filePath);
+                File.Delete(filePath);
             }
         }
 

@@ -52,9 +52,10 @@ namespace Hao.Utility
         /// <returns></returns>
         public static List<T> ToEntities<T>(this DataTable table) where T : new()
         {
+            if (table == null) return null;
+
             List<T> entities = new List<T>();
-            if (table == null)
-                return null;
+
             foreach (DataRow row in table.Rows)
             {
                 T entity = new T();
