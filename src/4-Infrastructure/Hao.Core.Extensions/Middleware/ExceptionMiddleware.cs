@@ -17,17 +17,10 @@ namespace Hao.Core.Extensions
 
         public static void UseExceptionMiddleware(this IApplicationBuilder app)
         {
-            try
+            app.UseExceptionHandler(new ExceptionHandlerOptions
             {
-                app.UseExceptionHandler(new ExceptionHandlerOptions
-                {
-                    ExceptionHandler = Invoke
-                });
-            }
-            catch (Exception ex)
-            {
-                _logger.Error(ex, H_JsonSerializer.Serialize(ex.Message));
-            }
+                ExceptionHandler = Invoke
+            });
         }
 
         //静态方法效率上要比实例化高，静态方法的缺点是不自动进行销毁，而实例化的则可以做销毁。
@@ -70,10 +63,10 @@ namespace Hao.Core.Extensions
             {
                 context.Request.Path,
                 context.TraceIdentifier,
-                ex.Message
+                Exception = ex
             };
 
-            _logger.Error(ex, H_JsonSerializer.Serialize(errorLog)); //异常信息，记录到日志中
+            _logger.Error($"系统错误信息:{H_JsonSerializer.Serialize(errorLog)}"); //异常信息，记录到日志中
 
             await context.Response.WriteAsync(H_JsonSerializer.Serialize(response), Encoding.UTF8);
         }
