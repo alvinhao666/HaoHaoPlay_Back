@@ -11,7 +11,7 @@ namespace Hao.Utility
         /// <typeparam name="T"></typeparam>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static string Serialize<T>(T value) where T : class
+        public static string Serialize<T>(T value) where T : class, new()
         {
             if (value == null) return string.Empty;
 
@@ -31,7 +31,7 @@ namespace Hao.Utility
         /// <typeparam name="T"></typeparam>
         /// <param name="json"></param>
         /// <returns></returns>
-        public static T Deserialize<T>(string json) where T : class
+        public static T Deserialize<T>(string json) where T : class, new()
         {
             if (string.IsNullOrWhiteSpace(json)) return default;
 

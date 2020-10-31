@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Http;
 using NLog;
 using System;
 using System.Text;
+using System.Text.Encodings.Web;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Hao.Core.Extensions
@@ -65,10 +67,17 @@ namespace Hao.Core.Extensions
                 context.TraceIdentifier,
                 Exception = ex
             };
+            
+            
+            var options =new JsonSerializerOptions
+            {
+                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+                PropertyNamingPolicy = null
+            };
 
-            _logger.Error($"系统错误信息:{H_JsonSerializer.Serialize(errorLog)}"); //异常信息，记录到日志中
+            _logger.Error($"系统错误信息:{JsonSerializer.Serialize(errorLog, options)}"); //异常信息，记录到日志中
 
-            await context.Response.WriteAsync(H_JsonSerializer.Serialize(response), Encoding.UTF8);
+            await context.Response.WriteAsync(JsonSerializer.Serialize(errorLog, options), Encoding.UTF8);
         }
     }
 }
