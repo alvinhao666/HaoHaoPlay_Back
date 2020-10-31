@@ -69,7 +69,7 @@ namespace Hao.Core.Extensions
             };
             
             
-            var options =new JsonSerializerOptions
+            var options = new JsonSerializerOptions
             {
                 Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
                 PropertyNamingPolicy = null
