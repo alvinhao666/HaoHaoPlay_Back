@@ -58,7 +58,7 @@ namespace Hao.Library
         /// <summary>
         /// automaper需要注入的类所在程序集名称
         /// </summary>
-        public List<string> AutoMapperAssemblyNames { get; set; }
+        public List<string> MapperAssemblyNames { get; set; }
 
         /// <summary>
         /// 事件订阅需要注入的类所在程序集名称

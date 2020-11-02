@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using DotNetCore.CAP;
+﻿using DotNetCore.CAP;
 using Hao.Core;
 using Hao.Encrypt;
 using Hao.Enum;
@@ -18,6 +17,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using MapsterMapper;
 
 namespace Hao.AppService
 {

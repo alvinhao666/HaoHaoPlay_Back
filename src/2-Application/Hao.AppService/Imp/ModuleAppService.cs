@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+﻿using MapsterMapper;
 using Hao.Core;
 using Hao.Model;
 using System;

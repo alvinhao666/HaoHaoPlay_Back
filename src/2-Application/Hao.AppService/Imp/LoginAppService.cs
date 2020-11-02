@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+﻿using MapsterMapper;
 using DotNetCore.CAP;
 using Hao.Core;
 using Hao.Encrypt;

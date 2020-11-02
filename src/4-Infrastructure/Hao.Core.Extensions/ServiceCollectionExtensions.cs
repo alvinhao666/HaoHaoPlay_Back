@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+﻿using MapsterMapper;
 using CSRedis;
 using DotNetCore.CAP;
 using FluentValidation.AspNetCore;
@@ -19,6 +19,8 @@ using System.Reflection;
 using System.Text;
 using System.Text.Encodings.Web;
 using AspectCore.Extensions.DependencyInjection;
+using MapsterMapper;
+using Mapster;
 
 namespace Hao.Core.Extensions
 {
@@ -147,9 +149,9 @@ namespace Hao.Core.Extensions
             //雪花id
             services.AddSingleton(new IdWorker(appSettings.SnowflakeId.WorkerId, appSettings.SnowflakeId.DataCenterId));
 
-            //AutoMapper
-            services.AddAutoMapper(appSettings.AutoMapperAssemblyNames.Select(name => Assembly.Load(name)));
-            
+            TypeAdapterConfig.GlobalSettings.Scan(appSettings.MapperAssemblyNames.Select(name => Assembly.Load(name)).ToArray());
+            services.AddScoped<IMapper, Mapper>();
+
             //IOC
             services.AutoDependency(appSettings.DiAssemblyNames.Select(name => Assembly.Load(name)));
 
