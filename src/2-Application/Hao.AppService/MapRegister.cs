@@ -23,9 +23,9 @@ namespace Hao.AppService
         /// </summary>
         private void MapUser(TypeAdapterConfig config)
         {
-            config.ForType<SysUser, LoginVM>();
+            //config.ForType<SysUser, LoginVM>();
 
-            config.ForType<PagedList<SysUser>, PagedList<UserVM>>();
+            //config.ForType<PagedList<SysUser>, PagedList<UserVM>>();
 
             config.ForType<SysUser, UserVM>()
                .Map(x => x.GenderString, a => a.Gender.GetDescription())
@@ -35,10 +35,10 @@ namespace Hao.AppService
                .Map(x => x.GenderString, a => a.Gender.GetDescription())
                .Map(x => x.EnabledString, a => a.Enabled.IsTrue() ? "启用" : "注销");
 
-            config.ForType<UserAddRequest, SysUser>();
+            //config.ForType<UserAddRequest, SysUser>();
 
 
-            config.ForType<SysUser, CurrentUserVM>();
+            //config.ForType<SysUser, CurrentUserVM>();
 
             config.ForType<SysUser, UserSecurityVM>()
                .Map(x => x.PasswordLevel, a => a.PasswordLevel.GetDescription())
@@ -48,7 +48,7 @@ namespace Hao.AppService
             config.ForType<UserQueryInput, UserQuery>()
                .Map(x => x.OrderFileds, a => a.OrderByType.CombineNameWithSpace(a.SortField));
 
-            config.ForType<UserUpdateRequest, SysUser>();
+            //config.ForType<UserUpdateRequest, SysUser>();
         }
 
         /// <summary>
@@ -61,12 +61,12 @@ namespace Hao.AppService
             config.ForType<SysModule, ModuleDetailVM>()
                .Map(x => x.Code, a => string.Format("{0}_{1}", a.Layer, a.Number));
 
-            config.ForType<ModuleAddRequest, SysModule>();
+            //config.ForType<ModuleAddRequest, SysModule>();
             #endregion
 
 
             #region 资源
-            config.ForType<ResourceAddRequest, SysModule>();
+            //config.ForType<ResourceAddRequest, SysModule>();
 
             config.ForType<SysModule, ResourceItemVM>()
                .Map(x => x.ResourceCode, a => string.Format("{0}_{1}", a.Layer, a.Number));
@@ -78,9 +78,9 @@ namespace Hao.AppService
         /// </summary>
         private void MapRole(TypeAdapterConfig config)
         {
-            config.ForType<SysRole, RoleVM>();
+            //config.ForType<SysRole, RoleVM>();
 
-            config.ForType<SysRole, RoleSelectVM>();
+            //config.ForType<SysRole, RoleSelectVM>();
         }
 
 
@@ -89,21 +89,21 @@ namespace Hao.AppService
         /// </summary>
         private void MapDict(TypeAdapterConfig config)
         {
-            config.ForType<DictAddRequest, SysDict>();
+            //config.ForType<DictAddRequest, SysDict>();
 
-            config.ForType<DictItemAddRequest, SysDict>();
+            //config.ForType<DictItemAddRequest, SysDict>();
 
-            config.ForType<PagedList<SysDict>, PagedList<DictVM>>();
+            //config.ForType<PagedList<SysDict>, PagedList<DictVM>>();
 
-            config.ForType<SysDict, DictVM>();
+            //config.ForType<SysDict, DictVM>();
 
-            config.ForType<PagedList<SysDict>, PagedList<DictItemVM>>();
+            //config.ForType<PagedList<SysDict>, PagedList<DictItemVM>>();
 
-            config.ForType<SysDict, DictItemVM>();
+            //config.ForType<SysDict, DictItemVM>();
 
-            config.ForType<SysDict, DictDataItemVM>();
+            //config.ForType<SysDict, DictDataItemVM>();
 
-            config.ForType<DictQueryInput, DictQuery>();
+            //config.ForType<DictQueryInput, DictQuery>();
         }
     }
 }

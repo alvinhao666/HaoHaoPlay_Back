@@ -149,6 +149,7 @@ namespace Hao.Core.Extensions
             //雪花id
             services.AddSingleton(new IdWorker(appSettings.SnowflakeId.WorkerId, appSettings.SnowflakeId.DataCenterId));
 
+            //Mapper
             TypeAdapterConfig.GlobalSettings.Scan(appSettings.MapperAssemblyNames.Select(name => Assembly.Load(name)).ToArray());
             services.AddScoped<IMapper, Mapper>();
 
