@@ -1,5 +1,4 @@
-﻿using MapsterMapper;
-using CSRedis;
+﻿using CSRedis;
 using DotNetCore.CAP;
 using FluentValidation.AspNetCore;
 using Hao.Library;
@@ -19,8 +18,8 @@ using System.Reflection;
 using System.Text;
 using System.Text.Encodings.Web;
 using AspectCore.Extensions.DependencyInjection;
-using MapsterMapper;
 using Mapster;
+using MapsterMapper;
 
 namespace Hao.Core.Extensions
 {

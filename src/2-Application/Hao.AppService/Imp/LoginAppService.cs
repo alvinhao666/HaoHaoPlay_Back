@@ -1,5 +1,4 @@
-﻿using MapsterMapper;
-using DotNetCore.CAP;
+﻿using DotNetCore.CAP;
 using Hao.Core;
 using Hao.Encrypt;
 using Hao.Enum;
@@ -7,6 +6,7 @@ using Hao.EventData;
 using Hao.Library;
 using Hao.Model;
 using Hao.Utility;
+using MapsterMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;

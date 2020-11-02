@@ -1,5 +1,4 @@
-﻿using MapsterMapper;
-using Hao.Core;
+﻿using Hao.Core;
 using Hao.Model;
 using System;
 using System.Collections.Generic;
@@ -8,6 +7,7 @@ using System.Threading.Tasks;
 using Hao.Enum;
 using Npgsql;
 using Hao.Library;
+using MapsterMapper;
 
 namespace Hao.AppService
 {

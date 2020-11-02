@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MapsterMapper;
 using DotNetCore.CAP;
 using Hao.Core;
 using Hao.Enum;
@@ -10,6 +9,7 @@ using Hao.EventData;
 using Hao.Library;
 using Hao.Model;
 using Hao.Utility;
+using MapsterMapper;
 using Npgsql;
 
 namespace Hao.AppService

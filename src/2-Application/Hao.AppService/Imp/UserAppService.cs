@@ -7,6 +7,7 @@ using Hao.Excel;
 using Hao.Library;
 using Hao.Model;
 using Hao.Utility;
+using MapsterMapper;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
@@ -17,7 +18,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using MapsterMapper;
 
 namespace Hao.AppService
 {
