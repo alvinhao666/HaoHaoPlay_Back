@@ -61,9 +61,9 @@ namespace Hao.Core.Extensions
 
             var errorLog = new
             {
-                context.Request.Path,
+                Path = context.Request.Path.Value,
                 context.TraceIdentifier,
-                Exception = ex
+                ex.Message
             };
             
             
@@ -73,9 +73,9 @@ namespace Hao.Core.Extensions
                 PropertyNamingPolicy = null
             };
 
-            _logger.Error($"系统错误信息:{JsonSerializer.Serialize(errorLog, options)}"); //异常信息，记录到日志中
+            _logger.Error(ex, $"系统错误信息:{JsonSerializer.Serialize(errorLog, options)}"); //异常信息，记录到日志中
 
-            await context.Response.WriteAsync(JsonSerializer.Serialize(errorLog, options), Encoding.UTF8);
+            await context.Response.WriteAsync(JsonSerializer.Serialize(response, options), Encoding.UTF8);
         }
     }
 }
