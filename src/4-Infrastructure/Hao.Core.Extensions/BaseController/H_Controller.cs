@@ -39,7 +39,7 @@ namespace Hao.Core.Extensions
             {
                 Method = context.HttpContext.Request.Path.Value,
                 Data = context.ActionArguments,
-                Description = $"请求TraceId：{context.HttpContext.TraceIdentifier}，UserId：{userId}，IP：{ip}"
+                Description = $"请求信息TraceId：{context.HttpContext.TraceIdentifier}，UserId：{userId}，IP：{ip}"
             });
 
             var cache = GetCacheUser(userId, jti);
@@ -81,7 +81,7 @@ namespace Hao.Core.Extensions
             {
                 Method = HttpContext.Request.Path.Value,
                 Data = result,
-                Description = $"返回TraceId：{context.HttpContext.TraceIdentifier}，UserId：{userId}"
+                Description = $"响应结果TraceId：{context.HttpContext.TraceIdentifier}，UserId：{userId}"
             });
 
             base.OnActionExecuted(context);

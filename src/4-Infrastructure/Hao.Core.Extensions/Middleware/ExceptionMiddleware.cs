@@ -59,21 +59,13 @@ namespace Hao.Core.Extensions
             }
 #endif
 
-            var errorLog = new
-            {
-                Path = context.Request.Path.Value,
-                context.TraceIdentifier,
-                ex.Message
-            };
-            
-            
+            _logger.Error(ex, $"系统错误信息TraceId：{context.TraceIdentifier}，Path：{context.Request.Path.Value}"); //异常信息，记录到日志中
+
             var options = new JsonSerializerOptions
             {
                 Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
                 PropertyNamingPolicy = null
             };
-
-            _logger.Error(ex, $"系统错误信息:{JsonSerializer.Serialize(errorLog, options)}"); //异常信息，记录到日志中
 
             await context.Response.WriteAsync(JsonSerializer.Serialize(response, options), Encoding.UTF8);
         }
