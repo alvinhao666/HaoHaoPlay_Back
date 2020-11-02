@@ -33,12 +33,15 @@ namespace Hao.Core.Extensions
 
             var jti = User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti)?.Value;
 
-            var ip = HttpContext.GetIp();
+            var ip = context.HttpContext.GetIp();
 
-            var argument = new { context.HttpContext.TraceIdentifier, UserId = userId, context.ActionArguments, IP = ip };
+            Logger.Info(new H_Log
+            {
+                Method = context.HttpContext.Request.Path.Value,
+                Data = context.ActionArguments,
+                Description = $"请求TraceId：{context.HttpContext.TraceIdentifier}，UserId：{userId}，IP：{ip}"
+            });
 
-            Logger.Info(new H_Log{ Method = context.HttpContext.Request.Path.Value, Argument = argument, Description = "请求信息" });
-            
             var cache = GetCacheUser(userId, jti);
 
             //if (ip != cache.Ip) throw new H_Exception("请重新登录", nameof(H_Error.E100004).GetErrorCode());
@@ -72,14 +75,14 @@ namespace Hao.Core.Extensions
                 result = (context.Result as JsonResult)?.Value;
             }
 
-            var param = new
-            {
-                context.HttpContext.TraceIdentifier,
-                UserId = context.HttpContext.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sid)?.Value,
-                Result = result
-            };
+            var userId = context.HttpContext.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sid)?.Value;
 
-            Logger.Info(new H_Log{ Method = HttpContext.Request.Path.Value, Argument = param, Description = "返回信息" });
+            Logger.Info(new H_Log
+            {
+                Method = HttpContext.Request.Path.Value,
+                Data = result,
+                Description = $"返回TraceId：{context.HttpContext.TraceIdentifier}，UserId：{userId}"
+            });
 
             base.OnActionExecuted(context);
         }

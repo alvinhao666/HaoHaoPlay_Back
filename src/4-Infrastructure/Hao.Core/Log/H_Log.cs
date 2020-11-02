@@ -11,9 +11,9 @@ namespace Hao.Core
         public string Method { get; set; }
 
         /// <summary>
-        /// 参数
+        /// 数据
         /// </summary>
-        public object Argument { get; set; }
+        public object Data { get; set; }
 
         /// <summary>
         /// 描述

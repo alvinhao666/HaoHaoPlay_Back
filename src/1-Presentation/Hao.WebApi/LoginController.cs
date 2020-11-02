@@ -36,11 +36,11 @@ namespace Hao.WebApi
         {
             request.Ip = HttpContext.GetIp();
 
-            _logger.Info(new H_Log() { Method = "LoginRequest", Argument = new { HttpContext.TraceIdentifier, request }, Description = "登录请求" });
+            _logger.Info(new H_Log() { Method = "Login", Data = request , Description = $"登录请求TraceId：{HttpContext.TraceIdentifier}" });
 
             var result = await _loginAppService.Login(request);
 
-            _logger.Info(new H_Log() { Method = "LoginResponse", Argument = new { HttpContext.TraceIdentifier, result }, Description = "登录成功" });
+            _logger.Info(new H_Log() { Method = "Login", Data = result, Description = $"登录返回TraceId：{HttpContext.TraceIdentifier}" });
 
             return result;
         }
