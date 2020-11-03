@@ -98,7 +98,6 @@ namespace Hao.AppService
                 if (ex.SqlState == H_PostgresSqlState.E23505) throw new H_Exception("账号已存在，请重新输入");//违反唯一键
             }
 
-
             await _roleRep.UpdateAsync(role, a => new { a.UserCount });
         }
 
