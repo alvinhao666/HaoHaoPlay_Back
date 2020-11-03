@@ -19,6 +19,9 @@ namespace Hao.Core
         /// </summary>
         public virtual string QuerySql { get; }
 
-        public virtual string OrderFileds { get; set; }
+        /// <summary>
+        /// 排序字段
+        /// </summary>
+        public virtual string OrderByFileds { get; set; }
     }
 }

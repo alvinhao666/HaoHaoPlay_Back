@@ -63,14 +63,14 @@ namespace Hao.Core
         {
             H_Check.Argument.NotNull(query, nameof(query));
 
-            var flag = string.IsNullOrWhiteSpace(query.OrderFileds);
+            var flag = string.IsNullOrWhiteSpace(query.OrderByFileds);
             var q = Db.Queryable<T>();
             foreach (var item in query.QueryExpressions)
             {
                 q.Where(item);
             }
 
-            return await q.OrderByIF(!flag, query.OrderFileds).ToListAsync();
+            return await q.OrderByIF(!flag, query.OrderByFileds).ToListAsync();
         }
 
         /// <summary>
@@ -101,14 +101,14 @@ namespace Hao.Core
             H_Check.Argument.NotNull(query, nameof(query));
 
             RefAsync<int> totalNumber = 0;
-            var flag = string.IsNullOrWhiteSpace(query.OrderFileds);
+            var flag = string.IsNullOrWhiteSpace(query.OrderByFileds);
             var q = Db.Queryable<T>();
             foreach (var item in query.QueryExpressions)
             {
                 q.Where(item);
             }
 
-            var items = await q.OrderByIF(!flag, query.OrderFileds)
+            var items = await q.OrderByIF(!flag, query.OrderByFileds)
                 .ToPageListAsync(query.PageIndex, query.PageSize, totalNumber);
 
             var pageList = new PagedList<T>()

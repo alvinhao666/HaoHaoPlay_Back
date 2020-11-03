@@ -8,6 +8,6 @@ namespace Hao.Core
     {
         List<Expression<Func<T, bool>>> QueryExpressions { get; }
 
-        string OrderFileds { get; set; }
+        string OrderByFileds { get; set; }
     }
 }

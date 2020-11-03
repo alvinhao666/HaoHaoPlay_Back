@@ -66,7 +66,7 @@ namespace Hao.Core
         {
             H_Check.Argument.NotNull(query, nameof(query));
 
-            var flag = string.IsNullOrWhiteSpace(query.OrderFileds);
+            var flag = string.IsNullOrWhiteSpace(query.OrderByFileds);
             var q = Db.Queryable<T>();
             foreach (var item in query.QueryExpressions)
             {
@@ -75,7 +75,7 @@ namespace Hao.Core
 
             return await q.Where(a => a.IsDeleted == false)
                 .OrderByIF(flag, a => a.CreateTime, OrderByType.Desc)
-                .OrderByIF(!flag, query.OrderFileds)
+                .OrderByIF(!flag, query.OrderByFileds)
                 .ToListAsync();
         }
 
@@ -96,7 +96,7 @@ namespace Hao.Core
         {
             H_Check.Argument.NotNull(query, nameof(query));
 
-            var flag = string.IsNullOrWhiteSpace(query.OrderFileds);
+            var flag = string.IsNullOrWhiteSpace(query.OrderByFileds);
             var q = Db.Queryable<T>();
             foreach (var item in query.QueryExpressions)
             {
@@ -104,7 +104,7 @@ namespace Hao.Core
             }
 
             return await q.OrderByIF(flag, a => a.CreateTime, OrderByType.Desc)
-                .OrderByIF(!flag, query.OrderFileds)
+                .OrderByIF(!flag, query.OrderByFileds)
                 .ToListAsync();
         }
 
@@ -136,7 +136,7 @@ namespace Hao.Core
             H_Check.Argument.NotNull(query, nameof(query));
 
             RefAsync<int> totalNumber = 10;
-            var flag = string.IsNullOrWhiteSpace(query.OrderFileds);
+            var flag = string.IsNullOrWhiteSpace(query.OrderByFileds);
             var q = Db.Queryable<T>(); //.WithCache(int cacheDurationInSeconds = int.MaxValue) 使用缓存取数据 
             foreach (var item in query.QueryExpressions)
             {
@@ -145,7 +145,7 @@ namespace Hao.Core
 
             var items = await q.Where(a => a.IsDeleted == false)
                 .OrderByIF(flag, a => a.CreateTime, OrderByType.Desc)
-                .OrderByIF(!flag, query.OrderFileds)
+                .OrderByIF(!flag, query.OrderByFileds)
                 .ToPageListAsync(query.PageIndex, query.PageSize, totalNumber);
 
             var pageList = new PagedList<T>()
