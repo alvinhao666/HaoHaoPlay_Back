@@ -118,20 +118,18 @@ namespace Hao.Core.Extensions
 
             services.AddControllers(x =>
             {
-                x.ModelBinderProviders.Insert(0, new StringTrimModelBinderProvider()); //去除模型字符串首尾 空格 fromquery
+                x.ModelBinderProviders.Insert(0, new StringTrimModelBinderProvider()); //去除模型字符串首尾 空格 fromquery 评估模型绑定器时，按顺序检查提供程序的集合。 使用第一个返回与输入模型匹配的联编程序的提供程序。 因此，将提供程序添加到集合的末尾可能会导致在自定义联编程序有可能之前调用内置模型联编程序 https://docs.microsoft.com/zh-cn/aspnet/core/mvc/advanced/custom-model-binding?view=aspnetcore-3.1
                 x.Filters.Add(typeof(H_ResultFilter));
             })
             .AddControllersAsServices() //controller属性注入 .net core 3.1版本   //实现了两件事情 - 它将您应用程序中的所有控制器注册到 DI 容器（如果尚未注册），并将IControllerActivator注册为ServiceBasedControllerActivator
             .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblies(appSettings.ValidatorAssemblyNames.Select(name => Assembly.Load(name))))
             .AddJsonOptions(o =>
             {
-                //frombody的数据
-                //不加这个 接口接收参数 string类型的时间 转换 datetime类型报错 system.text.json不支持隐式转化    //Newtonsoft.Json 等默认支持隐式转换, 不一定是个合理的方式
-                //o.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase //开头字母小写 默认
+                //frombody的数据        
                 o.JsonSerializerOptions.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
-                o.JsonSerializerOptions.PropertyNamingPolicy = null;
+                o.JsonSerializerOptions.PropertyNamingPolicy = null; //o.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase //开头字母小写 默认
                 o.JsonSerializerOptions.Converters.Add(new StringJsonConvert()); //去除模型字符串首尾 空格
-                o.JsonSerializerOptions.Converters.Add(new DatetimeJsonConverter());
+                o.JsonSerializerOptions.Converters.Add(new DatetimeJsonConverter()); //不加这个 接口接收参数 string类型的时间 转换 datetime类型报错 system.text.json不支持隐式转化    //Newtonsoft.Json 等默认支持隐式转换, 不一定是个合理的方式
                 o.JsonSerializerOptions.Converters.Add(new LongJsonConvert());
             }); //.AddWebApiConventions() 处理HttpResponseMessage类型返回值的问题
 
