@@ -36,7 +36,7 @@ namespace Hao.WebApi
         {
             request.Ip = HttpContext.GetIp();
 
-            _logger.Info(new H_Log() { Method = "Login", Data = request , Description = $"登录请求TraceId：{HttpContext.TraceIdentifier}" });
+            _logger.Info(new H_Log() { Method = "Login", Data = request , Description = $"登录请求TraceId：{HttpContext.TraceIdentifier}，IP：{request.Ip}" });
 
             var result = await _loginAppService.Login(request);
 
