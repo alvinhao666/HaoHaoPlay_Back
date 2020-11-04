@@ -33,23 +33,6 @@ namespace Hao.WebApi
         public async Task Add([FromBody]UserAddRequest request) => await _userAppService.Add(request);
 
         /// <summary>
-        /// 获取角色列表
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        [AuthCode("1_4")]
-        public async Task<List<RoleSelectVM>> GetRoleList() => await _roleAppService.GetRoleListByCurrentRole();
-
-        /// <summary>
-        /// 是否存在用户
-        /// </summary>
-        /// <param name="queryInput"></param>
-        /// <returns></returns>
-        [HttpGet]
-        [AuthCode("1_4")]
-        public async Task<bool> IsExistUser([FromQuery]UserQueryInput queryInput) => await _userAppService.IsExist(queryInput);
-
-        /// <summary>
         /// 查询用户分页列表
         /// </summary>
         /// <returns></returns>
@@ -111,6 +94,23 @@ namespace Hao.WebApi
         [HttpDelete("{id}")]
         [AuthCode("1_512")]
         public async Task Delete(long? id) => await _userAppService.Delete(id.Value);
+
+        /// <summary>
+        /// 获取角色列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [AuthCode("1_4")]
+        public async Task<List<RoleSelectVM>> GetRoleList() => await _roleAppService.GetRoleListByCurrentRole();
+
+        /// <summary>
+        /// 是否存在用户
+        /// </summary>
+        /// <param name="queryInput"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [AuthCode("1_4")]
+        public async Task<bool> IsExistUser([FromQuery] UserQueryInput queryInput) => await _userAppService.IsExist(queryInput);
 
 
         /// <summary>
