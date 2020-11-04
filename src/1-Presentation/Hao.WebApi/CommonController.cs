@@ -55,7 +55,12 @@ namespace Hao.WebApi
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public object GetUploadAvatarInfo() => new {Bucket = _config["TencentCos:Bucket"], Key = _config["TencentCos:AvatarKey"]+ $"/{_currentUser.Id}_{H_Util.GetUnixTimestamp()}", Region= _config["TencentCos:Region"] };
+        public object GetUploadAvatarInfo() => new
+        {
+            Bucket = _config["TencentCos:Bucket"],
+            Key = _config["TencentCos:AvatarKey"] + $"/{_currentUser.Id}_{H_Util.GetUnixTimestamp()}",
+            Region = _config["TencentCos:Region"]
+        };
 
         
         /// <summary>
