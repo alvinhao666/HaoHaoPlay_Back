@@ -1,6 +1,7 @@
 ﻿using Hao.Core;
 using Hao.Enum;
 using System;
+using System.Collections.Generic;
 
 namespace Hao.AppService
 {
@@ -52,7 +53,12 @@ namespace Hao.AppService
         /// <summary>
         /// 排序字段
         /// </summary>
-        public SortUser? SortField { get; set; }
+        public SortUser[] SortFields { get; set; }
+
+        /// <summary>
+        /// 排序类型
+        /// </summary>
+        public SortType[] OrderByTypes { get; set; }
     }
 
     /// <summary>

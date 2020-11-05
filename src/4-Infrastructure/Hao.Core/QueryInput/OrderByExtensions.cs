@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace Hao.Core
 {
@@ -10,13 +11,22 @@ namespace Hao.Core
         /// <param name="orderByType"></param>
         /// <param name="sortField"></param>
         /// <returns></returns>
-        public static string ToOrderByFields(this H_OrderByType? orderByType, Enum sortField)
+        public static string ToOrderByFields<T>(this SortType[] orderByTypes, T[] sortFields) where T : Enum
         {
-            if (orderByType.HasValue && sortField != null )
-            { 
-                return string.Format("{0} {1}", sortField, orderByType); //string.Format方法在内部使用StringBuilder进行字符串的格式化
+            if (orderByTypes == null || sortFields == null) return null;
+
+            if (orderByTypes.Length == 0 || sortFields.Length == 0) return null;
+
+            if (orderByTypes.Length != sortFields.Length) return null;
+
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 0; i < orderByTypes.Length; i++)
+            {
+                sb.Append(string.Format("{0} {1},", sortFields[i], orderByTypes[i]));
             }
-            return null;
+
+            return sb.ToString().TrimEnd(',');
         }
     }
 }

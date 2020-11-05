@@ -40,7 +40,7 @@ namespace Hao.AppService
                .Map(x => x.Email, a => H_Util.HideEmailNumber(a.Email));
 
             config.ForType<UserQueryInput, UserQuery>()
-               .Map(x => x.OrderByFileds, a => a.OrderByType.ToOrderByFields(a.SortField));
+               .Map(x => x.OrderByFileds, a => a.OrderByTypes.ToOrderByFields(a.SortFields));
         }
 
         /// <summary>
