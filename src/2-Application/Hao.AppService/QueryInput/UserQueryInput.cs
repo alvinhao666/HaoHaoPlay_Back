@@ -1,7 +1,6 @@
 ﻿using Hao.Core;
 using Hao.Enum;
 using System;
-using System.Collections.Generic;
 
 namespace Hao.AppService
 {
