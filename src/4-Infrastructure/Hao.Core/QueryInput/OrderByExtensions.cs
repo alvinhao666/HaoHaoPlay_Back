@@ -11,7 +11,7 @@ namespace Hao.Core
         /// <param name="orderByType"></param>
         /// <param name="sortField"></param>
         /// <returns></returns>
-        public static string ToOrderByFields<T>(this SortType[] orderByTypes, T[] sortFields) where T : Enum
+        public static string ToOrderByFields<T>(this T[] sortFields, SortType[] orderByTypes) where T : Enum
         {
             if (orderByTypes == null || sortFields == null) return null;
 
@@ -21,7 +21,7 @@ namespace Hao.Core
 
             StringBuilder sb = new StringBuilder();
 
-            for (int i = 0; i < orderByTypes.Length; i++)
+            for (int i = 0; i < sortFields.Length; i++)
             {
                 sb.Append(string.Format("{0} {1},", sortFields[i], orderByTypes[i]));
             }

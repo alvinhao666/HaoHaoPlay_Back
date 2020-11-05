@@ -58,7 +58,7 @@ namespace Hao.AppService
         /// <summary>
         /// 排序类型
         /// </summary>
-        public SortType[] OrderByTypes { get; set; }
+        public SortType[] SortTypes { get; set; }
     }
 
     /// <summary>
