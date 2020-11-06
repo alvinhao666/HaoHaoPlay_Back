@@ -11,21 +11,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2-Application", "2-Applicat
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3-Domain", "3-Domain", "{D4FE854B-07DD-4C60-81D3-5B75912CE2F8}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4-Infrastructure", "4-Infrastructure", "{2F74256B-F2C2-494A-82AE-97722C2A4F4B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5-Infrastructure", "5-Infrastructure", "{2F74256B-F2C2-494A-82AE-97722C2A4F4B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5-Common", "5-Common", "{042FD3BE-DA74-462B-8F16-E6D1ADFC7454}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "6-Common", "6-Common", "{042FD3BE-DA74-462B-8F16-E6D1ADFC7454}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.Core", "src\4-Infrastructure\Hao.Core\Hao.Core.csproj", "{62676D40-A674-4F4E-A71E-2FE0794EFCAC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.Core", "src\5-Infrastructure\Hao.Core\Hao.Core.csproj", "{62676D40-A674-4F4E-A71E-2FE0794EFCAC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.AppService", "src\2-Application\Hao.AppService\Hao.AppService.csproj", "{12CFDD69-B708-45D2-9C61-6DF13C3DDCBB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.Model", "src\3-Domain\Hao.Model\Hao.Model.csproj", "{9B51830B-0762-48B4-977F-DBF5E0F87801}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.Utility", "src\5-Common\Hao.Utility\Hao.Utility.csproj", "{91143364-6C4A-4E9D-81ED-C8789A7C6BAE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.Utility", "src\6-Common\Hao.Utility\Hao.Utility.csproj", "{91143364-6C4A-4E9D-81ED-C8789A7C6BAE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.Library", "src\4-Infrastructure\Hao.Library\Hao.Library.csproj", "{5EF9EA34-DA63-4B41-9D0D-4BF3D1A7CABF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.Library", "src\5-Infrastructure\Hao.Library\Hao.Library.csproj", "{5EF9EA34-DA63-4B41-9D0D-4BF3D1A7CABF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.Encrypt", "src\5-Common\Hao.Encrypt\Hao.Encrypt.csproj", "{167DCDA2-4549-45CA-BE67-A9B53BE4998B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.Encrypt", "src\6-Common\Hao.Encrypt\Hao.Encrypt.csproj", "{167DCDA2-4549-45CA-BE67-A9B53BE4998B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{24D9690F-D45B-469F-A5A2-C2006330B3F4}"
 EndProject
@@ -33,28 +33,30 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.Enum", "src\3-Domain\Ha
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.EventData", "src\3-Domain\Hao.EventData\Hao.EventData.csproj", "{271A0FB7-538E-417C-BD67-9C2FF6E49169}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.Snowflake", "src\5-Common\Hao.Snowflake\Hao.Snowflake.csproj", "{0A5E2F50-11A1-457F-8526-5DF11EAE18C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.Snowflake", "src\6-Common\Hao.Snowflake\Hao.Snowflake.csproj", "{0A5E2F50-11A1-457F-8526-5DF11EAE18C6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.Core.Extensions", "src\4-Infrastructure\Hao.Core.Extensions\Hao.Core.Extensions.csproj", "{8ED48A73-C61C-4C7D-8A01-47F564C9DBC1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.Core.Extensions", "src\5-Infrastructure\Hao.Core.Extensions\Hao.Core.Extensions.csproj", "{8ED48A73-C61C-4C7D-8A01-47F564C9DBC1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".global", ".global", "{D70011BA-8944-4796-BC98-AFCA04555DAD}"
 	ProjectSection(SolutionItems) = preProject
 		Dockerfile = Dockerfile
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.Excel", "src\5-Common\Hao.Excel\Hao.Excel.csproj", "{FF2CC4EA-55D7-423F-9DA4-09F7C719EF9B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.Excel", "src\6-Common\Hao.Excel\Hao.Excel.csproj", "{FF2CC4EA-55D7-423F-9DA4-09F7C719EF9B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HaoHaoPlay_Back.Host", "src\HaoHaoPlay_Back.Host\HaoHaoPlay_Back.Host.csproj", "{92E0E5AD-4B80-4836-8140-FD655FB1ECC2}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.Repository", "src\4-Infrastructure\Hao.Repository\Hao.Repository.csproj", "{783F6148-AF03-412E-86B1-95EE2ADC71C5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.WebApi", "src\1-Presentation\Hao.WebApi\Hao.WebApi.csproj", "{8B9FC11F-058B-4691-BDBE-0C70FC65D983}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.EventBus", "src\3-Domain\Hao.EventBus\Hao.EventBus.csproj", "{4C3CEA2A-2F53-41DB-A8B0-682DA632D6EA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.TencentCloud.Cos", "src\5-Common\Hao.TencentCloud.Cos\Hao.TencentCloud.Cos.csproj", "{392F805F-962E-412E-A257-622ACEBCB96F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.TencentCloud.Cos", "src\6-Common\Hao.TencentCloud.Cos\Hao.TencentCloud.Cos.csproj", "{392F805F-962E-412E-A257-622ACEBCB96F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hao.Dependency", "src\5-Common\Hao.Dependency\Hao.Dependency.csproj", "{8757D1AE-72B7-4F17-AEBA-79ECF1D78751}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.Dependency", "src\6-Common\Hao.Dependency\Hao.Dependency.csproj", "{8757D1AE-72B7-4F17-AEBA-79ECF1D78751}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.Repository", "src\4-Repository\Hao.Repository\Hao.Repository.csproj", "{B16B7420-5247-4DED-A6DE-2DCDFF14F79D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4-Repository", "4-Repository", "{73D4FF4D-8F6A-4C37-8A28-B14245805241}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -110,10 +112,6 @@ Global
 		{92E0E5AD-4B80-4836-8140-FD655FB1ECC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92E0E5AD-4B80-4836-8140-FD655FB1ECC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{92E0E5AD-4B80-4836-8140-FD655FB1ECC2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{783F6148-AF03-412E-86B1-95EE2ADC71C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{783F6148-AF03-412E-86B1-95EE2ADC71C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{783F6148-AF03-412E-86B1-95EE2ADC71C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{783F6148-AF03-412E-86B1-95EE2ADC71C5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8B9FC11F-058B-4691-BDBE-0C70FC65D983}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8B9FC11F-058B-4691-BDBE-0C70FC65D983}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B9FC11F-058B-4691-BDBE-0C70FC65D983}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -130,6 +128,10 @@ Global
 		{8757D1AE-72B7-4F17-AEBA-79ECF1D78751}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8757D1AE-72B7-4F17-AEBA-79ECF1D78751}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8757D1AE-72B7-4F17-AEBA-79ECF1D78751}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B16B7420-5247-4DED-A6DE-2DCDFF14F79D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B16B7420-5247-4DED-A6DE-2DCDFF14F79D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B16B7420-5247-4DED-A6DE-2DCDFF14F79D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B16B7420-5247-4DED-A6DE-2DCDFF14F79D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -151,11 +153,12 @@ Global
 		{0A5E2F50-11A1-457F-8526-5DF11EAE18C6} = {042FD3BE-DA74-462B-8F16-E6D1ADFC7454}
 		{8ED48A73-C61C-4C7D-8A01-47F564C9DBC1} = {2F74256B-F2C2-494A-82AE-97722C2A4F4B}
 		{FF2CC4EA-55D7-423F-9DA4-09F7C719EF9B} = {042FD3BE-DA74-462B-8F16-E6D1ADFC7454}
-		{783F6148-AF03-412E-86B1-95EE2ADC71C5} = {2F74256B-F2C2-494A-82AE-97722C2A4F4B}
 		{8B9FC11F-058B-4691-BDBE-0C70FC65D983} = {68CCE9AA-0E76-4F43-9C77-1AC05A755176}
 		{4C3CEA2A-2F53-41DB-A8B0-682DA632D6EA} = {D4FE854B-07DD-4C60-81D3-5B75912CE2F8}
 		{392F805F-962E-412E-A257-622ACEBCB96F} = {042FD3BE-DA74-462B-8F16-E6D1ADFC7454}
 		{8757D1AE-72B7-4F17-AEBA-79ECF1D78751} = {042FD3BE-DA74-462B-8F16-E6D1ADFC7454}
+		{B16B7420-5247-4DED-A6DE-2DCDFF14F79D} = {73D4FF4D-8F6A-4C37-8A28-B14245805241}
+		{73D4FF4D-8F6A-4C37-8A28-B14245805241} = {094FBA78-1265-4B2A-A7C6-46B8AD420D1B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5BAAEA79-B086-4D1C-AC3A-B029DF5FA31A}

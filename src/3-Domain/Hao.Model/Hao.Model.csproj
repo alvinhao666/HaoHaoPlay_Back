@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\4-Infrastructure\Hao.Core\Hao.Core.csproj" />
+    <ProjectReference Include="..\..\5-Infrastructure\Hao.Core\Hao.Core.csproj" />
     <ProjectReference Include="..\Hao.Enum\Hao.Enum.csproj" />
   </ItemGroup>
 

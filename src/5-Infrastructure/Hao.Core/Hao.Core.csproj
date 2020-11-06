@@ -20,9 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\5-Common\Hao.Dependency\Hao.Dependency.csproj" />
-    <ProjectReference Include="..\..\5-Common\Hao.Snowflake\Hao.Snowflake.csproj" />
-    <ProjectReference Include="..\..\5-Common\Hao.Utility\Hao.Utility.csproj" />
+    <ProjectReference Include="..\..\6-Common\Hao.Dependency\Hao.Dependency.csproj" />
+    <ProjectReference Include="..\..\6-Common\Hao.Snowflake\Hao.Snowflake.csproj" />
+    <ProjectReference Include="..\..\6-Common\Hao.Utility\Hao.Utility.csproj" />
   </ItemGroup>
 
 </Project>

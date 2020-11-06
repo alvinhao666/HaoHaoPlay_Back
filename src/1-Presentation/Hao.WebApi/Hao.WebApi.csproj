@@ -10,8 +10,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\2-Application\Hao.AppService\Hao.AppService.csproj" />
-    <ProjectReference Include="..\..\4-Infrastructure\Hao.Core.Extensions\Hao.Core.Extensions.csproj" />
-    <ProjectReference Include="..\..\5-Common\Hao.TencentCloud.Cos\Hao.TencentCloud.Cos.csproj" />
+    <ProjectReference Include="..\..\5-Infrastructure\Hao.Core.Extensions\Hao.Core.Extensions.csproj" />
+    <ProjectReference Include="..\..\6-Common\Hao.TencentCloud.Cos\Hao.TencentCloud.Cos.csproj" />
   </ItemGroup>
 
 </Project>
