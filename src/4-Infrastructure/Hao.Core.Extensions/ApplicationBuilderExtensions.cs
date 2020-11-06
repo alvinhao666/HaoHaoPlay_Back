@@ -31,7 +31,7 @@ namespace Hao.Core.Extensions
                 app.UseCors(x => x.AllowCredentials().AllowAnyMethod().AllowAnyHeader().WithOrigins(appSettings.CorsUrls));
             }
 
-
+            //异常捕捉中间件
             app.UseExceptionMiddleware();
 
             #region 文件
@@ -42,7 +42,7 @@ namespace Hao.Core.Extensions
             app.UseWhen(a => a.Request.Path.Value.Contains(appSettings.FilePath.ExportExcelPath) || a.Request.Path.Value.Contains("file_template"), b => b.UseMiddleware<StaticFileMiddleware>());
 
 
-            //导出excel路径
+            //创建文件夹，保存导出的excel文件
             if (!Directory.Exists(appSettings.FilePath.ExportExcelPath))
             {
                 Directory.CreateDirectory(appSettings.FilePath.ExportExcelPath);
@@ -58,7 +58,7 @@ namespace Hao.Core.Extensions
                 })
             });
 
-            ////头像路径
+            ////创建文件夹，保存头像文件
             //if (!Directory.Exists(appSettings.FilePath.AvatarPath))
             //{
             //    Directory.CreateDirectory(appSettings.FilePath.AvatarPath);
