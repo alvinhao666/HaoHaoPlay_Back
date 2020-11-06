@@ -27,8 +27,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.Library", "src\5-Infras
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.Encrypt", "src\6-Common\Hao.Encrypt\Hao.Encrypt.csproj", "{167DCDA2-4549-45CA-BE67-A9B53BE4998B}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{24D9690F-D45B-469F-A5A2-C2006330B3F4}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.Enum", "src\3-Domain\Hao.Enum\Hao.Enum.csproj", "{25BCF8DF-2336-46B7-9662-C4F4D7980EB4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.EventData", "src\3-Domain\Hao.EventData\Hao.EventData.csproj", "{271A0FB7-538E-417C-BD67-9C2FF6E49169}"
