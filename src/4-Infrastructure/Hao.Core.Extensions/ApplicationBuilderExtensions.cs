@@ -35,10 +35,12 @@ namespace Hao.Core.Extensions
             app.UseExceptionMiddleware();
 
             #region 文件
-            //文件访问权限
-            app.UseWhen(a => a.Request.Path.Value.Contains(appSettings.FilePath.ExportExcelPath) || a.Request.Path.Value.Contains("file_template"), b => b.UseMiddleware<StaticFileMiddleware>());
             //使用默认文件夹wwwroot
             app.UseStaticFiles();
+
+            //文件访问权限
+            app.UseWhen(a => a.Request.Path.Value.Contains(appSettings.FilePath.ExportExcelPath) || a.Request.Path.Value.Contains("file_template"), b => b.UseMiddleware<StaticFileMiddleware>());
+
 
             //导出excel路径
             if (!Directory.Exists(appSettings.FilePath.ExportExcelPath))
@@ -56,17 +58,17 @@ namespace Hao.Core.Extensions
                 })
             });
 
-            //头像路径
-            if (!Directory.Exists(appSettings.FilePath.AvatarPath))
-            {
-                Directory.CreateDirectory(appSettings.FilePath.AvatarPath);
-            }
+            ////头像路径
+            //if (!Directory.Exists(appSettings.FilePath.AvatarPath))
+            //{
+            //    Directory.CreateDirectory(appSettings.FilePath.AvatarPath);
+            //}
 
-            app.UseStaticFiles(new StaticFileOptions()
-            {
-                FileProvider = new PhysicalFileProvider(appSettings.FilePath.AvatarPath),
-                RequestPath = appSettings.RequestPath.AvatarFile
-            });
+            //app.UseStaticFiles(new StaticFileOptions()
+            //{
+            //    FileProvider = new PhysicalFileProvider(appSettings.FilePath.AvatarPath),
+            //    RequestPath = appSettings.RequestPath.AvatarFile
+            //});
             #endregion
 
 
