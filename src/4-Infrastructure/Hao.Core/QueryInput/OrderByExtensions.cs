@@ -11,7 +11,7 @@ namespace Hao.Core
         /// <param name="orderByType"></param>
         /// <param name="sortField"></param>
         /// <returns></returns>
-        public static string ToOrderByFields<T>(this T?[] sortFields, SortType?[] orderByTypes) where T : struct, Enum
+        public static string ToOrderByFields<T>(this T[] sortFields, SortType[] orderByTypes) where T : struct, Enum
         {
             if (orderByTypes == null || sortFields == null) return null;
 
@@ -23,10 +23,7 @@ namespace Hao.Core
 
             for (int i = 0; i < sortFields.Length; i++)
             {
-                if (sortFields[i].HasValue && orderByTypes[i].HasValue)
-                {
-                    sb.Append(string.Format("{0} {1},", sortFields[i], orderByTypes[i]));
-                }
+                sb.Append(string.Format("{0} {1},", sortFields[i], orderByTypes[i]));
             }
 
             return sb.ToString().TrimEnd(',');

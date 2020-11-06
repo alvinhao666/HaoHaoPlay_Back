@@ -52,7 +52,7 @@ namespace Hao.AppService
         /// <summary>
         /// 排序字段
         /// </summary>
-        public SortUser?[] SortFields { get; set; }
+        public SortUser[] SortFields { get; set; }
     }
 
     /// <summary>

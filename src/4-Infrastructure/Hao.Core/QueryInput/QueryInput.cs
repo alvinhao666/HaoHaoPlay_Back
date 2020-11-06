@@ -17,7 +17,7 @@ namespace Hao.Core
         /// <summary>
         /// 排序类型
         /// </summary>
-        public SortType?[] SortTypes { get; set; }
+        public SortType[] SortTypes { get; set; }
     }
 
     public enum SortType
