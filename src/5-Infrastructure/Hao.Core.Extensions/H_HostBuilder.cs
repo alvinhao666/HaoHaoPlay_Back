@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using AspectCore.Extensions.Hosting;
 using NLog.Web;
+using System.IO;
 
 namespace Hao.Core.Extensions
 {
@@ -45,7 +46,7 @@ namespace Hao.Core.Extensions
 
         private void InitBuild(IConfigurationBuilder builder)
         {
-            var basePath = $"{AppContext.BaseDirectory}ConfigFile";
+            var basePath = Path.Combine(AppContext.BaseDirectory, "ConfigFile");
 
             builder.SetBasePath(basePath)
                    .AddJsonFile("appsettings.json", false, true) //optional:（Whether the file is optional）是否可选，意思是如果配置文件不存在的时候是否要抛异常。第三个参数 reloadOnChange  json文件更改后是否重新加载。
