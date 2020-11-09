@@ -112,7 +112,6 @@ namespace Hao.AppService
 
             return new LoginVM
             {
-                Id = user.Id,
                 Name = user.Name,
                 FirstNameSpell = user.FirstNameSpell,
                 HeadImgUrl = user.HeadImgUrl,

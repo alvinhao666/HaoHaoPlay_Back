@@ -28,11 +28,11 @@ namespace Hao.AppService
 
             config.ForType<SysUser, UserVM>()
                .Map(x => x.GenderString, a => a.Gender.GetDescription())
-               .Map(x => x.EnabledString, a => a.Enabled.IsTrue() ? "启用" : "注销");
+               .Map(x => x.EnabledString, a => a.Enabled.IsTrue() ? "有效" : "注销");
 
             config.ForType<SysUser, UserDetailVM>()
                .Map(x => x.GenderString, a => a.Gender.GetDescription())
-               .Map(x => x.EnabledString, a => a.Enabled.IsTrue() ? "启用" : "注销");
+               .Map(x => x.EnabledString, a => a.Enabled.IsTrue() ? "有效" : "注销");
 
             config.ForType<SysUser, UserSecurityVM>()
                .Map(x => x.PasswordLevel, a => a.PasswordLevel.GetDescription())
