@@ -36,7 +36,6 @@ namespace Hao.AppService
         private const string _noAuthTip= "没有系统权限，暂时无法登录，请联系管理员";
 
         public LoginAppService(
-            IHttpContextAccessor httpContextAccessor,
             ISysUserRepository userRep,
             ISysModuleRepository moduleRep,
             ICapPublisher publisher,
