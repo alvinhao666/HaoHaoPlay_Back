@@ -66,9 +66,9 @@ namespace Hao.AppService
             var timeNow = DateTime.Now;
             var expireTime = timeNow.AddDays(request.IsRememberLogin ? 3 : 1);
             //rsa解密
-            var password = RsaHelper.Decrypt(_appsettings.Key.RsaPrivateKey, request.Password);
+            var password = H_EncryptProvider.RsaDecrypt(_appsettings.Key.RsaPrivateKey, request.Password);
             //sha256加密
-            password = EncryptProvider.HMACSHA256(password, _appsettings.Key.Sha256Key); 
+            password = H_EncryptProvider.HMACSHA256(password, _appsettings.Key.Sha256Key); 
 
             //根据账号密码查询用户
             var user = await GetUserByLoginName(request.LoginName, password);

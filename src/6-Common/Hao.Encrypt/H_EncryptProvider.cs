@@ -4,11 +4,10 @@ using System.Security.Cryptography;
 using System.IO;
 using Hao.Encrypt.Shared;
 using Hao.Encrypt.Internal;
-using Hao.Encrypt.Extensions.Internal;
 
 namespace Hao.Encrypt
 {
-    public class EncryptProvider
+    public class H_EncryptProvider
     {
         #region Common
 
@@ -40,6 +39,10 @@ namespace Hao.Encrypt
         #endregion
 
         #region AES
+
+        /*
+        AES:16位密钥=128位，24位密钥=192位，32位密钥=256位,IV均为16位
+        */
 
         /// <summary>
         /// Create ase key
@@ -237,7 +240,7 @@ namespace Hao.Encrypt
 
                     aes.Mode = CipherMode.ECB;
                     aes.Padding = PaddingMode.PKCS7;
-                    aes.KeySize = 128;
+                    aes.KeySize = 256;
                     aes.Key = bKey;
 
                     using (CryptoStream cryptoStream = new CryptoStream(Memory, aes.CreateEncryptor(), CryptoStreamMode.Write))
@@ -248,7 +251,7 @@ namespace Hao.Encrypt
                             cryptoStream.FlushFinalBlock();
                             return Convert.ToBase64String(Memory.ToArray());
                         }
-                        catch
+                        catch (Exception ex)
                         {
                             return null;
                         }
@@ -279,7 +282,7 @@ namespace Hao.Encrypt
                 {
                     aes.Mode = CipherMode.ECB;
                     aes.Padding = PaddingMode.PKCS7;
-                    aes.KeySize = 128;
+                    aes.KeySize = 256;
                     aes.Key = bKey;
 
                     using (CryptoStream cryptoStream = new CryptoStream(Memory, aes.CreateDecryptor(), CryptoStreamMode.Read))
@@ -293,7 +296,7 @@ namespace Hao.Encrypt
 
                             return Encoding.UTF8.GetString(ret, 0, len);
                         }
-                        catch
+                        catch (Exception ex)
                         {
                             return null;
                         }
@@ -302,13 +305,7 @@ namespace Hao.Encrypt
             }
         }
 
-        /// <summary>
-        /// AES Rijndael
-        /// </summary>
-        public static void AESRijndael()
-        {
-            throw new NotImplementedException();
-        }
+
         #endregion
 
         #region DES
@@ -374,7 +371,7 @@ namespace Hao.Encrypt
         /// </summary>  
         /// <param name="data">Raw data byte array</param>  
         /// <param name="key">Key, requires 24 bits</param>  
-        /// <param name="vector">IV,requires 16 bits</param>  
+        /// <param name="vector">IV,requires 8 bits</param>  
         /// <returns>Encrypted byte array</returns>  
         public static byte[] DESEncrypt(byte[] data, string key, string vector)
         {
@@ -394,7 +391,7 @@ namespace Hao.Encrypt
         /// <param name="key">Key, requires 24 bits</param>  
         /// <param name="cipherMode"><see cref="CipherMode"/></param>  
         /// <param name="paddingMode"><see cref="PaddingMode"/> default is PKCS7</param>  
-        /// <param name="vector">IV,requires 16 bits</param>  
+        /// <param name="vector">IV,requires 8 bits</param>  
         /// <returns>Encrypted byte array</returns>  
         private static byte[] DESEncrypt(byte[] data, string key, CipherMode cipherMode, string vector = "", PaddingMode paddingMode = PaddingMode.PKCS7)
         {
@@ -429,7 +426,7 @@ namespace Hao.Encrypt
                             cryptoStream.FlushFinalBlock();
                             return Memory.ToArray();
                         }
-                        catch
+                        catch (Exception ex)
                         {
                             return null;
                         }
@@ -480,7 +477,7 @@ namespace Hao.Encrypt
         /// </summary>  
         /// <param name="data">Raw data byte array</param>  
         /// <param name="key">Key, requires 24 bits</param>  
-        /// <param name="vector">IV,requires 16 bits</param>  
+        /// <param name="vector">IV,requires 8 bits</param>  
         /// <returns>Encrypted byte array</returns>  
         public static byte[] DESDecrypt(byte[] data, string key, string vector)
         {
@@ -548,331 +545,83 @@ namespace Hao.Encrypt
         #endregion
 
         #region RSA
+  
+        /// <summary>
+        /// 使用私钥签名
+        /// </summary>
+        /// <param name="data">原始数据</param>
+        /// <returns></returns>
+        public static string RsaSign(string privateKey, string data)
+        {
+            byte[] dataBytes = Encoding.UTF8.GetBytes(data);
 
-        ///// <summary>
-        ///// RSA Converter to pem
-        ///// </summary>
-        ///// <param name="isPKCS8"></param>
-        ///// <returns></returns>
-        //public static (string publicPem, string privatePem) RSAToPem(bool isPKCS8)
-        //{
-        //    var rsaKey = CreateRsaKey();
+            using (RSA privateKeyRsaProvider = RsaProvider.CreateRsaProviderFromPrivateKey(privateKey))
+            {
+                var signatureBytes = privateKeyRsaProvider.SignData(dataBytes, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
 
-        //    using (RSA rsa = RSA.Create())
-        //    {
-        //        rsa.FromJsonString(rsaKey.PrivateKey);
+                return Convert.ToBase64String(signatureBytes);
+            }
+        }
 
-        //        var publicPem = RsaProvider.ToPem(rsa, false, isPKCS8);
-        //        var privatePem = RsaProvider.ToPem(rsa, true, isPKCS8);
 
-        //        return (publicPem, privatePem);
-        //    }
-        //}
+        /// <summary>
+        /// 使用公钥验证签名
+        /// </summary>
+        /// <param name="data">原始数据</param>
+        /// <param name="sign">签名</param>
+        /// <returns></returns>
+        public static bool RsaVerify(string publicKey, string data, string sign)
+        {
+            byte[] dataBytes = Encoding.UTF8.GetBytes(data);
+            byte[] signBytes = Convert.FromBase64String(sign);
 
-        ///// <summary>
-        ///// RSA From pem
-        ///// </summary>
-        ///// <param name="pem"></param>
-        ///// <returns></returns>
-        //public static RSA RSAFromPem(string pem)
-        //{
-        //    Check.Argument.IsNotEmpty(pem, nameof(pem));
-        //    return RsaProvider.FromPem(pem);
-        //}
+            using (RSA publicKeyRsaProvider = RsaProvider.CreateRsaProviderFromPublicKey(publicKey))
+            {
+                var verify = publicKeyRsaProvider.VerifyData(dataBytes, signBytes, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
 
-        ///// <summary>
-        ///// RSA Sign
-        ///// </summary>
-        ///// <param name="conent">raw cotent </param>
-        ///// <param name="privateKey">private key</param>
-        ///// <returns></returns>
-        //public static string RSASign(string conent, string privateKey)
-        //{
-        //    return RSASign(conent, privateKey, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1, Encoding.UTF8);
-        //}
+                return verify;
+            }
+        }
 
-        ///// <summary>
-        ///// RSA Sign
-        ///// </summary>
-        ///// <param name="content">raw content </param>
-        ///// <param name="privateKey">private key</param>
-        ///// <param name="hashAlgorithmName">hashAlgorithm name</param>
-        ///// <param name="rSASignaturePadding">ras siginature padding</param>
-        ///// <param name="encoding">text encoding</param>
-        ///// <returns></returns>
-        //public static string RSASign(string content, string privateKey, HashAlgorithmName hashAlgorithmName, RSASignaturePadding rSASignaturePadding, Encoding encoding)
-        //{
-        //    Check.Argument.IsNotEmpty(content, nameof(content));
-        //    Check.Argument.IsNotEmpty(privateKey, nameof(privateKey));
-        //    Check.Argument.IsNotNull(rSASignaturePadding, nameof(rSASignaturePadding));
 
-        //    byte[] dataBytes = encoding.GetBytes(content);
+        /// <summary>
+        /// RSA私玥解密
+        /// </summary>
+        /// <param name="privateKey"></param>
+        /// <param name="cipherText"></param>
+        /// <returns></returns>
 
-        //    using (RSA rsa = RSA.Create())
-        //    {
-        //        rsa.FromJsonString(privateKey);
-        //        var signBytes = rsa.SignData(dataBytes, hashAlgorithmName, rSASignaturePadding);
+        public static string RsaDecrypt(string privateKey, string cipherText)
+        {
+            try
+            {
+                byte[] dataBytes = Convert.FromBase64String(cipherText); //对加密方法返回的byte[]，用Convert.ToBase64String，普通的文字并不是 base 64 编码的，不能使用 FromBase64String 转换成 byte[]
+                using (RSA privateKeyRsaProvider = RsaProvider.CreateRsaProviderFromPrivateKey(privateKey))
+                {
+                    return Encoding.UTF8.GetString(privateKeyRsaProvider.Decrypt(dataBytes, RSAEncryptionPadding.Pkcs1));
+                }
+            }
+            catch (Exception)
+            {
+                throw new Exception("RSA解密失败");
+            }
+        }
 
-        //        return Convert.ToBase64String(signBytes);
-        //    }
-        //}
 
-        ///// <summary>
-        ///// RSA Verify
-        ///// </summary>
-        ///// <param name="content">raw content</param>
-        ///// <param name="signStr">sign str</param>
-        ///// <param name="publickKey">public key</param>
-        ///// <returns></returns>
-        //public static bool RSAVerify(string content, string signStr, string publickKey)
-        //{
-        //    return RSAVerify(content, signStr, publickKey, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1, Encoding.UTF8);
-        //}
-
-        ///// <summary>
-        ///// RSA Verify
-        ///// </summary>
-        ///// <param name="content">raw content</param>
-        ///// <param name="signStr">sign str</param>
-        ///// <param name="publickKey">public key</param>
-        ///// <param name="hashAlgorithmName">hashAlgorithm name</param>
-        ///// <param name="rSASignaturePadding">ras siginature padding</param>
-        ///// <param name="encoding">text encoding</param>
-        ///// <returns></returns>
-        //public static bool RSAVerify(string content, string signStr, string publickKey, HashAlgorithmName hashAlgorithmName, RSASignaturePadding rSASignaturePadding, Encoding encoding)
-        //{
-        //    Check.Argument.IsNotEmpty(content, nameof(content));
-        //    Check.Argument.IsNotEmpty(signStr, nameof(signStr));
-
-        //    byte[] dataBytes = encoding.GetBytes(content);
-        //    byte[] signBytes = Convert.FromBase64String(signStr);
-
-        //    using (RSA rsa = RSA.Create())
-        //    {
-        //        rsa.FromJsonString(publickKey);
-        //        return rsa.VerifyData(dataBytes, signBytes, hashAlgorithmName, rSASignaturePadding);
-        //    }
-        //}
-
-        ///// <summary>
-        ///// RSA encrypt 
-        ///// </summary>
-        ///// <param name="publicKey">public key</param>
-        ///// <param name="srcString">src string</param>
-        ///// <returns>encrypted string</returns>
-        //public static string RSAEncrypt(string publicKey, string srcString)
-        //{
-        //    string encryptStr = RSAEncrypt(publicKey, srcString, RSAEncryptionPadding.OaepSHA512);
-        //    return encryptStr;
-        //}
-
-        ///// <summary>
-        ///// RSA encrypt with pem key
-        ///// </summary>
-        ///// <param name="publicKey">pem public key</param>
-        ///// <param name="scrString">src string</param>
-        ///// <returns></returns>
-        //public static string RSAEncryptWithPem(string publicKey, string srcString)
-        //{
-        //    string encryptStr = RSAEncrypt(publicKey, srcString, RSAEncryptionPadding.Pkcs1, true);
-        //    return encryptStr;
-        //}
-
-        ///// <summary>
-        ///// RSA encrypt 
-        ///// </summary>
-        ///// <param name="publicKey">public key</param>
-        ///// <param name="srcString">src string</param>
-        ///// <param name="padding">rsa encryptPadding <see cref="RSAEncryptionPadding"/> RSAEncryptionPadding.Pkcs1 for linux/mac openssl </param>
-        ///// <param name="isPemKey">set key is pem format,default is false</param>
-        ///// <returns>encrypted string</returns>
-        //public static string RSAEncrypt(string publicKey, string srcString, RSAEncryptionPadding padding, bool isPemKey = false)
-        //{
-        //    Check.Argument.IsNotEmpty(publicKey, nameof(publicKey));
-        //    Check.Argument.IsNotEmpty(srcString, nameof(srcString));
-        //    Check.Argument.IsNotNull(padding, nameof(padding));
-
-        //    RSA rsa;
-        //    if (isPemKey)
-        //    {
-        //        rsa = RsaProvider.FromPem(publicKey);
-        //    }
-        //    else
-        //    {
-        //        rsa = RSA.Create();
-        //        rsa.FromJsonString(publicKey);
-        //    }
-
-        //    using (rsa)
-        //    {
-        //        var maxLength = GetMaxRsaEncryptLength(rsa, padding);
-        //        var rawBytes = Encoding.UTF8.GetBytes(srcString);
-
-        //        if (rawBytes.Length > maxLength)
-        //        {
-        //            throw new OutofMaxlengthException($"'{srcString}' is out of max encrypt length {maxLength}", maxLength, rsa.KeySize, padding);
-        //        }
-
-        //        byte[] encryptBytes = rsa.Encrypt(rawBytes, padding);
-        //        return encryptBytes.ToHexString();
-        //    }
-        //}
-
-        ///// <summary>
-        ///// RSA decrypt
-        ///// </summary>
-        ///// <param name="privateKey">private key</param>
-        ///// <param name="srcString">encrypted string</param>
-        ///// <returns>Decrypted string</returns>
-        //public static string RSADecrypt(string privateKey, string srcString)
-        //{
-        //    string decryptStr = RSADecrypt(privateKey, srcString, RSAEncryptionPadding.OaepSHA512);
-        //    return decryptStr;
-        //}
-
-        ///// <summary>
-        ///// RSA decrypt with pem key
-        ///// </summary>
-        ///// <param name="privateKey">pem private key</param>
-        ///// <param name="scrString">src string</param>
-        ///// <returns></returns>
-        //public static string RSADecryptWithPem(string privateKey, string srcString)
-        //{
-        //    string decryptStr = RSADecrypt(privateKey, srcString, RSAEncryptionPadding.Pkcs1, true);
-        //    return decryptStr;
-        //}
-
-        ///// <summary>
-        ///// RSA encrypt 
-        ///// </summary>
-        ///// <param name="publicKey">public key</param>
-        ///// <param name="srcString">src string</param>
-        ///// <param name="padding">rsa encryptPadding <see cref="RSAEncryptionPadding"/> RSAEncryptionPadding.Pkcs1 for linux/mac openssl </param>
-        ///// <param name="isPemKey">set key is pem format,default is false</param>
-        ///// <returns>encrypted string</returns>
-        //public static string RSADecrypt(string privateKey, string srcString, RSAEncryptionPadding padding, bool isPemKey = false)
-        //{
-        //    Check.Argument.IsNotEmpty(privateKey, nameof(privateKey));
-        //    Check.Argument.IsNotEmpty(srcString, nameof(srcString));
-        //    Check.Argument.IsNotNull(padding, nameof(padding));
-
-        //    RSA rsa;
-        //    if (isPemKey)
-        //    {
-        //        rsa = RsaProvider.FromPem(privateKey);
-        //    }
-        //    else
-        //    {
-        //        rsa = RSA.Create();
-        //        rsa.FromJsonString(privateKey);
-        //    }
-
-        //    using (rsa)
-        //    {
-        //        byte[] srcBytes = srcString.ToBytes();
-        //        byte[] decryptBytes = rsa.Decrypt(srcBytes, padding);
-        //        return Encoding.UTF8.GetString(decryptBytes);
-        //    }
-        //}
-
-        ///// <summary>
-        ///// RSA from json string
-        ///// </summary>
-        ///// <param name="rsaKey">rsa json string</param>
-        ///// <returns></returns>
-        //public static RSA RSAFromString(string rsaKey)
-        //{
-        //    Check.Argument.IsNotEmpty(rsaKey, nameof(rsaKey));
-        //    RSA rsa = RSA.Create();
-
-        //    rsa.FromJsonString(rsaKey);
-        //    return rsa;
-        //}
-
-        ///// <summary>
-        ///// Create an RSA key 
-        ///// </summary>
-        ///// <param name="keySizeInBits">the default size is 2048</param>
-        ///// <returns></returns>
-        //public static RSAKey CreateRsaKey(RsaSize rsaSize = RsaSize.R2048)
-        //{
-        //    using (RSA rsa = RSA.Create())
-        //    {
-        //        rsa.KeySize = (int)rsaSize;
-
-        //        string publicKey = rsa.ToJsonString(false);
-        //        string privateKey = rsa.ToJsonString(true);
-
-        //        return new RSAKey()
-        //        {
-        //            PublicKey = publicKey,
-        //            PrivateKey = privateKey,
-        //            Exponent = rsa.ExportParameters(false).Exponent.ToHexString(),
-        //            Modulus = rsa.ExportParameters(false).Modulus.ToHexString()
-        //        };
-        //    }
-        //}
-
-        ///// <summary>
-        ///// Create an RSA key 
-        ///// </summary>
-        ///// <param name="rsa">rsa</param>
-        ///// <returns></returns>
-        //public static RSAKey CreateRsaKey(RSA rsa)
-        //{
-        //    Check.Argument.IsNotNull(rsa, nameof(rsa));
-
-        //    string publicKey = rsa.ToJsonString(false);
-        //    string privateKey = rsa.ToJsonString(true);
-
-        //    return new RSAKey()
-        //    {
-        //        PublicKey = publicKey,
-        //        PrivateKey = privateKey,
-        //        Exponent = rsa.ExportParameters(false).Exponent.ToHexString(),
-        //        Modulus = rsa.ExportParameters(false).Modulus.ToHexString()
-        //    };
-        //}
-
-        ///// <summary>
-        ///// Get rsa encrypt max length 
-        ///// </summary>
-        ///// <param name="rsa">Rsa instance </param>
-        ///// <param name="padding"><see cref="RSAEncryptionPadding"/></param>
-        ///// <returns></returns>
-        //private static int GetMaxRsaEncryptLength(RSA rsa, RSAEncryptionPadding padding)
-        //{
-        //    var offset = 0;
-        //    if (padding.Mode == RSAEncryptionPaddingMode.Pkcs1)
-        //    {
-        //        offset = 11;
-        //    }
-        //    else
-        //    {
-        //        if (padding.Equals(RSAEncryptionPadding.OaepSHA1))
-        //        {
-        //            offset = 42;
-        //        }
-
-        //        if (padding.Equals(RSAEncryptionPadding.OaepSHA256))
-        //        {
-        //            offset = 66;
-        //        }
-
-        //        if (padding.Equals(RSAEncryptionPadding.OaepSHA384))
-        //        {
-        //            offset = 98;
-        //        }
-
-        //        if (padding.Equals(RSAEncryptionPadding.OaepSHA512))
-        //        {
-        //            offset = 130;
-        //        }
-        //    }
-        //    var keySize = rsa.KeySize;
-        //    var maxLength = keySize / 8 - offset;
-        //    return maxLength;
-        //}
+        /// <summary>
+        /// RSA公玥加密
+        /// </summary>
+        /// <param name="publicKey"></param>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        public static string RsaEncrypt(string publicKey, string text)
+        {
+            byte[] dataBytes = Encoding.UTF8.GetBytes(text); //对普通的文字操作，用Encoding.UTF8.GetBytes()
+            using (RSA publicKeyRsaProvider = RsaProvider.CreateRsaProviderFromPublicKey(publicKey))
+            {
+                return Convert.ToBase64String(publicKeyRsaProvider.Encrypt(dataBytes, RSAEncryptionPadding.Pkcs1));
+            }
+        }
 
         #endregion
 

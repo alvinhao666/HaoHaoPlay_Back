@@ -1,339 +1,204 @@
-﻿using Hao.Encrypt.Extensions.Internal;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace Hao.Encrypt.Internal
 {
-    /// <summary>
-    /// RSA provider
-    /// 
-    /// https://github.com/xiangyuecn/RSA-csharp
-    /// </summary>
     internal class RsaProvider
     {
-        static private Regex _PEMCode = new Regex(@"--+.+?--+|\s+");
-        static private byte[] _SeqOID = new byte[] { 0x30, 0x0D, 0x06, 0x09, 0x2A, 0x86, 0x48, 0x86, 0xF7, 0x0D, 0x01, 0x01, 0x01, 0x05, 0x00 };
-        static private byte[] _Ver = new byte[] { 0x02, 0x01, 0x00 };
 
-        /// <summary>
-		/// Convert pem to rsa，support PKCS#1、PKCS#8 
-		/// </summary>
-		internal static RSA FromPem(string pem)
+        #region 使用私钥创建RSA实例
+
+        internal static RSA CreateRsaProviderFromPrivateKey(string privateKey)
         {
-            //var rsaParams = new CspParameters();
-            //rsaParams.Flags = CspProviderFlags.UseMachineKeyStore;
-            //var rsa = new RSACryptoServiceProvider(rsaParams);
+            var privateKeyBits = Convert.FromBase64String(privateKey);
 
             var rsa = RSA.Create();
+            var rsaParameters = new RSAParameters();
 
-            var param = new RSAParameters();
-
-            var base64 = _PEMCode.Replace(pem, "");
-            var data = Convert.FromBase64String(base64);
-            if (data == null)
+            using (BinaryReader binr = new BinaryReader(new MemoryStream(privateKeyBits)))
             {
-                throw new Exception("Pem content invalid ");
-            }
-            var idx = 0;
-
-            //read  length
-            Func<byte, int> readLen = (first) =>
-            {
-                if (data[idx] == first)
-                {
-                    idx++;
-                    if (data[idx] == 0x81)
-                    {
-                        idx++;
-                        return data[idx++];
-                    }
-                    else if (data[idx] == 0x82)
-                    {
-                        idx++;
-                        return (((int)data[idx++]) << 8) + data[idx++];
-                    }
-                    else if (data[idx] < 0x80)
-                    {
-                        return data[idx++];
-                    }
-                }
-                throw new Exception("Not found any content in pem file");
-            };
-            //read module length
-            Func<byte[]> readBlock = () =>
-            {
-                var len = readLen(0x02);
-                if (data[idx] == 0x00)
-                {
-                    idx++;
-                    len--;
-                }
-                var val = data.Sub(idx, len);
-                idx += len;
-                return val;
-            };
-
-            Func<byte[], bool> eq = (byts) =>
-            {
-                for (var i = 0; i < byts.Length; i++, idx++)
-                {
-                    if (idx >= data.Length)
-                    {
-                        return false;
-                    }
-                    if (byts[i] != data[idx])
-                    {
-                        return false;
-                    }
-                }
-                return true;
-            };
-
-            if (pem.Contains("PUBLIC KEY"))
-            {
-                /****Use public key****/
-                readLen(0x30);
-                if (!eq(_SeqOID))
-                {
-                    throw new Exception("Unknown pem format");
-                }
-
-                readLen(0x03);
-                idx++;
-                readLen(0x30);
-
-                //Modulus
-                param.Modulus = readBlock();
-
-                //Exponent
-                param.Exponent = readBlock();
-            }
-            else if (pem.Contains("PRIVATE KEY"))
-            {
-                /****Use private key****/
-                readLen(0x30);
-
-                //Read version
-                if (!eq(_Ver))
-                {
-                    throw new Exception("Unknown pem version");
-                }
-
-                //Check PKCS8
-                var idx2 = idx;
-                if (eq(_SeqOID))
-                {
-                    //Read one byte
-                    readLen(0x04);
-
-                    readLen(0x30);
-
-                    //Read version
-                    if (!eq(_Ver))
-                    {
-                        throw new Exception("Pem version invalid");
-                    }
-                }
+                byte bt = 0;
+                ushort twobytes = 0;
+                twobytes = binr.ReadUInt16();
+                if (twobytes == 0x8130)
+                    binr.ReadByte();
+                else if (twobytes == 0x8230)
+                    binr.ReadInt16();
                 else
-                {
-                    idx = idx2;
-                }
+                    throw new Exception("Unexpected value read binr.ReadUInt16()");
 
-                //Reda data
-                param.Modulus = readBlock();
-                param.Exponent = readBlock();
-                param.D = readBlock();
-                param.P = readBlock();
-                param.Q = readBlock();
-                param.DP = readBlock();
-                param.DQ = readBlock();
-                param.InverseQ = readBlock();
-            }
-            else
-            {
-                throw new Exception("pem need 'BEGIN' and  'END'");
+                twobytes = binr.ReadUInt16();
+                if (twobytes != 0x0102)
+                    throw new Exception("Unexpected version");
+
+                bt = binr.ReadByte();
+                if (bt != 0x00)
+                    throw new Exception("Unexpected value read binr.ReadByte()");
+
+                rsaParameters.Modulus = binr.ReadBytes(GetIntegerSize(binr));
+                rsaParameters.Exponent = binr.ReadBytes(GetIntegerSize(binr));
+                rsaParameters.D = binr.ReadBytes(GetIntegerSize(binr));
+                rsaParameters.P = binr.ReadBytes(GetIntegerSize(binr));
+                rsaParameters.Q = binr.ReadBytes(GetIntegerSize(binr));
+                rsaParameters.DP = binr.ReadBytes(GetIntegerSize(binr));
+                rsaParameters.DQ = binr.ReadBytes(GetIntegerSize(binr));
+                rsaParameters.InverseQ = binr.ReadBytes(GetIntegerSize(binr));
             }
 
-            rsa.ImportParameters(param);
+            rsa.ImportParameters(rsaParameters);
             return rsa;
         }
 
-        /// <summary>
-        /// Converter Rsa to pem ,
-        /// </summary>
-        /// <param name="rsa"><see cref="RSACryptoServiceProvider"/></param>
-        /// <param name="includePrivateParameters">if false only return publick key</param>
-        /// <param name="isPKCS8">default is false,if true return PKCS#8 pem else return PKCS#1 pem </param>
-        /// <returns></returns>
-        internal static string ToPem(RSA rsa, bool includePrivateParameters, bool isPKCS8 = false)
+        #endregion
+
+        #region 使用公钥创建RSA实例
+
+        internal static RSA CreateRsaProviderFromPublicKey(string publicKeyString)
         {
-            var ms = new MemoryStream();
+            // encoded OID sequence for  PKCS #1 rsaEncryption szOID_RSA_RSA = "1.2.840.113549.1.1.1"
+            byte[] seqOid = { 0x30, 0x0D, 0x06, 0x09, 0x2A, 0x86, 0x48, 0x86, 0xF7, 0x0D, 0x01, 0x01, 0x01, 0x05, 0x00 };
+            byte[] seq = new byte[15];
 
-            Action<int> writeLenByte = (len) =>
+            var x509Key = Convert.FromBase64String(publicKeyString);
+
+            // ---------  Set up stream to read the asn.1 encoded SubjectPublicKeyInfo blob  ------
+            using (MemoryStream mem = new MemoryStream(x509Key))
             {
-                if (len < 0x80)
+                using (BinaryReader binr = new BinaryReader(mem))  //wrap Memory Stream with BinaryReader for easy reading
                 {
-                    ms.WriteByte((byte)len);
+                    byte bt = 0;
+                    ushort twobytes = 0;
+
+                    twobytes = binr.ReadUInt16();
+                    if (twobytes == 0x8130) //data read as little endian order (actual data order for Sequence is 30 81)
+                        binr.ReadByte();    //advance 1 byte
+                    else if (twobytes == 0x8230)
+                        binr.ReadInt16();   //advance 2 bytes
+                    else
+                        return null;
+
+                    seq = binr.ReadBytes(15);       //read the Sequence OID
+                    if (!CompareBytearrays(seq, seqOid))    //make sure Sequence for OID is correct
+                        return null;
+
+                    twobytes = binr.ReadUInt16();
+                    if (twobytes == 0x8103) //data read as little endian order (actual data order for Bit String is 03 81)
+                        binr.ReadByte();    //advance 1 byte
+                    else if (twobytes == 0x8203)
+                        binr.ReadInt16();   //advance 2 bytes
+                    else
+                        return null;
+
+                    bt = binr.ReadByte();
+                    if (bt != 0x00)     //expect null byte next
+                        return null;
+
+                    twobytes = binr.ReadUInt16();
+                    if (twobytes == 0x8130) //data read as little endian order (actual data order for Sequence is 30 81)
+                        binr.ReadByte();    //advance 1 byte
+                    else if (twobytes == 0x8230)
+                        binr.ReadInt16();   //advance 2 bytes
+                    else
+                        return null;
+
+                    twobytes = binr.ReadUInt16();
+                    byte lowbyte = 0x00;
+                    byte highbyte = 0x00;
+
+                    if (twobytes == 0x8102) //data read as little endian order (actual data order for Integer is 02 81)
+                        lowbyte = binr.ReadByte();  // read next bytes which is bytes in modulus
+                    else if (twobytes == 0x8202)
+                    {
+                        highbyte = binr.ReadByte(); //advance 2 bytes
+                        lowbyte = binr.ReadByte();
+                    }
+                    else
+                        return null;
+                    byte[] modint = { lowbyte, highbyte, 0x00, 0x00 };   //reverse byte order since asn.1 key uses big endian order
+                    int modsize = BitConverter.ToInt32(modint, 0);
+
+                    int firstbyte = binr.PeekChar();
+                    if (firstbyte == 0x00)
+                    {   //if first byte (highest order) of modulus is zero, don't include it
+                        binr.ReadByte();    //skip this null byte
+                        modsize -= 1;   //reduce modulus buffer size by 1
+                    }
+
+                    byte[] modulus = binr.ReadBytes(modsize);   //read the modulus bytes
+
+                    if (binr.ReadByte() != 0x02)            //expect an Integer for the exponent data
+                        return null;
+                    int expbytes = (int)binr.ReadByte();        // should only need one byte for actual exponent data (for all useful values)
+                    byte[] exponent = binr.ReadBytes(expbytes);
+
+                    // ------- create RSACryptoServiceProvider instance and initialize with public key -----
+                    var rsa = RSA.Create();
+                    RSAParameters rsaKeyInfo = new RSAParameters
+                    {
+                        Modulus = modulus,
+                        Exponent = exponent
+                    };
+                    rsa.ImportParameters(rsaKeyInfo);
+
+                    return rsa;
                 }
-                else if (len <= 0xff)
-                {
-                    ms.WriteByte(0x81);
-                    ms.WriteByte((byte)len);
-                }
-                else
-                {
-                    ms.WriteByte(0x82);
-                    ms.WriteByte((byte)(len >> 8 & 0xff));
-                    ms.WriteByte((byte)(len & 0xff));
-                }
-            };
-            //write moudle data
-            Action<byte[]> writeBlock = (byts) =>
+
+            }
+        }
+
+        #endregion
+
+        #region 导入密钥算法
+
+        private static int GetIntegerSize(BinaryReader binr)
+        {
+            byte bt = 0;
+            int count = 0;
+            bt = binr.ReadByte();
+            if (bt != 0x02)
+                return 0;
+            bt = binr.ReadByte();
+
+            if (bt == 0x81)
+                count = binr.ReadByte();
+            else
+            if (bt == 0x82)
             {
-                var addZero = (byts[0] >> 4) >= 0x8;
-                ms.WriteByte(0x02);
-                var len = byts.Length + (addZero ? 1 : 0);
-                writeLenByte(len);
-
-                if (addZero)
-                {
-                    ms.WriteByte(0x00);
-                }
-                ms.Write(byts, 0, byts.Length);
-            };
-
-            Func<int, byte[], byte[]> writeLen = (index, byts) =>
-            {
-                var len = byts.Length - index;
-
-                ms.SetLength(0);
-                ms.Write(byts, 0, index);
-                writeLenByte(len);
-                ms.Write(byts, index, len);
-
-                return ms.ToArray();
-            };
-
-
-            if (!includePrivateParameters)
-            {
-                /****Create public key****/
-                var param = rsa.ExportParameters(false);
-
-                ms.WriteByte(0x30);
-                var index1 = (int)ms.Length;
-
-                // Encoded OID sequence for PKCS #1 rsaEncryption szOID_RSA_RSA = "1.2.840.113549.1.1.1"
-                ms.WriteAll(_SeqOID);
-
-                //Start with 0x00 
-                ms.WriteByte(0x03);
-                var index2 = (int)ms.Length;
-                ms.WriteByte(0x00);
-
-                //Content length
-                ms.WriteByte(0x30);
-                var index3 = (int)ms.Length;
-
-                //Write Modulus
-                writeBlock(param.Modulus);
-
-                //Write Exponent
-                writeBlock(param.Exponent);
-
-                var bytes = ms.ToArray();
-
-                bytes = writeLen(index3, bytes);
-                bytes = writeLen(index2, bytes);
-                bytes = writeLen(index1, bytes);
-
-
-                return "-----BEGIN PUBLIC KEY-----\n" + TextBreak(Convert.ToBase64String(bytes), 64) + "\n-----END PUBLIC KEY-----";
+                var highbyte = binr.ReadByte();
+                var lowbyte = binr.ReadByte();
+                byte[] modint = { lowbyte, highbyte, 0x00, 0x00 };
+                count = BitConverter.ToInt32(modint, 0);
             }
             else
             {
-                /****Create private key****/
-                var param = rsa.ExportParameters(true);
-
-                //Write total length
-                ms.WriteByte(0x30);
-                int index1 = (int)ms.Length;
-
-                //Write version
-                ms.WriteAll(_Ver);
-
-                //PKCS8 
-                int index2 = -1, index3 = -1;
-                if (isPKCS8)
-                {
-                    ms.WriteAll(_SeqOID);
-
-                    ms.WriteByte(0x04);
-                    index2 = (int)ms.Length;
-
-                    ms.WriteByte(0x30);
-                    index3 = (int)ms.Length;
-
-                    ms.WriteAll(_Ver);
-                }
-
-                //Write data
-                writeBlock(param.Modulus);
-                writeBlock(param.Exponent);
-                writeBlock(param.D);
-                writeBlock(param.P);
-                writeBlock(param.Q);
-                writeBlock(param.DP);
-                writeBlock(param.DQ);
-                writeBlock(param.InverseQ);
-
-                var bytes = ms.ToArray();
-
-                if (index2 != -1)
-                {
-                    bytes = writeLen(index3, bytes);
-                    bytes = writeLen(index2, bytes);
-                }
-                bytes = writeLen(index1, bytes);
-
-
-                var flag = " PRIVATE KEY";
-                if (!isPKCS8)
-                {
-                    flag = " RSA" + flag;
-                }
-                return "-----BEGIN" + flag + "-----\n" + TextBreak(Convert.ToBase64String(bytes), 64) + "\n-----END" + flag + "-----";
+                count = bt;
             }
-        }
 
-        /// <summary>
-		/// Text break method
-		/// </summary>
-		private static string TextBreak(string text, int line)
-        {
-            var idx = 0;
-            var len = text.Length;
-            var str = new StringBuilder();
-            while (idx < len)
+            while (binr.ReadByte() == 0x00)
             {
-                if (idx > 0)
-                {
-                    str.Append('\n');
-                }
-                if (idx + line >= len)
-                {
-                    str.Append(text.Substring(idx));
-                }
-                else
-                {
-                    str.Append(text.Substring(idx, line));
-                }
-                idx += line;
+                count -= 1;
             }
-            return str.ToString();
+            binr.BaseStream.Seek(-1, SeekOrigin.Current);
+            return count;
         }
+
+        private static bool CompareBytearrays(byte[] a, byte[] b)
+        {
+            if (a.Length != b.Length)
+                return false;
+            int i = 0;
+            foreach (byte c in a)
+            {
+                if (c != b[i])
+                    return false;
+                i++;
+            }
+            return true;
+        }
+
+        #endregion
     }
 }

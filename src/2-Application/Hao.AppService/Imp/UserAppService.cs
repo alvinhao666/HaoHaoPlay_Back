@@ -81,7 +81,7 @@ namespace Hao.AppService
             var user = _mapper.Map<SysUser>(vm);
             user.FirstNameSpell = H_Spell.GetFirstLetter(user.Name.ToCharArray()[0]);
             user.PasswordLevel = (PasswordLevel)H_Util.CheckPasswordLevel(user.Password);
-            user.Password = EncryptProvider.HMACSHA256(user.Password, _appsettings.Key.Sha256Key);
+            user.Password = H_EncryptProvider.HMACSHA256(user.Password, _appsettings.Key.Sha256Key);
             user.Enabled = true;
             user.RoleId = role.Id;
             user.RoleName = role.Name;
@@ -299,7 +299,7 @@ namespace Hao.AppService
                             var user = new SysUser();
                             user.Name = ws.Cells[i, colStart].Text;
                             user.FirstNameSpell = H_Spell.GetFirstLetter(user.Name.ToCharArray()[0]);
-                            user.Password = EncryptProvider.HMACSHA256("123456", _appsettings.Key.Sha256Key);
+                            user.Password = H_EncryptProvider.HMACSHA256("123456", _appsettings.Key.Sha256Key);
                             users.Add(user);
                         }
                     }
