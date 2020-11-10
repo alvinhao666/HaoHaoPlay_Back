@@ -317,7 +317,8 @@ namespace Hao.Core
 
             H_Check.Argument.NotNull(columns, nameof(columns));
 
-            var properties = columns.Body.Type.GetProperties();
+            //var properties = columns.Body.Type.GetProperties();
+            var properties = columns.Parameters;
             H_Check.Argument.IsNotEmpty(properties, nameof(columns));
 
             var updateColumns = properties.Select(a => a.Name).ToList();
@@ -373,7 +374,8 @@ namespace Hao.Core
 
             H_Check.Argument.NotNull(columns, nameof(columns));
 
-            var properties = columns.Body.Type.GetProperties();
+            //var properties = columns.Body.Type.GetProperties();
+            var properties = columns.Parameters;
             H_Check.Argument.IsNotEmpty(properties, nameof(columns));
 
             var updateColumns = properties.Select(a => a.Name).ToList();
