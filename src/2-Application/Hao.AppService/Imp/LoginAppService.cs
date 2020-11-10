@@ -132,7 +132,7 @@ namespace Hao.AppService
         {
             var users = await _userRep.GetUserByLoginName(loginName, password);
 
-            if (users.Count == 0) throw new H_Exception("用户名或密码错误");
+            if (users.Count == 0) throw new H_Exception("账户或密码错误");
             if (users.Count > 1) throw new H_Exception("用户数据异常，存在相同用户");
             var user = users.First();
             if (!user.Enabled.IsTrue()) throw new H_Exception("用户已注销");
