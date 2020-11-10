@@ -25,15 +25,11 @@ namespace Hao.AppService
     /// </summary>
     public class LoginAppService : ApplicationService, ILoginAppService
     {
-        private readonly IMapper _mapper;
-
         private readonly ISysUserRepository _userRep;
 
         private readonly ISysModuleRepository _moduleRep;
 
         private readonly ICapPublisher _publisher;
-
-        private readonly HttpContext _httpContext;
 
         private readonly H_AppSettingsConfig _appsettings;
 
@@ -43,14 +39,11 @@ namespace Hao.AppService
             IHttpContextAccessor httpContextAccessor,
             ISysUserRepository userRep,
             ISysModuleRepository moduleRep,
-            IMapper mapper,
             ICapPublisher publisher,
             IOptionsSnapshot<H_AppSettingsConfig> appsettingsOptions)
         {
             _userRep = userRep;
-            _mapper = mapper;
             _appsettings = appsettingsOptions.Value; //IOptionsSnapshot动态获取配置
-            _httpContext = httpContextAccessor.HttpContext;
             _publisher = publisher;
             _moduleRep = moduleRep;
         }
