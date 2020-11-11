@@ -26,7 +26,7 @@ namespace Hao.Utility
                 }
             }
 
-            public static void IsNotEmpty<T>(ICollection<T> argument, string argumentName)
+            public static void NotEmpty<T>(ICollection<T> argument, string argumentName)
             {
                 NotNull(argument, argumentName, "集合不能为Null");
 

@@ -37,9 +37,7 @@ namespace Hao.Core
         /// <returns>泛型实体</returns>
         public virtual async Task<List<T>> GetListAysnc(List<TKey> pkValues)
         {
-            H_Check.Argument.NotNull(pkValues, nameof(pkValues));
-
-            if (pkValues.Count == 0) return new List<T>();
+            H_Check.Argument.NotEmpty(pkValues, nameof(pkValues));
 
             //Type type = typeof(T); 类型判断，主要包括 is 和 typeof 两个操作符及对象实例上的 GetType 调用。这是最轻型的消耗，可以无需考虑优化问题。注意 typeof 运算符比对象实例上的 GetType 方法要快，只要可能则优先使用 typeof 运算符。 
             return await DbContext.Queryable<T>().In(pkValues).ToListAsync();
@@ -155,7 +153,7 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<int> InsertAysnc(List<T> entities)
         {
-            H_Check.Argument.IsNotEmpty(entities, nameof(entities));
+            H_Check.Argument.NotEmpty(entities, nameof(entities));
 
             var isGuid = typeof(TKey) == typeof(Guid);
             var type = typeof(T);
@@ -200,7 +198,7 @@ namespace Hao.Core
             H_Check.Argument.NotNull(columns, nameof(columns));
 
             var properties = columns.Body.Type.GetProperties();
-            H_Check.Argument.IsNotEmpty(properties, nameof(columns));
+            H_Check.Argument.NotEmpty(properties, nameof(columns));
 
             var updateColumns = properties.Select(a => a.Name);
 
@@ -214,7 +212,7 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<int> UpdateAsync(List<T> entities)
         {
-            H_Check.Argument.IsNotEmpty(entities, nameof(entities));
+            H_Check.Argument.NotEmpty(entities, nameof(entities));
 
             return await DbContext.Updateable(entities).ExecuteCommandAsync();
         }
@@ -227,12 +225,12 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<int> UpdateAsync(List<T> entities, Expression<Func<T, object>> columns)
         {
-            H_Check.Argument.IsNotEmpty(entities, nameof(entities));
+            H_Check.Argument.NotEmpty(entities, nameof(entities));
 
             H_Check.Argument.NotNull(columns, nameof(columns));
 
             var properties = columns.Body.Type.GetProperties();
-            H_Check.Argument.IsNotEmpty(properties, nameof(columns));
+            H_Check.Argument.NotEmpty(properties, nameof(columns));
 
             var updateColumns = properties.Select(a => a.Name);
 
@@ -256,7 +254,7 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<int> DeleteAysnc(List<TKey> pkValues)
         {
-            H_Check.Argument.IsNotEmpty(pkValues, nameof(pkValues));
+            H_Check.Argument.NotEmpty(pkValues, nameof(pkValues));
 
             return await DbContext.Deleteable<T>().In(pkValues).ExecuteCommandAsync();
         }
