@@ -4,7 +4,6 @@ using COSXML.CosException;
 using COSXML.Model;
 using COSXML.Transfer;
 using System;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Web;
 using TencentCloud.Common;
