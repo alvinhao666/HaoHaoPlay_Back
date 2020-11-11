@@ -15,31 +15,24 @@ namespace Hao.Utility
         /// <param name="encoding"></param>
         public static void CreateFile(string filePath, string text, Encoding encoding)
         {
-            try
+            if (IsExistFile(filePath))
             {
-                if (IsExistFile(filePath))
-                {
-                    DeleteFile(filePath);
-                }
-                if (!IsExistFile(filePath))
-                {
-                    string directoryPath = GetDirectoryFromFilePath(filePath);
-                    CreateDirectory(directoryPath);
+                DeleteFile(filePath);
+            }
+            if (!IsExistFile(filePath))
+            {
+                string directoryPath = GetDirectoryFromFilePath(filePath);
+                CreateDirectory(directoryPath);
 
-                    FileInfo file = new FileInfo(filePath);
-                    using (FileStream stream = file.Create())
+                FileInfo file = new FileInfo(filePath);
+                using (FileStream stream = file.Create())
+                {
+                    using (StreamWriter writer = new StreamWriter(stream, encoding))
                     {
-                        using (StreamWriter writer = new StreamWriter(stream, encoding))
-                        {
-                            writer.Write(text);
-                            writer.Flush();
-                        }
+                        writer.Write(text);
+                        writer.Flush();
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
             }
         }
 
