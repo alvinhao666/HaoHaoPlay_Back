@@ -572,17 +572,10 @@ namespace Hao.Encrypt
 
         public static string RsaDecrypt(string privateKey, string cipherText)
         {
-            try
+            byte[] dataBytes = Convert.FromBase64String(cipherText); //对加密方法返回的byte[]，用Convert.ToBase64String，普通的文字并不是 base 64 编码的，不能使用 FromBase64String 转换成 byte[]
+            using (RSA privateKeyRsaProvider = RsaProvider.CreateRsaProviderFromPrivateKey(privateKey))
             {
-                byte[] dataBytes = Convert.FromBase64String(cipherText); //对加密方法返回的byte[]，用Convert.ToBase64String，普通的文字并不是 base 64 编码的，不能使用 FromBase64String 转换成 byte[]
-                using (RSA privateKeyRsaProvider = RsaProvider.CreateRsaProviderFromPrivateKey(privateKey))
-                {
-                    return Encoding.UTF8.GetString(privateKeyRsaProvider.Decrypt(dataBytes, RSAEncryptionPadding.Pkcs1));
-                }
-            }
-            catch (Exception)
-            {
-                throw new Exception("RSA解密失败");
+                return Encoding.UTF8.GetString(privateKeyRsaProvider.Decrypt(dataBytes, RSAEncryptionPadding.Pkcs1));
             }
         }
 
