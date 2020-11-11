@@ -137,9 +137,12 @@ namespace Hao.Core
 
             if (isGuid)
             {
-                if (id != null) id.SetValue(entity, Guid.NewGuid());
+                id.SetValue(entity, Guid.NewGuid());
             }
-            else if (id != null) id.SetValue(entity, IdWorker.NextId());
+            else
+            {
+                id.SetValue(entity, IdWorker.NextId());
+            }
 
             var obj = await DbContext.Insertable(entity).ExecuteReturnEntityAsync();
             return obj;
@@ -162,9 +165,12 @@ namespace Hao.Core
             {
                 if (isGuid)
                 {
-                    if (id != null) id.SetValue(item, Guid.NewGuid());
+                    id.SetValue(item, Guid.NewGuid());
                 }
-                else if (id != null) id.SetValue(item, IdWorker.NextId());
+                else
+                {
+                    id.SetValue(item, IdWorker.NextId());
+                }
             });
             return await DbContext.Insertable(entities).ExecuteCommandAsync();
         }

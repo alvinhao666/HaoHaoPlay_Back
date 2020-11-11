@@ -174,13 +174,15 @@ namespace Hao.Core
 
             if (isGuid)
             {
-                if (id != null) id.SetValue(entity, Guid.NewGuid());
+                id.SetValue(entity, Guid.NewGuid());
             }
-            else if (id != null) id.SetValue(entity, IdWorker.NextId());
+            else
+            {
+                id.SetValue(entity, IdWorker.NextId());
+            }
 
             entity.CreatorId = CurrentUser.Id;
             entity.CreateTime = DateTime.Now;
-            entity.IsDeleted = false;
 
             var obj = await DbContext.Insertable(entity).ExecuteReturnEntityAsync();
             return obj;
@@ -203,13 +205,15 @@ namespace Hao.Core
             {
                 if (isGuid)
                 {
-                    if (id != null) id.SetValue(item, Guid.NewGuid());
+                    id.SetValue(item, Guid.NewGuid());
                 }
-                else if (id != null) id.SetValue(item, IdWorker.NextId());
+                else
+                {
+                    id.SetValue(item, IdWorker.NextId());
+                }
 
                 item.CreatorId = CurrentUser.Id;
                 item.CreateTime = timeNow;
-                item.IsDeleted = false;
             });
             return await DbContext.Insertable(entities).ExecuteCommandAsync();
         }
