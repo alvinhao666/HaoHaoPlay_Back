@@ -25,32 +25,24 @@ namespace Hao.AppService
     /// </summary>
     public class LoginAppService : ApplicationService, ILoginAppService
     {
-        private readonly IMapper _mapper;
-
         private readonly ISysUserRepository _userRep;
 
         private readonly ISysModuleRepository _moduleRep;
 
         private readonly ICapPublisher _publisher;
 
-        private readonly HttpContext _httpContext;
-
         private readonly H_AppSettingsConfig _appsettings;
 
         private const string _noAuthTip= "没有系统权限，暂时无法登录，请联系管理员";
 
         public LoginAppService(
-            IHttpContextAccessor httpContextAccessor,
             ISysUserRepository userRep,
             ISysModuleRepository moduleRep,
-            IMapper mapper,
             ICapPublisher publisher,
             IOptionsSnapshot<H_AppSettingsConfig> appsettingsOptions)
         {
             _userRep = userRep;
-            _mapper = mapper;
             _appsettings = appsettingsOptions.Value; //IOptionsSnapshot动态获取配置
-            _httpContext = httpContextAccessor.HttpContext;
             _publisher = publisher;
             _moduleRep = moduleRep;
         }
@@ -132,7 +124,7 @@ namespace Hao.AppService
         {
             var users = await _userRep.GetUserByLoginName(loginName, password);
 
-            if (users.Count == 0) throw new H_Exception("用户名或密码错误");
+            if (users.Count == 0) throw new H_Exception("账户或密码错误");
             if (users.Count > 1) throw new H_Exception("用户数据异常，存在相同用户");
             var user = users.First();
             if (!user.Enabled.IsTrue()) throw new H_Exception("用户已注销");
