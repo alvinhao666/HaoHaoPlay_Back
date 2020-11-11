@@ -4,6 +4,7 @@ using COSXML.CosException;
 using COSXML.Model;
 using COSXML.Transfer;
 using System;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Web;
 using TencentCloud.Common;
@@ -53,7 +54,7 @@ namespace Hao.TencentCloud.Cos
         /// 高级接口上传对象
         /// </summary>
         /// <returns></returns>
-        public void TransferUploadFile(string filePath)
+        public async Task TransferUploadFile(string filePath)
         {
             CosXmlConfig config = new CosXmlConfig.Builder()
                       .SetRegion(_cosConfig.Region) //设置一个默认的存储桶地域
@@ -101,8 +102,7 @@ namespace Hao.TencentCloud.Cos
                     Console.WriteLine("CosServerException: " + serverEx.GetInfo());
                 }
             };
-            transferManager.Upload(uploadTask);
-
+            await transferManager.UploadAsync(uploadTask);
         }
     }
 }

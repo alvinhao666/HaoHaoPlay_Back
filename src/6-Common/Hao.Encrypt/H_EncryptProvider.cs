@@ -245,16 +245,9 @@ namespace Hao.Encrypt
 
                     using (CryptoStream cryptoStream = new CryptoStream(Memory, aes.CreateEncryptor(), CryptoStreamMode.Write))
                     {
-                        try
-                        {
-                            cryptoStream.Write(plainBytes, 0, plainBytes.Length);
-                            cryptoStream.FlushFinalBlock();
-                            return Convert.ToBase64String(Memory.ToArray());
-                        }
-                        catch (Exception ex)
-                        {
-                            return null;
-                        }
+                        cryptoStream.Write(plainBytes, 0, plainBytes.Length);
+                        cryptoStream.FlushFinalBlock();
+                        return Convert.ToBase64String(Memory.ToArray());
                     }
                 }
             }
@@ -287,19 +280,12 @@ namespace Hao.Encrypt
 
                     using (CryptoStream cryptoStream = new CryptoStream(Memory, aes.CreateDecryptor(), CryptoStreamMode.Read))
                     {
-                        try
-                        {
-                            byte[] tmp = new byte[encryptedBytes.Length];
-                            int len = cryptoStream.Read(tmp, 0, encryptedBytes.Length);
-                            byte[] ret = new byte[len];
-                            Array.Copy(tmp, 0, ret, 0, len);
+                        byte[] tmp = new byte[encryptedBytes.Length];
+                        int len = cryptoStream.Read(tmp, 0, encryptedBytes.Length);
+                        byte[] ret = new byte[len];
+                        Array.Copy(tmp, 0, ret, 0, len);
 
-                            return Encoding.UTF8.GetString(ret, 0, len);
-                        }
-                        catch (Exception ex)
-                        {
-                            return null;
-                        }
+                        return Encoding.UTF8.GetString(ret, 0, len);
                     }
                 }
             }
@@ -420,16 +406,9 @@ namespace Hao.Encrypt
 
                     using (CryptoStream cryptoStream = new CryptoStream(Memory, des.CreateEncryptor(), CryptoStreamMode.Write))
                     {
-                        try
-                        {
-                            cryptoStream.Write(plainBytes, 0, plainBytes.Length);
-                            cryptoStream.FlushFinalBlock();
-                            return Memory.ToArray();
-                        }
-                        catch (Exception ex)
-                        {
-                            return null;
-                        }
+                        cryptoStream.Write(plainBytes, 0, plainBytes.Length);
+                        cryptoStream.FlushFinalBlock();
+                        return Memory.ToArray();
                     }
                 }
             }

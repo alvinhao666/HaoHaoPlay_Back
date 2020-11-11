@@ -15,6 +15,6 @@ namespace Hao.TencentCloud.Cos
         /// 高级接口上传对象
         /// </summary>
         /// <returns></returns>
-        void TransferUploadFile(string filePath);
+        Task TransferUploadFile(string filePath);
     }
 }
