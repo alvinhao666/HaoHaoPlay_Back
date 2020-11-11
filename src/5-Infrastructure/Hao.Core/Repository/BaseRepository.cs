@@ -14,7 +14,7 @@ namespace Hao.Core
         where T : BaseEntity<TKey>, new() where TKey : struct
     {
         [FromServiceContext]
-        public ISqlSugarClient Db { get; set; }
+        public ISqlSugarClient DbContext { get; set; }
 
         [FromServiceContext]
         public IdWorker IdWorker { get; set; }
@@ -26,7 +26,7 @@ namespace Hao.Core
         /// <returns>泛型实体</returns>
         public virtual async Task<T> GetAysnc(TKey pkValue)
         {
-            var entity = await Db.Queryable<T>().Where($"{nameof(BaseEntity<TKey>.Id)}='{pkValue}'").SingleAsync();
+            var entity = await DbContext.Queryable<T>().Where($"{nameof(BaseEntity<TKey>.Id)}='{pkValue}'").SingleAsync();
             return entity;
         }
 
@@ -42,7 +42,7 @@ namespace Hao.Core
             if (pkValues.Count == 0) return new List<T>();
 
             //Type type = typeof(T); 类型判断，主要包括 is 和 typeof 两个操作符及对象实例上的 GetType 调用。这是最轻型的消耗，可以无需考虑优化问题。注意 typeof 运算符比对象实例上的 GetType 方法要快，只要可能则优先使用 typeof 运算符。 
-            return await Db.Queryable<T>().In(pkValues).ToListAsync();
+            return await DbContext.Queryable<T>().In(pkValues).ToListAsync();
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<List<T>> GetAllAysnc()
         {
-            return await Db.Queryable<T>().ToListAsync();
+            return await DbContext.Queryable<T>().ToListAsync();
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace Hao.Core
             H_Check.Argument.NotNull(query, nameof(query));
 
             var flag = string.IsNullOrWhiteSpace(query.OrderByFileds);
-            var q = Db.Queryable<T>();
+            var q = DbContext.Queryable<T>();
             foreach (var item in query.QueryExpressions)
             {
                 q.Where(item);
@@ -82,7 +82,7 @@ namespace Hao.Core
         {
             H_Check.Argument.NotNull(query, nameof(query));
 
-            var q = Db.Queryable<T>();
+            var q = DbContext.Queryable<T>();
             foreach (var item in query.QueryExpressions)
             {
                 q.Where(item);
@@ -102,7 +102,7 @@ namespace Hao.Core
 
             RefAsync<int> totalNumber = 0;
             var flag = string.IsNullOrWhiteSpace(query.OrderByFileds);
-            var q = Db.Queryable<T>();
+            var q = DbContext.Queryable<T>();
             foreach (var item in query.QueryExpressions)
             {
                 q.Where(item);
@@ -141,7 +141,7 @@ namespace Hao.Core
             }
             else if (id != null) id.SetValue(entity, IdWorker.NextId());
 
-            var obj = await Db.Insertable(entity).ExecuteReturnEntityAsync();
+            var obj = await DbContext.Insertable(entity).ExecuteReturnEntityAsync();
             return obj;
         }
 
@@ -166,7 +166,7 @@ namespace Hao.Core
                 }
                 else if (id != null) id.SetValue(item, IdWorker.NextId());
             });
-            return await Db.Insertable(entities).ExecuteCommandAsync();
+            return await DbContext.Insertable(entities).ExecuteCommandAsync();
         }
 
         /// <summary>
@@ -178,7 +178,7 @@ namespace Hao.Core
         {
             H_Check.Argument.NotNull(entity, nameof(entity));
 
-            return await Db.Updateable(entity).ExecuteCommandAsync();
+            return await DbContext.Updateable(entity).ExecuteCommandAsync();
         }
 
         /// <summary>
@@ -198,7 +198,7 @@ namespace Hao.Core
 
             var updateColumns = properties.Select(a => a.Name);
 
-            return await Db.Updateable(entity).UpdateColumns(updateColumns.ToArray()).ExecuteCommandAsync();
+            return await DbContext.Updateable(entity).UpdateColumns(updateColumns.ToArray()).ExecuteCommandAsync();
         }
 
         /// <summary>
@@ -210,7 +210,7 @@ namespace Hao.Core
         {
             H_Check.Argument.IsNotEmpty(entities, nameof(entities));
 
-            return await Db.Updateable(entities).ExecuteCommandAsync();
+            return await DbContext.Updateable(entities).ExecuteCommandAsync();
         }
 
         /// <summary>
@@ -230,7 +230,7 @@ namespace Hao.Core
 
             var updateColumns = properties.Select(a => a.Name);
 
-            return await Db.Updateable(entities).UpdateColumns(updateColumns.ToArray()).ExecuteCommandAsync();
+            return await DbContext.Updateable(entities).UpdateColumns(updateColumns.ToArray()).ExecuteCommandAsync();
         }
 
         /// <summary>
@@ -240,7 +240,7 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<int> DeleteAysnc(TKey pkValue)
         {
-            return await Db.Deleteable<T>().Where($"{nameof(BaseEntity<TKey>.Id)}='{pkValue}'").ExecuteCommandAsync();
+            return await DbContext.Deleteable<T>().Where($"{nameof(BaseEntity<TKey>.Id)}='{pkValue}'").ExecuteCommandAsync();
         }
 
         /// <summary>
@@ -252,7 +252,7 @@ namespace Hao.Core
         {
             H_Check.Argument.IsNotEmpty(pkValues, nameof(pkValues));
 
-            return await Db.Deleteable<T>().In(pkValues).ExecuteCommandAsync();
+            return await DbContext.Deleteable<T>().In(pkValues).ExecuteCommandAsync();
         }
     }
 }

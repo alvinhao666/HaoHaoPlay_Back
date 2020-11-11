@@ -17,7 +17,7 @@ namespace Hao.Repository
         public async Task<List<SysLoginRecord>> GetLoginRecords(long userId, DateTime expireTime)
         {
 
-            var result = await Db.Queryable<SysLoginRecord>()
+            var result = await DbContext.Queryable<SysLoginRecord>()
                                  .Where(a => a.UserId == userId && a.JwtExpireTime >= expireTime)
                                  .ToListAsync();
             return result;
