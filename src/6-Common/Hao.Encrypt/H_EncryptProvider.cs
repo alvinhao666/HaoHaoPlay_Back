@@ -107,29 +107,21 @@ namespace Hao.Encrypt
             byte[] bVector = new byte[16];
             Array.Copy(Encoding.UTF8.GetBytes(vector.PadRight(bVector.Length)), bVector, bVector.Length);
 
-            byte[] encryptData = null; // encrypted data
-            using (Aes Aes = Aes.Create())
-            {
-                try
-                {
-                    using (MemoryStream Memory = new MemoryStream())
-                    {
-                        using (CryptoStream Encryptor = new CryptoStream(Memory,
-                         Aes.CreateEncryptor(bKey, bVector),
-                         CryptoStreamMode.Write))
-                        {
-                            Encryptor.Write(plainBytes, 0, plainBytes.Length);
-                            Encryptor.FlushFinalBlock();
 
-                            encryptData = Memory.ToArray();
-                        }
+            using (Aes aes = Aes.Create())
+            {
+                using (MemoryStream memory = new MemoryStream())
+                {
+                    using (CryptoStream Encryptor = new CryptoStream(memory,
+                     aes.CreateEncryptor(bKey, bVector),
+                     CryptoStreamMode.Write))
+                    {
+                        Encryptor.Write(plainBytes, 0, plainBytes.Length);
+                        Encryptor.FlushFinalBlock();
+
+                        return memory.ToArray();
                     }
                 }
-                catch
-                {
-                    encryptData = null;
-                }
-                return encryptData;
             }
         }
 
@@ -185,36 +177,26 @@ namespace Hao.Encrypt
             byte[] bVector = new byte[16];
             Array.Copy(Encoding.UTF8.GetBytes(vector.PadRight(bVector.Length)), bVector, bVector.Length);
 
-            byte[] decryptedData = null; // decrypted data
 
             using (Aes Aes = Aes.Create())
             {
-                try
+                using (MemoryStream Memory = new MemoryStream(encryptedBytes))
                 {
-                    using (MemoryStream Memory = new MemoryStream(encryptedBytes))
+                    using (CryptoStream Decryptor = new CryptoStream(Memory, Aes.CreateDecryptor(bKey, bVector), CryptoStreamMode.Read))
                     {
-                        using (CryptoStream Decryptor = new CryptoStream(Memory, Aes.CreateDecryptor(bKey, bVector), CryptoStreamMode.Read))
+                        using (MemoryStream tempMemory = new MemoryStream())
                         {
-                            using (MemoryStream tempMemory = new MemoryStream())
+                            byte[] Buffer = new byte[1024];
+                            int readBytes = 0;
+                            while ((readBytes = Decryptor.Read(Buffer, 0, Buffer.Length)) > 0)
                             {
-                                byte[] Buffer = new byte[1024];
-                                Int32 readBytes = 0;
-                                while ((readBytes = Decryptor.Read(Buffer, 0, Buffer.Length)) > 0)
-                                {
-                                    tempMemory.Write(Buffer, 0, readBytes);
-                                }
-
-                                decryptedData = tempMemory.ToArray();
+                                tempMemory.Write(Buffer, 0, readBytes);
                             }
+
+                            return tempMemory.ToArray();
                         }
                     }
                 }
-                catch
-                {
-                    decryptedData = null;
-                }
-
-                return decryptedData;
             }
         }
 
@@ -504,18 +486,11 @@ namespace Hao.Encrypt
 
                     using (CryptoStream cryptoStream = new CryptoStream(Memory, des.CreateDecryptor(), CryptoStreamMode.Read))
                     {
-                        try
-                        {
-                            byte[] tmp = new byte[encryptedBytes.Length];
-                            int len = cryptoStream.Read(tmp, 0, encryptedBytes.Length);
-                            byte[] ret = new byte[len];
-                            Array.Copy(tmp, 0, ret, 0, len);
-                            return ret;
-                        }
-                        catch
-                        {
-                            return null;
-                        }
+                        byte[] tmp = new byte[encryptedBytes.Length];
+                        int len = cryptoStream.Read(tmp, 0, encryptedBytes.Length);
+                        byte[] ret = new byte[len];
+                        Array.Copy(tmp, 0, ret, 0, len);
+                        return ret;
                     }
                 }
             }
