@@ -14,7 +14,7 @@ namespace Hao.Utility
     public static class H_Util
     {
         public static Type IntType = typeof(int);
-        public static Type IntTypeNull = typeof(int);
+        public static Type IntTypeNull = typeof(int?);
         public static Type LongType = typeof(long);
         public static Type LongTypeNull = typeof(long?);
         public static Type GuidType = typeof(Guid);
