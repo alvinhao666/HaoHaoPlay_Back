@@ -23,7 +23,7 @@ namespace Hao.WebApi
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [AuthCode("1_16")]
+        [AuthCode("1_33554432")]
         public async Task<List<RoleVM>> GetRoleList() => await _roleAppService.GetList();
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace Hao.WebApi
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        [AuthCode("1_16")]
+        [AuthCode("1_33554432")]
         public async Task<RoleModuleVM> GetRoleModule(long? id) => await _roleAppService.GetRoleModule(id.Value);
 
         /// <summary>
