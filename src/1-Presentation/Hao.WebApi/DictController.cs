@@ -34,7 +34,7 @@ namespace Hao.WebApi
         /// <param name="queryInput"></param>
         /// <returns></returns>
         [HttpGet]
-        [AuthCode("1_524288")]
+        [AuthCode("1_67108864")]
         public async Task<PagedList<DictVM>> GetDictPagedList([FromQuery]DictQueryInput queryInput) => await _dictAppService.GetPagedList(queryInput);
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace Hao.WebApi
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [AuthCode("1_524288")]
+        [AuthCode("1_67108864")]
         public async Task<PagedList<DictItemVM>> GetDictItemPagedList([FromQuery]DictQueryInput queryInput) => await _dictAppService.GetDictItemPagedList(queryInput);
 
         /// <summary>

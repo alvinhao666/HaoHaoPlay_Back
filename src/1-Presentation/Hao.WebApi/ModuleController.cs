@@ -33,7 +33,7 @@ namespace Hao.WebApi
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [AuthCode("1_8")]
+        [AuthCode("1_16777216")]
         public async Task<List<ModuleVM>> GetList() => await _moduleAppService.GetTreeList();
 
 
@@ -42,7 +42,7 @@ namespace Hao.WebApi
         /// </summary>
         /// <returns></returns>
         [HttpGet("{id}")]
-        [AuthCode("1_8")]
+        [AuthCode("1_16777216")]
         public async Task<ModuleDetailVM> Get(long? id) => await _moduleAppService.Get(id.Value);
 
         /// <summary>

@@ -42,7 +42,7 @@ namespace Hao.WebApi
         /// </summary>
         /// <returns></returns>
         [HttpGet("{parentId}")]
-        [AuthCode("1_8")]
+        [AuthCode("1_16777216")]
         public async Task<List<ResourceItemVM>> GetList(long? parentId) => await _moduleAppService.GetResourceList(parentId.Value);
 
         /// <summary>

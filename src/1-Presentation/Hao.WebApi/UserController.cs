@@ -37,7 +37,7 @@ namespace Hao.WebApi
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [AuthCode("1_4")]
+        [AuthCode("1_8388608")]
         public async Task<PagedList<UserVM>> GetPagedList([FromQuery]UserQueryInput queryInput) => await _userAppService.GetPagedList(queryInput);
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace Hao.WebApi
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        [AuthCode("1_4")]
+        [AuthCode("1_8388608")]
         public async Task<UserDetailVM> Get(long? id) => await _userAppService.Get(id.Value);
 
         ///// <summary>
@@ -100,7 +100,7 @@ namespace Hao.WebApi
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [AuthCode("1_4")]
+        [AuthCode("1_8388608")]
         public async Task<List<RoleSelectVM>> GetRoleList() => await _roleAppService.GetRoleListByCurrentRole();
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace Hao.WebApi
         /// <param name="queryInput"></param>
         /// <returns></returns>
         [HttpGet]
-        [AuthCode("1_4")]
+        [AuthCode("1_8388608")]
         public async Task<bool> IsExistUser([FromQuery] UserQueryInput queryInput) => await _userAppService.IsExist(queryInput);
 
 
