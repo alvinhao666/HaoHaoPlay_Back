@@ -20,6 +20,7 @@ using System.Text.Encodings.Web;
 using AspectCore.Extensions.DependencyInjection;
 using Mapster;
 using MapsterMapper;
+using FreeSql;
 
 namespace Hao.Core.Extensions
 {
@@ -86,8 +87,7 @@ namespace Hao.Core.Extensions
 
             #region Orm
 
-            services.AddPostgreSqlService(appSettings.ConnectionString.PostgreSql_Master, appSettings.ConnectionString.PostgreSql_Slave.ToDictionary(a => a.Connection, a => a.Weight));
-
+            services.AddOrmService(DataType.PostgreSQL, appSettings.ConnectionString.PostgreSql_Master, appSettings.ConnectionString.PostgreSql_Slave.Select(a => a.Connection).ToArray());
             #endregion
 
 

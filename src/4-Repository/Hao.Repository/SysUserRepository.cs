@@ -22,8 +22,10 @@ namespace Hao.Repository
             //param.Add(new SugarParameter("password", password));
             //var result = await Db.Ado.SqlQueryAsync<SysUser>(sql, param);
 
-            var result = await DbContext.Queryable<SysUser>()
-                                 .Where(a => a.LoginName == loginName && a.Password == password && a.IsDeleted == false)
+            var result = await DbContext.Select<SysUser>()
+                                 .Where(a => a.LoginName == loginName)
+                                 .Where(a => a.Password == password)
+                                 .Where(a => a.IsDeleted == false)
                                  .ToListAsync();
 
             return result;
@@ -43,10 +45,11 @@ namespace Hao.Repository
             //param.Add(new SugarParameter("roleid", roleId));
             //await Db.Ado.ExecuteCommandAsync(sql, param);
 
-            await DbContext.Updateable<SysUser>()
-                    .SetColumns(a => new SysUser { AuthNumbers = authNumbers })
-                    .Where(a => a.RoleId == roleId && a.IsDeleted == false)
-                    .ExecuteCommandAsync();
+            await DbContext.Update<SysUser>()
+                    .Set(a => a.AuthNumbers, authNumbers)
+                    .Where(a => a.RoleId == roleId)
+                    .Where(a => a.IsDeleted == false)
+                    .ExecuteAffrowsAsync();
         }
 
 

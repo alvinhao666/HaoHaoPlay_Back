@@ -1,5 +1,4 @@
-﻿using SqlSugar;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq.Expressions;
@@ -14,7 +13,7 @@ namespace Hao.Core
         where T : FullAuditedEntity<TKey>, new() where TKey : struct
     {
         [FromServiceContext]
-        public ISqlSugarClient DbContext { get; set; }
+        public IFreeSqlContext DbContext { get; set; }
         
         [FromServiceContext]
         public ICurrentUser CurrentUser { get; set; }
@@ -29,7 +28,7 @@ namespace Hao.Core
         /// <returns>泛型实体</returns>
         public virtual async Task<T> GetAysnc(TKey pkValue)
         {
-            var entity = await DbContext.Queryable<T>().Where($"{nameof(FullAuditedEntity<TKey>.Id)}='{pkValue}'").SingleAsync();
+            var entity = await DbContext.Select<T>().Where($"{nameof(FullAuditedEntity<TKey>.Id)}='{pkValue}'").FirstAsync();
             return entity;
         }
 
@@ -43,7 +42,7 @@ namespace Hao.Core
             H_Check.Argument.NotEmpty(pkValues, nameof(pkValues));
 
             //Type type = typeof(T); 类型判断，主要包括 is 和 typeof 两个操作符及对象实例上的 GetType 调用。这是最轻型的消耗，可以无需考虑优化问题。注意 typeof 运算符比对象实例上的 GetType 方法要快，只要可能则优先使用 typeof 运算符。 
-            return await DbContext.Queryable<T>().In(pkValues).ToListAsync();
+            return await DbContext.Select<T>().Where(x => pkValues.Contains(x.Id)).ToListAsync();
         }
 
         /// <summary>
@@ -52,7 +51,7 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<List<T>> GetListAysnc()
         {
-            return await DbContext.Queryable<T>().Where(a => a.IsDeleted == false).ToListAsync();
+            return await DbContext.Select<T>().Where(a => a.IsDeleted == false).ToListAsync();
         }
 
         /// <summary>
@@ -65,15 +64,15 @@ namespace Hao.Core
             H_Check.Argument.NotNull(query, nameof(query));
 
             var flag = string.IsNullOrWhiteSpace(query.OrderByFileds);
-            var q = DbContext.Queryable<T>();
+            var q = DbContext.Select<T>();
             foreach (var item in query.QueryExpressions)
             {
                 q.Where(item);
             }
 
             return await q.Where(a => a.IsDeleted == false)
-                .OrderByIF(flag, a => a.CreateTime, OrderByType.Desc)
-                .OrderByIF(!flag, query.OrderByFileds)
+                .OrderByDescending(flag, a => a.CreateTime)
+                .OrderBy(!flag, query.OrderByFileds)
                 .ToListAsync();
         }
 
@@ -83,7 +82,7 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<List<T>> GetAllAysnc()
         {
-            return await DbContext.Queryable<T>().OrderBy(a => a.CreateTime, OrderByType.Desc).ToListAsync();
+            return await DbContext.Select<T>().OrderByDescending(a => a.CreateTime).ToListAsync();
         }
 
         /// <summary>
@@ -95,14 +94,14 @@ namespace Hao.Core
             H_Check.Argument.NotNull(query, nameof(query));
 
             var flag = string.IsNullOrWhiteSpace(query.OrderByFileds);
-            var q = DbContext.Queryable<T>();
+            var q = DbContext.Select<T>();
             foreach (var item in query.QueryExpressions)
             {
                 q.Where(item);
             }
 
-            return await q.OrderByIF(flag, a => a.CreateTime, OrderByType.Desc)
-                .OrderByIF(!flag, query.OrderByFileds)
+            return await q.OrderByDescending(flag, a => a.CreateTime)
+                .OrderBy(!flag, query.OrderByFileds)
                 .ToListAsync();
         }
 
@@ -115,13 +114,13 @@ namespace Hao.Core
         {
             H_Check.Argument.NotNull(query, nameof(query));
 
-            var q = DbContext.Queryable<T>();
+            var q = DbContext.Select<T>();
             foreach (var item in query.QueryExpressions)
             {
                 q.Where(item);
             }
 
-            return await q.Where(a => a.IsDeleted == false).CountAsync();
+            return (int)await q.Where(a => a.IsDeleted == false).CountAsync();
         }
 
         /// <summary>
@@ -133,26 +132,26 @@ namespace Hao.Core
         {
             H_Check.Argument.NotNull(query, nameof(query));
 
-            RefAsync<int> totalNumber = 10;
             var flag = string.IsNullOrWhiteSpace(query.OrderByFileds);
-            var q = DbContext.Queryable<T>(); //.WithCache(int cacheDurationInSeconds = int.MaxValue) 使用缓存取数据 
+            var q = DbContext.Select<T>(); 
             foreach (var item in query.QueryExpressions)
             {
                 q.Where(item);
             }
 
             var items = await q.Where(a => a.IsDeleted == false)
-                .OrderByIF(flag, a => a.CreateTime, OrderByType.Desc)
-                .OrderByIF(!flag, query.OrderByFileds)
-                .ToPageListAsync(query.PageIndex, query.PageSize, totalNumber);
+                .OrderByDescending(flag, a => a.CreateTime)
+                .OrderBy(!flag, query.OrderByFileds)
+                .Count(out var total) //总记录数量
+                .Page(query.PageIndex, query.PageSize).ToListAsync();
 
             var pageList = new PagedList<T>()
             {
                 Items = items,
-                TotalCount = totalNumber,
+                TotalCount = (int)total,
                 PageIndex = query.PageIndex,
                 PageSize = query.PageSize,
-                TotalPagesCount = (totalNumber.Value + query.PageSize - 1) / query.PageSize
+                TotalPagesCount = ((int)total + query.PageSize - 1) / query.PageSize
             };
             return pageList;
         }
@@ -182,8 +181,8 @@ namespace Hao.Core
             entity.CreatorId = CurrentUser.Id;
             entity.CreateTime = DateTime.Now;
 
-            var obj = await DbContext.Insertable(entity).ExecuteReturnEntityAsync();
-            return obj;
+            var obj = await DbContext.Insert(entity).ExecuteInsertedAsync();
+            return obj.First();
         }
 
         /// <summary>
@@ -213,7 +212,7 @@ namespace Hao.Core
                 item.CreatorId = CurrentUser.Id;
                 item.CreateTime = timeNow;
             });
-            return await DbContext.Insertable(entities).ExecuteCommandAsync();
+            return await DbContext.Insert(entities).ExecuteAffrowsAsync();
         }
 
 
@@ -248,19 +247,14 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<int> DeleteAysnc(TKey pkValue)
         {
-            var dic = new Dictionary<string, object>();
-            dic.Add($"{nameof(FullAuditedEntity<TKey>.IsDeleted)}", true);
 
-            if (CurrentUser.Id.HasValue)
-            {
-                dic.Add($"{nameof(FullAuditedEntity<TKey>.ModifyTime)}", DateTime.Now);
-                dic.Add($"{nameof(FullAuditedEntity<TKey>.ModifierId)}", CurrentUser.Id);
-            }
-
-            return await DbContext.Updateable<T>(dic)
+            return await DbContext.Update<T>()
+                .Set(a => a.IsDeleted, true)
+                .SetIf(CurrentUser.Id.HasValue, a => a.ModifierId, CurrentUser.Id)
+                .SetIf(CurrentUser.Id.HasValue, a => a.ModifyTime, DateTime.Now)
                 .Where($"{nameof(FullAuditedEntity<TKey>.Id)}='{pkValue}'")
                 .Where(a => a.IsDeleted == false)
-                .ExecuteCommandAsync();
+                .ExecuteAffrowsAsync();
         }
 
         /// <summary>
@@ -272,18 +266,11 @@ namespace Hao.Core
         {
             H_Check.Argument.NotEmpty(pkValues, nameof(pkValues));
 
-
-            var dic = new Dictionary<string, object>();
-            dic.Add($"{nameof(FullAuditedEntity<TKey>.IsDeleted)}", true);
-
-            if (CurrentUser.Id.HasValue)
-            {
-                dic.Add($"{nameof(FullAuditedEntity<TKey>.ModifyTime)}", DateTime.Now);
-                dic.Add($"{nameof(FullAuditedEntity<TKey>.ModifierId)}", CurrentUser.Id);
-            }
-
-            return await DbContext.Updateable<T>(dic)
-                .Where(it => pkValues.Contains(it.Id)).Where(a => a.IsDeleted == false).ExecuteCommandAsync();
+            return await DbContext.Update<T>()
+                .Set(a => a.IsDeleted, true)
+                .SetIf(CurrentUser.Id.HasValue, a => a.ModifierId, CurrentUser.Id)
+                .SetIf(CurrentUser.Id.HasValue, a => a.ModifyTime, DateTime.Now)
+                .Where(it => pkValues.Contains(it.Id)).Where(a => a.IsDeleted == false).ExecuteAffrowsAsync();
         }
 
         /// <summary>
@@ -301,10 +288,10 @@ namespace Hao.Core
                 entity.ModifyTime = DateTime.Now;
             }
 
-            return await DbContext.Updateable(entity)
+            return await DbContext.Update<T>().SetSource(entity)
                 .Where($"{nameof(FullAuditedEntity<TKey>.Id)}='{entity.Id}'")
                 .Where(a => a.IsDeleted == false)
-                .ExecuteCommandAsync();
+                .ExecuteAffrowsAsync();
         }
 
         /// <summary>
@@ -333,10 +320,10 @@ namespace Hao.Core
                 updateColumns.Add(nameof(entity.ModifyTime));
             }
 
-            return await DbContext.Updateable(entity).UpdateColumns(updateColumns.ToArray())
+            return await DbContext.Update<T>().SetSource(entity).UpdateColumns(updateColumns.ToArray())
                 .Where($"{nameof(FullAuditedEntity<TKey>.Id)}='{entity.Id}'")
                 .Where(a => a.IsDeleted == false)
-                .ExecuteCommandAsync();
+                .ExecuteAffrowsAsync();
         }
 
         /// <summary>
@@ -358,9 +345,9 @@ namespace Hao.Core
                 });
             }
 
-            return await DbContext.Updateable(entities)
-                .WhereColumns(a => new {a.Id, a.IsDeleted}) //以id和isdeleted为条件更新，如果数据isdeleted发生变化则不更新
-                .ExecuteCommandAsync();
+            return await DbContext.Update<T>().SetSource(entities)
+                .Where(a => a.IsDeleted == false)
+                .ExecuteAffrowsAsync();
         }
 
         /// <summary>
@@ -391,11 +378,10 @@ namespace Hao.Core
                 updateColumns.Add(nameof(FullAuditedEntity<TKey>.ModifyTime));
             }
 
-            updateColumns.Add(nameof(FullAuditedEntity<TKey>.IsDeleted)); //需要注意 当WhereColumns和UpdateColumns一起用时，需要把wherecolumns中的列加到UpdateColumns中
 
-            return await DbContext.Updateable(entities).UpdateColumns(updateColumns.ToArray())
-                .WhereColumns(a => new {a.Id, a.IsDeleted}) //以id和isdeleted为条件更新，如果数据isdeleted发生变化则不更新
-                .ExecuteCommandAsync();
+            return await DbContext.Update<T>().SetSource(entities).UpdateColumns(updateColumns.ToArray())
+                .Where(a => a.IsDeleted == false)
+                .ExecuteAffrowsAsync();
         }
     }
 }

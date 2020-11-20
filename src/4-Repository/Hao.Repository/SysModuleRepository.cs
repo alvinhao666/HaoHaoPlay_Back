@@ -1,7 +1,7 @@
 ﻿using Hao.Core;
 using Hao.Enum;
 using Hao.Model;
-using SqlSugar;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Hao.Repository
@@ -18,11 +18,12 @@ namespace Hao.Repository
             //return result;
 
             //SELECT  "layer" AS "layer" , COUNT("layer") AS "count"  FROM "sysmodule"   GROUP BY "layer"  ORDER BY "layer" DESC LIMIT 1 offset 0;
-            return await DbContext.Queryable<ModuleLayerCountDto>().AS("sysmodule")
+            var list = await DbContext.Select<ModuleLayerCountDto>().AsTable((_, oldname) => $"sysmodule")
                 .GroupBy(a => new { a.Layer })
-                .Select(a => new ModuleLayerCountDto { Layer = a.Layer, Count = SqlFunc.AggregateCount(a.Layer) })
-                .OrderBy(a => a.Layer, OrderByType.Desc)
-                .FirstAsync();
+                .OrderByDescending(a => a.Key.Layer)
+                .ToListAsync(a => new ModuleLayerCountDto { Layer = a.Key.Layer, Count = a.Count() });
+
+            return list.FirstOrDefault();
         }
 
         /// <summary>
@@ -33,11 +34,11 @@ namespace Hao.Repository
         /// <returns></returns>
         public async Task<bool> IsExistSameNameModule(string name, ModuleType? moduleType, long? parentId, long? id = null)
         {
-            var modules = await DbContext.Queryable<SysModule>()
+            var modules = await DbContext.Select<SysModule>()
                 .Where(a => a.Name == name)
-                .WhereIF(moduleType.HasValue, a => a.Type == moduleType)
-                .WhereIF(parentId.HasValue, a => a.ParentId == parentId)
-                .WhereIF(id.HasValue, a => a.Id != id)
+                .WhereIf(moduleType.HasValue, a => a.Type == moduleType)
+                .WhereIf(parentId.HasValue, a => a.ParentId == parentId)
+                .WhereIf(id.HasValue, a => a.Id != id)
                 .ToListAsync();
 
             return modules.Count > 0;

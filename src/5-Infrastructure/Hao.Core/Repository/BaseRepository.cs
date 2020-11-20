@@ -1,4 +1,3 @@
-using SqlSugar;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -14,7 +13,7 @@ namespace Hao.Core
         where T : BaseEntity<TKey>, new() where TKey : struct
     {
         [FromServiceContext]
-        public ISqlSugarClient DbContext { get; set; }
+        public IFreeSqlContext DbContext { get; set; }
 
         [FromServiceContext]
         public IdWorker IdWorker { get; set; }
@@ -26,7 +25,7 @@ namespace Hao.Core
         /// <returns>泛型实体</returns>
         public virtual async Task<T> GetAysnc(TKey pkValue)
         {
-            var entity = await DbContext.Queryable<T>().Where($"{nameof(BaseEntity<TKey>.Id)}='{pkValue}'").SingleAsync();
+            var entity = await DbContext.Select<T>().Where($"{nameof(BaseEntity<TKey>.Id)}='{pkValue}'").FirstAsync();
             return entity;
         }
 
@@ -40,7 +39,7 @@ namespace Hao.Core
             H_Check.Argument.NotEmpty(pkValues, nameof(pkValues));
 
             //Type type = typeof(T); 类型判断，主要包括 is 和 typeof 两个操作符及对象实例上的 GetType 调用。这是最轻型的消耗，可以无需考虑优化问题。注意 typeof 运算符比对象实例上的 GetType 方法要快，只要可能则优先使用 typeof 运算符。 
-            return await DbContext.Queryable<T>().In(pkValues).ToListAsync();
+            return await DbContext.Select<T>().Where(a => pkValues.Contains(a.Id)).ToListAsync();
         }
 
         /// <summary>
@@ -49,7 +48,7 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<List<T>> GetAllAysnc()
         {
-            return await DbContext.Queryable<T>().ToListAsync();
+            return await DbContext.Select<T>().ToListAsync();
         }
 
         /// <summary>
@@ -62,13 +61,13 @@ namespace Hao.Core
             H_Check.Argument.NotNull(query, nameof(query));
 
             var flag = string.IsNullOrWhiteSpace(query.OrderByFileds);
-            var q = DbContext.Queryable<T>();
+            var q = DbContext.Select<T>();
             foreach (var item in query.QueryExpressions)
             {
                 q.Where(item);
             }
 
-            return await q.OrderByIF(!flag, query.OrderByFileds).ToListAsync();
+            return await q.OrderBy(!flag, query.OrderByFileds).ToListAsync();
         }
 
         /// <summary>
@@ -80,13 +79,13 @@ namespace Hao.Core
         {
             H_Check.Argument.NotNull(query, nameof(query));
 
-            var q = DbContext.Queryable<T>();
+            var q = DbContext.Select<T>();
             foreach (var item in query.QueryExpressions)
             {
                 q.Where(item);
             }
 
-            return await q.CountAsync();
+            return (int)await q.CountAsync();
         }
 
         /// <summary>
@@ -98,24 +97,25 @@ namespace Hao.Core
         {
             H_Check.Argument.NotNull(query, nameof(query));
 
-            RefAsync<int> totalNumber = 0;
+
             var flag = string.IsNullOrWhiteSpace(query.OrderByFileds);
-            var q = DbContext.Queryable<T>();
+            var q = DbContext.Select<T>();
             foreach (var item in query.QueryExpressions)
             {
                 q.Where(item);
             }
 
-            var items = await q.OrderByIF(!flag, query.OrderByFileds)
-                .ToPageListAsync(query.PageIndex, query.PageSize, totalNumber);
+            var items = await q.OrderBy(!flag, query.OrderByFileds)
+                .Count(out var total) //总记录数量
+                .Page(query.PageIndex, query.PageSize).ToListAsync();
 
             var pageList = new PagedList<T>()
             {
                 Items = items,
-                TotalCount = totalNumber,
+                TotalCount = (int)total,
                 PageIndex = query.PageIndex,
                 PageSize = query.PageSize,
-                TotalPagesCount = (totalNumber + query.PageSize - 1) / query.PageSize
+                TotalPagesCount = ((int)total + query.PageSize - 1) / query.PageSize
             };
             return pageList;
         }
@@ -142,8 +142,8 @@ namespace Hao.Core
                 id.SetValue(entity, IdWorker.NextId());
             }
 
-            var obj = await DbContext.Insertable(entity).ExecuteReturnEntityAsync();
-            return obj;
+            var obj = await DbContext.Insert(entity).ExecuteInsertedAsync();
+            return obj.First();
         }
 
         /// <summary>
@@ -170,7 +170,7 @@ namespace Hao.Core
                     id.SetValue(item, IdWorker.NextId());
                 }
             });
-            return await DbContext.Insertable(entities).ExecuteCommandAsync();
+            return await DbContext.Insert(entities).ExecuteAffrowsAsync();
         }
 
         /// <summary>
@@ -182,7 +182,7 @@ namespace Hao.Core
         {
             H_Check.Argument.NotNull(entity, nameof(entity));
 
-            return await DbContext.Updateable(entity).ExecuteCommandAsync();
+            return await DbContext.Update<T>().SetSource(entity).ExecuteAffrowsAsync();
         }
 
         /// <summary>
@@ -202,7 +202,8 @@ namespace Hao.Core
 
             var updateColumns = properties.Select(a => a.Name);
 
-            return await DbContext.Updateable(entity).UpdateColumns(updateColumns.ToArray()).ExecuteCommandAsync();
+
+            return await DbContext.Update<T>().SetSource(entity).UpdateColumns(updateColumns.ToArray()).ExecuteAffrowsAsync();
         }
 
         /// <summary>
@@ -214,7 +215,7 @@ namespace Hao.Core
         {
             H_Check.Argument.NotEmpty(entities, nameof(entities));
 
-            return await DbContext.Updateable(entities).ExecuteCommandAsync();
+            return await DbContext.Update<T>().SetSource(entities).ExecuteAffrowsAsync();
         }
 
         /// <summary>
@@ -234,7 +235,7 @@ namespace Hao.Core
 
             var updateColumns = properties.Select(a => a.Name);
 
-            return await DbContext.Updateable(entities).UpdateColumns(updateColumns.ToArray()).ExecuteCommandAsync();
+            return await DbContext.Update<T>().SetSource(entities).UpdateColumns(updateColumns.ToArray()).ExecuteAffrowsAsync();
         }
 
         /// <summary>
@@ -244,7 +245,7 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<int> DeleteAysnc(TKey pkValue)
         {
-            return await DbContext.Deleteable<T>().Where($"{nameof(BaseEntity<TKey>.Id)}='{pkValue}'").ExecuteCommandAsync();
+            return await DbContext.Delete<T>().Where($"{nameof(BaseEntity<TKey>.Id)}='{pkValue}'").ExecuteAffrowsAsync();
         }
 
         /// <summary>
@@ -256,7 +257,7 @@ namespace Hao.Core
         {
             H_Check.Argument.NotEmpty(pkValues, nameof(pkValues));
 
-            return await DbContext.Deleteable<T>().In(pkValues).ExecuteCommandAsync();
+            return await DbContext.Delete<T>().Where(a => pkValues.Contains(a.Id)).ExecuteAffrowsAsync();
         }
     }
 }

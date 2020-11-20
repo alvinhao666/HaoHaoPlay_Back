@@ -1,4 +1,4 @@
-﻿using SqlSugar;
+﻿using FreeSql.DataAnnotations;
 using System;
 
 namespace Hao.Core
@@ -6,7 +6,7 @@ namespace Hao.Core
     public abstract class FullAuditedEntity<TKey> : IEntity<TKey>, IsCreateAudited, IsModifyAudited, IsSoftDelete where TKey : struct
     {
 
-        [SugarColumn(IsPrimaryKey = true)]
+        [Column(IsPrimary = true)]
         public TKey Id { get; set; }
 
         public long? CreatorId { get; set; }

@@ -1,7 +1,6 @@
 ﻿using AspectCore.DynamicProxy;
 using Microsoft.Extensions.Configuration;
 using NLog;
-using SqlSugar;
 using System;
 using System.Threading.Tasks;
 
@@ -19,31 +18,32 @@ namespace Hao.Core
         {
             public override async Task Invoke(AspectContext context, AspectDelegate next)
             {
-                var sqlSugarClient = context.ServiceProvider.GetService(typeof(ISqlSugarClient)) as ISqlSugarClient;
+                var freeSql = context.ServiceProvider.GetService(typeof(IFreeSqlContext)) as IFreeSqlContext;
+
                 try
                 {
 #if DEBUG
                     Console.ForegroundColor = ConsoleColor.Blue;
 
-                    Console.WriteLine("开始事务：" + sqlSugarClient.ContextID);
+                    Console.WriteLine($"开始事务：{freeSql.Ado.Identifier}");
 #endif
-                    sqlSugarClient.Ado.BeginTran();
+                    freeSql.Transaction(null);
                     await next(context);
 #if DEBUG
                     Console.ForegroundColor = ConsoleColor.Blue;
 
-                    Console.WriteLine("提交事务：" + sqlSugarClient.ContextID);
+                    Console.WriteLine($"提交事务：{freeSql.Ado.Identifier}");
 #endif
-                    sqlSugarClient.Ado.CommitTran();
+                    freeSql.Commit();
                 }
                 catch (Exception ex)
                 {
 #if DEBUG
                     Console.ForegroundColor = ConsoleColor.Red;
 
-                    Console.WriteLine("回滚事务：" + sqlSugarClient.ContextID);
+                    Console.WriteLine($"回滚事务：{freeSql.Ado.Identifier}");
 #endif
-                    sqlSugarClient.Ado.RollbackTran();
+                    freeSql.RollBack();
                     throw ex;
                 }
             }
