@@ -41,7 +41,6 @@ namespace Hao.Core
         {
             H_Check.Argument.NotEmpty(pkValues, nameof(pkValues));
 
-            //Type type = typeof(T); 类型判断，主要包括 is 和 typeof 两个操作符及对象实例上的 GetType 调用。这是最轻型的消耗，可以无需考虑优化问题。注意 typeof 运算符比对象实例上的 GetType 方法要快，只要可能则优先使用 typeof 运算符。 
             return await DbContext.Select<T>().Where(x => pkValues.Contains(x.Id)).ToListAsync();
         }
 
@@ -142,7 +141,7 @@ namespace Hao.Core
             var items = await q.Where(a => a.IsDeleted == false)
                 .OrderByDescending(flag, a => a.CreateTime)
                 .OrderBy(!flag, query.OrderByFileds)
-                .Count(out var total) //总记录数量
+                .Count(out var total) 
                 .Page(query.PageIndex, query.PageSize).ToListAsync();
 
             var pageList = new PagedList<T>()
