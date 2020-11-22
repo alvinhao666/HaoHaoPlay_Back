@@ -11,7 +11,7 @@ namespace Hao.Core
     public interface IFreeSqlContext : IFreeSql
     {
         void Commit();
-        void RollBack();
+        void Rollback();
     }
 
     class FreeSqlContext : IFreeSqlContext
@@ -76,7 +76,7 @@ namespace Hao.Core
             }
         }
         public void Commit() => TransactionCommitPriv(true);
-        public void RollBack() => TransactionCommitPriv(false);
+        public void Rollback() => TransactionCommitPriv(false);
         void TransactionCommitPriv(bool iscommit)
         {
             if (_transaction == null) return;

@@ -43,7 +43,7 @@ namespace Hao.Core
 
                     Console.WriteLine($"回滚事务：{freeSql.Ado.Identifier}");
 #endif
-                    freeSql.RollBack();
+                    freeSql.Rollback();
                     throw ex;
                 }
             }
