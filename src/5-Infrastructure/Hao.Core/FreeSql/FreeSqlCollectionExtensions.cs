@@ -32,7 +32,7 @@ namespace Microsoft.Extensions.DependencyInjection
                             // })
                             //.UseNoneCommandParameter(true)
                             .Build();
-            
+#if DEBUG
             fsql.Aop.CurdBefore += (s, e) =>
             {                 
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
@@ -50,9 +50,10 @@ namespace Microsoft.Extensions.DependencyInjection
                         Console.WriteLine($"{item.Value}");
                     }
                 }
-                
                 Console.ForegroundColor = ConsoleColor.White;
             };
+#endif
+
 
             services.AddScoped<IFreeSqlContext>(a => new FreeSqlContext(fsql));
 
