@@ -13,6 +13,6 @@ namespace Hao.Model
         /// <param name="userId"></param>
         /// <param name="expireTime"></param>
         /// <returns></returns>
-        Task<List<SysLoginRecord>> GetLoginRecords(long userId, DateTime expireTime);
+        Task<List<SysLoginRecord>> GetLoginRecords(long? userId, DateTime? expireTime);
     }
 }

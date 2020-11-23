@@ -14,11 +14,12 @@ namespace Hao.Repository
         /// <param name="userId"></param>
         /// <param name="expireTime"></param>
         /// <returns></returns>
-        public async Task<List<SysLoginRecord>> GetLoginRecords(long userId, DateTime expireTime)
+        public async Task<List<SysLoginRecord>> GetLoginRecords(long? userId, DateTime? expireTime)
         {
 
-            var result = await DbContext.Queryable<SysLoginRecord>()
-                                 .Where(a => a.UserId == userId && a.JwtExpireTime >= expireTime)
+            var result = await DbContext.Select<SysLoginRecord>()
+                                 .WhereIf(userId.HasValue, a => a.UserId == userId)
+                                 .WhereIf(expireTime.HasValue, a => a.JwtExpireTime >= expireTime)
                                  .ToListAsync();
             return result;
         }

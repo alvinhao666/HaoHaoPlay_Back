@@ -37,7 +37,7 @@ namespace Hao.Repository
         /// <param name="roleId"></param>
         /// <param name="authNumbers"></param>
         /// <returns></returns>
-        public async Task UpdateAuth(long roleId, string authNumbers)
+        public async Task UpdateAuth(long? roleId, string authNumbers)
         {
             //string sql = "update  sysuser set authnumbers=@authnumbers where roleid=@roleid";
             //var param = new List<SugarParameter>();
@@ -47,7 +47,7 @@ namespace Hao.Repository
 
             await DbContext.Update<SysUser>()
                     .Set(a => a.AuthNumbers, authNumbers)
-                    .Where(a => a.RoleId == roleId)
+                    .WhereIf(roleId.HasValue, a => a.RoleId == roleId)
                     .Where(a => a.IsDeleted == false)
                     .ExecuteAffrowsAsync();
         }
