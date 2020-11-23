@@ -43,7 +43,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 {
                     Console.ForegroundColor = ConsoleColor.DarkYellow;
                     Console.WriteLine("参数：");
-                    Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                    Console.ForegroundColor = ConsoleColor.Magenta;
                     foreach (var item in e.DbParms)
                     {
                         Console.Write($"{item.ParameterName}     ");
