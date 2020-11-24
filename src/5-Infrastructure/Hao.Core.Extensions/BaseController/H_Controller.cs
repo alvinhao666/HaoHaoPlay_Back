@@ -48,7 +48,7 @@ namespace Hao.Core.Extensions
 
             CheckAuth(context, cache.AuthNumbers);
             
-            var currentUser = context.HttpContext.RequestServices.GetService(typeof(ICurrentUser)) as ICurrentUser;
+            var currentUser = context.HttpContext.RequestServices.GetService(typeof(ICurrentUser)) as CurrentUser;
 
             currentUser.Id = userId.ToLongOrNull();
             currentUser.Name = cache.Name;
