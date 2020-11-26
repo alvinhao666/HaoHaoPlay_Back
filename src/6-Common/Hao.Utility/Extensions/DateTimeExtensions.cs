@@ -30,7 +30,7 @@ namespace Hao.Utility
         /// <returns></returns>
         public static string ToStartDateTimeString(this DateTime? time)
         {
-            return time.HasValue ? time.Value.ToString("yyyy-MM-dd") + "00:00:00" : "";
+            return time.HasValue ? $"{time.Value.ToString("yyyy-MM-dd")} 00:00:00" : "";
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace Hao.Utility
 
         public static string ToEndDateTimeString(this DateTime? time)
         {
-            return time.HasValue ? time.Value.ToString("yyyy-MM-dd") + "23:59:59" : "";
+            return time.HasValue ? $"{time.Value.ToString("yyyy-MM-dd")} 23:59:59" : "";
         }
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace Hao.Utility
         public static DateTime? ToStartDateTime(this DateTime? time)
         {
             if (!time.HasValue) return null;
-            return DateTime.Parse(time.Value.ToString("yyyy-MM-dd") + "00:00:00");
+            return DateTime.Parse($"{time.Value.ToString("yyyy-MM-dd")} 00:00:00");
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace Hao.Utility
         public static DateTime? ToEndDateTime(this DateTime? time)
         {
             if (!time.HasValue) return null;
-            return DateTime.Parse(time.Value.ToString("yyyy-MM-dd") + "23:59:59");
+            return DateTime.Parse($"{time.Value.ToString("yyyy-MM-dd")} 23:59:59");
         }
     }
 }
