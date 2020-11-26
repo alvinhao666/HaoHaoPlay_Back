@@ -56,6 +56,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.Repository", "src\4-Rep
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4-Repository", "4-Repository", "{73D4FF4D-8F6A-4C37-8A28-B14245805241}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hao.Word", "src\6-Common\Hao.Word\Hao.Word.csproj", "{622AAC62-509A-4D23-A064-1FD10061A5EE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -130,6 +132,10 @@ Global
 		{B16B7420-5247-4DED-A6DE-2DCDFF14F79D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B16B7420-5247-4DED-A6DE-2DCDFF14F79D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B16B7420-5247-4DED-A6DE-2DCDFF14F79D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{622AAC62-509A-4D23-A064-1FD10061A5EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{622AAC62-509A-4D23-A064-1FD10061A5EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{622AAC62-509A-4D23-A064-1FD10061A5EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{622AAC62-509A-4D23-A064-1FD10061A5EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -157,6 +163,7 @@ Global
 		{8757D1AE-72B7-4F17-AEBA-79ECF1D78751} = {042FD3BE-DA74-462B-8F16-E6D1ADFC7454}
 		{B16B7420-5247-4DED-A6DE-2DCDFF14F79D} = {73D4FF4D-8F6A-4C37-8A28-B14245805241}
 		{73D4FF4D-8F6A-4C37-8A28-B14245805241} = {094FBA78-1265-4B2A-A7C6-46B8AD420D1B}
+		{622AAC62-509A-4D23-A064-1FD10061A5EE} = {042FD3BE-DA74-462B-8F16-E6D1ADFC7454}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5BAAEA79-B086-4D1C-AC3A-B029DF5FA31A}
