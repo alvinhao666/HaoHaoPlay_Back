@@ -4,4 +4,10 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Reference Include="Aspose.Words">
+      <HintPath>Aspose.Words.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
