@@ -27,13 +27,13 @@ namespace Hao.Word
         /// <summary>
         /// 书签赋值用法
         /// </summary>
-        /// <param name="LabelId">书签名</param>
-        /// <param name="Content">内容</param>
-        public void WriteBookMark(string LabelId, string Content)
+        /// <param name="labelId">书签名</param>
+        /// <param name="content">内容</param>
+        public void WriteBookMark(string labelId, string content)
         {
-            if (wordDoc.Range.Bookmarks[LabelId] != null)
+            if (wordDoc.Range.Bookmarks[labelId] != null)
             {
-                wordDoc.Range.Bookmarks[LabelId].Text = Content;
+                wordDoc.Range.Bookmarks[labelId].Text = content;
             }
         }
 
