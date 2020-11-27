@@ -5,9 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="Aspose.Words">
-      <HintPath>Aspose.Words.dll</HintPath>
-    </Reference>
     <Reference Include="Aspose.Words, Version=18.4.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>Aspose.Words.dll</HintPath>
     </Reference>
