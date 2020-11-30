@@ -6,8 +6,6 @@ using Hao.EventData;
 using Hao.Library;
 using Hao.Model;
 using Hao.Utility;
-using MapsterMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
