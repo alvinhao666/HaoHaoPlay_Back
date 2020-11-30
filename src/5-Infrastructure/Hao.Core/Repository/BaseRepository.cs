@@ -61,6 +61,7 @@ namespace Hao.Core
 
             var flag = string.IsNullOrWhiteSpace(query.OrderByFileds);
             var q = DbContext.Select<T>();
+
             foreach (var item in query.QueryExpressions)
             {
                 q.Where(item);
@@ -202,7 +203,10 @@ namespace Hao.Core
 
             var updateColumns = body.Members.Select(a => a.Name);
 
-            return await DbContext.Update<T>().SetSource(entity).UpdateColumns(updateColumns.ToArray()).ExecuteAffrowsAsync();
+            return await DbContext.Update<T>()
+                                .SetSource(entity)
+                                .UpdateColumns(updateColumns.ToArray())
+                                .ExecuteAffrowsAsync();
         }
 
         /// <summary>
@@ -235,7 +239,10 @@ namespace Hao.Core
 
             var updateColumns = body.Members.Select(a => a.Name);
 
-            return await DbContext.Update<T>().SetSource(entities).UpdateColumns(updateColumns.ToArray()).ExecuteAffrowsAsync();
+            return await DbContext.Update<T>()
+                                .SetSource(entities)
+                                .UpdateColumns(updateColumns.ToArray())
+                                .ExecuteAffrowsAsync();
         }
 
         /// <summary>
