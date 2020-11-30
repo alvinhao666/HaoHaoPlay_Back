@@ -87,7 +87,7 @@ namespace Hao.Core.Extensions
 
             #region Orm
 
-            services.AddOrmService(DataType.PostgreSQL, appSettings.ConnectionString.PostgreSql_Master, appSettings.ConnectionString.PostgreSql_Slave.Select(a => a.Connection).ToArray());
+            services.AddOrmService(DataType.PostgreSQL, appSettings.ConnectionString.Master, appSettings.ConnectionString.Slave.Select(a => a.Connection).ToArray());
             #endregion
 
 
