@@ -196,11 +196,10 @@ namespace Hao.Core
 
             H_Check.Argument.NotNull(columns, nameof(columns));
 
-            var properties = columns.Body.Type.GetProperties();
-            H_Check.Argument.NotEmpty(properties, nameof(columns));
+            var body = columns.Body as NewExpression;
+            H_Check.Argument.NotNull(body, nameof(columns));
 
-            var updateColumns = properties.Select(a => a.Name);
-
+            var updateColumns = body.Members.Select(a => a.Name);
 
             return await DbContext.Update<T>().SetSource(entity).UpdateColumns(updateColumns.ToArray()).ExecuteAffrowsAsync();
         }
@@ -229,10 +228,10 @@ namespace Hao.Core
 
             H_Check.Argument.NotNull(columns, nameof(columns));
 
-            var properties = columns.Body.Type.GetProperties();
-            H_Check.Argument.NotEmpty(properties, nameof(columns));
+            var body = columns.Body as NewExpression;
+            H_Check.Argument.NotNull(body, nameof(columns));
 
-            var updateColumns = properties.Select(a => a.Name);
+            var updateColumns = body.Members.Select(a => a.Name);
 
             return await DbContext.Update<T>().SetSource(entities).UpdateColumns(updateColumns.ToArray()).ExecuteAffrowsAsync();
         }

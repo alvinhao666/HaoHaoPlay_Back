@@ -304,11 +304,10 @@ namespace Hao.Core
 
             H_Check.Argument.NotNull(columns, nameof(columns));
 
-            var properties = columns.Body.Type.GetProperties();
-            H_Check.Argument.NotEmpty(properties, nameof(columns));
+            var body = columns.Body as NewExpression;
+            H_Check.Argument.NotNull(body, nameof(columns));
 
-            var updateColumns = properties.Select(a => a.Name).ToList();
-
+            var updateColumns = body.Members.Select(a => a.Name).ToList();
 
             if (CurrentUser.Id.HasValue)
             {
@@ -359,10 +358,11 @@ namespace Hao.Core
 
             H_Check.Argument.NotNull(columns, nameof(columns));
 
-            var properties = columns.Body.Type.GetProperties();
-            H_Check.Argument.NotEmpty(properties, nameof(columns));
+            var body = columns.Body as NewExpression;
+            H_Check.Argument.NotNull(body, nameof(columns));
 
-            var updateColumns = properties.Select(a => a.Name).ToList();
+            var updateColumns = body.Members.Select(a => a.Name).ToList();
+
             if (CurrentUser.Id.HasValue)
             {
                 var timeNow = DateTime.Now;
