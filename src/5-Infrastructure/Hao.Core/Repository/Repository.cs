@@ -28,7 +28,7 @@ namespace Hao.Core
         /// <returns>泛型实体</returns>
         public virtual async Task<T> GetAysnc(TKey pkValue)
         {
-            var entity = await DbContext.Select<T>().Where($"{nameof(FullAuditedEntity<TKey>.Id)}='{pkValue}'").FirstAsync();
+            var entity = await DbContext.Select<T>().Where(a => a.Id.Equals(pkValue)).ToOneAsync();
             return entity;
         }
 
@@ -251,7 +251,7 @@ namespace Hao.Core
                 .Set(a => a.IsDeleted, true)
                 .SetIf(CurrentUser.Id.HasValue, a => a.ModifierId, CurrentUser.Id)
                 .SetIf(CurrentUser.Id.HasValue, a => a.ModifyTime, DateTime.Now)
-                .Where($"{nameof(FullAuditedEntity<TKey>.Id)}='{pkValue}'")
+                .Where(a => a.Id.Equals(pkValue))
                 .Where(a => a.IsDeleted == false)
                 .ExecuteAffrowsAsync();
         }
@@ -288,7 +288,6 @@ namespace Hao.Core
             }
 
             return await DbContext.Update<T>().SetSource(entity)
-                .Where($"{nameof(FullAuditedEntity<TKey>.Id)}='{entity.Id}'")
                 .Where(a => a.IsDeleted == false)
                 .ExecuteAffrowsAsync();
         }
@@ -320,7 +319,6 @@ namespace Hao.Core
             }
 
             return await DbContext.Update<T>().SetSource(entity).UpdateColumns(updateColumns.ToArray())
-                .Where($"{nameof(FullAuditedEntity<TKey>.Id)}='{entity.Id}'")
                 .Where(a => a.IsDeleted == false)
                 .ExecuteAffrowsAsync();
         }

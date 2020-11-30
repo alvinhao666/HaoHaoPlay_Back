@@ -28,6 +28,8 @@ namespace Hao.AppService
 
             RuleFor(x => x.NewPassword).MustFixedLength("新密码", 6, 16);
 
+            RuleFor(x => x.NewPassword).Must((model, a) => model.OldPassword != a).WithMessage("新密码和旧密码不能相同");
+
             RuleFor(x => x.RePassword).MustHasValue("重复密码").Must((model, a) => model.NewPassword == a).WithMessage("两次输入密码不匹配");
         }
     }
