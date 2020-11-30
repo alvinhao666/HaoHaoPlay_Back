@@ -306,6 +306,7 @@ namespace Hao.Core
 
             var body = columns.Body as NewExpression;
             H_Check.Argument.NotNull(body, nameof(columns));
+            H_Check.Argument.NotEmpty(body.Members, nameof(columns));
 
             var updateColumns = body.Members.Select(a => a.Name).ToList();
 
@@ -360,6 +361,7 @@ namespace Hao.Core
 
             var body = columns.Body as NewExpression;
             H_Check.Argument.NotNull(body, nameof(columns));
+            H_Check.Argument.NotEmpty(body.Members, nameof(columns));
 
             var updateColumns = body.Members.Select(a => a.Name).ToList();
 
