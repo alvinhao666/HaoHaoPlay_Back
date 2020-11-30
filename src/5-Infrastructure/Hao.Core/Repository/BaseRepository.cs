@@ -106,8 +106,8 @@ namespace Hao.Core
             }
 
             var items = await q.OrderBy(!flag, query.OrderByFileds)
-                .Count(out var total) 
-                .Page(query.PageIndex, query.PageSize).ToListAsync();
+                                .Count(out var total) 
+                                .Page(query.PageIndex, query.PageSize).ToListAsync();
 
             var pageList = new PagedList<T>()
             {
@@ -198,15 +198,16 @@ namespace Hao.Core
             H_Check.Argument.NotNull(columns, nameof(columns));
 
             var body = columns.Body as NewExpression;
+
             H_Check.Argument.NotNull(body, nameof(columns));
             H_Check.Argument.NotEmpty(body.Members, nameof(columns));
 
             var updateColumns = body.Members.Select(a => a.Name);
 
             return await DbContext.Update<T>()
-                                .SetSource(entity)
-                                .UpdateColumns(updateColumns.ToArray())
-                                .ExecuteAffrowsAsync();
+                                    .SetSource(entity)
+                                    .UpdateColumns(updateColumns.ToArray())
+                                    .ExecuteAffrowsAsync();
         }
 
         /// <summary>
@@ -234,15 +235,16 @@ namespace Hao.Core
             H_Check.Argument.NotNull(columns, nameof(columns));
 
             var body = columns.Body as NewExpression;
+
             H_Check.Argument.NotNull(body, nameof(columns));
             H_Check.Argument.NotEmpty(body.Members, nameof(columns));
 
             var updateColumns = body.Members.Select(a => a.Name);
 
             return await DbContext.Update<T>()
-                                .SetSource(entities)
-                                .UpdateColumns(updateColumns.ToArray())
-                                .ExecuteAffrowsAsync();
+                                    .SetSource(entities)
+                                    .UpdateColumns(updateColumns.ToArray())
+                                    .ExecuteAffrowsAsync();
         }
 
         /// <summary>

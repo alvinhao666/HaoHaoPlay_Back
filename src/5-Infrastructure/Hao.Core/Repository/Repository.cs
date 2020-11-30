@@ -70,9 +70,9 @@ namespace Hao.Core
             }
 
             return await q.Where(a => a.IsDeleted == false)
-                        .OrderByDescending(flag, a => a.CreateTime)
-                        .OrderBy(!flag, query.OrderByFileds)
-                        .ToListAsync();
+                            .OrderByDescending(flag, a => a.CreateTime)
+                            .OrderBy(!flag, query.OrderByFileds)
+                            .ToListAsync();
         }
 
         /// <summary>
@@ -100,8 +100,8 @@ namespace Hao.Core
             }
 
             return await q.OrderByDescending(flag, a => a.CreateTime)
-                        .OrderBy(!flag, query.OrderByFileds)
-                        .ToListAsync();
+                            .OrderBy(!flag, query.OrderByFileds)
+                            .ToListAsync();
         }
 
         /// <summary>
@@ -139,10 +139,10 @@ namespace Hao.Core
             }
 
             var items = await q.Where(a => a.IsDeleted == false)
-                .OrderByDescending(flag, a => a.CreateTime)
-                .OrderBy(!flag, query.OrderByFileds)
-                .Count(out var total) 
-                .Page(query.PageIndex, query.PageSize).ToListAsync();
+                                .OrderByDescending(flag, a => a.CreateTime)
+                                .OrderBy(!flag, query.OrderByFileds)
+                                .Count(out var total) 
+                                .Page(query.PageIndex, query.PageSize).ToListAsync();
 
             var pageList = new PagedList<T>()
             {
@@ -248,12 +248,12 @@ namespace Hao.Core
         {
 
             return await DbContext.Update<T>()
-                                .Set(a => a.IsDeleted, true)
-                                .SetIf(CurrentUser.Id.HasValue, a => a.ModifierId, CurrentUser.Id)
-                                .SetIf(CurrentUser.Id.HasValue, a => a.ModifyTime, DateTime.Now)
-                                .Where(a => a.Id.Equals(pkValue))
-                                .Where(a => a.IsDeleted == false)
-                                .ExecuteAffrowsAsync();
+                                    .Set(a => a.IsDeleted, true)
+                                    .SetIf(CurrentUser.Id.HasValue, a => a.ModifierId, CurrentUser.Id)
+                                    .SetIf(CurrentUser.Id.HasValue, a => a.ModifyTime, DateTime.Now)
+                                    .Where(a => a.Id.Equals(pkValue))
+                                    .Where(a => a.IsDeleted == false)
+                                    .ExecuteAffrowsAsync();
         }
 
         /// <summary>
@@ -266,10 +266,10 @@ namespace Hao.Core
             H_Check.Argument.NotEmpty(pkValues, nameof(pkValues));
 
             return await DbContext.Update<T>()
-                                .Set(a => a.IsDeleted, true)
-                                .SetIf(CurrentUser.Id.HasValue, a => a.ModifierId, CurrentUser.Id)
-                                .SetIf(CurrentUser.Id.HasValue, a => a.ModifyTime, DateTime.Now)
-                                .Where(it => pkValues.Contains(it.Id)).Where(a => a.IsDeleted == false).ExecuteAffrowsAsync();
+                                    .Set(a => a.IsDeleted, true)
+                                    .SetIf(CurrentUser.Id.HasValue, a => a.ModifierId, CurrentUser.Id)
+                                    .SetIf(CurrentUser.Id.HasValue, a => a.ModifyTime, DateTime.Now)
+                                    .Where(it => pkValues.Contains(it.Id)).Where(a => a.IsDeleted == false).ExecuteAffrowsAsync();
         }
 
         /// <summary>
@@ -288,9 +288,9 @@ namespace Hao.Core
             }
 
             return await DbContext.Update<T>()
-                                .SetSource(entity)
-                                .Where(a => a.IsDeleted == false)
-                                .ExecuteAffrowsAsync();
+                                    .SetSource(entity)
+                                    .Where(a => a.IsDeleted == false)
+                                    .ExecuteAffrowsAsync();
         }
 
         /// <summary>
@@ -306,6 +306,7 @@ namespace Hao.Core
             H_Check.Argument.NotNull(columns, nameof(columns));
 
             var body = columns.Body as NewExpression;
+
             H_Check.Argument.NotNull(body, nameof(columns));
             H_Check.Argument.NotEmpty(body.Members, nameof(columns));
 
@@ -320,10 +321,10 @@ namespace Hao.Core
             }
 
             return await DbContext.Update<T>()
-                                .SetSource(entity)
-                                .UpdateColumns(updateColumns.ToArray())
-                                .Where(a => a.IsDeleted == false)
-                                .ExecuteAffrowsAsync();
+                                    .SetSource(entity)
+                                    .UpdateColumns(updateColumns.ToArray())
+                                    .Where(a => a.IsDeleted == false)
+                                    .ExecuteAffrowsAsync();
         }
 
         /// <summary>
@@ -346,9 +347,9 @@ namespace Hao.Core
             }
 
             return await DbContext.Update<T>()
-                                .SetSource(entities)
-                                .Where(a => a.IsDeleted == false)
-                                .ExecuteAffrowsAsync();
+                                    .SetSource(entities)
+                                    .Where(a => a.IsDeleted == false)
+                                    .ExecuteAffrowsAsync();
         }
 
         /// <summary>
@@ -364,6 +365,7 @@ namespace Hao.Core
             H_Check.Argument.NotNull(columns, nameof(columns));
 
             var body = columns.Body as NewExpression;
+
             H_Check.Argument.NotNull(body, nameof(columns));
             H_Check.Argument.NotEmpty(body.Members, nameof(columns));
 
@@ -383,10 +385,10 @@ namespace Hao.Core
 
 
             return await DbContext.Update<T>()
-                                .SetSource(entities)
-                                .UpdateColumns(updateColumns.ToArray())
-                                .Where(a => a.IsDeleted == false)
-                                .ExecuteAffrowsAsync();
+                                    .SetSource(entities)
+                                    .UpdateColumns(updateColumns.ToArray())
+                                    .Where(a => a.IsDeleted == false)
+                                    .ExecuteAffrowsAsync();
         }
     }
 }
