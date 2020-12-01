@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Hao.Core
 {
     /// <summary>
-    /// 仓储通用接口类
+    /// 仓储通用接口
     /// </summary>
     /// <typeparam name="T">泛型实体类</typeparam>
     /// <typeparam name="TKey"></typeparam>
