@@ -9,22 +9,22 @@ namespace Hao.Core
     /// <summary>
     /// 仓储通用接口
     /// </summary>
-    /// <typeparam name="T">泛型实体类</typeparam>
+    /// <typeparam name="T"></typeparam>
     /// <typeparam name="TKey"></typeparam>
     public interface IBaseRepository<T, TKey> : ITransientDependency where T : IEntity<TKey>, new() where TKey : struct
     {
         /// <summary>
         /// 根据主键值查询单条数据
         /// </summary>
-        /// <param name="pkValue">主键值</param>
-        /// <returns>泛型实体</returns>
+        /// <param name="pkValue"></param>
+        /// <returns></returns>
         Task<T> GetAysnc(TKey pkValue);
 
         /// <summary>
         /// 根据主键值查询多条数据
         /// </summary>
         /// <param name="pkValues"></param>
-        /// <returns>泛型实体</returns>
+        /// <returns></returns>
         Task<List<T>> GetListAysnc(List<TKey> pkValues);
 
         /// <summary>

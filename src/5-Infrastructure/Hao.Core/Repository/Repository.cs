@@ -22,10 +22,10 @@ namespace Hao.Core
         public IdWorker IdWorker { get; set; }
 
         /// <summary>
-        /// 根据主值查询单条数据（单表）
+        /// 根据主键值查询单条数据
         /// </summary>s
-        /// <param name="pkValue">主键值</param>
-        /// <returns>泛型实体</returns>
+        /// <param name="pkValue"></param>
+        /// <returns></returns>
         public virtual async Task<T> GetAysnc(TKey pkValue)
         {
             var entity = await DbContext.Select<T>().Where(a => a.Id.Equals(pkValue)).ToOneAsync();
@@ -33,10 +33,10 @@ namespace Hao.Core
         }
 
         /// <summary>
-        /// 根据主值查询多条数据（单表）
+        /// 根据主键值集合查询多条数据
         /// </summary>s
-        /// <param name="pkValues">主键值</param>
-        /// <returns>泛型实体</returns>
+        /// <param name="pkValues"></param>
+        /// <returns></returns>
         public virtual async Task<List<T>> GetListAysnc(List<TKey> pkValues)
         {
             H_Check.Argument.NotEmpty(pkValues, nameof(pkValues));
@@ -45,7 +45,7 @@ namespace Hao.Core
         }
 
         /// <summary>
-        /// 查询所有数据（未删除）（单表）
+        /// 查询所有数据（未删除）
         /// </summary>
         /// <returns></returns>
         public virtual async Task<List<T>> GetListAysnc()
@@ -54,7 +54,7 @@ namespace Hao.Core
         }
 
         /// <summary>
-        /// 根据条件查询所有数据（未删除）（单表）
+        /// 根据条件查询所有数据（未删除）
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
@@ -76,7 +76,7 @@ namespace Hao.Core
         }
 
         /// <summary>
-        /// 查询所有数据（单表）
+        /// 查询所有数据
         /// </summary>
         /// <returns></returns>
         public virtual async Task<List<T>> GetAllAysnc()
@@ -85,7 +85,7 @@ namespace Hao.Core
         }
 
         /// <summary>
-        /// 查询所有数据（单表）
+        /// 查询所有数据
         /// </summary>
         /// <returns></returns>
         public virtual async Task<List<T>> GetAllAysnc(Query<T> query)
@@ -105,7 +105,7 @@ namespace Hao.Core
         }
 
         /// <summary>
-        /// 根据条件查询所有数据数量（未删除）（单表）
+        /// 根据条件查询所有数据数量（未删除）
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
@@ -123,7 +123,7 @@ namespace Hao.Core
         }
 
         /// <summary>
-        /// 根据条件查询所有分页数据（未删除）（单表）
+        /// 根据条件查询所有分页数据（未删除）
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>

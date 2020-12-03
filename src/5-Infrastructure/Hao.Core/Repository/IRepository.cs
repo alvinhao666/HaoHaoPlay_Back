@@ -9,7 +9,7 @@ namespace Hao.Core
     /// <summary>
     /// 仓储通用接口
     /// </summary>
-    /// <typeparam name="T">泛型实体类</typeparam>
+    /// <typeparam name="T"></typeparam>
     /// <typeparam name="TKey"></typeparam>
     public interface IRepository<T, TKey> : ITransientDependency where T : IEntity<TKey>, new() where TKey : struct
     {
@@ -17,7 +17,7 @@ namespace Hao.Core
         /// 根据主键值查询单条数据
         /// </summary>
         /// <param name="pkValue"></param>
-        /// <returns>泛型实体</returns>
+        /// <returns></returns>
         Task<T> GetAysnc(TKey pkValue);
 
         /// <summary>
