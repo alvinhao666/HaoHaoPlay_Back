@@ -30,6 +30,8 @@ namespace Hao.Repository
         /// 是否存在相同名字的模块
         /// </summary>
         /// <param name="name"></param>
+        /// <param name="moduleType"></param>
+        /// <param name="parentId"></param>
         /// <param name="id"></param>
         /// <returns></returns>
         public async Task<bool> IsExistSameNameModule(string name, ModuleType? moduleType, long? parentId, long? id = null)
