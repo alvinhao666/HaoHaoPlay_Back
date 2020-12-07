@@ -3,6 +3,7 @@ using Hao.Enum;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Hao.Utility;
 
 namespace Hao.AppService
 {
@@ -12,35 +13,19 @@ namespace Hao.AppService
     public class CurrentUserUpdateRequest
     {
         /// <summary>
-        /// 姓名
-        /// </summary>
-        public string Name { get; set; }
-
-        /// <summary>
-        /// 年龄
-        /// </summary>
-        public int? Age { get; set; }
-        /// <summary>
-        /// 性别
-        /// </summary>
-        public Gender? Gender { get; set; }
-        /// <summary>
         /// 手机号
         /// </summary>
         public string Phone { get; set; }
-        /// <summary>
-        /// 邮箱
-        /// </summary>
-        public string Email { get; set; }
+
         /// <summary>
         /// 微信
         /// </summary>
         public string WeChat { get; set; }
 
-        /// <summary>
-        /// 昵称
-        /// </summary>
-        public string NickName { get; set; }
+        // /// <summary>
+        // /// 昵称
+        // /// </summary>
+        // public string NickName { get; set; }
 
         /// <summary>
         /// 个人简介
@@ -51,11 +36,6 @@ namespace Hao.AppService
         /// 家庭地址
         /// </summary>
         public string HomeAddress { get; set; }
-
-        /// <summary>
-        /// QQ
-        /// </summary>
-        public string QQ { get; set; }
     }
 
 
@@ -66,12 +46,9 @@ namespace Hao.AppService
     {
         public CurrentUserUpdateValidator()
         {
+            RuleFor(x => x.Phone).MustHasValue("手机").Must(x => H_Validator.IsMobile(x)).WithMessage("手机号格式有误");
 
-            RuleFor(x => x.Name).MustHasValue("姓名");
-
-            RuleFor(x => x.Gender).EnumMustHasValue("性别");
-
-            RuleFor(x => x.Age).MustHasValue("年龄");
+            // RuleFor(x => x.Gender).EnumMustHasValue("性别");
         }
     }
 }

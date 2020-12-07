@@ -95,20 +95,16 @@ namespace Hao.AppService
         public async Task UpdateBaseInfo(CurrentUserUpdateRequest vm)
         {
             var user = await _userRep.GetAysnc(_currentUser.Id.Value);
-            user.Name = vm.Name;
-            user.Age = vm.Age;
-            user.Gender = vm.Gender;
-            user.NickName = vm.NickName;
+            user.Phone = vm.Phone;
+            user.WeChat = vm.WeChat;
             user.Profile = vm.Profile;
             user.HomeAddress = vm.HomeAddress;
             user.FirstNameSpell = H_Spell.GetFirstLetter(user.Name.ToCharArray()[0]);
             await _userRep.UpdateAsync(user,
                 user => new
                 {
-                    user.Name,
-                    user.Age,
-                    user.Gender,
-                    user.NickName,
+                    user.Phone,
+                    user.WeChat,
                     user.Profile,
                     user.HomeAddress,
                     user.FirstNameSpell
