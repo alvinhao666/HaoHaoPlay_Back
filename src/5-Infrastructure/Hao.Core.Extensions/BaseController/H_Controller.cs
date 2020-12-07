@@ -56,7 +56,7 @@ namespace Hao.Core.Extensions
             currentUser.RoleLevel = cache.RoleLevel;
 
 
-            if (currentUser.Name == "guest")
+            if (currentUser.Id == 2)
             {
                 var method = context.HttpContext.Request.Method.ToLower();
 
