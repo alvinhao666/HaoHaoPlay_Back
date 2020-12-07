@@ -148,7 +148,7 @@ namespace Hao.Utility
             {
                 if (typeof(TEnum).IsGenericType)
                     return default(TEnum);
-                throw new ArgumentNullException($"待转换枚举成员值 {member} 有误", nameof(member));
+                throw new ArgumentNullException(nameof(member), $"待转换枚举成员值有误");
             }
             var type = H_Common.GetType<TEnum>();
 
