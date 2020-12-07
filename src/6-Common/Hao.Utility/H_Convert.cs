@@ -136,6 +136,37 @@ namespace Hao.Utility
             return ToDateTimeOrNull(value) ?? DateTime.MinValue;
         }
 
+        /// <summary>
+        /// 获取枚举实例
+        /// </summary>
+        /// <typeparam name="TEnum">枚举类型</typeparam>
+        /// <param name="member">成员名或值,范例:Enum1枚举有成员A=0,则传入"A"或"0"获取 Enum1.A</param>
+        public static TEnum ToEnum<TEnum>(this string member)
+        {
+            string value = member.ToSafeString();
+            if (string.IsNullOrWhiteSpace(value))
+            {
+                if (typeof(TEnum).IsGenericType)
+                    return default(TEnum);
+                throw new ArgumentNullException(nameof(member));
+            }
+            var type = H_Common.GetType<TEnum>();
+
+            if (!Enum.IsDefined(type, value)) throw new ArgumentException(nameof(member));
+
+            return (TEnum)Enum.Parse(type, value);
+        }
+
+        /// <summary>
+        /// 获取枚举实例
+        /// </summary>
+        /// <typeparam name="TEnum">枚举类型</typeparam>
+        /// <param name="member">成员名或值,范例:Enum1枚举有成员A=0,则传入"A"或"0"获取 Enum1.A</param>
+        public static TEnum ToEnum<TEnum>(this int member)
+        {
+            return ToEnum<TEnum>(member.ToString());
+        }
+
 
         /// <summary> 
         /// 将 Stream 转成 byte[] 

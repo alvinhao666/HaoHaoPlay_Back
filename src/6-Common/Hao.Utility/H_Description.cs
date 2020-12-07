@@ -40,5 +40,19 @@ namespace Hao.Utility
             customAttribute.Field = fieldInfo;
             return customAttribute;
         }
+
+
+        /// <summary>
+        /// 根据描述获取枚举
+        /// </summary>
+        /// <typeparam name="TEnum"></typeparam>
+        /// <param name="description"></param>
+        /// <returns></returns>
+        public static TEnum ToEnum<TEnum>(string description)
+        {
+            var descriptions = Get(typeof(TEnum));
+            var type = descriptions.Single(a => a.Description == description);
+            return (TEnum)type.Value;
+        }
     }
 }

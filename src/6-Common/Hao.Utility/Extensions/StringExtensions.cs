@@ -97,7 +97,7 @@ namespace Hao.Utility
                 if (typeName == "guid")
                     return (T)(object)new Guid(value.ToString());
                 if (type.IsEnum)
-                    return EnumExtensions.Parse<T>(value);
+                    return H_Convert.ToEnum<T>(value);
                 if (value is IConvertible)
                     return (T)System.Convert.ChangeType(value, type);
                 return (T)value;
