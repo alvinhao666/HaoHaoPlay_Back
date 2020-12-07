@@ -99,7 +99,6 @@ namespace Hao.AppService
             user.WeChat = vm.WeChat;
             user.Profile = vm.Profile;
             user.HomeAddress = vm.HomeAddress;
-            user.FirstNameSpell = H_Spell.GetFirstLetter(user.Name.ToCharArray()[0]);
             await _userRep.UpdateAsync(user,
                 user => new
                 {
@@ -107,7 +106,6 @@ namespace Hao.AppService
                     user.WeChat,
                     user.Profile,
                     user.HomeAddress,
-                    user.FirstNameSpell
                 });
         }
 
