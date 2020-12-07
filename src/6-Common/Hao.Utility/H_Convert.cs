@@ -148,11 +148,11 @@ namespace Hao.Utility
             {
                 if (typeof(TEnum).IsGenericType)
                     return default(TEnum);
-                throw new ArgumentNullException(nameof(member));
+                throw new ArgumentNullException($"待转换枚举成员值 {member} 有误", nameof(member));
             }
             var type = H_Common.GetType<TEnum>();
 
-            if (!Enum.IsDefined(type, value)) throw new ArgumentException(nameof(member));
+            if (!Enum.IsDefined(type, value)) throw new ArgumentException($"待转换枚举成员值 {member} 有误", nameof(member));
 
             return (TEnum)Enum.Parse(type, value);
         }

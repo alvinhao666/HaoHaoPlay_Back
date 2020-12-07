@@ -16,8 +16,8 @@ namespace Hao.Utility
             var fieldName = @enum.ToString();
             var enumType = @enum.GetType();
             if (!Enum.IsDefined(enumType, @enum)) return null;
-            var hDescriptionAttribute = H_Description.Get(enumType, fieldName);
-            return hDescriptionAttribute?.Description;
+            var attribute = H_Description.Get(enumType, fieldName);
+            return attribute?.Description;
         }
     }
 }
