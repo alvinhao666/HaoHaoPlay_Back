@@ -60,7 +60,12 @@ namespace Hao.Core.Extensions
             {
                 var method = context.HttpContext.Request.Method.ToLower();
 
-                if (method.Equals("post") || method.Equals("put") || method.Equals("delete")) throw new H_Exception("游客账户，无法进行数据操作");
+                var isLogout = context.HttpContext.Request.Path.Value == "/CurrentUser/Logout";
+
+                if (!isLogout)
+                {
+                    if (method.Equals("post") || method.Equals("put") || method.Equals("delete")) throw new H_Exception("游客账户，无法进行数据操作");
+                }
             }
 
             base.OnActionExecuting(context);
