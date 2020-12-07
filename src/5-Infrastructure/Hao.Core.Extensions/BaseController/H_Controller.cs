@@ -55,6 +55,14 @@ namespace Hao.Core.Extensions
             currentUser.Jti = jti;
             currentUser.RoleLevel = cache.RoleLevel;
 
+
+            if (currentUser.Name == "guest")
+            {
+                var method = context.HttpContext.Request.Method.ToLower();
+
+                if (method.Equals("post") || method.Equals("put") || method.Equals("delete")) throw new H_Exception("游客账户，无法进行数据操作");
+            }
+
             base.OnActionExecuting(context);
         }
 
