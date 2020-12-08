@@ -91,6 +91,18 @@ namespace Hao.Utility
         {
             return File.Exists(filePath);
         }
+
+
+        /// <summary>
+        /// 将文件转化为内存流
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        public static MemoryStream ToMemoryStream(string filePath)
+        {
+            return new MemoryStream(File.ReadAllBytes(filePath));
+        }
+
         #endregion
     }
 }
