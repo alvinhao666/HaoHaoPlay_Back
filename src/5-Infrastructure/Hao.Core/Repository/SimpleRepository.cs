@@ -190,32 +190,46 @@ namespace Hao.Core
         {
             H_Check.Argument.NotNull(entity, nameof(entity));
 
-            return await DbContext.Update<T>().SetSource(entity).ExecuteAffrowsAsync();
+            var update = DbContext.Update<T>()
+                                    .SetSource(entity);
+
+            foreach (var item in whereColumns)
+            {
+                update.Where(item);
+            }
+
+            return await update.ExecuteAffrowsAsync();
         }
 
         /// <summary>
-        /// 异步更新数据（指定列名）
+        /// 异步更新数据（指定列）
         /// </summary>
         /// <param name="entity"></param>
-        /// <param name="columns"></param>
+        /// <param name="updateColumns"></param>
         /// <returns></returns>
-        public virtual async Task<int> UpdateAsync(T entity, Expression<Func<T, object>> columns, params Expression<Func<T, bool>>[] whereColumns)
+        public virtual async Task<int> UpdateAsync(T entity, Expression<Func<T, object>> updateColumns, params Expression<Func<T, bool>>[] whereColumns)
         {
             H_Check.Argument.NotNull(entity, nameof(entity));
 
-            H_Check.Argument.NotNull(columns, nameof(columns));
+            H_Check.Argument.NotNull(updateColumns, nameof(updateColumns));
 
-            var body = columns.Body as NewExpression;
+            var body = updateColumns.Body as NewExpression;
 
-            H_Check.Argument.NotNull(body, nameof(columns));
-            H_Check.Argument.NotEmpty(body.Members, nameof(columns));
+            H_Check.Argument.NotNull(body, nameof(updateColumns));
+            H_Check.Argument.NotEmpty(body.Members, nameof(updateColumns));
 
-            var updateColumns = body.Members.Select(a => a.Name);
+            var columns = body.Members.Select(a => a.Name);
 
-            return await DbContext.Update<T>()
+            var update = DbContext.Update<T>()
                                     .SetSource(entity)
-                                    .UpdateColumns(updateColumns.ToArray())
-                                    .ExecuteAffrowsAsync();
+                                    .UpdateColumns(columns.ToArray());
+
+            foreach (var item in whereColumns)
+            {
+                update.Where(item);
+            }
+
+            return await update.ExecuteAffrowsAsync();
         }
 
         /// <summary>
@@ -227,36 +241,50 @@ namespace Hao.Core
         {
             H_Check.Argument.NotEmpty(entities, nameof(entities));
 
-            return await DbContext.Update<T>().SetSource(entities).ExecuteAffrowsAsync();
+            var update = DbContext.Update<T>()
+                                    .SetSource(entities);
+
+            foreach (var item in whereColumns)
+            {
+                update.Where(item);
+            }
+
+            return await update.ExecuteAffrowsAsync();
         }
 
         /// <summary>
-        /// 异步更新数据（批量）（指定列名）
+        /// 异步更新数据（批量）（指定列）
         /// </summary>
         /// <param name="entities"></param>
-        /// <param name="columns"></param>
+        /// <param name="updateColumns"></param>
         /// <returns></returns>
-        public virtual async Task<int> UpdateAsync(List<T> entities, Expression<Func<T, object>> columns, params Expression<Func<T, bool>>[] whereColumns)
+        public virtual async Task<int> UpdateAsync(List<T> entities, Expression<Func<T, object>> updateColumns, params Expression<Func<T, bool>>[] whereColumns)
         {
             H_Check.Argument.NotEmpty(entities, nameof(entities));
 
-            H_Check.Argument.NotNull(columns, nameof(columns));
+            H_Check.Argument.NotNull(updateColumns, nameof(updateColumns));
 
-            var body = columns.Body as NewExpression;
+            var body = updateColumns.Body as NewExpression;
 
-            H_Check.Argument.NotNull(body, nameof(columns));
-            H_Check.Argument.NotEmpty(body.Members, nameof(columns));
+            H_Check.Argument.NotNull(body, nameof(updateColumns));
+            H_Check.Argument.NotEmpty(body.Members, nameof(updateColumns));
 
-            var updateColumns = body.Members.Select(a => a.Name);
+            var columns = body.Members.Select(a => a.Name);
 
-            return await DbContext.Update<T>()
+            var update = DbContext.Update<T>()
                                     .SetSource(entities)
-                                    .UpdateColumns(updateColumns.ToArray())
-                                    .ExecuteAffrowsAsync();
+                                    .UpdateColumns(columns.ToArray());
+
+            foreach (var item in whereColumns)
+            {
+                update.Where(item);
+            }
+
+            return await update.ExecuteAffrowsAsync();
         }
 
         /// <summary>
-        /// 异步删除数据（逻辑删除）
+        /// 异步删除数据
         /// </summary>
         /// <param name="entity">实体类</param>
         /// <returns></returns>
@@ -288,12 +316,9 @@ namespace Hao.Core
         {
             var delete = DbContext.Delete<T>().Where(a => a.Id.Equals(pkValue));
 
-            if (whereColumns?.Length > 0)
+            foreach (var item in whereColumns)
             {
-                foreach (var item in whereColumns)
-                {
-                    delete.Where(item);
-                }
+                delete.Where(item);
             }
 
             return await delete.ExecuteAffrowsAsync();
@@ -310,13 +335,9 @@ namespace Hao.Core
 
             var delete = DbContext.Delete<T>().Where(a => pkValues.Contains(a.Id));
 
-
-            if (whereColumns?.Length > 0)
+            foreach (var item in whereColumns)
             {
-                foreach (var item in whereColumns)
-                {
-                    delete.Where(item);
-                }
+                delete.Where(item);
             }
 
             return await delete.ExecuteAffrowsAsync();

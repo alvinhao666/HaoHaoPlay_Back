@@ -85,7 +85,7 @@ namespace Hao.Core
         Task<int> DeleteAysnc(T entity, params Expression<Func<T, bool>>[] whereColumns);
 
         /// <summary>
-        /// 异步删除数据
+        /// 异步删除数据（批量）
         /// </summary>
         /// <param name="entities"></param>
         /// <returns></returns>
@@ -117,7 +117,7 @@ namespace Hao.Core
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        Task<int> UpdateAsync(T entity, Expression<Func<T, object>> columns, params Expression<Func<T, bool>>[] whereColumns);
+        Task<int> UpdateAsync(T entity, Expression<Func<T, object>> updateColumns, params Expression<Func<T, bool>>[] whereColumns);
 
         /// <summary>
         /// 异步更新实体数据（批量）
@@ -127,10 +127,10 @@ namespace Hao.Core
         Task<int> UpdateAsync(List<T> entities, params Expression<Func<T, bool>>[] whereColumns);
 
         /// <summary>
-        /// 异步更新实体数据
+        /// 异步更新实体数据（批量）（指定列）
         /// </summary>
         /// <param name="entities"></param>
         /// <returns></returns>
-        Task<int> UpdateAsync(List<T> entities, Expression<Func<T, object>> columns, params Expression<Func<T, bool>>[] whereColumns);
+        Task<int> UpdateAsync(List<T> entities, Expression<Func<T, object>> updateColumns, params Expression<Func<T, bool>>[] whereColumns);
     }
 }

@@ -270,12 +270,9 @@ namespace Hao.Core
                                     .Where(a => a.Id.Equals(pkValue))
                                     .Where(a => a.IsDeleted == false);
 
-            if (whereColumns?.Length > 0)
+            foreach (var item in whereColumns)
             {
-                foreach (var item in whereColumns)
-                {
-                    delete.Where(item);
-                }
+                delete.Where(item);
             }
 
             return await delete.ExecuteAffrowsAsync();
@@ -297,12 +294,9 @@ namespace Hao.Core
                                     .Where(it => pkValues.Contains(it.Id))
                                     .Where(a => a.IsDeleted == false);
 
-            if (whereColumns?.Length > 0)
+            foreach (var item in whereColumns)
             {
-                foreach (var item in whereColumns)
-                {
-                    delete.Where(item);
-                }
+                delete.Where(item);
             }
 
             return await delete.ExecuteAffrowsAsync();
@@ -327,56 +321,50 @@ namespace Hao.Core
                                     .SetSource(entity)
                                     .Where(a => a.IsDeleted == false);
 
-            if (whereColumns?.Length > 0)
+            foreach (var item in whereColumns)
             {
-                foreach (var item in whereColumns)
-                {
-                    update.Where(item);
-                }
+                update.Where(item);
             }
 
             return await update.ExecuteAffrowsAsync();
         }
 
         /// <summary>
-        /// 异步更新数据（指定列名）
+        /// 异步更新数据（指定列）
         /// </summary>
         /// <param name="entity"></param>
-        /// <param name="columns"></param>
+        /// <param name="updateColumns"></param>
         /// <returns></returns>
-        public virtual async Task<int> UpdateAsync(T entity, Expression<Func<T, object>> columns, params Expression<Func<T, bool>>[] whereColumns)
+        public virtual async Task<int> UpdateAsync(T entity, Expression<Func<T, object>> updateColumns, params Expression<Func<T, bool>>[] whereColumns)
         {
             H_Check.Argument.NotNull(entity, nameof(entity));
 
-            H_Check.Argument.NotNull(columns, nameof(columns));
+            H_Check.Argument.NotNull(updateColumns, nameof(updateColumns));
 
-            var body = columns.Body as NewExpression;
+            var body = updateColumns.Body as NewExpression;
 
-            H_Check.Argument.NotNull(body, nameof(columns));
-            H_Check.Argument.NotEmpty(body.Members, nameof(columns));
+            H_Check.Argument.NotNull(body, nameof(updateColumns));
+            H_Check.Argument.NotEmpty(body.Members, nameof(updateColumns));
 
-            var updateColumns = body.Members.Select(a => a.Name).ToList();
+            var columns = body.Members.Select(a => a.Name).ToList();
 
             if (CurrentUser.Id.HasValue)
             {
                 entity.ModifierId = CurrentUser.Id;
                 entity.ModifyTime = DateTime.Now;
-                updateColumns.Add(nameof(entity.ModifierId));
-                updateColumns.Add(nameof(entity.ModifyTime));
+                columns.Add(nameof(entity.ModifierId));
+                columns.Add(nameof(entity.ModifyTime));
             }
 
 
             var update = DbContext.Update<T>()
                         .SetSource(entity)
-                        .UpdateColumns(updateColumns.ToArray())
+                        .UpdateColumns(columns.ToArray())
                         .Where(a => a.IsDeleted == false);
 
-            if (whereColumns?.Length > 0)
+            foreach (var item in whereColumns)
             {
-                foreach (var item in whereColumns)
-                {
-                    update.Where(item);
-                }
+                update.Where(item);
             }
 
             return await update.ExecuteAffrowsAsync();
@@ -405,35 +393,32 @@ namespace Hao.Core
                                     .SetSource(entities)
                                     .Where(a => a.IsDeleted == false);
 
-            if (whereColumns?.Length > 0)
+            foreach (var item in whereColumns)
             {
-                foreach (var item in whereColumns)
-                {
-                    update.Where(item);
-                }
+                update.Where(item);
             }
 
             return await update.ExecuteAffrowsAsync();
         }
 
         /// <summary>
-        /// 异步更新数据（批量）（指定列名）
+        /// 异步更新数据（批量）（指定列）
         /// </summary>
         /// <param name="entities"></param>
-        /// <param name="columns"></param>
+        /// <param name="updateColumns"></param>
         /// <returns></returns>
-        public virtual async Task<int> UpdateAsync(List<T> entities, Expression<Func<T, object>> columns, params Expression<Func<T, bool>>[] whereColumns)
+        public virtual async Task<int> UpdateAsync(List<T> entities, Expression<Func<T, object>> updateColumns, params Expression<Func<T, bool>>[] whereColumns)
         {
             H_Check.Argument.NotEmpty(entities, nameof(entities));
 
-            H_Check.Argument.NotNull(columns, nameof(columns));
+            H_Check.Argument.NotNull(updateColumns, nameof(updateColumns));
 
-            var body = columns.Body as NewExpression;
+            var body = updateColumns.Body as NewExpression;
 
-            H_Check.Argument.NotNull(body, nameof(columns));
-            H_Check.Argument.NotEmpty(body.Members, nameof(columns));
+            H_Check.Argument.NotNull(body, nameof(updateColumns));
+            H_Check.Argument.NotEmpty(body.Members, nameof(updateColumns));
 
-            var updateColumns = body.Members.Select(a => a.Name).ToList();
+            var columns = body.Members.Select(a => a.Name).ToList();
 
             if (CurrentUser.Id.HasValue)
             {
@@ -443,22 +428,19 @@ namespace Hao.Core
                     item.ModifierId = CurrentUser.Id;
                     item.ModifyTime = timeNow;
                 });
-                updateColumns.Add(nameof(FullAuditedEntity<TKey>.ModifierId));
-                updateColumns.Add(nameof(FullAuditedEntity<TKey>.ModifyTime));
+                columns.Add(nameof(FullAuditedEntity<TKey>.ModifierId));
+                columns.Add(nameof(FullAuditedEntity<TKey>.ModifyTime));
             }
 
 
             var update = DbContext.Update<T>()
                                     .SetSource(entities)
-                                    .UpdateColumns(updateColumns.ToArray())
+                                    .UpdateColumns(columns.ToArray())
                                     .Where(a => a.IsDeleted == false);
 
-            if (whereColumns?.Length > 0)
+            foreach (var item in whereColumns)
             {
-                foreach (var item in whereColumns)
-                {
-                    update.Where(item);
-                }
+                update.Where(item);
             }
 
             return await update.ExecuteAffrowsAsync();
