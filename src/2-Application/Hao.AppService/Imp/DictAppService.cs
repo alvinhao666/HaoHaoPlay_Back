@@ -73,8 +73,11 @@ namespace Hao.AppService
         [UnitOfWork]
         public async Task Delete(long id)
         {
+            var dict = await _dictRep.GetAysnc(id);
+
             var dictItems = await _dictRep.GetListAysnc(new DictQuery { ParentId = id });
-            await _dictRep.DeleteAysnc(id);
+
+            await _dictRep.DeleteAysnc(dict);
 
             if (dictItems.Count < 1) return;
 
@@ -172,7 +175,8 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task DeleteDictItem(long id)
         {
-            await _dictRep.DeleteAysnc(id);
+            var dict = await _dictRep.GetAysnc(id);
+            await _dictRep.DeleteAysnc(dict);
         }
 
         /// <summary>

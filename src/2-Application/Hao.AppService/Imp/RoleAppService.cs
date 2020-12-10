@@ -167,7 +167,7 @@ namespace Hao.AppService
             var role = await GetRoleDetail(id);
             var users = await _userRep.GetListAysnc(new UserQuery() { RoleLevel = role.Level });
             if (users.Count > 0) throw new H_Exception("该角色下存在用户，暂时无法删除");
-            await _roleRep.DeleteAysnc(id);
+            await _roleRep.DeleteAysnc(role);
         }
 
 

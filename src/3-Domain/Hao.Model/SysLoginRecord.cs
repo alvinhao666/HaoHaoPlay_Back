@@ -3,7 +3,7 @@ using Hao.Core;
 
 namespace Hao.Model
 {
-    public class SysLoginRecord: BaseEntity<long>
+    public class SysLoginRecord: SimpleEntity<long>
     {
         /// <summary>
         /// 用户id

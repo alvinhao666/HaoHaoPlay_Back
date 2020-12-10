@@ -14,7 +14,7 @@ namespace Hao.Core
     {
         [FromServiceContext]
         public IFreeSqlContext DbContext { get; set; }
-        
+
         [FromServiceContext]
         public ICurrentUser CurrentUser { get; set; }
 
@@ -63,13 +63,17 @@ namespace Hao.Core
             H_Check.Argument.NotNull(query, nameof(query));
 
             var flag = string.IsNullOrWhiteSpace(query.OrderByFileds);
-            var q = DbContext.Select<T>();
-            foreach (var item in query.QueryExpressions)
+            var select = DbContext.Select<T>();
+
+            if (query.QueryExpressions?.Count > 0)
             {
-                q.Where(item);
+                foreach (var item in query.QueryExpressions)
+                {
+                    select.Where(item);
+                }
             }
 
-            return await q.Where(a => a.IsDeleted == false)
+            return await select.Where(a => a.IsDeleted == false)
                             .OrderByDescending(flag, a => a.CreateTime)
                             .OrderBy(!flag, query.OrderByFileds)
                             .ToListAsync();
@@ -93,13 +97,17 @@ namespace Hao.Core
             H_Check.Argument.NotNull(query, nameof(query));
 
             var flag = string.IsNullOrWhiteSpace(query.OrderByFileds);
-            var q = DbContext.Select<T>();
-            foreach (var item in query.QueryExpressions)
+            var select = DbContext.Select<T>();
+
+            if (query.QueryExpressions?.Count > 0)
             {
-                q.Where(item);
+                foreach (var item in query.QueryExpressions)
+                {
+                    select.Where(item);
+                }
             }
 
-            return await q.OrderByDescending(flag, a => a.CreateTime)
+            return await select.OrderByDescending(flag, a => a.CreateTime)
                             .OrderBy(!flag, query.OrderByFileds)
                             .ToListAsync();
         }
@@ -113,13 +121,17 @@ namespace Hao.Core
         {
             H_Check.Argument.NotNull(query, nameof(query));
 
-            var q = DbContext.Select<T>();
-            foreach (var item in query.QueryExpressions)
+            var select = DbContext.Select<T>();
+
+            if (query.QueryExpressions?.Count > 0)
             {
-                q.Where(item);
+                foreach (var item in query.QueryExpressions)
+                {
+                    select.Where(item);
+                }
             }
 
-            return (int)await q.Where(a => a.IsDeleted == false).CountAsync();
+            return (int)await select.Where(a => a.IsDeleted == false).CountAsync();
         }
 
         /// <summary>
@@ -132,16 +144,20 @@ namespace Hao.Core
             H_Check.Argument.NotNull(query, nameof(query));
 
             var flag = string.IsNullOrWhiteSpace(query.OrderByFileds);
-            var q = DbContext.Select<T>(); 
-            foreach (var item in query.QueryExpressions)
+            var select = DbContext.Select<T>();
+
+            if (query.QueryExpressions?.Count > 0)
             {
-                q.Where(item);
+                foreach (var item in query.QueryExpressions)
+                {
+                    select.Where(item);
+                }
             }
 
-            var items = await q.Where(a => a.IsDeleted == false)
+            var items = await select.Where(a => a.IsDeleted == false)
                                 .OrderByDescending(flag, a => a.CreateTime)
                                 .OrderBy(!flag, query.OrderByFileds)
-                                .Count(out var total) 
+                                .Count(out var total)
                                 .Page(query.PageIndex, query.PageSize).ToListAsync();
 
             var pageList = new PagedList<T>()
@@ -220,11 +236,11 @@ namespace Hao.Core
         /// </summary>
         /// <param name="entity">实体类</param>
         /// <returns></returns>
-        public virtual async Task<int> DeleteAysnc(T entity)
+        public virtual async Task<int> DeleteAysnc(T entity, params Expression<Func<T, bool>>[] whereColumns)
         {
             H_Check.Argument.NotNull(entity, nameof(entity));
 
-            return await DeleteAysnc(entity.Id);
+            return await DeleteAysnc(entity.Id, whereColumns);
         }
 
         /// <summary>
@@ -232,11 +248,11 @@ namespace Hao.Core
         /// </summary>
         /// <param name="entities">实体类</param>
         /// <returns></returns>
-        public virtual async Task<int> DeleteAysnc(List<T> entities)
+        public virtual async Task<int> DeleteAysnc(List<T> entities, params Expression<Func<T, bool>>[] whereColumns)
         {
             H_Check.Argument.NotEmpty(entities, nameof(entities));
 
-            return await DeleteAysnc(entities.Select(a => a.Id).ToList());
+            return await DeleteAysnc(entities.Select(a => a.Id).ToList(), whereColumns);
         }
 
         /// <summary>
@@ -244,16 +260,25 @@ namespace Hao.Core
         /// </summary>
         /// <param name="pkValue">实体类</param>
         /// <returns></returns>
-        public virtual async Task<int> DeleteAysnc(TKey pkValue)
+        private async Task<int> DeleteAysnc(TKey pkValue, params Expression<Func<T, bool>>[] whereColumns)
         {
 
-            return await DbContext.Update<T>()
+            var delete = DbContext.Update<T>()
                                     .Set(a => a.IsDeleted, true)
                                     .SetIf(CurrentUser.Id.HasValue, a => a.ModifierId, CurrentUser.Id)
                                     .SetIf(CurrentUser.Id.HasValue, a => a.ModifyTime, DateTime.Now)
                                     .Where(a => a.Id.Equals(pkValue))
-                                    .Where(a => a.IsDeleted == false)
-                                    .ExecuteAffrowsAsync();
+                                    .Where(a => a.IsDeleted == false);
+
+            if (whereColumns?.Length > 0)
+            {
+                foreach (var item in whereColumns)
+                {
+                    delete.Where(item);
+                }
+            }
+
+            return await delete.ExecuteAffrowsAsync();
         }
 
         /// <summary>
@@ -261,15 +286,26 @@ namespace Hao.Core
         /// </summary>
         /// <param name="pkValues">实体类</param>
         /// <returns></returns>
-        public virtual async Task<int> DeleteAysnc(List<TKey> pkValues)
+        private async Task<int> DeleteAysnc(List<TKey> pkValues, params Expression<Func<T, bool>>[] whereColumns)
         {
             H_Check.Argument.NotEmpty(pkValues, nameof(pkValues));
 
-            return await DbContext.Update<T>()
+            var delete = DbContext.Update<T>()
                                     .Set(a => a.IsDeleted, true)
                                     .SetIf(CurrentUser.Id.HasValue, a => a.ModifierId, CurrentUser.Id)
                                     .SetIf(CurrentUser.Id.HasValue, a => a.ModifyTime, DateTime.Now)
-                                    .Where(it => pkValues.Contains(it.Id)).Where(a => a.IsDeleted == false).ExecuteAffrowsAsync();
+                                    .Where(it => pkValues.Contains(it.Id))
+                                    .Where(a => a.IsDeleted == false);
+
+            if (whereColumns?.Length > 0)
+            {
+                foreach (var item in whereColumns)
+                {
+                    delete.Where(item);
+                }
+            }
+
+            return await delete.ExecuteAffrowsAsync();
         }
 
         /// <summary>
@@ -277,7 +313,7 @@ namespace Hao.Core
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public virtual async Task<int> UpdateAsync(T entity)
+        public virtual async Task<int> UpdateAsync(T entity, params Expression<Func<T, bool>>[] whereColumns)
         {
             H_Check.Argument.NotNull(entity, nameof(entity));
 
@@ -287,10 +323,19 @@ namespace Hao.Core
                 entity.ModifyTime = DateTime.Now;
             }
 
-            return await DbContext.Update<T>()
+            var update = DbContext.Update<T>()
                                     .SetSource(entity)
-                                    .Where(a => a.IsDeleted == false)
-                                    .ExecuteAffrowsAsync();
+                                    .Where(a => a.IsDeleted == false);
+
+            if (whereColumns?.Length > 0)
+            {
+                foreach (var item in whereColumns)
+                {
+                    update.Where(item);
+                }
+            }
+
+            return await update.ExecuteAffrowsAsync();
         }
 
         /// <summary>
@@ -299,7 +344,7 @@ namespace Hao.Core
         /// <param name="entity"></param>
         /// <param name="columns"></param>
         /// <returns></returns>
-        public virtual async Task<int> UpdateAsync(T entity, Expression<Func<T, object>> columns)
+        public virtual async Task<int> UpdateAsync(T entity, Expression<Func<T, object>> columns, params Expression<Func<T, bool>>[] whereColumns)
         {
             H_Check.Argument.NotNull(entity, nameof(entity));
 
@@ -320,11 +365,21 @@ namespace Hao.Core
                 updateColumns.Add(nameof(entity.ModifyTime));
             }
 
-            return await DbContext.Update<T>()
-                                    .SetSource(entity)
-                                    .UpdateColumns(updateColumns.ToArray())
-                                    .Where(a => a.IsDeleted == false)
-                                    .ExecuteAffrowsAsync();
+
+            var update = DbContext.Update<T>()
+                        .SetSource(entity)
+                        .UpdateColumns(updateColumns.ToArray())
+                        .Where(a => a.IsDeleted == false);
+
+            if (whereColumns?.Length > 0)
+            {
+                foreach (var item in whereColumns)
+                {
+                    update.Where(item);
+                }
+            }
+
+            return await update.ExecuteAffrowsAsync();
         }
 
         /// <summary>
@@ -332,7 +387,7 @@ namespace Hao.Core
         /// </summary>
         /// <param name="entities"></param>
         /// <returns></returns>
-        public virtual async Task<int> UpdateAsync(List<T> entities)
+        public virtual async Task<int> UpdateAsync(List<T> entities, params Expression<Func<T, bool>>[] whereColumns)
         {
             H_Check.Argument.NotEmpty(entities, nameof(entities));
 
@@ -346,10 +401,19 @@ namespace Hao.Core
                 });
             }
 
-            return await DbContext.Update<T>()
+            var update = DbContext.Update<T>()
                                     .SetSource(entities)
-                                    .Where(a => a.IsDeleted == false)
-                                    .ExecuteAffrowsAsync();
+                                    .Where(a => a.IsDeleted == false);
+
+            if (whereColumns?.Length > 0)
+            {
+                foreach (var item in whereColumns)
+                {
+                    update.Where(item);
+                }
+            }
+
+            return await update.ExecuteAffrowsAsync();
         }
 
         /// <summary>
@@ -358,7 +422,7 @@ namespace Hao.Core
         /// <param name="entities"></param>
         /// <param name="columns"></param>
         /// <returns></returns>
-        public virtual async Task<int> UpdateAsync(List<T> entities, Expression<Func<T, object>> columns)
+        public virtual async Task<int> UpdateAsync(List<T> entities, Expression<Func<T, object>> columns, params Expression<Func<T, bool>>[] whereColumns)
         {
             H_Check.Argument.NotEmpty(entities, nameof(entities));
 
@@ -384,11 +448,20 @@ namespace Hao.Core
             }
 
 
-            return await DbContext.Update<T>()
+            var update = DbContext.Update<T>()
                                     .SetSource(entities)
                                     .UpdateColumns(updateColumns.ToArray())
-                                    .Where(a => a.IsDeleted == false)
-                                    .ExecuteAffrowsAsync();
+                                    .Where(a => a.IsDeleted == false);
+
+            if (whereColumns?.Length > 0)
+            {
+                foreach (var item in whereColumns)
+                {
+                    update.Where(item);
+                }
+            }
+
+            return await update.ExecuteAffrowsAsync();
         }
     }
 }

@@ -145,7 +145,7 @@ namespace Hao.AppService
             var role = await _roleRep.GetAysnc(user.RoleId.Value);
             role.UserCount--;
 
-            await _userRep.DeleteAysnc(user.Id);
+            await _userRep.DeleteAysnc(user);
             await _roleRep.UpdateAsync(role, a => new { a.UserCount });
 
             await _publisher.PublishAsync(nameof(LogoutEventData), new LogoutEventData

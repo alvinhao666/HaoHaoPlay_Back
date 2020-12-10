@@ -41,7 +41,7 @@ namespace Hao.AppService
             var node = await GetModuleDetail(id);
             if (node.Type != ModuleType.Resource) throw new H_Exception("非资源项无法删除");
 
-            await _moduleRep.DeleteAysnc(id);
+            await _moduleRep.DeleteAysnc(node);
         }
 
         /// <summary>

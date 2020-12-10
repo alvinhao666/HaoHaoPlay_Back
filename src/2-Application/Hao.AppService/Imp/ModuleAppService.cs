@@ -119,15 +119,16 @@ namespace Hao.AppService
         public async Task Delete(long id)
         {
             if (id == 0) throw new H_Exception("无法操作系统根节点");
-            //var module = await GetModuleDetail(id);
+
+            var module = await _moduleRep.GetAysnc(id);
 
             var childs = await _moduleRep.GetListAysnc(new ModuleQuery()
             {
-                ParentId = id
+                ParentId = module.Id
             });
             if (childs != null && childs.Count > 0) throw new H_Exception("存在子节点无法删除");
 
-            await _moduleRep.DeleteAysnc(id);
+            await _moduleRep.DeleteAysnc(module);
         }
 
 

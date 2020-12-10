@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Hao.Repository
 {
-    public class SysLoginRecordRepository : BaseRepository<SysLoginRecord, long>, ISysLoginRecordRepository
+    public class SysLoginRecordRepository : SimpleRepository<SysLoginRecord, long>, ISysLoginRecordRepository
     {
         /// <summary>
         /// 获取登录记录

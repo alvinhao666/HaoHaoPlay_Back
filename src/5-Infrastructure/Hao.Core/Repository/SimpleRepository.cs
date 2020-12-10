@@ -9,8 +9,8 @@ using Hao.Utility;
 
 namespace Hao.Core
 {
-    public abstract class BaseRepository<T, TKey> : IBaseRepository<T, TKey>
-        where T : BaseEntity<TKey>, new() where TKey : struct
+    public abstract class SimpleRepository<T, TKey> : ISimpleRepository<T, TKey>
+        where T : SimpleEntity<TKey>, new() where TKey : struct
     {
         [FromServiceContext]
         public IFreeSqlContext DbContext { get; set; }
@@ -60,14 +60,16 @@ namespace Hao.Core
             H_Check.Argument.NotNull(query, nameof(query));
 
             var flag = string.IsNullOrWhiteSpace(query.OrderByFileds);
-            var q = DbContext.Select<T>();
+            var select = DbContext.Select<T>();
 
-            foreach (var item in query.QueryExpressions)
+            if (query.QueryExpressions?.Count > 0)
             {
-                q.Where(item);
+                foreach (var item in query.QueryExpressions)
+                {
+                    select.Where(item);
+                }
             }
-
-            return await q.OrderBy(!flag, query.OrderByFileds).ToListAsync();
+            return await select.OrderBy(!flag, query.OrderByFileds).ToListAsync();
         }
 
         /// <summary>
@@ -79,13 +81,15 @@ namespace Hao.Core
         {
             H_Check.Argument.NotNull(query, nameof(query));
 
-            var q = DbContext.Select<T>();
-            foreach (var item in query.QueryExpressions)
+            var select = DbContext.Select<T>();
+            if (query.QueryExpressions?.Count > 0)
             {
-                q.Where(item);
+                foreach (var item in query.QueryExpressions)
+                {
+                    select.Where(item);
+                }
             }
-
-            return (int)await q.CountAsync();
+            return (int)await select.CountAsync();
         }
 
         /// <summary>
@@ -99,14 +103,18 @@ namespace Hao.Core
 
 
             var flag = string.IsNullOrWhiteSpace(query.OrderByFileds);
-            var q = DbContext.Select<T>();
-            foreach (var item in query.QueryExpressions)
+            var select = DbContext.Select<T>();
+
+            if (query.QueryExpressions?.Count > 0)
             {
-                q.Where(item);
+                foreach (var item in query.QueryExpressions)
+                {
+                    select.Where(item);
+                }
             }
 
-            var items = await q.OrderBy(!flag, query.OrderByFileds)
-                                .Count(out var total) 
+            var items = await select.OrderBy(!flag, query.OrderByFileds)
+                                .Count(out var total)
                                 .Page(query.PageIndex, query.PageSize).ToListAsync();
 
             var pageList = new PagedList<T>()
@@ -131,7 +139,7 @@ namespace Hao.Core
 
             var type = typeof(T);
             var isGuid = typeof(TKey) == typeof(Guid);
-            var id = type.GetProperty(nameof(BaseEntity<TKey>.Id));
+            var id = type.GetProperty(nameof(SimpleEntity<TKey>.Id));
 
             if (isGuid)
             {
@@ -157,7 +165,7 @@ namespace Hao.Core
 
             var isGuid = typeof(TKey) == typeof(Guid);
             var type = typeof(T);
-            var id = type.GetProperty(nameof(BaseEntity<TKey>.Id));
+            var id = type.GetProperty(nameof(SimpleEntity<TKey>.Id));
             var timeNow = DateTime.Now;
             entities.ForEach(item =>
             {
@@ -178,7 +186,7 @@ namespace Hao.Core
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public virtual async Task<int> UpdateAsync(T entity)
+        public virtual async Task<int> UpdateAsync(T entity, params Expression<Func<T, bool>>[] whereColumns)
         {
             H_Check.Argument.NotNull(entity, nameof(entity));
 
@@ -191,7 +199,7 @@ namespace Hao.Core
         /// <param name="entity"></param>
         /// <param name="columns"></param>
         /// <returns></returns>
-        public virtual async Task<int> UpdateAsync(T entity, Expression<Func<T, object>> columns)
+        public virtual async Task<int> UpdateAsync(T entity, Expression<Func<T, object>> columns, params Expression<Func<T, bool>>[] whereColumns)
         {
             H_Check.Argument.NotNull(entity, nameof(entity));
 
@@ -215,7 +223,7 @@ namespace Hao.Core
         /// </summary>
         /// <param name="entities">实体类</param>
         /// <returns></returns>
-        public virtual async Task<int> UpdateAsync(List<T> entities)
+        public virtual async Task<int> UpdateAsync(List<T> entities, params Expression<Func<T, bool>>[] whereColumns)
         {
             H_Check.Argument.NotEmpty(entities, nameof(entities));
 
@@ -228,7 +236,7 @@ namespace Hao.Core
         /// <param name="entities"></param>
         /// <param name="columns"></param>
         /// <returns></returns>
-        public virtual async Task<int> UpdateAsync(List<T> entities, Expression<Func<T, object>> columns)
+        public virtual async Task<int> UpdateAsync(List<T> entities, Expression<Func<T, object>> columns, params Expression<Func<T, bool>>[] whereColumns)
         {
             H_Check.Argument.NotEmpty(entities, nameof(entities));
 
@@ -248,13 +256,47 @@ namespace Hao.Core
         }
 
         /// <summary>
+        /// 异步删除数据（逻辑删除）
+        /// </summary>
+        /// <param name="entity">实体类</param>
+        /// <returns></returns>
+        public virtual async Task<int> DeleteAysnc(T entity, params Expression<Func<T, bool>>[] whereColumns)
+        {
+            H_Check.Argument.NotNull(entity, nameof(entity));
+
+            return await DeleteAysnc(entity.Id, whereColumns);
+        }
+
+        /// <summary>
+        /// 异步删除数据（批量）
+        /// </summary>
+        /// <param name="entities">实体类</param>
+        /// <returns></returns>
+        public virtual async Task<int> DeleteAysnc(List<T> entities, params Expression<Func<T, bool>>[] whereColumns)
+        {
+            H_Check.Argument.NotEmpty(entities, nameof(entities));
+
+            return await DeleteAysnc(entities.Select(a => a.Id).ToList(), whereColumns);
+        }
+
+        /// <summary>
         /// 异步删除数据
         /// </summary>
         /// <param name="pkValue"></param>
         /// <returns></returns>
-        public virtual async Task<int> DeleteAysnc(TKey pkValue)
+        private async Task<int> DeleteAysnc(TKey pkValue, params Expression<Func<T, bool>>[] whereColumns)
         {
-            return await DbContext.Delete<T>().Where(a => a.Id.Equals(pkValue)).ExecuteAffrowsAsync();
+            var delete = DbContext.Delete<T>().Where(a => a.Id.Equals(pkValue));
+
+            if (whereColumns?.Length > 0)
+            {
+                foreach (var item in whereColumns)
+                {
+                    delete.Where(item);
+                }
+            }
+
+            return await delete.ExecuteAffrowsAsync();
         }
 
         /// <summary>
@@ -262,11 +304,22 @@ namespace Hao.Core
         /// </summary>
         /// <param name="pkValues"></param>
         /// <returns></returns>
-        public virtual async Task<int> DeleteAysnc(List<TKey> pkValues)
+        private async Task<int> DeleteAysnc(List<TKey> pkValues, params Expression<Func<T, bool>>[] whereColumns)
         {
             H_Check.Argument.NotEmpty(pkValues, nameof(pkValues));
 
-            return await DbContext.Delete<T>().Where(a => pkValues.Contains(a.Id)).ExecuteAffrowsAsync();
+            var delete = DbContext.Delete<T>().Where(a => pkValues.Contains(a.Id));
+
+
+            if (whereColumns?.Length > 0)
+            {
+                foreach (var item in whereColumns)
+                {
+                    delete.Where(item);
+                }
+            }
+
+            return await delete.ExecuteAffrowsAsync();
         }
     }
 }

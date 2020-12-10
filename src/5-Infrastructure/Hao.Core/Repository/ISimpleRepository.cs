@@ -11,7 +11,7 @@ namespace Hao.Core
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <typeparam name="TKey"></typeparam>
-    public interface IBaseRepository<T, TKey> : ITransientDependency where T : IEntity<TKey>, new() where TKey : struct
+    public interface ISimpleRepository<T, TKey> : ITransientDependency where T : IEntity<TKey>, new() where TKey : struct
     {
         /// <summary>
         /// 根据主键值查询单条数据
@@ -70,41 +70,56 @@ namespace Hao.Core
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        Task<int> UpdateAsync(T entity);
+        Task<int> UpdateAsync(T entity, params Expression<Func<T, bool>>[] whereColumns);
 
         /// <summary>
         /// 异步更新实体数据（指定列）
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        Task<int> UpdateAsync(T entity, Expression<Func<T, object>> columns);
+        Task<int> UpdateAsync(T entity, Expression<Func<T, object>> columns, params Expression<Func<T, bool>>[] whereColumns);
 
         /// <summary>
         /// 异步更新实体数据（批量）
         /// </summary>
         /// <param name="entities"></param>
         /// <returns></returns>
-        Task<int> UpdateAsync(List<T> entities);
+        Task<int> UpdateAsync(List<T> entities, params Expression<Func<T, bool>>[] whereColumns);
 
         /// <summary>
         /// 异步更新实体数据（批量）（指定列）
         /// </summary>
         /// <param name="entities"></param>
         /// <returns></returns>
-        Task<int> UpdateAsync(List<T> entities, Expression<Func<T, object>> columns);
+        Task<int> UpdateAsync(List<T> entities, Expression<Func<T, object>> columns, params Expression<Func<T, bool>>[] whereColumns);
 
         /// <summary>
         /// 异步删除数据
         /// </summary>
-        /// <param name="pkValue"></param>
+        /// <param name="entity"></param>
         /// <returns></returns>
-        Task<int> DeleteAysnc(TKey pkValue);
+        Task<int> DeleteAysnc(T entity, params Expression<Func<T, bool>>[] whereColumns);
 
         /// <summary>
         /// 异步删除数据
         /// </summary>
-        /// <param name="pkValues"></param>
+        /// <param name="entities"></param>
         /// <returns></returns>
-        Task<int> DeleteAysnc(List<TKey> pkValues);
+        Task<int> DeleteAysnc(List<T> entities, params Expression<Func<T, bool>>[] whereColumns);
+
+
+        ///// <summary>
+        ///// 异步删除数据
+        ///// </summary>
+        ///// <param name="pkValue"></param>
+        ///// <returns></returns>
+        //Task<int> DeleteAysnc(TKey pkValue, params Expression<Func<T, bool>>[] whereColumns);
+
+        ///// <summary>
+        ///// 异步删除数据
+        ///// </summary>
+        ///// <param name="pkValues"></param>
+        ///// <returns></returns>
+        //Task<int> DeleteAysnc(List<TKey> pkValues, params Expression<Func<T, bool>>[] whereColumns);
     }
 }

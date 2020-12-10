@@ -2,7 +2,7 @@ using FreeSql.DataAnnotations;
 
 namespace Hao.Core
 {
-    public abstract class BaseEntity<TKey> : IEntity<TKey> where TKey : struct
+    public abstract class SimpleEntity<TKey> : IEntity<TKey> where TKey : struct
     {
 
         [Column(IsPrimary = true)]
