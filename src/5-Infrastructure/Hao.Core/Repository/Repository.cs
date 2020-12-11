@@ -22,7 +22,7 @@ namespace Hao.Core
         public IdWorker IdWorker { get; set; }
 
         /// <summary>
-        /// 根据主键值查询单条数据
+        /// 根据主键查询单条数据
         /// </summary>s
         /// <param name="pkValue"></param>
         /// <returns></returns>
@@ -33,7 +33,7 @@ namespace Hao.Core
         }
 
         /// <summary>
-        /// 根据主键值集合查询多条数据
+        /// 根据主键集合查询多条数据
         /// </summary>s
         /// <param name="pkValues"></param>
         /// <returns></returns>
@@ -79,38 +79,6 @@ namespace Hao.Core
                             .ToListAsync();
         }
 
-        /// <summary>
-        /// 查询所有数据
-        /// </summary>
-        /// <returns></returns>
-        public virtual async Task<List<T>> GetAllAysnc()
-        {
-            return await DbContext.Select<T>().OrderByDescending(a => a.CreateTime).ToListAsync();
-        }
-
-        /// <summary>
-        /// 查询所有数据
-        /// </summary>
-        /// <returns></returns>
-        public virtual async Task<List<T>> GetAllAysnc(Query<T> query)
-        {
-            H_Check.Argument.NotNull(query, nameof(query));
-
-            var flag = string.IsNullOrWhiteSpace(query.OrderByFileds);
-            var select = DbContext.Select<T>();
-
-            if (query.QueryExpressions?.Count > 0)
-            {
-                foreach (var item in query.QueryExpressions)
-                {
-                    select.Where(item);
-                }
-            }
-
-            return await select.OrderByDescending(flag, a => a.CreateTime)
-                            .OrderBy(!flag, query.OrderByFileds)
-                            .ToListAsync();
-        }
 
         /// <summary>
         /// 根据条件查询所有数据数量（未删除）
@@ -135,7 +103,7 @@ namespace Hao.Core
         }
 
         /// <summary>
-        /// 根据条件查询所有分页数据（未删除）
+        /// 根据条件查询分页数据（未删除）
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
@@ -171,8 +139,42 @@ namespace Hao.Core
             return pageList;
         }
 
+
         /// <summary>
-        /// 异步写入实体数据
+        /// 查询所有数据
+        /// </summary>
+        /// <returns></returns>
+        public virtual async Task<List<T>> GetAllAysnc()
+        {
+            return await DbContext.Select<T>().OrderByDescending(a => a.CreateTime).ToListAsync();
+        }
+
+        /// <summary>
+        /// 查询所有数据
+        /// </summary>
+        /// <returns></returns>
+        public virtual async Task<List<T>> GetAllAysnc(Query<T> query)
+        {
+            H_Check.Argument.NotNull(query, nameof(query));
+
+            var flag = string.IsNullOrWhiteSpace(query.OrderByFileds);
+            var select = DbContext.Select<T>();
+
+            if (query.QueryExpressions?.Count > 0)
+            {
+                foreach (var item in query.QueryExpressions)
+                {
+                    select.Where(item);
+                }
+            }
+
+            return await select.OrderByDescending(flag, a => a.CreateTime)
+                                .OrderBy(!flag, query.OrderByFileds)
+                                .ToListAsync();
+        }
+
+        /// <summary>
+        /// 插入数据
         /// </summary>
         /// <param name="entity">实体类</param>
         /// <returns></returns>
@@ -201,7 +203,7 @@ namespace Hao.Core
         }
 
         /// <summary>
-        /// 异步写入实体数据（批量）
+        /// 插入数据（批量）
         /// </summary>
         /// <param name="entities">实体类</param>
         /// <returns></returns>
@@ -230,82 +232,11 @@ namespace Hao.Core
             return await DbContext.Insert(entities).ExecuteAffrowsAsync();
         }
 
-
         /// <summary>
-        /// 异步删除数据（逻辑删除）
-        /// </summary>
-        /// <param name="entity">实体类</param>
-        /// <returns></returns>
-        public virtual async Task<int> DeleteAysnc(T entity, params Expression<Func<T, bool>>[] whereColumns)
-        {
-            H_Check.Argument.NotNull(entity, nameof(entity));
-
-            return await DeleteAysnc(entity.Id, whereColumns);
-        }
-
-        /// <summary>
-        /// 异步删除数据（批量）
-        /// </summary>
-        /// <param name="entities">实体类</param>
-        /// <returns></returns>
-        public virtual async Task<int> DeleteAysnc(List<T> entities, params Expression<Func<T, bool>>[] whereColumns)
-        {
-            H_Check.Argument.NotEmpty(entities, nameof(entities));
-
-            return await DeleteAysnc(entities.Select(a => a.Id).ToList(), whereColumns);
-        }
-
-        /// <summary>
-        /// 删除数据
-        /// </summary>
-        /// <param name="pkValue">实体类</param>
-        /// <returns></returns>
-        private async Task<int> DeleteAysnc(TKey pkValue, params Expression<Func<T, bool>>[] whereColumns)
-        {
-
-            var delete = DbContext.Update<T>()
-                                    .Set(a => a.IsDeleted, true)
-                                    .SetIf(CurrentUser.Id.HasValue, a => a.ModifierId, CurrentUser.Id)
-                                    .SetIf(CurrentUser.Id.HasValue, a => a.ModifyTime, DateTime.Now)
-                                    .Where(a => a.Id.Equals(pkValue))
-                                    .Where(a => a.IsDeleted == false);
-
-            foreach (var item in whereColumns)
-            {
-                delete.Where(item);
-            }
-
-            return await delete.ExecuteAffrowsAsync();
-        }
-
-        /// <summary>
-        /// 异步删除数据（批量）
-        /// </summary>
-        /// <param name="pkValues">实体类</param>
-        /// <returns></returns>
-        private async Task<int> DeleteAysnc(List<TKey> pkValues, params Expression<Func<T, bool>>[] whereColumns)
-        {
-            H_Check.Argument.NotEmpty(pkValues, nameof(pkValues));
-
-            var delete = DbContext.Update<T>()
-                                    .Set(a => a.IsDeleted, true)
-                                    .SetIf(CurrentUser.Id.HasValue, a => a.ModifierId, CurrentUser.Id)
-                                    .SetIf(CurrentUser.Id.HasValue, a => a.ModifyTime, DateTime.Now)
-                                    .Where(it => pkValues.Contains(it.Id))
-                                    .Where(a => a.IsDeleted == false);
-
-            foreach (var item in whereColumns)
-            {
-                delete.Where(item);
-            }
-
-            return await delete.ExecuteAffrowsAsync();
-        }
-
-        /// <summary>
-        /// 异步更新数据
+        /// 更新数据
         /// </summary>
         /// <param name="entity"></param>
+        /// <param name="whereColumns"></param>
         /// <returns></returns>
         public virtual async Task<int> UpdateAsync(T entity, params Expression<Func<T, bool>>[] whereColumns)
         {
@@ -330,10 +261,11 @@ namespace Hao.Core
         }
 
         /// <summary>
-        /// 异步更新数据（指定列）
+        /// 更新数据（指定列）
         /// </summary>
         /// <param name="entity"></param>
         /// <param name="updateColumns"></param>
+        /// <param name="whereColumns"></param>
         /// <returns></returns>
         public virtual async Task<int> UpdateAsync(T entity, Expression<Func<T, object>> updateColumns, params Expression<Func<T, bool>>[] whereColumns)
         {
@@ -371,9 +303,10 @@ namespace Hao.Core
         }
 
         /// <summary>
-        /// 异步更新数据（批量）
+        /// 更新数据（批量）
         /// </summary>
         /// <param name="entities"></param>
+        /// <param name="whereColumns"></param>
         /// <returns></returns>
         public virtual async Task<int> UpdateAsync(List<T> entities, params Expression<Func<T, bool>>[] whereColumns)
         {
@@ -402,10 +335,11 @@ namespace Hao.Core
         }
 
         /// <summary>
-        /// 异步更新数据（批量）（指定列）
+        /// 更新数据（批量）（指定列）
         /// </summary>
         /// <param name="entities"></param>
         /// <param name="updateColumns"></param>
+        /// <param name="whereColumns"></param>
         /// <returns></returns>
         public virtual async Task<int> UpdateAsync(List<T> entities, Expression<Func<T, object>> updateColumns, params Expression<Func<T, bool>>[] whereColumns)
         {
@@ -444,6 +378,81 @@ namespace Hao.Core
             }
 
             return await update.ExecuteAffrowsAsync();
+        }
+
+        /// <summary>
+        /// 删除数据（逻辑删除）
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="whereColumns"></param>
+        /// <returns></returns>
+        public virtual async Task<int> DeleteAysnc(T entity, params Expression<Func<T, bool>>[] whereColumns)
+        {
+            H_Check.Argument.NotNull(entity, nameof(entity));
+
+            return await DeleteAysnc(entity.Id, whereColumns);
+        }
+
+        /// <summary>
+        /// 删除数据（逻辑删除）（批量）
+        /// </summary>
+        /// <param name="entities"></param>
+        /// <param name="whereColumns"></param>
+        /// <returns></returns>
+        public virtual async Task<int> DeleteAysnc(List<T> entities, params Expression<Func<T, bool>>[] whereColumns)
+        {
+            H_Check.Argument.NotEmpty(entities, nameof(entities));
+
+            return await DeleteAysnc(entities.Select(a => a.Id).ToList(), whereColumns);
+        }
+
+        /// <summary>
+        /// 删除数据（逻辑删除）
+        /// </summary>
+        /// <param name="pkValue"></param>
+        /// <param name="whereColumns"></param>
+        /// <returns></returns>
+        private async Task<int> DeleteAysnc(TKey pkValue, params Expression<Func<T, bool>>[] whereColumns)
+        {
+
+            var delete = DbContext.Update<T>()
+                                    .Set(a => a.IsDeleted, true)
+                                    .SetIf(CurrentUser.Id.HasValue, a => a.ModifierId, CurrentUser.Id)
+                                    .SetIf(CurrentUser.Id.HasValue, a => a.ModifyTime, DateTime.Now)
+                                    .Where(a => a.Id.Equals(pkValue))
+                                    .Where(a => a.IsDeleted == false);
+
+            foreach (var item in whereColumns)
+            {
+                delete.Where(item);
+            }
+
+            return await delete.ExecuteAffrowsAsync();
+        }
+
+        /// <summary>
+        /// 删除数据（逻辑删除）（批量）
+        /// </summary>
+        /// <param name="pkValues"></param>
+        /// <param name="whereColumns"></param>
+        /// <returns></returns>
+        private async Task<int> DeleteAysnc(List<TKey> pkValues, params Expression<Func<T, bool>>[] whereColumns)
+        {
+            H_Check.Argument.NotEmpty(pkValues, nameof(pkValues));
+
+            var delete = DbContext.Update<T>()
+                                    .Set(a => a.IsDeleted, true)
+                                    .SetIf(CurrentUser.Id.HasValue, a => a.ModifierId, CurrentUser.Id)
+                                    .SetIf(CurrentUser.Id.HasValue, a => a.ModifyTime, DateTime.Now)
+                                    .Where(it => pkValues.Contains(it.Id))
+                                    .Where(a => a.IsDeleted == false);
+
+            foreach (var item in whereColumns)
+            {
+                delete.Where(item);
+            }
+
+            return await delete.ExecuteAffrowsAsync();
         }
     }
 }

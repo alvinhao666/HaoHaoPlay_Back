@@ -30,7 +30,7 @@ namespace Hao.Core
         }
 
         /// <summary>
-        /// 根据主键值集合查询多条数据
+        /// 根据主键集合查询多条数据
         /// </summary>s
         /// <param name="pkValues"></param>
         /// <returns></returns>
@@ -45,13 +45,13 @@ namespace Hao.Core
         /// 查询所有数据
         /// </summary>
         /// <returns></returns>
-        public virtual async Task<List<T>> GetAllAysnc()
+        public virtual async Task<List<T>> GetListAysnc()
         {
             return await DbContext.Select<T>().ToListAsync();
         }
 
         /// <summary>
-        /// 根据条件查询所有数据（未删除）
+        /// 根据条件查询所有数据
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
@@ -73,7 +73,7 @@ namespace Hao.Core
         }
 
         /// <summary>
-        /// 根据条件查询所有数据数量（未删除）
+        /// 根据条件查询所有数据数量
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
@@ -93,7 +93,7 @@ namespace Hao.Core
         }
 
         /// <summary>
-        /// 根据条件查询所有分页数据（未删除）
+        /// 根据条件查询分页数据
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
@@ -129,7 +129,7 @@ namespace Hao.Core
         }
 
         /// <summary>
-        /// 异步写入实体数据
+        /// 插入数据
         /// </summary>
         /// <param name="entity">实体类</param>
         /// <returns></returns>
@@ -155,7 +155,7 @@ namespace Hao.Core
         }
 
         /// <summary>
-        /// 异步写入实体数据（批量）
+        /// 插入数据（批量）
         /// </summary>
         /// <param name="entities">实体类</param>
         /// <returns></returns>
@@ -182,9 +182,10 @@ namespace Hao.Core
         }
 
         /// <summary>
-        /// 异步更新数据
+        /// 更新数据
         /// </summary>
         /// <param name="entity"></param>
+        /// <param name="whereColumns"></param>
         /// <returns></returns>
         public virtual async Task<int> UpdateAsync(T entity, params Expression<Func<T, bool>>[] whereColumns)
         {
@@ -202,10 +203,11 @@ namespace Hao.Core
         }
 
         /// <summary>
-        /// 异步更新数据（指定列）
+        /// 更新数据（指定列）
         /// </summary>
         /// <param name="entity"></param>
         /// <param name="updateColumns"></param>
+        /// <param name="whereColumns"></param>
         /// <returns></returns>
         public virtual async Task<int> UpdateAsync(T entity, Expression<Func<T, object>> updateColumns, params Expression<Func<T, bool>>[] whereColumns)
         {
@@ -233,9 +235,10 @@ namespace Hao.Core
         }
 
         /// <summary>
-        /// 异步更新数据（批量）
+        /// 更新数据（批量）
         /// </summary>
-        /// <param name="entities">实体类</param>
+        /// <param name="entities"></param>
+        /// <param name="whereColumns"></param>
         /// <returns></returns>
         public virtual async Task<int> UpdateAsync(List<T> entities, params Expression<Func<T, bool>>[] whereColumns)
         {
@@ -253,10 +256,11 @@ namespace Hao.Core
         }
 
         /// <summary>
-        /// 异步更新数据（批量）（指定列）
+        /// 更新数据（批量）（指定列）
         /// </summary>
         /// <param name="entities"></param>
         /// <param name="updateColumns"></param>
+        /// <param name="whereColumns"></param>
         /// <returns></returns>
         public virtual async Task<int> UpdateAsync(List<T> entities, Expression<Func<T, object>> updateColumns, params Expression<Func<T, bool>>[] whereColumns)
         {
@@ -284,9 +288,10 @@ namespace Hao.Core
         }
 
         /// <summary>
-        /// 异步删除数据
+        /// 删除数据
         /// </summary>
-        /// <param name="entity">实体类</param>
+        /// <param name="entity"></param>
+        /// <param name="whereColumns"></param>
         /// <returns></returns>
         public virtual async Task<int> DeleteAysnc(T entity, params Expression<Func<T, bool>>[] whereColumns)
         {
@@ -296,9 +301,10 @@ namespace Hao.Core
         }
 
         /// <summary>
-        /// 异步删除数据（批量）
+        /// 删除数据（批量）
         /// </summary>
-        /// <param name="entities">实体类</param>
+        /// <param name="entities"></param>
+        /// <param name="whereColumns"></param>
         /// <returns></returns>
         public virtual async Task<int> DeleteAysnc(List<T> entities, params Expression<Func<T, bool>>[] whereColumns)
         {
@@ -308,9 +314,10 @@ namespace Hao.Core
         }
 
         /// <summary>
-        /// 异步删除数据
+        /// 删除数据
         /// </summary>
         /// <param name="pkValue"></param>
+        /// <param name="whereColumns"></param>
         /// <returns></returns>
         private async Task<int> DeleteAysnc(TKey pkValue, params Expression<Func<T, bool>>[] whereColumns)
         {
@@ -325,9 +332,10 @@ namespace Hao.Core
         }
 
         /// <summary>
-        /// 异步删除数据
+        /// 删除数据
         /// </summary>
         /// <param name="pkValues"></param>
+        /// <param name="whereColumns"></param>
         /// <returns></returns>
         private async Task<int> DeleteAysnc(List<TKey> pkValues, params Expression<Func<T, bool>>[] whereColumns)
         {

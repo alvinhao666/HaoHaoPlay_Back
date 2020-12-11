@@ -21,7 +21,7 @@ namespace Hao.Core
         Task<T> GetAysnc(TKey pkValue);
 
         /// <summary>
-        /// 根据主键值查询多条数据
+        /// 根据主键集合查询多条数据
         /// </summary>
         /// <param name="pkValues"></param>
         /// <returns></returns>
@@ -31,7 +31,7 @@ namespace Hao.Core
         /// 根据条件查询所有数据
         /// </summary>
         /// <returns></returns>
-        Task<List<T>> GetAllAysnc();
+        Task<List<T>> GetListAysnc();
 
         /// <summary>
         /// 根据条件查询所有数据
@@ -46,80 +46,81 @@ namespace Hao.Core
         Task<int> GetCountAysnc(Query<T> query);
 
         /// <summary>
-        /// 根据条件查询所有分页数据
+        /// 根据条件查询分页数据
         /// </summary>
         /// <returns></returns>
         Task<PagedList<T>> GetPagedListAysnc(Query<T> query);
 
         /// <summary>
-        /// 异步写入实体数据
+        /// 插入数据
         /// </summary>
         /// <param name="entity">实体类</param>
         /// <returns></returns>
         Task<T> InsertAysnc(T entity);
 
         /// <summary>
-        /// 异步写入实体数据（批量）
+        /// 插入数据（批量）
         /// </summary>
         /// <param name="entities">实体类</param>
         /// <returns></returns>
         Task<int> InsertAysnc(List<T> entities);
 
         /// <summary>
-        /// 异步更新实体数据
+        /// 更新数据
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
         Task<int> UpdateAsync(T entity, params Expression<Func<T, bool>>[] whereColumns);
 
         /// <summary>
-        /// 异步更新实体数据（指定列）
+        /// 更新数据（指定列）
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
         Task<int> UpdateAsync(T entity, Expression<Func<T, object>> updateColumns, params Expression<Func<T, bool>>[] whereColumns);
 
         /// <summary>
-        /// 异步更新实体数据（批量）
+        /// 更新数据（批量）
         /// </summary>
         /// <param name="entities"></param>
         /// <returns></returns>
         Task<int> UpdateAsync(List<T> entities, params Expression<Func<T, bool>>[] whereColumns);
 
         /// <summary>
-        /// 异步更新实体数据（批量）（指定列）
+        /// 更新数据（批量）（指定列）
         /// </summary>
         /// <param name="entities"></param>
         /// <returns></returns>
         Task<int> UpdateAsync(List<T> entities, Expression<Func<T, object>> updateColumns, params Expression<Func<T, bool>>[] whereColumns);
 
         /// <summary>
-        /// 异步删除数据
+        /// 删除数据
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
         Task<int> DeleteAysnc(T entity, params Expression<Func<T, bool>>[] whereColumns);
 
         /// <summary>
-        /// 异步删除数据（批量）
+        /// 删除数据（批量）
         /// </summary>
         /// <param name="entities"></param>
         /// <returns></returns>
         Task<int> DeleteAysnc(List<T> entities, params Expression<Func<T, bool>>[] whereColumns);
 
+        ///// <summary>
+        ///// 删除数据
+        ///// </summary>
+        ///// <param name = "pkValue" ></ param >
+        ///// < param name="whereColumns"></param>
+        ///// <returns></returns>
+        ////Task<int> DeleteAysnc(TKey pkValue, params Expression<Func<T, bool>>[] whereColumns);
 
         ///// <summary>
-        ///// 异步删除数据
+        ///// 删除数据
         ///// </summary>
-        ///// <param name="pkValue"></param>
+        ///// <param name = "pkValues" ></ param >
+        ///// < param name="whereColumns"></param>
         ///// <returns></returns>
-        //Task<int> DeleteAysnc(TKey pkValue, params Expression<Func<T, bool>>[] whereColumns);
-
-        ///// <summary>
-        ///// 异步删除数据
-        ///// </summary>
-        ///// <param name="pkValues"></param>
-        ///// <returns></returns>
-        //Task<int> DeleteAysnc(List<TKey> pkValues, params Expression<Func<T, bool>>[] whereColumns);
+        ////Task<int> DeleteAysnc(List<TKey> pkValues, params Expression<Func<T, bool>>[] whereColumns);
     }
 }
