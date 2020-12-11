@@ -31,8 +31,6 @@ namespace Hao.AppService
 
         private readonly H_AppSettingsConfig _appsettings;
 
-        private const string _noAuthTip= "没有系统权限，暂时无法登录，请联系管理员";
-
         public LoginAppService(
             ISysUserRepository userRep,
             ISysModuleRepository moduleRep,
@@ -63,11 +61,11 @@ namespace Hao.AppService
             //根据账号密码查询用户
             var user = await GetUserByLoginName(request.LoginName, password);
 
-            if (string.IsNullOrWhiteSpace(user.AuthNumbers)) throw new H_Exception(_noAuthTip);
+            if (string.IsNullOrWhiteSpace(user.AuthNumbers)) throw new H_Exception("没有系统权限，暂时无法登录，请联系管理员");
 
             var authNums = H_JsonSerializer.Deserialize<List<long>>(user.AuthNumbers);
 
-            if (authNums.Count == 0) throw new H_Exception(_noAuthTip);
+            if (authNums.Count == 0) throw new H_Exception("没有系统权限，暂时无法登录，请联系管理员");
 
             //查询用户菜单
             var modules = await _moduleRep.GetListAysnc(new ModuleQuery { IncludeResource = false });
@@ -76,7 +74,7 @@ namespace Hao.AppService
             //找主菜单一级 parentId=0
             InitMenuTree(menus, 0, modules, authNums, user.Id); 
 
-            if (menus.Count == 0) throw new H_Exception(_noAuthTip);
+            if (menus.Count == 0) throw new H_Exception("没有系统权限，暂时无法登录，请联系管理员");
 
             //jwt的唯一身份标识，避免重复
             var jti = Guid.NewGuid();
