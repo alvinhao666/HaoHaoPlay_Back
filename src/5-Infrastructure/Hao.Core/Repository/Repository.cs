@@ -74,9 +74,9 @@ namespace Hao.Core
             }
 
             return await select.Where(a => a.IsDeleted == false)
-                            .OrderByDescending(flag, a => a.CreateTime)
-                            .OrderBy(!flag, query.OrderByFileds)
-                            .ToListAsync();
+                                .OrderByDescending(flag, a => a.CreateTime)
+                                .OrderBy(!flag, query.OrderByFileds)
+                                .ToListAsync();
         }
 
 
@@ -123,10 +123,10 @@ namespace Hao.Core
             }
 
             var items = await select.Where(a => a.IsDeleted == false)
-                                .OrderByDescending(flag, a => a.CreateTime)
-                                .OrderBy(!flag, query.OrderByFileds)
-                                .Count(out var total)
-                                .Page(query.PageIndex, query.PageSize).ToListAsync();
+                                    .OrderByDescending(flag, a => a.CreateTime)
+                                    .OrderBy(!flag, query.OrderByFileds)
+                                    .Count(out var total)
+                                    .Page(query.PageIndex, query.PageSize).ToListAsync();
 
             var pageList = new PagedList<T>()
             {
@@ -290,9 +290,9 @@ namespace Hao.Core
 
 
             var update = DbContext.Update<T>()
-                        .SetSource(entity)
-                        .UpdateColumns(columns.ToArray())
-                        .Where(a => a.IsDeleted == false);
+                                    .SetSource(entity)
+                                    .UpdateColumns(columns.ToArray())
+                                    .Where(a => a.IsDeleted == false);
 
             foreach (var item in whereColumns)
             {

@@ -114,8 +114,8 @@ namespace Hao.Core
             }
 
             var items = await select.OrderBy(!flag, query.OrderByFileds)
-                                .Count(out var total)
-                                .Page(query.PageIndex, query.PageSize).ToListAsync();
+                                    .Count(out var total)
+                                    .Page(query.PageIndex, query.PageSize).ToListAsync();
 
             var pageList = new PagedList<T>()
             {
