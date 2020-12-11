@@ -131,7 +131,7 @@ namespace Hao.Core
         /// <summary>
         /// 插入数据
         /// </summary>
-        /// <param name="entity">实体类</param>
+        /// <param name="entity"></param>
         /// <returns></returns>
         public virtual async Task<T> InsertAysnc(T entity)
         {
@@ -157,7 +157,7 @@ namespace Hao.Core
         /// <summary>
         /// 插入数据（批量）
         /// </summary>
-        /// <param name="entities">实体类</param>
+        /// <param name="entities"></param>
         /// <returns></returns>
         public virtual async Task<int> InsertAysnc(List<T> entities)
         {
