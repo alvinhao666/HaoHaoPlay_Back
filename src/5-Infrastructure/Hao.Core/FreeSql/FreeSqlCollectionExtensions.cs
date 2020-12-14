@@ -42,11 +42,11 @@ namespace Microsoft.Extensions.DependencyInjection
                 if (e.DbParms.Length > 0)
                 {
                     Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.Write("参数：");
+                    Console.WriteLine("参数：");
                     Console.ForegroundColor = ConsoleColor.DarkYellow;
                     foreach (var item in e.DbParms)
                     {
-                        Console.Write($"{item.ParameterName}     ");
+                        Console.Write($"{item.ParameterName}".PadRight(30,' '));
                         Console.WriteLine($"{item.Value}");
                     }
                 }
