@@ -36,13 +36,11 @@ namespace Microsoft.Extensions.DependencyInjection
             fsql.Aop.CurdBefore += (s, e) =>
             {                 
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.Write("SQL：");
                 Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine($"{e.Sql}");
                 if (e.DbParms.Length > 0)
                 {
                     Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine("参数：");
                     Console.ForegroundColor = ConsoleColor.DarkYellow;
                     foreach (var item in e.DbParms)
                     {
@@ -51,6 +49,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     }
                 }
                 Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine();
             };
 #endif
 

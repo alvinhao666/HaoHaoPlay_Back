@@ -26,6 +26,7 @@ namespace Hao.Core
                     Console.ForegroundColor = ConsoleColor.Blue;
 
                     Console.WriteLine($"开始事务：{freeSql.Ado.Identifier}");
+                    Console.WriteLine();
 #endif
                     freeSql.Transaction(null);
                     await next(context);
@@ -33,6 +34,7 @@ namespace Hao.Core
                     Console.ForegroundColor = ConsoleColor.Blue;
 
                     Console.WriteLine($"提交事务：{freeSql.Ado.Identifier}");
+                    Console.WriteLine();
 #endif
                     freeSql.Commit();
                 }
@@ -42,6 +44,7 @@ namespace Hao.Core
                     Console.ForegroundColor = ConsoleColor.Red;
 
                     Console.WriteLine($"回滚事务：{freeSql.Ado.Identifier}");
+                    Console.WriteLine();
 #endif
                     freeSql.Rollback();
                     throw ex;
