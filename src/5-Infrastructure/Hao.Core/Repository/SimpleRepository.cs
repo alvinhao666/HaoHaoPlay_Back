@@ -151,7 +151,7 @@ namespace Hao.Core
             }
 
             var obj = await DbContext.Insert(entity).ExecuteInsertedAsync();
-            return obj.FirstOrDefault();
+            return obj?.FirstOrDefault();
         }
 
         /// <summary>
