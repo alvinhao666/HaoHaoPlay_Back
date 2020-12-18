@@ -199,7 +199,7 @@ namespace Hao.Core
             entity.CreateTime = DateTime.Now;
 
             var obj = await DbContext.Insert(entity).ExecuteInsertedAsync();
-            return obj.First();
+            return obj.FirstOrDefault();
         }
 
         /// <summary>
