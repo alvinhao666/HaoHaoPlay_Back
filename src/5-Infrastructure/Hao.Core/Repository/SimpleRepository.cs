@@ -166,7 +166,6 @@ namespace Hao.Core
             var isGuid = typeof(TKey) == typeof(Guid);
             var type = typeof(T);
             var id = type.GetProperty(nameof(SimpleEntity<TKey>.Id));
-            var timeNow = DateTime.Now;
             entities.ForEach(item =>
             {
                 if (isGuid)
