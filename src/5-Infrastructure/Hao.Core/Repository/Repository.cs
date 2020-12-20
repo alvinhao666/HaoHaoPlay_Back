@@ -207,7 +207,7 @@ namespace Hao.Core
         /// </summary>
         /// <param name="entities"></param>
         /// <returns></returns>
-        public virtual async Task<int> InsertAysnc(List<T> entities)
+        public virtual async Task<List<T>> InsertAysnc(List<T> entities)
         {
             H_Check.Argument.NotEmpty(entities, nameof(entities));
 
@@ -229,7 +229,7 @@ namespace Hao.Core
                 item.CreatorId = CurrentUser.Id;
                 item.CreateTime = timeNow;
             });
-            return await DbContext.Insert(entities).ExecuteAffrowsAsync();
+            return await DbContext.Insert(entities).ExecuteInsertedAsync();
         }
 
         /// <summary>

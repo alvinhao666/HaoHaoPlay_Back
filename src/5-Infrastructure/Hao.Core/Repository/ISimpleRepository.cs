@@ -63,7 +63,7 @@ namespace Hao.Core
         /// </summary>
         /// <param name="entities">实体类</param>
         /// <returns></returns>
-        Task<int> InsertAysnc(List<T> entities);
+        Task<List<T>> InsertAysnc(List<T> entities);
 
         /// <summary>
         /// 更新数据
