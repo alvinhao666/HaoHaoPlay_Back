@@ -10,7 +10,7 @@ namespace Hao.Utility
         /// </summary>
         /// <param name="enum">枚举对象</param>
         /// <returns></returns>
-        public static string GetDescription(this Enum @enum)
+        public static string ToDescription(this Enum @enum)
         {
             if (@enum == null) return null;
             var fieldName = @enum.ToString();

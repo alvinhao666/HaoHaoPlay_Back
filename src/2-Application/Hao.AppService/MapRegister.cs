@@ -27,15 +27,15 @@ namespace Hao.AppService
         {
 
             config.ForType<SysUser, UserVM>()
-               .Map(x => x.GenderString, a => a.Gender.GetDescription())
+               .Map(x => x.GenderString, a => a.Gender.ToDescription())
                .Map(x => x.EnabledString, a => a.Enabled.IsTrue() ? "有效" : "注销");
 
             config.ForType<SysUser, UserDetailVM>()
-               .Map(x => x.GenderString, a => a.Gender.GetDescription())
+               .Map(x => x.GenderString, a => a.Gender.ToDescription())
                .Map(x => x.EnabledString, a => a.Enabled.IsTrue() ? "有效" : "注销");
 
             config.ForType<SysUser, UserSecurityVM>()
-               .Map(x => x.PasswordLevel, a => a.PasswordLevel.GetDescription())
+               .Map(x => x.PasswordLevel, a => a.PasswordLevel.ToDescription())
                .Map(x => x.Phone, a => H_Util.HidePhoneNumber(a.Phone))
                .Map(x => x.Email, a => H_Util.HideEmailNumber(a.Email));
 

@@ -220,7 +220,7 @@ namespace Hao.AppService
 
             var exportData = users.Select(a => new Dictionary<string, string>{
                 {"姓名",a.Name},
-                {"性别", a.Gender.GetDescription() },
+                {"性别", a.Gender.ToDescription() },
                 {"年龄",a.Age.ToString()},
                 {"手机号",a.Phone},
                 {"邮箱",a.Email},
