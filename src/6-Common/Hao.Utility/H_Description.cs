@@ -48,10 +48,11 @@ namespace Hao.Utility
         /// <typeparam name="TEnum"></typeparam>
         /// <param name="description"></param>
         /// <returns></returns>
-        public static TEnum ToEnum<TEnum>(string description)
+        public static TEnum? ToEnum<TEnum>(string description) where TEnum: struct, Enum
         {
             var descriptions = Get(typeof(TEnum));
-            var type = descriptions.Single(a => a.Description == description);
+            var type = descriptions.SingleOrDefault(a => a.Description == description);
+            if (type == null) return null;
             return (TEnum)type.Value;
         }
     }
