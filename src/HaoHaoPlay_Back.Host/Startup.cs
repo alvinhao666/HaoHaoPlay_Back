@@ -28,13 +28,13 @@ namespace HaoHaoPlay_Back.Host
             services.AddSingleton<ITencentCosProvider>(o => new TencentCosProvider(cosConfig));
         }
 
-        /// <summary>
-        /// 用于配置中间件，以构建请求处理流水线
-        /// </summary>
-        /// <param name="app"></param>
-        public override void Configure(IApplicationBuilder app)
-        {
-            base.Configure(app);
-        }
+        ///// <summary>
+        ///// 用于配置中间件，以构建请求处理流水线
+        ///// </summary>
+        ///// <param name="app"></param>
+        //public override void Configure(IApplicationBuilder app)
+        //{
+        //    base.Configure(app);
+        //}
     }
 }
