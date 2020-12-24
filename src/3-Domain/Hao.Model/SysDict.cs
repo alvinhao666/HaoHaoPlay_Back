@@ -5,7 +5,7 @@ namespace Hao.Model
     /// <summary>
     /// 数据字典
     /// </summary>
-    public class SysDict : FullAuditedEntity<long>
+    public class SysDict : Entity<long>
     {
         /// <summary>
         /// 字典编号

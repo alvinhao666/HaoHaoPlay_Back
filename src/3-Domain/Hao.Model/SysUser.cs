@@ -7,7 +7,7 @@ namespace Hao.Model
     /// <summary>
     /// 系统用户 
     /// </summary>
-    public class SysUser : FullAuditedEntity<long>
+    public class SysUser : Entity<long>
     {
         /// <summary>
         /// 登录名

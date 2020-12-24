@@ -2,7 +2,7 @@ using Hao.Core;
 
 namespace Hao.Model
 {
-    public class SysRole : FullAuditedEntity<long>
+    public class SysRole : Entity<long>
     {
         /// <summary>
         /// 角色名称

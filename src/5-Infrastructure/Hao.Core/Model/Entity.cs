@@ -3,7 +3,7 @@ using System;
 
 namespace Hao.Core
 {
-    public abstract class FullAuditedEntity<TKey> : IEntity<TKey>, IsCreateAudited, IsModifyAudited, IsSoftDelete where TKey : struct
+    public abstract class Entity<TKey> : IEntity<TKey>, IsCreateAudited, IsModifyAudited, IsSoftDelete where TKey : struct
     {
 
         [Column(IsPrimary = true)]

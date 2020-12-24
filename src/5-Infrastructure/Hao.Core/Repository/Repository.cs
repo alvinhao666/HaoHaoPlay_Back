@@ -10,7 +10,7 @@ using AspectCore.DependencyInjection;
 namespace Hao.Core
 {
     public abstract class Repository<T, TKey> : IRepository<T, TKey>
-        where T : FullAuditedEntity<TKey>, new() where TKey : struct
+        where T : Entity<TKey>, new() where TKey : struct
     {
         [FromServiceContext]
         public IFreeSqlContext DbContext { get; set; }
@@ -184,7 +184,7 @@ namespace Hao.Core
 
             var type = typeof(T);
             var isGuid = typeof(TKey) == H_Util.GuidType;
-            var id = type.GetProperty(nameof(FullAuditedEntity<TKey>.Id));
+            var id = type.GetProperty(nameof(Entity<TKey>.Id));
 
             if (isGuid)
             {
@@ -213,7 +213,7 @@ namespace Hao.Core
 
             var isGuid = typeof(TKey) == H_Util.GuidType;
             var type = typeof(T);
-            var id = type.GetProperty(nameof(FullAuditedEntity<TKey>.Id));
+            var id = type.GetProperty(nameof(Entity<TKey>.Id));
             var timeNow = DateTime.Now;
             entities.ForEach(item =>
             {
@@ -362,8 +362,8 @@ namespace Hao.Core
                     item.ModifierId = CurrentUser.Id;
                     item.ModifyTime = timeNow;
                 });
-                columns.Add(nameof(FullAuditedEntity<TKey>.ModifierId));
-                columns.Add(nameof(FullAuditedEntity<TKey>.ModifyTime));
+                columns.Add(nameof(Entity<TKey>.ModifierId));
+                columns.Add(nameof(Entity<TKey>.ModifyTime));
             }
 
 
