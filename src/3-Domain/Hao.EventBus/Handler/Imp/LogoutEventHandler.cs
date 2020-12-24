@@ -40,7 +40,7 @@ namespace Hao.EventBus
                     var value = await RedisHelper.GetAsync(key);
                     if (value.IsNullOrWhiteSpace()) continue;
 
-                    var cacheUser = H_JsonSerializer.Deserialize<H_RedisCacheUser>(value);
+                    var cacheUser = H_JsonSerializer.Deserialize<H_CacheUser>(value);
                     cacheUser.IsAuthUpdate = true;
                     cacheUser.LoginStatus = LoginStatus.Offline;
                     await RedisHelper.SetAsync(key, H_JsonSerializer.Serialize(cacheUser));

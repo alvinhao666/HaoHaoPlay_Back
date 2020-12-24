@@ -107,7 +107,7 @@ namespace Hao.Core.Extensions
         /// <param name="userId"></param>
         /// <param name="jti"></param>
         /// <returns></returns>
-        private H_RedisCacheUser GetCacheUser(string userId, string jti)
+        private H_CacheUser GetCacheUser(string userId, string jti)
         {
             var config = HttpContext.RequestServices.GetService(typeof(IConfiguration)) as IConfiguration;
 
@@ -117,7 +117,7 @@ namespace Hao.Core.Extensions
 
             if (string.IsNullOrWhiteSpace(value)) throw new H_Exception(H_Error.E100002, nameof(H_Error.E100002).GetErrorCode());
 
-            var cacheUser = H_JsonSerializer.Deserialize<H_RedisCacheUser>(value);
+            var cacheUser = H_JsonSerializer.Deserialize<H_CacheUser>(value);
 
             if (cacheUser?.Id == null) throw new H_Exception(H_Error.E100002, nameof(H_Error.E100002).GetErrorCode());
 

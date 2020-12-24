@@ -81,7 +81,7 @@ namespace Hao.AppService
             var jwt = CreateJwt(timeNow, expireTime, jti, user);
 
             //存入redis
-            var userValue = new H_RedisCacheUser
+            var userValue = new H_CacheUser
             {
                 Id = user.Id,
                 Name = user.Name,

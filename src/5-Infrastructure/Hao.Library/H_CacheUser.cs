@@ -3,9 +3,9 @@
 namespace Hao.Library
 {
     /// <summary>
-    /// 用户认证实体
+    /// 缓存至redis的用户模型
     /// </summary>
-    public class H_RedisCacheUser
+    public class H_CacheUser
     {
         /// <summary>
         /// 主键id
