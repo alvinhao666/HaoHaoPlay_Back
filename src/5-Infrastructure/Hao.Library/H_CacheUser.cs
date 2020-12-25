@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Hao.Library
 {
@@ -46,6 +47,11 @@ namespace Hao.Library
         /// ip地址
         /// </summary>
         public string Ip { get; set; }
+
+        /// <summary>
+        /// 登录时间
+        /// </summary>
+        public DateTime? LoginTime { get; set; }
     }
 
     /// <summary>
