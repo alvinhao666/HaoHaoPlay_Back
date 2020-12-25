@@ -195,8 +195,12 @@ namespace Hao.Core
                 id.SetValue(entity, IdWorker.NextId());
             }
 
-            entity.CreatorId = CurrentUser.Id;
-            entity.CreateTime = DateTime.Now;
+            if (CurrentUser.Id.HasValue)
+            {
+                entity.CreatorId = CurrentUser.Id;
+                entity.CreateTime = DateTime.Now;
+            }
+
 
             var obj = await DbContext.Insert(entity).ExecuteInsertedAsync();
             return obj?.FirstOrDefault();
@@ -226,8 +230,11 @@ namespace Hao.Core
                     id.SetValue(item, IdWorker.NextId());
                 }
 
-                item.CreatorId = CurrentUser.Id;
-                item.CreateTime = timeNow;
+                if (CurrentUser.Id.HasValue)
+                {
+                    item.CreatorId = CurrentUser.Id;
+                    item.CreateTime = DateTime.Now;
+                }
             });
             return await DbContext.Insert(entities).ExecuteInsertedAsync();
         }
