@@ -12,16 +12,16 @@ namespace Hao.Repository
         /// 获取每一层的数量，包括已删除的，最多31个 0~30
         /// </summary>
         /// <returns></returns>
-        public async Task<ModuleLayerCountDto> GetLayerCount()
+        public async Task<ModuleLayerCountDTO> GetLayerCount()
         {
             //var result = await Db.SqlQueryable<ModuleLayerCountDto>("select layer,count(*) from sysmodule group by layer order by layer desc limit 1").FirstAsync();
             //return result;
 
             //SELECT  "layer" AS "layer" , COUNT("layer") AS "count"  FROM "sysmodule"   GROUP BY "layer"  ORDER BY "layer" DESC LIMIT 1 offset 0;
-            var list = await DbContext.Select<ModuleLayerCountDto>().AsTable((_, oldname) => $"sysmodule")
+            var list = await DbContext.Select<ModuleLayerCountDTO>().AsTable((_, oldname) => $"sysmodule")
                 .GroupBy(a => new { a.Layer })
                 .OrderByDescending(a => a.Key.Layer)
-                .ToListAsync(a => new ModuleLayerCountDto { Layer = a.Key.Layer, Count = a.Count() });
+                .ToListAsync(a => new ModuleLayerCountDTO { Layer = a.Key.Layer, Count = a.Count() });
 
             return list.FirstOrDefault();
         }

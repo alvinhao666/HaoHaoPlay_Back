@@ -10,7 +10,7 @@ namespace Hao.Model
         /// 获取每一层的数量，包括已删除的，最多31个 0~30
         /// </summary>
         /// <returns></returns>
-        Task<ModuleLayerCountDto> GetLayerCount();
+        Task<ModuleLayerCountDTO> GetLayerCount();
 
 
         /// <summary>
