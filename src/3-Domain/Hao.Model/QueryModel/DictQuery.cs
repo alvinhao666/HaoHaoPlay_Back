@@ -2,10 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using Hao.Core;
-using Hao.Model;
 using Hao.Utility;
 
-namespace Hao.AppService
+namespace Hao.Model
 {
     /// <summary>
     /// 字典查询

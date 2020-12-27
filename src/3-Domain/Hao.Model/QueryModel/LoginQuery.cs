@@ -1,11 +1,10 @@
 ﻿using Hao.Core;
-using Hao.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using Hao.Utility;
 
-namespace Hao.AppService
+namespace Hao.Model
 {
     /// <summary>
     /// 登录查询

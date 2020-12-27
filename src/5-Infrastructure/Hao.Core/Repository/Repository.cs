@@ -10,7 +10,7 @@ using AspectCore.DependencyInjection;
 namespace Hao.Core
 {
     public abstract class Repository<T, TKey> : IRepository<T, TKey>
-        where T : FullAuditedEntity<TKey>, new() where TKey : struct
+        where T : Entity<TKey>, new() where TKey : struct
     {
         [FromServiceContext]
         public IFreeSqlContext DbContext { get; set; }
@@ -184,7 +184,7 @@ namespace Hao.Core
 
             var type = typeof(T);
             var isGuid = typeof(TKey) == H_Util.GuidType;
-            var id = type.GetProperty(nameof(FullAuditedEntity<TKey>.Id));
+            var id = type.GetProperty(nameof(Entity<TKey>.Id));
 
             if (isGuid)
             {
@@ -195,8 +195,12 @@ namespace Hao.Core
                 id.SetValue(entity, IdWorker.NextId());
             }
 
-            entity.CreatorId = CurrentUser.Id;
-            entity.CreateTime = DateTime.Now;
+            if (CurrentUser.Id.HasValue)
+            {
+                entity.CreatorId = CurrentUser.Id;
+                entity.CreateTime = DateTime.Now;
+            }
+
 
             var obj = await DbContext.Insert(entity).ExecuteInsertedAsync();
             return obj?.FirstOrDefault();
@@ -213,7 +217,7 @@ namespace Hao.Core
 
             var isGuid = typeof(TKey) == H_Util.GuidType;
             var type = typeof(T);
-            var id = type.GetProperty(nameof(FullAuditedEntity<TKey>.Id));
+            var id = type.GetProperty(nameof(Entity<TKey>.Id));
             var timeNow = DateTime.Now;
             entities.ForEach(item =>
             {
@@ -226,8 +230,11 @@ namespace Hao.Core
                     id.SetValue(item, IdWorker.NextId());
                 }
 
-                item.CreatorId = CurrentUser.Id;
-                item.CreateTime = timeNow;
+                if (CurrentUser.Id.HasValue)
+                {
+                    item.CreatorId = CurrentUser.Id;
+                    item.CreateTime = DateTime.Now;
+                }
             });
             return await DbContext.Insert(entities).ExecuteInsertedAsync();
         }
@@ -362,8 +369,8 @@ namespace Hao.Core
                     item.ModifierId = CurrentUser.Id;
                     item.ModifyTime = timeNow;
                 });
-                columns.Add(nameof(FullAuditedEntity<TKey>.ModifierId));
-                columns.Add(nameof(FullAuditedEntity<TKey>.ModifyTime));
+                columns.Add(nameof(Entity<TKey>.ModifierId));
+                columns.Add(nameof(Entity<TKey>.ModifyTime));
             }
 
 

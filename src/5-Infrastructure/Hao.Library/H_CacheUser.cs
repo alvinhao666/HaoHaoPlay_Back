@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Hao.Library
 {
     /// <summary>
-    /// 用户认证实体
+    /// 缓存至redis的用户模型
     /// </summary>
-    public class H_RedisCacheUser
+    public class H_CacheUser
     {
         /// <summary>
         /// 主键id
@@ -46,6 +47,11 @@ namespace Hao.Library
         /// ip地址
         /// </summary>
         public string Ip { get; set; }
+
+        /// <summary>
+        /// 登录时间
+        /// </summary>
+        public DateTime? LoginTime { get; set; }
     }
 
     /// <summary>

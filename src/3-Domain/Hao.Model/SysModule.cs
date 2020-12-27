@@ -6,7 +6,7 @@ namespace Hao.Model
     /// <summary>
     /// 系统模块
     /// </summary>
-    public class SysModule : FullAuditedEntity<long>
+    public class SysModule : Entity<long>
     {
         /// <summary>
         /// 模块名称

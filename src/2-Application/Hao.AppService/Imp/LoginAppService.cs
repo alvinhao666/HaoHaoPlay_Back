@@ -81,7 +81,7 @@ namespace Hao.AppService
             var jwt = CreateJwt(timeNow, expireTime, jti, user);
 
             //存入redis
-            var userValue = new H_RedisCacheUser
+            var userValue = new H_CacheUser
             {
                 Id = user.Id,
                 Name = user.Name,
@@ -89,7 +89,8 @@ namespace Hao.AppService
                 AuthNumbers = authNums,
                 Jwt = jwt,
                 LoginStatus = LoginStatus.Online,
-                Ip = request.Ip
+                Ip = request.Ip,
+                LoginTime = timeNow
             };
 
             int expireSeconds = (int)expireTime.Subtract(timeNow).Duration().TotalSeconds + 1;

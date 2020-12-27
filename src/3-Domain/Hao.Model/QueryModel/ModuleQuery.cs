@@ -1,12 +1,11 @@
 ﻿using Hao.Core;
 using Hao.Enum;
-using Hao.Model;
 using Hao.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace Hao.AppService
+namespace Hao.Model
 {
     /// <summary>
     /// 模块查询
