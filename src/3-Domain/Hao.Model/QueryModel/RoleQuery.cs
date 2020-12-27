@@ -1,10 +1,9 @@
 ﻿using Hao.Core;
-using Hao.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace Hao.AppService
+namespace Hao.Model
 {
     /// <summary>
     /// 角色查询
