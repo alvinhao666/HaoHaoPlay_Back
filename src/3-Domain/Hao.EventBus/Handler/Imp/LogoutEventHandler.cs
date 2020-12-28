@@ -43,7 +43,7 @@ namespace Hao.EventBus
                     var cacheUser = H_JsonSerializer.Deserialize<H_CacheUser>(value);
                     cacheUser.IsAuthUpdate = true;
                     cacheUser.LoginStatus = LoginStatus.Offline;
-                    await RedisHelper.SetAsync(key, H_JsonSerializer.Serialize(cacheUser));
+                    await RedisHelper.SetAsync(key, H_JsonSerializer.Serialize(cacheUser), false); //false 失效 ttl: -1
                 }
 
             }
