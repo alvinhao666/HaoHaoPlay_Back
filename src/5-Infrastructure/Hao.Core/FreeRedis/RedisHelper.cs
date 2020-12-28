@@ -198,7 +198,7 @@ namespace Hao.Core
             _redisClient.Set<T>(key, value, timeoutSeconds);
         }
 
-        public static void Set<T>(String key, T value, Boolean keepTtl)
+        public static void Set<T>(String key, T value, Boolean keepTtl = false) //keepTtl:true   redis 6.0.0以上才有效果
         {
             _redisClient.Set<T>(key, value, keepTtl);
         }
