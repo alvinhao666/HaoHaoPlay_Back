@@ -99,7 +99,9 @@ namespace Hao.Core.Extensions
         {
             if (RedisHelper.Exists(key)) return false;
 
-            return RedisHelper.Set(key, 1, Interval);
+            RedisHelper.Set(key, 1, Interval);
+
+            return true;
         }
 
         /// <summary>

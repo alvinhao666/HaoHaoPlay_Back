@@ -1,12 +1,9 @@
-﻿using CSRedis;
-using DotNetCore.CAP;
+﻿using DotNetCore.CAP;
 using FluentValidation.AspNetCore;
 using Hao.Library;
 using Hao.Snowflake;
 using Hao.Utility;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Caching.Redis;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
@@ -21,6 +18,7 @@ using AspectCore.Extensions.DependencyInjection;
 using Mapster;
 using MapsterMapper;
 using FreeSql;
+using FreeRedis;
 
 namespace Hao.Core.Extensions
 {
@@ -74,14 +72,9 @@ namespace Hao.Core.Extensions
 
             #region Redis
 
-            var csRedis = new CSRedisClient(appSettings.ConnectionString.Redis);
+            var redisClient = new RedisClient(appSettings.ConnectionString.Redis);
 
-            //初始化 RedisHelper
-            RedisHelper.Initialization(csRedis);
-
-            //利用IDistributedCache接口
-            services.AddSingleton<IDistributedCache>(new CSRedisCache(RedisHelper.Instance)); //nuget caching.csredis
-
+            RedisHelper.AddClient(redisClient);
             #endregion
 
 
