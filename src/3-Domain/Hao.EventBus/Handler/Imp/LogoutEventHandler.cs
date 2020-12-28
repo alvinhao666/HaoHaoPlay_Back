@@ -43,7 +43,14 @@ namespace Hao.EventBus
                     var cacheUser = H_JsonSerializer.Deserialize<H_CacheUser>(value);
                     cacheUser.IsAuthUpdate = true;
                     cacheUser.LoginStatus = LoginStatus.Offline;
-                    await RedisHelper.SetAsync(key, H_JsonSerializer.Serialize(cacheUser), false); //false 失效 ttl: -1  true:继续保持原先的time
+
+                    //不设置expire ttl 返回-1, 表示永久存在
+                    //设置了expire ttl 会返回剩余时间
+                    //如果没有该键(改键从未设定过 ; 到了过期时间,被删除掉了) 直接返回 -2
+
+                    var expireTime = await RedisHelper.TtlAsync(key);
+
+                    await RedisHelper.SetAsync(key, H_JsonSerializer.Serialize(cacheUser), (int)expireTime); //false 失效 ttl: -1  true:继续保持原先的time，redis6.0.0才有效
                 }
 
             }
