@@ -61,11 +61,11 @@ namespace Hao.AppService
             //根据账号密码查询用户
             var user = await GetUserByLoginName(request.LoginName, password);
 
-            if (string.IsNullOrWhiteSpace(user.AuthNumbers)) throw new H_Exception("没有系统权限，暂时无法登录，请联系管理员");
+            H_AssertEx.That(string.IsNullOrWhiteSpace(user.AuthNumbers), "没有系统权限，暂时无法登录，请联系管理员");
 
             var authNums = H_JsonSerializer.Deserialize<List<long>>(user.AuthNumbers);
 
-            if (authNums.Count == 0) throw new H_Exception("没有系统权限，暂时无法登录，请联系管理员");
+            H_AssertEx.That(authNums.Count == 0, "没有系统权限，暂时无法登录，请联系管理员");
 
             //查询用户菜单
             var modules = await _moduleRep.GetListAysnc(new ModuleQuery { IncludeResource = false });
@@ -74,7 +74,7 @@ namespace Hao.AppService
             //找主菜单一级 parentId=0
             InitMenuTree(menus, 0, modules, authNums, user.Id); 
 
-            if (menus.Count == 0) throw new H_Exception("没有系统权限，暂时无法登录，请联系管理员");
+            H_AssertEx.That(menus.Count == 0, "没有系统权限，暂时无法登录，请联系管理员");
 
             //jwt的唯一身份标识，避免重复
             var jti = Guid.NewGuid();
@@ -121,10 +121,14 @@ namespace Hao.AppService
         {
             var users = await _userRep.GetUserByLoginName(loginName, password);
 
-            if (users.Count == 0) throw new H_Exception("账号或密码错误");
-            if (users.Count > 1) throw new H_Exception("用户数据异常，存在相同用户");
+            H_AssertEx.That(users.Count == 0, "账号或密码错误");
+
+            H_AssertEx.That(users.Count > 1, "用户数据异常，存在相同用户");
+
             var user = users.First();
-            if (!user.Enabled.IsTrue()) throw new H_Exception("用户已注销");
+
+            H_AssertEx.That(!user.Enabled.Value, "用户已注销");
+
             return user;
         }
 

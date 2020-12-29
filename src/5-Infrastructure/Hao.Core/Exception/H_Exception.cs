@@ -22,4 +22,16 @@ namespace Hao.Core
 
         public H_Exception(string message, Exception innerException) : base(message, innerException) { }
     }
+
+
+    public static class H_AssertEx
+    {
+        public static void That(bool condition, string msg) 
+        {
+            if (condition)
+            {
+               throw new H_Exception(msg);
+            }
+        }
+    }
 }
