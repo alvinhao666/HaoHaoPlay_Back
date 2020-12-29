@@ -2,7 +2,7 @@
 
 namespace Hao.Core
 {
-    public class PagedList<T>
+    public class PagedResult<T>
     {
         /// <summary>
         /// 列表项

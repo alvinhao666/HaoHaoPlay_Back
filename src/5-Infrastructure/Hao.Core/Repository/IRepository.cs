@@ -49,7 +49,7 @@ namespace Hao.Core
         /// 根据条件查询分页数据（未删除）
         /// </summary>
         /// <returns></returns>
-        Task<PagedList<T>> GetPagedListAysnc(Query<T> query);
+        Task<PagedResult<T>> GetPagedListAysnc(Query<T> query);
 
 
         /// <summary>
