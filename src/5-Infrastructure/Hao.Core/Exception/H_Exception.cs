@@ -24,42 +24,23 @@ namespace Hao.Core
     }
 
 
-    public static class H_Assert
+    public static class H_AssertEx
     {
-        public static void IsTrue<T>(bool condition, string msg) where T : Exception, new()
+        public static void That(bool condition, string msg) 
         {
             if (condition)
             {
-                var ex = Activator.CreateInstance(typeof(T), new object[] { msg }) as T;
-                throw ex;
+               throw new H_Exception(msg);
             }
         }
 
-        public static void IsTrue<T>(bool condition, string msg, int code) where T : Exception, new()
+        public static void That(bool condition, string msg, int code)
         {
             if (condition)
             {
-                var ex = Activator.CreateInstance(typeof(T), new object[] { msg, code }) as T;
-                throw ex;
+                throw new H_Exception(msg, code);
             }
         }
 
-        public static void IsFalse<T>(bool condition, string msg) where T : Exception, new()
-        {
-            if (!condition)
-            {
-                var ex = Activator.CreateInstance(typeof(T), new object[] { msg }) as T;
-                throw ex;
-            }
-        }
-
-        public static void IsFalse<T>(bool condition, string msg, int code) where T : Exception, new()
-        {
-            if (!condition)
-            {
-                var ex = Activator.CreateInstance(typeof(T), new object[] { msg, code }) as T;
-                throw ex;
-            }
-        }
     }
 }
