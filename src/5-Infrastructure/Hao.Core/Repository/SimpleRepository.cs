@@ -123,7 +123,7 @@ namespace Hao.Core
                 TotalCount = (int)total,
                 PageIndex = query.PageIndex,
                 PageSize = query.PageSize,
-                TotalPagesCount = ((int)total + query.PageSize - 1) / query.PageSize
+                TotalPageCount = ((int)total + query.PageSize - 1) / query.PageSize
             };
             return pageList;
         }
