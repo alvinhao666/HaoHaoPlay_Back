@@ -33,14 +33,5 @@ namespace Hao.Core
                throw new H_Exception(msg);
             }
         }
-
-        public static void That(bool condition, string msg, int code)
-        {
-            if (condition)
-            {
-                throw new H_Exception(msg, code);
-            }
-        }
-
     }
 }
