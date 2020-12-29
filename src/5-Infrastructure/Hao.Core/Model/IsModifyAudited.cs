@@ -5,7 +5,7 @@ namespace Hao.Core
     public interface IsModifyAudited
     {
         /// <summary>
-        /// 最后一次修改人
+        /// 最后一次修改人id
         /// </summary>
         long? ModifierId { get; set; }
 
