@@ -9,6 +9,7 @@ namespace Hao.AppService
         // /// </summary>
         // public long? Id { get; set; }
 
+        public string Id { get; set; } = null;
         /// <summary>
         /// 姓名
         /// </summary>

@@ -48,7 +48,5 @@ namespace FluentValidation
                 .NotEmpty().WithMessage($"{enumName}不能为空")
                 .IsInEnum().WithMessage($"{enumName}值有误");
         }
-
-
     }
 }
