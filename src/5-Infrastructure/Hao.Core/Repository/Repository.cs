@@ -12,14 +12,11 @@ namespace Hao.Core
     public abstract class Repository<T, TKey> : IRepository<T, TKey>
         where T : Entity<TKey>, new() where TKey : struct
     {
-        [FromServiceContext]
-        public IFreeSqlContext DbContext { get; set; }
+        [FromServiceContext] protected IFreeSqlContext DbContext { get; set; }
 
-        [FromServiceContext]
-        public ICurrentUser CurrentUser { get; set; }
+        [FromServiceContext] protected ICurrentUser CurrentUser { get; set; }
 
-        [FromServiceContext]
-        public IdWorker IdWorker { get; set; }
+        [FromServiceContext] protected IdWorker IdWorker { get; set; }
 
         /// <summary>
         /// 根据主键查询单条数据
@@ -233,7 +230,7 @@ namespace Hao.Core
                 if (CurrentUser.Id.HasValue)
                 {
                     item.CreatorId = CurrentUser.Id;
-                    item.CreateTime = DateTime.Now;
+                    item.CreateTime = timeNow;
                 }
             });
             return await DbContext.Insert(entities).ExecuteInsertedAsync();
