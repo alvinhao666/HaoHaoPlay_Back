@@ -33,7 +33,7 @@ namespace FluentValidation
             string fieldName, int minLength, int maxLength)
         {
             return ruleBuilder
-                .NotEmpty().WithMessage($"{fieldName}不能为空").Length(minLength, maxLength)
+                .Length(minLength, maxLength)  //null和空字符串满足 minlength=0  先执行jsonconvert 去除模型空字符串 再执行验证
                 .WithMessage($"{fieldName}的长度必须在{minLength}~{maxLength}个字符");
         }
 
