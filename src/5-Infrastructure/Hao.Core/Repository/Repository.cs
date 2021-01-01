@@ -451,7 +451,7 @@ namespace Hao.Core
                                     .Set(a => a.IsDeleted, true)
                                     .SetIf(CurrentUser.Id.HasValue, a => a.ModifierId, CurrentUser.Id)
                                     .SetIf(CurrentUser.Id.HasValue, a => a.ModifyTime, DateTime.Now)
-                                    .Where(it => pkValues.Contains(it.Id))
+                                    .Where(a => pkValues.Contains(a.Id))
                                     .Where(a => a.IsDeleted == false);
 
             foreach (var item in whereColumns)
