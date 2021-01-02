@@ -12,9 +12,9 @@ namespace Hao.Core
     public abstract class Repository<T, TKey> : IRepository<T, TKey>
         where T : Entity<TKey>, new() where TKey : struct
     {
-        [FromServiceContext] protected ICurrentUser CurrentUser { get; set; }
-
         [FromServiceContext] protected IdWorker IdWorker { get; set; }
+        
+        [FromServiceContext] protected ICurrentUser CurrentUser { get; set; }
         
         private IFreeSqlContext _dbContext;
         
@@ -26,10 +26,11 @@ namespace Hao.Core
             set
             {
                 // 根据当前用户信息  不同租户 可以设置不同的查询条件 全局过滤器  例如以下 
-                // value.GlobalFilter.ApplyOnly<ICompanyInfo>(nameof(ICompanyInfo),x => x.CompanyId == CurrentUser.CompanyId); // 相同名称的过滤器 最后的会覆盖前面的
+                // value.GlobalFilter.ApplyOnly<ICompanyInfo>(nameof(ICompanyInfo),CurrentUser?.CompanyId!=null,x => x.CompanyId == CurrentUser.CompanyId); // 相同名称的过滤器 最后的会覆盖前面的
                 _dbContext = value;
             }
         }
+
 
         /// <summary>
         /// 根据主键查询单条数据
