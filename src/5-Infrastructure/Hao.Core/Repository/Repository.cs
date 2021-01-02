@@ -47,7 +47,7 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<List<T>> GetListAysnc()
         {
-            return await DbContext.Select<T>().Where(a => a.IsDeleted == false).ToListAsync();
+            return await DbContext.Select<T>().ToListAsync();
         }
 
         /// <summary>
@@ -70,8 +70,8 @@ namespace Hao.Core
                 }
             }
 
-            return await select.Where(a => a.IsDeleted == false)
-                                .OrderByDescending(flag, a => a.CreateTime)
+            
+            return await select.OrderByDescending(flag, a => a.CreateTime)
                                 .OrderBy(!flag, query.OrderByFileds)
                                 .ToListAsync();
         }
@@ -96,7 +96,7 @@ namespace Hao.Core
                 }
             }
 
-            return (int)await select.Where(a => a.IsDeleted == false).CountAsync();
+            return (int)await select.CountAsync();
         }
 
         /// <summary>
@@ -118,9 +118,8 @@ namespace Hao.Core
                     select.Where(item);
                 }
             }
-
-            var items = await select.Where(a => a.IsDeleted == false)
-                                    .OrderByDescending(flag, a => a.CreateTime)
+            
+            var items = await select.OrderByDescending(flag, a => a.CreateTime)
                                     .OrderBy(!flag, query.OrderByFileds)
                                     .Count(out var total)
                                     .Page(query.PageIndex, query.PageSize).ToListAsync();
@@ -136,14 +135,13 @@ namespace Hao.Core
             return pageList;
         }
 
-
         /// <summary>
         /// 查询所有数据
         /// </summary>
         /// <returns></returns>
         public virtual async Task<List<T>> GetAllAysnc()
         {
-            return await DbContext.Select<T>().OrderByDescending(a => a.CreateTime).ToListAsync();
+            return await DbContext.Select<T>().DisableGlobalFilter(nameof(IsSoftDelete)).OrderByDescending(a => a.CreateTime).ToListAsync();
         }
 
         /// <summary>
@@ -165,7 +163,7 @@ namespace Hao.Core
                 }
             }
 
-            return await select.OrderByDescending(flag, a => a.CreateTime)
+            return await select.DisableGlobalFilter(nameof(IsSoftDelete)).OrderByDescending(flag, a => a.CreateTime)
                                 .OrderBy(!flag, query.OrderByFileds)
                                 .ToListAsync();
         }
@@ -253,8 +251,7 @@ namespace Hao.Core
             }
 
             var update = DbContext.Update<T>()
-                                    .SetSource(entity)
-                                    .Where(a => a.IsDeleted == false);
+                                    .SetSource(entity);
 
             foreach (var item in whereColumns)
             {
@@ -295,8 +292,7 @@ namespace Hao.Core
 
             var update = DbContext.Update<T>()
                                     .SetSource(entity)
-                                    .UpdateColumns(columns.ToArray())
-                                    .Where(a => a.IsDeleted == false);
+                                    .UpdateColumns(columns.ToArray());
 
             foreach (var item in whereColumns)
             {
@@ -327,8 +323,7 @@ namespace Hao.Core
             }
 
             var update = DbContext.Update<T>()
-                                    .SetSource(entities)
-                                    .Where(a => a.IsDeleted == false);
+                                    .SetSource(entities);
 
             foreach (var item in whereColumns)
             {
@@ -373,8 +368,7 @@ namespace Hao.Core
 
             var update = DbContext.Update<T>()
                                     .SetSource(entities)
-                                    .UpdateColumns(columns.ToArray())
-                                    .Where(a => a.IsDeleted == false);
+                                    .UpdateColumns(columns.ToArray());
 
             foreach (var item in whereColumns)
             {
@@ -423,8 +417,7 @@ namespace Hao.Core
                                     .Set(a => a.IsDeleted, true)
                                     .SetIf(CurrentUser.Id.HasValue, a => a.ModifierId, CurrentUser.Id)
                                     .SetIf(CurrentUser.Id.HasValue, a => a.ModifyTime, DateTime.Now)
-                                    .Where(a => a.Id.Equals(pkValue))
-                                    .Where(a => a.IsDeleted == false);
+                                    .Where(a => a.Id.Equals(pkValue));
 
             foreach (var item in whereColumns)
             {
@@ -448,8 +441,7 @@ namespace Hao.Core
                                     .Set(a => a.IsDeleted, true)
                                     .SetIf(CurrentUser.Id.HasValue, a => a.ModifierId, CurrentUser.Id)
                                     .SetIf(CurrentUser.Id.HasValue, a => a.ModifyTime, DateTime.Now)
-                                    .Where(a => pkValues.Contains(a.Id))
-                                    .Where(a => a.IsDeleted == false);
+                                    .Where(a => pkValues.Contains(a.Id));
 
             foreach (var item in whereColumns)
             {
