@@ -141,7 +141,10 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<List<T>> GetAllAysnc()
         {
-            return await DbContext.Select<T>().DisableGlobalFilter(nameof(IsSoftDelete)).OrderByDescending(a => a.CreateTime).ToListAsync();
+            return await DbContext.Select<T>()
+                                   .DisableGlobalFilter(nameof(IsSoftDelete))
+                                   .OrderByDescending(a => a.CreateTime)
+                                   .ToListAsync();
         }
 
         /// <summary>
@@ -163,7 +166,8 @@ namespace Hao.Core
                 }
             }
 
-            return await select.DisableGlobalFilter(nameof(IsSoftDelete)).OrderByDescending(flag, a => a.CreateTime)
+            return await select.DisableGlobalFilter(nameof(IsSoftDelete))
+                                .OrderByDescending(flag, a => a.CreateTime)
                                 .OrderBy(!flag, query.OrderByFileds)
                                 .ToListAsync();
         }
