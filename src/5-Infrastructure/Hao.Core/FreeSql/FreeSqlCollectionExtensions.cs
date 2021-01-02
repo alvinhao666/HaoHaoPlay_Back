@@ -33,7 +33,7 @@ namespace Microsoft.Extensions.DependencyInjection
                             //.UseNoneCommandParameter(true)
                             .Build();
 
-            fsql.GlobalFilter.Apply<IsSoftDelete>(nameof(IsSoftDelete), x => x.IsDeleted == false);
+            fsql.GlobalFilter.ApplyOnly<IsSoftDelete>(nameof(IsSoftDelete), x => x.IsDeleted == false);
             
 #if DEBUG
             fsql.Aop.CurdBefore += (s, e) =>
