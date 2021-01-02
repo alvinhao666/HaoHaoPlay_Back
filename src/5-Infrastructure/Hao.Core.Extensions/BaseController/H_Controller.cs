@@ -67,10 +67,6 @@ namespace Hao.Core.Extensions
                     if (method.Equals("post") || method.Equals("put") || method.Equals("delete")) throw new H_Exception("游客账户，无法进行数据操作");
                 }
             }
-            
-            // var freeSql = context.HttpContext.RequestServices.GetService(typeof(IFreeSqlContext)) as IFreeSqlContext;
-            // 根据当前用户信息  不同租户 可以设置不同的查询条件 全局过滤器  例如以下 
-            // freeSql.GlobalFilter.ApplyOnly<ICompanyInfo>(nameof(ICompanyInfo),x => x.CompanyId == CurrentUser.CompanyId); // 相同名称的过滤器 最后的会覆盖前面的
 
             base.OnActionExecuting(context);
         }
