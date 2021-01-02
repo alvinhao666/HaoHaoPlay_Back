@@ -12,14 +12,14 @@ namespace Hao.Core
     public abstract class Repository<T, TKey> : IRepository<T, TKey>
         where T : Entity<TKey>, new() where TKey : struct
     {
-        [FromServiceContext] protected IdWorker IdWorker { get; set; }
+        [FromServiceContext] public IdWorker IdWorker { get; set; }
         
-        [FromServiceContext] protected ICurrentUser CurrentUser { get; set; }
+        [FromServiceContext] public ICurrentUser CurrentUser { get; set; }
         
         private IFreeSqlContext _dbContext;
         
         [FromServiceContext]
-        protected IFreeSqlContext DbContext
+        public IFreeSqlContext DbContext
         {
             get {  return _dbContext;  }
             

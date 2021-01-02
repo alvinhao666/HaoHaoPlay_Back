@@ -12,9 +12,9 @@ namespace Hao.Core
     public abstract class SimpleRepository<T, TKey> : ISimpleRepository<T, TKey>
         where T : SimpleEntity<TKey>, new() where TKey : struct
     {
-        [FromServiceContext] protected IdWorker IdWorker { get; set; }
+        [FromServiceContext] public IdWorker IdWorker { get; set; }
         
-        [FromServiceContext] protected IFreeSqlContext DbContext { get; set; }
+        [FromServiceContext] public IFreeSqlContext DbContext { get; set; }
 
         
         /// <summary>
