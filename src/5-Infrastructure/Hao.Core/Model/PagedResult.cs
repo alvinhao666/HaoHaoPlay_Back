@@ -10,12 +10,12 @@ namespace Hao.Core
         public IEnumerable<T> Items { get; set; }
 
         /// <summary>
-        /// 列表项总数
+        /// 总数
         /// </summary>
         public int TotalCount { get; set; }
 
         /// <summary>
-        /// 每一页条数
+        /// 规定每一页条数大小
         /// </summary>
         public int PageSize { get; set; }
 

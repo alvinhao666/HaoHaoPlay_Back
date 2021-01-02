@@ -5,7 +5,7 @@ namespace Hao.Core
     public interface IsCreateAudited
     {
         /// <summary>
-        /// 创建人
+        /// 创建人id
         /// </summary>
         long? CreatorId { get; set; }
 

@@ -32,6 +32,9 @@ namespace Microsoft.Extensions.DependencyInjection
                             // })
                             //.UseNoneCommandParameter(true)
                             .Build();
+
+            fsql.GlobalFilter.ApplyOnly<IsSoftDelete>(nameof(IsSoftDelete), x => x.IsDeleted == false);
+            
 #if DEBUG
             fsql.Aop.CurdBefore += (s, e) =>
             {                 
@@ -52,8 +55,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 Console.WriteLine();
             };
 #endif
-
-
+            
             services.AddScoped<IFreeSqlContext>(a => new FreeSqlContext(fsql));
 
             return services;

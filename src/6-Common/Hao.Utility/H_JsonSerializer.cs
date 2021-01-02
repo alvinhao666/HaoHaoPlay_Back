@@ -13,7 +13,7 @@ namespace Hao.Utility
         /// <returns></returns>
         public static string Serialize<T>(T value) where T : class, new()
         {
-            if (value == null) return string.Empty;
+            if (value == null) return null;
 
             return JsonSerializer.Serialize(value, new JsonSerializerOptions()
             {

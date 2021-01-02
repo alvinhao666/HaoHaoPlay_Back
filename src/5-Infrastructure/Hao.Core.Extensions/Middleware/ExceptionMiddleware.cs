@@ -63,7 +63,7 @@ namespace Hao.Core.Extensions
 
             var options = new JsonSerializerOptions
             {
-                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping, //解决中午乱码
+                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping, //解决中文乱码
                 PropertyNamingPolicy = null //PropertyNamingPolicy = JsonNamingPolicy.CamelCase //开头字母小写 默认
             };
 

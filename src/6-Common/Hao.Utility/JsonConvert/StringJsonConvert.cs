@@ -16,9 +16,9 @@ namespace Hao.Utility
         }
 
 
-        public override void Write(Utf8JsonWriter writer, string value, JsonSerializerOptions options)
+        public override void Write(Utf8JsonWriter writer, string value, JsonSerializerOptions options) // string 等于null时 不会走这个方法
         {
-            writer.WriteStringValue(value.Trim());
+            writer.WriteStringValue(value.Trim()); //首尾去除所有空格
         }
     }
 }

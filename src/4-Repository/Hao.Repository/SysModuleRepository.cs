@@ -18,10 +18,12 @@ namespace Hao.Repository
             //return result;
 
             //SELECT  "layer" AS "layer" , COUNT("layer") AS "count"  FROM "sysmodule"   GROUP BY "layer"  ORDER BY "layer" DESC LIMIT 1 offset 0;
-            var list = await DbContext.Select<ModuleLayerCountDTO>().AsTable((_, oldname) => $"sysmodule")
-                .GroupBy(a => new { a.Layer })
-                .OrderByDescending(a => a.Key.Layer)
-                .ToListAsync(a => new ModuleLayerCountDTO { Layer = a.Key.Layer, Count = a.Count() });
+            var list = await DbContext.Select<ModuleLayerCountDTO>()
+                                        .DisableGlobalFilter(nameof(IsSoftDelete))
+                                        .AsTable((_, oldname) => $"sysmodule")
+                                        .GroupBy(a => new { a.Layer })
+                                        .OrderByDescending(a => a.Key.Layer)
+                                        .ToListAsync(a => new ModuleLayerCountDTO { Layer = a.Key.Layer, Count = a.Count() });
 
             return list.FirstOrDefault();
         }
@@ -37,11 +39,11 @@ namespace Hao.Repository
         public async Task<bool> IsExistSameNameModule(string name, ModuleType? moduleType, long? parentId, long? id = null)
         {
             var modules = await DbContext.Select<SysModule>()
-                .Where(a => a.Name == name)
-                .WhereIf(moduleType.HasValue, a => a.Type == moduleType)
-                .WhereIf(parentId.HasValue, a => a.ParentId == parentId)
-                .WhereIf(id.HasValue, a => a.Id != id)
-                .ToListAsync();
+                                            .Where(a => a.Name == name)
+                                            .WhereIf(moduleType.HasValue, a => a.Type == moduleType)
+                                            .WhereIf(parentId.HasValue, a => a.ParentId == parentId)
+                                            .WhereIf(id.HasValue, a => a.Id != id)
+                                            .ToListAsync();
 
             return modules.Count > 0;
         }

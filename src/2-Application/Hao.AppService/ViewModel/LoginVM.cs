@@ -4,11 +4,6 @@ namespace Hao.AppService
 {
     public class LoginVM
     {
-        // /// <summary>
-        // /// 用户Id
-        // /// </summary>
-        // public long? Id { get; set; }
-
         /// <summary>
         /// 姓名
         /// </summary>
