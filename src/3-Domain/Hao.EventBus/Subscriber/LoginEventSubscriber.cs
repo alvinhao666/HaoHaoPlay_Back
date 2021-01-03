@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using DotNetCore.CAP;
+using Hao.Core;
 using Hao.EventData;
 
 namespace Hao.EventBus
@@ -7,7 +8,7 @@ namespace Hao.EventBus
     /// <summary>
     /// 登录事件订阅实现
     /// </summary>
-    public class LoginEventSubscriber :  ICapSubscribe
+    public class LoginEventSubscriber :  EventSubscriber<LoginEventData>
     {
         private readonly ILoginEventHandler _handler;
 
@@ -15,11 +16,12 @@ namespace Hao.EventBus
         {
             _handler = handler;
         }
+        
 
         [CapSubscribe(nameof(LoginEventData))]
-        public async Task UpdateLogin(LoginEventData data)
+        public override async Task Subscribe(LoginEventData eventData)
         {
-            await _handler.UpdateLogin(data);
+            await _handler.UpdateLogin(eventData);
         }
     }
 }

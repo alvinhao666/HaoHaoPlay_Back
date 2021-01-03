@@ -10,6 +10,7 @@ using SixLabors.ImageSharp;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using Hao.Runtime;
 
 namespace Hao.AppService
 {

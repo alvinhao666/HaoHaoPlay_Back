@@ -4,4 +4,8 @@
     <TargetFramework>netstandard2.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\5-Infrastructure\Hao.Runtime\Hao.Runtime.csproj" />
+  </ItemGroup>
+
 </Project>
