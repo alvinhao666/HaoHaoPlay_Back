@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using Hao.Runtime;
 
 namespace Hao.EventData
 {
-    public class LogoutForUpdateAuthEventData
+    public class LogoutForUpdateAuthEventData: H_EventData
     {
         public List<long> UserIds { get; set; }
-
-        public DateTime TimeNow { get; set; } = DateTime.Now;
     }
 }

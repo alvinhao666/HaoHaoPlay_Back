@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Hao.Core;
+using Hao.Runtime;
 using Hao.TencentCloud.Cos;
 using Hao.Utility;
 using TencentCloud.Sts.V20180813.Models;

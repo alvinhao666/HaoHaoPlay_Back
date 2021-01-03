@@ -6,6 +6,7 @@ using Hao.Snowflake;
 using Hao.Utility;
 using System.Linq;
 using AspectCore.DependencyInjection;
+using Hao.Runtime;
 
 namespace Hao.Core
 {
@@ -208,7 +209,7 @@ namespace Hao.Core
                 id.SetValue(entity, IdWorker.NextId());
             }
 
-            if (CurrentUser.Id.HasValue)
+            if (CurrentUser?.Id != null)
             {
                 entity.CreatorId = CurrentUser.Id;
                 entity.CreateTime = DateTime.Now;
@@ -243,7 +244,7 @@ namespace Hao.Core
                     id.SetValue(item, IdWorker.NextId());
                 }
 
-                if (CurrentUser.Id.HasValue)
+                if (CurrentUser?.Id != null)
                 {
                     item.CreatorId = CurrentUser.Id;
                     item.CreateTime = timeNow;
@@ -262,7 +263,7 @@ namespace Hao.Core
         {
             H_Check.Argument.NotNull(entity, nameof(entity));
 
-            if (CurrentUser.Id.HasValue)
+            if (CurrentUser?.Id != null)
             {
                 entity.ModifierId = CurrentUser.Id;
                 entity.ModifyTime = DateTime.Now;
@@ -299,7 +300,7 @@ namespace Hao.Core
 
             var columns = body.Members.Select(a => a.Name).ToList();
 
-            if (CurrentUser.Id.HasValue)
+            if (CurrentUser?.Id != null)
             {
                 entity.ModifierId = CurrentUser.Id;
                 entity.ModifyTime = DateTime.Now;
@@ -330,7 +331,7 @@ namespace Hao.Core
         {
             H_Check.Argument.NotEmpty(entities, nameof(entities));
 
-            if (CurrentUser.Id.HasValue)
+            if (CurrentUser?.Id != null)
             {
                 var timeNow = DateTime.Now;
                 entities.ForEach(item =>
@@ -371,7 +372,7 @@ namespace Hao.Core
 
             var columns = body.Members.Select(a => a.Name).ToList();
 
-            if (CurrentUser.Id.HasValue)
+            if (CurrentUser?.Id != null)
             {
                 var timeNow = DateTime.Now;
                 entities.ForEach(item =>
@@ -430,11 +431,12 @@ namespace Hao.Core
         /// <returns></returns>
         private async Task<int> DeleteAysnc(TKey pkValue, params Expression<Func<T, bool>>[] whereColumns)
         {
-
+            var existUser = CurrentUser?.Id != null;
+            
             var delete = DbContext.Update<T>()
                                     .Set(a => a.IsDeleted, true)
-                                    .SetIf(CurrentUser.Id.HasValue, a => a.ModifierId, CurrentUser.Id)
-                                    .SetIf(CurrentUser.Id.HasValue, a => a.ModifyTime, DateTime.Now)
+                                    .SetIf(existUser, a => a.ModifierId, CurrentUser.Id)
+                                    .SetIf(existUser, a => a.ModifyTime, DateTime.Now)
                                     .Where(a => a.Id.Equals(pkValue));
 
             foreach (var item in whereColumns)
@@ -455,10 +457,12 @@ namespace Hao.Core
         {
             H_Check.Argument.NotEmpty(pkValues, nameof(pkValues));
 
+            var existUser = CurrentUser?.Id != null;
+            
             var delete = DbContext.Update<T>()
                                     .Set(a => a.IsDeleted, true)
-                                    .SetIf(CurrentUser.Id.HasValue, a => a.ModifierId, CurrentUser.Id)
-                                    .SetIf(CurrentUser.Id.HasValue, a => a.ModifyTime, DateTime.Now)
+                                    .SetIf(existUser, a => a.ModifierId, CurrentUser.Id)
+                                    .SetIf(existUser, a => a.ModifyTime, DateTime.Now)
                                     .Where(a => pkValues.Contains(a.Id));
 
             foreach (var item in whereColumns)

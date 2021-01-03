@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using Hao.Runtime;
 
 namespace Hao.EventData
 {
-    public class LogoutEventData
+    public class LogoutEventData : H_EventData
     {
         /// <summary>
         /// 用户id
         /// </summary>
         public List<long> UserIds { get; set; }
-
-        public DateTime TimeNow { get; set; } = DateTime.Now;
     }
 }

@@ -18,6 +18,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Hao.Runtime;
 
 namespace Hao.AppService
 {
@@ -150,8 +151,7 @@ namespace Hao.AppService
 
             await _publisher.PublishAsync(nameof(LogoutEventData), new LogoutEventData
             {
-                UserIds = new List<long> { userId },
-                TimeNow = DateTime.Now
+                UserIds = new List<long> { userId }
             });
         }
 
@@ -173,7 +173,7 @@ namespace Hao.AppService
                 await _publisher.PublishAsync(nameof(LogoutEventData), new LogoutEventData
                 {
                     UserIds = new List<long> { userId },
-                    TimeNow = DateTime.Now
+                    CurrentUser = _currentUser as CurrentUser
                 });
             }
         }

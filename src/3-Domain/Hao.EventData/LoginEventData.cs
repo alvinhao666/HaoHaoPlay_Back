@@ -1,8 +1,9 @@
 ﻿using System;
+using Hao.Runtime;
 
 namespace Hao.EventData
 {
-    public class LoginEventData
+    public class LoginEventData : H_EventData
     {
         /// <summary>
         /// 登录用户id

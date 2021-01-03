@@ -1,6 +1,6 @@
 ﻿using Hao.Dependency;
 
-namespace Hao.Core
+namespace Hao.Runtime
 {
     public interface ICurrentUser : IScopeDependency
     {

@@ -1,4 +1,4 @@
-﻿namespace Hao.Core
+﻿namespace Hao.Runtime
 {
     public class CurrentUser : ICurrentUser
     {

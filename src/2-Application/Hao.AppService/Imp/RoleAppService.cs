@@ -8,6 +8,7 @@ using Hao.Enum;
 using Hao.EventData;
 using Hao.Library;
 using Hao.Model;
+using Hao.Runtime;
 using Hao.Utility;
 using MapsterMapper;
 using Npgsql;
@@ -135,8 +136,7 @@ namespace Hao.AppService
             if (ids.Count < 1) return;
             await _publisher.PublishAsync(nameof(LogoutForUpdateAuthEventData), new LogoutForUpdateAuthEventData
             {
-                UserIds = ids,
-                TimeNow = DateTime.Now
+                UserIds = ids
             });
         }
 
