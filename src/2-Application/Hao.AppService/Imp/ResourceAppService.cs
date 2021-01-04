@@ -1,6 +1,7 @@
 ﻿using Hao.Core;
 using Hao.Enum;
 using Hao.Model;
+using Mapster;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -23,7 +24,7 @@ namespace Hao.AppService
 
             if (parentNode.Type != ModuleType.Sub) throw new H_Exception("非子菜单无法添加资源");
 
-            var module = _mapper.Map<SysModule>(vm);
+            var module = vm.Adapt<SysModule>();
             module.Type = ModuleType.Resource;
             module.Sort = 0;
             await AddModule(module);
@@ -56,7 +57,7 @@ namespace Hao.AppService
                 OrderByFileds = $"{nameof(SysModule.Sort)},{nameof(SysModule.CreateTime)}"
             });
 
-            var result = _mapper.Map<List<ResourceItemVM>>(resources);
+            var result = resources.Adapt<List<ResourceItemVM>>();
             return result;
         }
 

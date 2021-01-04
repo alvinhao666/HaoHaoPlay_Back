@@ -6,9 +6,9 @@ using Hao.EventData;
 namespace Hao.EventBus
 {
     /// <summary>
-    /// 登录事件订阅实现
+    /// 登录事件订阅
     /// </summary>
-    public class LoginEventSubscriber :  EventSubscriber<LoginEventData>
+    public class LoginEventSubscriber : EventSubscriber<LoginEventData>
     {
         private readonly ILoginEventHandler _handler;
 
@@ -16,7 +16,7 @@ namespace Hao.EventBus
         {
             _handler = handler;
         }
-        
+
 
         [CapSubscribe(nameof(LoginEventData))]
         public override async Task Subscribe(LoginEventData eventData)

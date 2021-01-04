@@ -7,7 +7,6 @@ using Hao.Excel;
 using Hao.Library;
 using Hao.Model;
 using Hao.Utility;
-using MapsterMapper;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
@@ -19,6 +18,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Hao.Runtime;
+using Mapster;
 
 namespace Hao.AppService
 {
@@ -27,8 +27,6 @@ namespace Hao.AppService
     /// </summary>
     public partial class UserAppService : ApplicationService, IUserAppService
     {
-
-        private readonly IMapper _mapper;
 
         private readonly ISysUserRepository _userRep;
 
@@ -45,13 +43,11 @@ namespace Hao.AppService
         public UserAppService(ISysRoleRepository roleRep,
             IOptionsSnapshot<H_AppSettingsConfig> appsettingsOptions, 
             ISysUserRepository userRepository,
-            IMapper mapper,
             ICurrentUser currentUser,
             ICapPublisher publisher,
             IDataProtectionProvider provider)
         {
             _userRep = userRepository;
-            _mapper = mapper;
             _appsettings = appsettingsOptions.Value;
             _currentUser = currentUser;
             _roleRep = roleRep;
@@ -79,7 +75,7 @@ namespace Hao.AppService
             if (role.IsDeleted) throw new H_Exception("角色已删除，请重新选择");
             if (role.Level <= _currentUser.RoleLevel) throw new H_Exception("无法添加同级及高级角色用户");
 
-            var user = _mapper.Map<SysUser>(vm);
+            var user = vm.Adapt<SysUser>();
             user.FirstNameSpell = H_Spell.GetFirstLetter(user.Name.ToCharArray()[0]);
             user.PasswordLevel = (PasswordLevel)H_Util.CheckPasswordLevel(user.Password);
             user.Password = H_EncryptProvider.HMACSHA256(user.Password, _appsettings.Key.Sha256Key);
@@ -109,12 +105,12 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task<PagedResult<UserVM>> GetPagedList(UserQueryInput queryInput)
         {
-            var query = _mapper.Map<UserQuery>(queryInput);
+            var query = queryInput.Adapt<UserQuery>();
 
             query.CurrentRoleLevel = _currentUser.RoleLevel; //只能获取角色等级低用户
 
             var users = await _userRep.GetPagedListAysnc(query);
-            var result = _mapper.Map<PagedResult<UserVM>>(users);
+            var result = users.Adapt<PagedResult<UserVM>>();
 
             return result;
         }
@@ -127,7 +123,8 @@ namespace Hao.AppService
         public async Task<UserDetailVM> Get(long id)
         {
             var user = await GetUserDetail(id);
-            return _mapper.Map<UserDetailVM>(user);
+
+            return user.Adapt<UserDetailVM>();
         }
 
 
@@ -189,7 +186,7 @@ namespace Hao.AppService
             CheckUser(userId);
             var user = await GetUserDetail(userId);
 
-            user = _mapper.Map(vm, user);
+            user = vm.Adapt(user);
 
             await _userRep.UpdateAsync(user,
                 user => new { user.Name, user.Age, user.Gender, user.Phone, user.Email, user.WeChat, user.QQ, user.RoleId, user.RoleName });
@@ -202,7 +199,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task<bool> IsExist(UserQueryInput queryInput)
         {
-            var query = _mapper.Map<UserQuery>(queryInput);
+            var query = queryInput.Adapt<UserQuery>();
             var users = await _userRep.GetListAysnc(query);
             return users.Count > 0;
         }
@@ -215,7 +212,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task<UserExcelVM> Export(UserQueryInput queryInput)
         {
-            var query = _mapper.Map<UserQuery>(queryInput);
+            var query = queryInput.Adapt<UserQuery>();
             var users = await _userRep.GetListAysnc(query);
 
             var exportData = users.Select(a => new Dictionary<string, string>{

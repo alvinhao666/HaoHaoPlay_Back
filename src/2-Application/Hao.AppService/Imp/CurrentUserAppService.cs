@@ -4,13 +4,13 @@ using Hao.Enum;
 using Hao.Library;
 using Hao.Model;
 using Hao.Utility;
-using MapsterMapper;
 using Microsoft.Extensions.Options;
 using SixLabors.ImageSharp;
 using System;
 using System.IO;
 using System.Threading.Tasks;
 using Hao.Runtime;
+using Mapster;
 
 namespace Hao.AppService
 {
@@ -19,8 +19,6 @@ namespace Hao.AppService
     /// </summary>
     public class CurrentUserAppService : ApplicationService, ICurrentUserAppService
     {
-        private readonly IMapper _mapper;
-
         private readonly ISysUserRepository _userRep;
 
         private readonly ICurrentUser _currentUser;
@@ -28,11 +26,10 @@ namespace Hao.AppService
         private readonly H_AppSettingsConfig _appsettings;
 
 
-        public CurrentUserAppService(ISysUserRepository userRepository, IMapper mapper, ICurrentUser currentUser,
+        public CurrentUserAppService(ISysUserRepository userRepository, ICurrentUser currentUser,
             IOptionsSnapshot<H_AppSettingsConfig> appsettingsOptions)
         {
             _userRep = userRepository;
-            _mapper = mapper;
             _currentUser = currentUser;
             _appsettings = appsettingsOptions.Value;
         }
@@ -44,7 +41,7 @@ namespace Hao.AppService
         public async Task<CurrentUserVM> Get()
         {
             var user = await _userRep.GetAysnc(_currentUser.Id.Value);
-            return _mapper.Map<CurrentUserVM>(user);
+            return user.Adapt<CurrentUserVM>();
         }
 
         // /// <summary>
@@ -133,7 +130,7 @@ namespace Hao.AppService
         public async Task<UserSecurityVM> GetSecurityInfo()
         {
             var user = await _userRep.GetAysnc(_currentUser.Id.Value);
-            var result = _mapper.Map<UserSecurityVM>(user);
+            var result = user.Adapt<UserSecurityVM>();
             return result;
         }
 

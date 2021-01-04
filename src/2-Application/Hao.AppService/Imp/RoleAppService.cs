@@ -10,7 +10,7 @@ using Hao.Library;
 using Hao.Model;
 using Hao.Runtime;
 using Hao.Utility;
-using MapsterMapper;
+using Mapster;
 using Npgsql;
 
 namespace Hao.AppService
@@ -26,16 +26,13 @@ namespace Hao.AppService
 
         private readonly ISysUserRepository _userRep;
 
-        private readonly IMapper _mapper;
-
         private readonly ICapPublisher _publisher;
 
         private readonly ICurrentUser _currentUser;
 
-        public RoleAppService(ICurrentUser currentUser,ICapPublisher publisher,ISysRoleRepository roleRep, ISysModuleRepository moduleRep, ISysUserRepository userRep, IMapper mapper)
+        public RoleAppService(ICurrentUser currentUser,ICapPublisher publisher,ISysRoleRepository roleRep, ISysModuleRepository moduleRep, ISysUserRepository userRep)
         {
             _roleRep = roleRep;
-            _mapper = mapper;
             _moduleRep = moduleRep;
             _userRep = userRep;
             _publisher = publisher;
@@ -76,7 +73,7 @@ namespace Hao.AppService
 
             var roles = await _roleRep.GetListAysnc(query);
 
-            var result = _mapper.Map<List<RoleVM>>(roles);
+            var result = roles.Adapt<List<RoleVM>>();
 
             return result;
         }
@@ -92,7 +89,7 @@ namespace Hao.AppService
                 CurrentRoleLevel = _currentUser.RoleLevel,
                 OrderByFileds = nameof(SysRole.Level)
             });
-            var result = _mapper.Map<List<RoleSelectVM>>(roles);
+            var result = roles.Adapt<List<RoleSelectVM>>();
             return result;
         }
 
