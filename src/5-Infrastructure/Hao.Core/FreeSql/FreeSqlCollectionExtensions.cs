@@ -1,6 +1,8 @@
 ﻿using FreeSql;
 using FreeSql.Internal;
 using Hao.Core;
+using Hao.Snowflake;
+using Hao.Utility;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -55,7 +57,26 @@ namespace Microsoft.Extensions.DependencyInjection
                 Console.WriteLine();
             };
 #endif
-            
+
+            fsql.Aop.AuditValue += (s, e) =>
+            {
+                if (e.AuditValueType == FreeSql.Aop.AuditValueType.Insert)  //只处理id    操作人 操作时间 放仓储基类处理
+                {
+                    if (e.Property.Name == "Id")
+                    {
+                        if (e.Column.CsType == H_Util.GuidType)
+                        {
+                            e.Value = Guid.NewGuid();
+                        }
+                        else if (e.Column.CsType == H_Util.LongType)
+                        {
+                            var idWorker = services.BuildServiceProvider().GetService<IdWorker>();
+                            e.Value = idWorker.NextId();
+                        }
+                    }
+                }
+            };
+
             services.AddScoped<IFreeSqlContext>(a => new FreeSqlContext(fsql));
 
             return services;
