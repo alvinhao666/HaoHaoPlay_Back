@@ -226,29 +226,7 @@ namespace Hao.Core
         {
             H_Check.Argument.NotEmpty(entities, nameof(entities));
 
-            //var isGuid = typeof(TKey) == H_Util.GuidType;
-            //var type = typeof(T);
-            //var id = type.GetProperty(nameof(Entity<TKey>.Id));
             var timeNow = DateTime.Now;
-
-            //entities.ForEach(item =>
-            //{
-            //    if (isGuid)
-            //    {
-            //        id.SetValue(item, Guid.NewGuid());
-            //    }
-            //    else
-            //    {
-            //        id.SetValue(item, IdWorker.NextId());
-            //    }
-
-            //    if (CurrentUser?.Id != null)
-            //    {
-            //        item.CreatorId = CurrentUser.Id;
-            //        item.CreateTime = timeNow;
-            //    }
-            //});
-
             if (CurrentUser?.Id != null)
             {
                 entities.ForEach(item =>
