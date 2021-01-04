@@ -8,6 +8,7 @@ using Hao.Enum;
 using Npgsql;
 using Hao.Library;
 using MapsterMapper;
+using Mapster;
 
 namespace Hao.AppService
 {
@@ -16,13 +17,10 @@ namespace Hao.AppService
     /// </summary>
     public partial class ModuleAppService : ApplicationService, IModuleAppService
     {
-        private readonly IMapper _mapper;
-
         private readonly ISysModuleRepository _moduleRep;
 
-        public ModuleAppService(IMapper mapper, ISysModuleRepository moduleRep)
+        public ModuleAppService(ISysModuleRepository moduleRep)
         {
-            _mapper = mapper;
             _moduleRep = moduleRep;
         }
 
@@ -42,7 +40,7 @@ namespace Hao.AppService
 
             if (isExistSameName) throw new H_Exception("存在相同名称的模块，请重新输入");
 
-            var module = _mapper.Map<SysModule>(vm);
+            var module = vm.Adapt<SysModule>();
             await AddModule(module);
         }
 
@@ -66,7 +64,7 @@ namespace Hao.AppService
         public async Task<ModuleDetailVM> Get(long id)
         {
             var module = await GetModuleDetail(id);
-            var result = _mapper.Map<ModuleDetailVM>(module);
+            var result = module.Adapt<ModuleDetailVM>();
 
             if (result.Type == ModuleType.Sub)
             {
@@ -75,7 +73,7 @@ namespace Hao.AppService
                     ParentId = id,
                     OrderByFileds = $"{nameof(SysModule.Sort)},{nameof(SysModule.CreateTime)}"
                 });
-                result.Resources = _mapper.Map<List<ResourceItemVM>>(resources);
+                result.Resources = resources.Adapt<List<ResourceItemVM>>();
             }
 
             return result;

@@ -3,7 +3,7 @@ using Hao.Model;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Collections.Generic;
-using MapsterMapper;
+using Mapster;
 
 namespace Hao.AppService
 {
@@ -14,12 +14,9 @@ namespace Hao.AppService
     {
         private readonly ISysDictRepository _dictRep;
 
-        private readonly IMapper _mapper;
-
-        public DictAppService(ISysDictRepository dictRep, IMapper mapper)
+        public DictAppService(ISysDictRepository dictRep)
         {
             _dictRep = dictRep;
-            _mapper = mapper;
         }
 
 
@@ -37,7 +34,7 @@ namespace Hao.AppService
             sameItems = await _dictRep.GetListAysnc(new DictQuery { EqualDictCode = request.DictCode });
             if (sameItems.Count > 0) throw new H_Exception("字典编码已存在，请重新输入");
 
-            var dict = _mapper.Map<SysDict>(request);
+            var dict = request.Adapt<SysDict>();
             dict.Sort = 0;
             await _dictRep.InsertAysnc(dict);
         }
@@ -93,11 +90,11 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task<PagedResult<DictVM>> GetPagedList(DictQueryInput queryInput)
         {
-            var query = _mapper.Map<DictQuery>(queryInput);
+            var query = queryInput.Adapt<DictQuery>();
 
             var dicts = await _dictRep.GetPagedListAysnc(query);
 
-            return _mapper.Map<PagedResult<DictVM>>(dicts);
+            return dicts.Adapt<PagedResult<DictVM>>();
         }
 
         /// <summary>
@@ -117,7 +114,7 @@ namespace Hao.AppService
 
 
             var parentDict = await GetDictDetail(request.ParentId.Value);
-            var dict = _mapper.Map<SysDict>(request);
+            var dict = request.Adapt<SysDict>();
             dict.ParentId = parentDict.Id;
             dict.DictCode = parentDict.DictCode;
             dict.DictName = parentDict.DictName;
@@ -135,13 +132,13 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task<PagedResult<DictItemVM>> GetDictItemPagedList(DictQueryInput queryInput)
         {
-            var query = _mapper.Map<DictQuery>(queryInput);
+            var query = queryInput.Adapt<DictQuery>();
 
             query.OrderByFileds = $"{nameof(SysDict.Sort)},{nameof(SysDict.CreateTime)}";
 
             var dicts = await _dictRep.GetPagedListAysnc(query);
 
-            return _mapper.Map<PagedResult<DictItemVM>>(dicts);
+            return dicts.Adapt<PagedResult<DictItemVM>>();
         }
 
         /// <summary>
@@ -189,7 +186,7 @@ namespace Hao.AppService
         {
             var dictItems = await _dictRep.GetListAysnc(new DictQuery { EqualDictCode = dictCode, IsQueryItem = true, OrderByFileds = $"{nameof(SysDict.Sort)},{nameof(SysDict.CreateTime)}" });
 
-            return _mapper.Map<List<DictDataItemVM>>(dictItems);
+            return dictItems.Adapt<List<DictDataItemVM>>();
         }
 
 
