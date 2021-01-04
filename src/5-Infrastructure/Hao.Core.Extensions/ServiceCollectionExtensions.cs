@@ -70,15 +70,15 @@ namespace Hao.Core.Extensions
             #endregion
 
 
-            #region Redis
+            #region 数据库
 
+            //redis
             var redisClient = new RedisClient(appSettings.ConnectionString.Redis);
 
             RedisHelper.AddClient(redisClient);
-            #endregion
 
-
-            #region Orm
+            //雪花id
+            services.AddSingleton(new IdWorker(appSettings.SnowflakeId.WorkerId, appSettings.SnowflakeId.DataCenterId));
 
             services.AddOrmService(DataType.PostgreSQL, appSettings.ConnectionString.Master, appSettings.ConnectionString.Slave.Select(a => a.Connection).ToArray());
             #endregion
@@ -135,9 +135,6 @@ namespace Hao.Core.Extensions
 
             //数据保护
             services.AddDataProtection();
-
-            //雪花id
-            services.AddSingleton(new IdWorker(appSettings.SnowflakeId.WorkerId, appSettings.SnowflakeId.DataCenterId));
 
             //Mapper
             TypeAdapterConfig.GlobalSettings.Scan(appSettings.MapperAssemblyNames.Select(name => Assembly.Load(name)).ToArray());

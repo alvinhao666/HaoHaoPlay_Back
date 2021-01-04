@@ -10,11 +10,8 @@ using Hao.Runtime;
 
 namespace Hao.Core
 {
-    public abstract class Repository<T, TKey> : IRepository<T, TKey>
-        where T : Entity<TKey>, new() where TKey : struct
+    public abstract class Repository<T, TKey> : IRepository<T, TKey> where T : Entity<TKey>, new() where TKey : struct
     {
-        [FromServiceContext] public IdWorker IdWorker { get; set; }
-        
         [FromServiceContext] public ICurrentUser CurrentUser { get; set; }
         
         private IFreeSqlContext _dbContext;
@@ -196,18 +193,18 @@ namespace Hao.Core
         {
             H_Check.Argument.NotNull(entity, nameof(entity));
 
-            var type = typeof(T);
-            var isGuid = typeof(TKey) == H_Util.GuidType;
-            var id = type.GetProperty(nameof(Entity<TKey>.Id));
+            //var type = typeof(T);
+            //var isGuid = typeof(TKey) == H_Util.GuidType;
+            //var id = type.GetProperty(nameof(Entity<TKey>.Id));
 
-            if (isGuid)
-            {
-                id.SetValue(entity, Guid.NewGuid());
-            }
-            else
-            {
-                id.SetValue(entity, IdWorker.NextId());
-            }
+            //if (isGuid)
+            //{
+            //    id.SetValue(entity, Guid.NewGuid());
+            //}
+            //else
+            //{
+            //    id.SetValue(entity, IdWorker.NextId());
+            //}
 
             if (CurrentUser?.Id != null)
             {
@@ -229,27 +226,37 @@ namespace Hao.Core
         {
             H_Check.Argument.NotEmpty(entities, nameof(entities));
 
-            var isGuid = typeof(TKey) == H_Util.GuidType;
-            var type = typeof(T);
-            var id = type.GetProperty(nameof(Entity<TKey>.Id));
+            //var isGuid = typeof(TKey) == H_Util.GuidType;
+            //var type = typeof(T);
+            //var id = type.GetProperty(nameof(Entity<TKey>.Id));
             var timeNow = DateTime.Now;
-            entities.ForEach(item =>
-            {
-                if (isGuid)
-                {
-                    id.SetValue(item, Guid.NewGuid());
-                }
-                else
-                {
-                    id.SetValue(item, IdWorker.NextId());
-                }
 
-                if (CurrentUser?.Id != null)
+            //entities.ForEach(item =>
+            //{
+            //    if (isGuid)
+            //    {
+            //        id.SetValue(item, Guid.NewGuid());
+            //    }
+            //    else
+            //    {
+            //        id.SetValue(item, IdWorker.NextId());
+            //    }
+
+            //    if (CurrentUser?.Id != null)
+            //    {
+            //        item.CreatorId = CurrentUser.Id;
+            //        item.CreateTime = timeNow;
+            //    }
+            //});
+
+            if (CurrentUser?.Id != null)
+            {
+                entities.ForEach(item =>
                 {
                     item.CreatorId = CurrentUser.Id;
                     item.CreateTime = timeNow;
-                }
-            });
+                });
+            }
             return await DbContext.Insert(entities).ExecuteInsertedAsync();
         }
 
