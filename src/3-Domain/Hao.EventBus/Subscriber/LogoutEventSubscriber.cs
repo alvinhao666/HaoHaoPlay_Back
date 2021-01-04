@@ -2,7 +2,6 @@
 using Hao.EventData;
 using System.Threading.Tasks;
 using Hao.Core;
-using Hao.Runtime;
 
 namespace Hao.EventBus
 {
