@@ -141,7 +141,7 @@ namespace Hao.Core.Extensions
 
             //Mapper
             TypeAdapterConfig.GlobalSettings.Scan(appSettings.MapperAssemblyNames.Select(name => Assembly.Load(name)).ToArray());
-            services.AddScoped<IMapper, Mapper>();
+            //services.AddSingleton<IMapper, Mapper>(); //不推荐Map方法，建议使用Adapt，优点：少写代码
 
             //IOC
             services.AutoDependency(appSettings.DiAssemblyNames.Select(name => Assembly.Load(name)));
