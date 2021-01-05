@@ -10,27 +10,20 @@ namespace Hao.Core
         public int PageSize { get; set; } = 10;
 
         /// <summary>
-        /// 适用于单表
+        /// 查询条件
         /// </summary>
         public abstract List<Expression<Func<T, bool>>> QueryExpressions { get; }
 
         /// <summary>
         /// 排序条件
         /// </summary>
-        public List<OrderByInfo> OrderByConditions { get; set; } = new List<OrderByInfo>();
-        
+        public List<OrderByInfo> OrderByConditions { get; private set; } = new List<OrderByInfo>();
 
-        ///// <summary>
-        ///// 适用于多表
-        ///// </summary>
-        //public virtual string QuerySql { get; }
-
-        ///// <summary>
-        ///// 排序字段
-        ///// </summary>
-        //public virtual string OrderByFields { get; set; }
-
-
+        /// <summary>
+        /// 升序
+        /// </summary>
+        /// <param name="fieldName"></param>
+        /// <returns></returns>
         public Query<T> OrderBy(string fieldName)
         {
             if (OrderByConditions == null) OrderByConditions = new List<OrderByInfo>();
@@ -40,6 +33,11 @@ namespace Hao.Core
             return this;
         }
         
+        /// <summary>
+        /// 降序
+        /// </summary>
+        /// <param name="fieldName"></param>
+        /// <returns></returns>
         public Query<T> OrderByDescending(string fieldName)
         {
             if (OrderByConditions == null) OrderByConditions = new List<OrderByInfo>();
@@ -56,6 +54,6 @@ namespace Hao.Core
         public string FieldName { get; set; }
 
 
-        public bool IsAsc { get; set; } = true;
+        public bool IsAsc { get; set; }
     }
 }
