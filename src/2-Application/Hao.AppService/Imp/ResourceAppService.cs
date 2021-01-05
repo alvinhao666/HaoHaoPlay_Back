@@ -27,6 +27,7 @@ namespace Hao.AppService
             var module = vm.Adapt<SysModule>();
             module.Type = ModuleType.Resource;
             module.Sort = 0;
+            module.ParentAlias = parentNode.Alias;
             await AddModule(module);
         }
 

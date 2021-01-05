@@ -52,5 +52,10 @@ namespace Hao.Model
         /// 别名
         /// </summary>
         public string Alias { get; set; }
+
+        /// <summary>
+        /// 父级别名
+        /// </summary>
+        public string ParentAlias { get; set; }
     }
 }

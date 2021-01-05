@@ -52,7 +52,7 @@ namespace Hao.AppService
                .Map(x => x.Code, a => string.Format("{0}_{1}", a.Layer, a.Number));
 
             config.ForType<SysModule, ResourceItemVM>()
-               .Map(x => x.ResourceCode, a => string.Format("{0}_{1}_{2}", a.Alias, a.Layer, a.Number));
+               .Map(x => x.ResourceCode, a => string.Format("{0}_{1}_{2}_{3}", a.ParentAlias, a.Alias, a.Layer, a.Number));
         }
     }
 }

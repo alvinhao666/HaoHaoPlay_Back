@@ -40,6 +40,11 @@ namespace Hao.AppService
         /// 排序值
         /// </summary>
         public int? Sort { get; set; }
+
+        /// <summary>
+        /// 别名
+        /// </summary>
+        public string Alias { get; set; }
     }
 
     /// <summary>
@@ -55,6 +60,8 @@ namespace Hao.AppService
             RuleFor(x => x.Icon).MustHasValue("模块图标").When(a => a.Type == ModuleType.Main);
 
             RuleFor(x => x.RouterUrl).MustHasValue("子应用路由地址").When(a => a.Type == ModuleType.Sub);
+
+            RuleFor(x => x.Alias).MustHasValue("别名").When(a => a.Type == ModuleType.Sub);
 
             RuleFor(x => x.Type).MustHasValue("模块类型");
 
