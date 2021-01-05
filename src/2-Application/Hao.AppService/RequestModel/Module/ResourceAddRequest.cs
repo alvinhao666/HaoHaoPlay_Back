@@ -16,6 +16,11 @@ namespace Hao.AppService
         /// 父级id
         /// </summary>
         public long? ParentId { get; set; }
+
+        /// <summary>
+        /// 别名
+        /// </summary>
+        public string Alias { get; set; }
     }
 
     /// <summary>
@@ -28,6 +33,8 @@ namespace Hao.AppService
             RuleFor(x => x.Name).MustHasValue("资源名称");
 
             RuleFor(x => x.ParentId).MustHasValue("父节点Id");
+
+            RuleFor(x => x.Alias).MustHasValue("别名");
         }
     }
 }
