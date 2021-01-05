@@ -51,7 +51,6 @@ namespace Hao.Model
         /// </summary>
         public int? ItemValue { get; set; }
 
-
         /// <summary>
         /// 是否查询数据项
         /// </summary>

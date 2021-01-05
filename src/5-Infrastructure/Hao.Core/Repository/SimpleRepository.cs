@@ -56,7 +56,6 @@ namespace Hao.Core
         {
             H_Check.Argument.NotNull(query, nameof(query));
 
-            var flag = string.IsNullOrWhiteSpace(query.OrderByFileds);
             var select = DbContext.Select<T>();
 
             if (query.QueryExpressions?.Count > 0)
@@ -66,7 +65,16 @@ namespace Hao.Core
                     select.Where(item);
                 }
             }
-            return await select.OrderBy(!flag, query.OrderByFileds).ToListAsync();
+
+            if (query.OrderByConditions?.Count > 0)
+            {
+                foreach (var item in query.OrderByConditions)
+                {
+                    select.OrderByPropertyName(item.FiledName, item.IsAsc);
+                }
+            }
+
+            return await select.ToListAsync();
         }
 
         /// <summary>
@@ -98,8 +106,6 @@ namespace Hao.Core
         {
             H_Check.Argument.NotNull(query, nameof(query));
 
-
-            var flag = string.IsNullOrWhiteSpace(query.OrderByFileds);
             var select = DbContext.Select<T>();
 
             if (query.QueryExpressions?.Count > 0)
@@ -110,8 +116,15 @@ namespace Hao.Core
                 }
             }
 
-            var items = await select.OrderBy(!flag, query.OrderByFileds)
-                                    .Count(out var total)
+            if (query.OrderByConditions?.Count > 0)
+            {
+                foreach (var item in query.OrderByConditions)
+                {
+                    select.OrderByPropertyName(item.FiledName, item.IsAsc);
+                }
+            }
+
+            var items = await select.Count(out var total)
                                     .Page(query.PageIndex, query.PageSize).ToListAsync();
 
             var pageList = new PagedResult<T>()
