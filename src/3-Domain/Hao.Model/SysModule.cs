@@ -46,6 +46,11 @@ namespace Hao.Model
         /// <summary>
         /// 权限数字
         /// </summary>
-        public long Number { get; set; }
+        public long? Number { get; set; }
+
+        /// <summary>
+        /// 别名
+        /// </summary>
+        public string Alias { get; set; }
     }
 }
