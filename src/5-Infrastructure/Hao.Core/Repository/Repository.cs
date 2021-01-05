@@ -85,7 +85,7 @@ namespace Hao.Core
             {
                 foreach (var item in query.OrderByConditions)
                 {
-                    select.OrderByPropertyName(item.FiledName, item.IsAsc);
+                    select.OrderByPropertyName(item.FieldName, item.IsAsc);
                 }
             }
             else
@@ -143,7 +143,7 @@ namespace Hao.Core
             {
                 foreach(var item in query.OrderByConditions)
                 {
-                    select.OrderByPropertyName(item.FiledName, item.IsAsc);
+                    select.OrderByPropertyName(item.FieldName, item.IsAsc);
                 }
             }
             else
@@ -201,7 +201,7 @@ namespace Hao.Core
             {
                 foreach (var item in query.OrderByConditions)
                 {
-                    select.OrderByPropertyName(item.FiledName, item.IsAsc);
+                    select.OrderByPropertyName(item.FieldName, item.IsAsc);
                 }
             }
             else

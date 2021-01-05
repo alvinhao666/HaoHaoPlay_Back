@@ -134,8 +134,7 @@ namespace Hao.AppService
         {
             var query = queryInput.Adapt<DictQuery>();
 
-            query.OrderByConditions.Add(new OrderByInfo (nameof(SysDict.Sort)));
-            query.OrderByConditions.Add(new OrderByInfo (nameof(SysDict.CreateTime)));
+            query.OrderBy(nameof(SysDict.Sort)).OrderBy(nameof(SysDict.CreateTime));
 
             var dicts = await _dictRep.GetPagedListAysnc(query);
 
@@ -191,8 +190,7 @@ namespace Hao.AppService
                 IsQueryItem = true
             };
 
-            query.OrderByConditions.Add(new OrderByInfo(nameof(SysDict.Sort)));
-            query.OrderByConditions.Add(new OrderByInfo(nameof(SysDict.CreateTime)));
+            query.OrderBy(nameof(SysDict.Sort)).OrderBy(nameof(SysDict.CreateTime));
 
             var dictItems = await _dictRep.GetListAysnc(query);
 

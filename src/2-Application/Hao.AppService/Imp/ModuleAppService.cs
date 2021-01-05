@@ -72,9 +72,8 @@ namespace Hao.AppService
                 {
                     ParentId = id,
                 };
-
-                query.OrderByConditions.Add(new OrderByInfo(nameof(SysDict.Sort)));
-                query.OrderByConditions.Add(new OrderByInfo(nameof(SysDict.CreateTime)));
+                
+                query.OrderBy(nameof(SysModule.Sort)).OrderBy(nameof(SysModule.CreateTime));
 
                 var resources = await _moduleRep.GetListAysnc(query);
 

@@ -18,7 +18,7 @@ namespace Hao.Core
         /// 排序条件
         /// </summary>
         public List<OrderByInfo> OrderByConditions { get; set; } = new List<OrderByInfo>();
-
+        
 
         ///// <summary>
         ///// 适用于多表
@@ -28,20 +28,23 @@ namespace Hao.Core
         ///// <summary>
         ///// 排序字段
         ///// </summary>
-        //public virtual string OrderByFileds { get; set; }
+        //public virtual string OrderByFields { get; set; }
 
+
+        public Query<T> OrderBy(string fieldName, bool isAsc = true)
+        {
+            if (OrderByConditions == null) OrderByConditions = new List<OrderByInfo>();
+            
+            OrderByConditions.Add(new OrderByInfo {FieldName = fieldName, IsAsc = isAsc});
+
+            return this;
+        }
     }
 
 
     public class OrderByInfo
     {
-        public OrderByInfo(string fieldName,bool isAsc = true)
-        {
-            FiledName = fieldName;
-            IsAsc = isAsc;
-        }
-
-        public string FiledName { get; set; }
+        public string FieldName { get; set; }
 
 
         public bool IsAsc { get; set; } = true;
