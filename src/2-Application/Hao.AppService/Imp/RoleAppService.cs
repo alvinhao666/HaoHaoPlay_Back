@@ -116,7 +116,7 @@ namespace Hao.AppService
                 var items = modules.Where(a => a.Layer == i);
                 foreach (var x in items)
                 {
-                    authNumber = authNumber | x.Number;
+                    authNumber = authNumber | x.Number.Value;
                 }
                 authNumbers.Add(authNumber);
             }
