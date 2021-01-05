@@ -17,7 +17,7 @@ namespace Hao.Core
         /// <summary>
         /// 排序条件
         /// </summary>
-        public List<OrderByInfo> OrderByConditions { get; private set; } = new List<OrderByInfo>();
+        public List<OrderByInfo> OrderByConditions { get; set; } = new List<OrderByInfo>();
 
         /// <summary>
         /// 升序
@@ -51,9 +51,9 @@ namespace Hao.Core
 
     public class OrderByInfo
     {
-        public string FieldName { get; set; }
+        public string FieldName { get; internal set; }
 
 
-        public bool IsAsc { get; set; }
+        public bool IsAsc { get; internal set; }
     }
 }

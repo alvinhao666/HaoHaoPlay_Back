@@ -38,8 +38,8 @@ namespace Hao.Core
         /// <summary>
         /// 组合排序
         /// </summary>
-        /// <param name="orderByType"></param>
-        /// <param name="sortField"></param>
+        /// <param name="sortFields"></param>
+        /// <param name="orderByTypes"></param>
         /// <returns></returns>
         public static List<OrderByInfo> ToOrderByConditions<T>(this T?[] sortFields, SortType?[] orderByTypes) where T : struct, Enum
         {
