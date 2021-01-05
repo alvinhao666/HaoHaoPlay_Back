@@ -25,48 +25,18 @@ namespace Hao.Core.Extensions
     {
         public static IServiceCollection ConfigureServices(this IServiceCollection services, IHostEnvironment env, H_AppSettingsConfig appSettings)
         {
-            if (env.IsDevelopment())
-            {
-                services.AddSwaggerGen(c =>
-                {
-                    //配置第一个Doc
-                    c.SwaggerDoc(appSettings.Swagger.Name, new OpenApiInfo
-                    {
-                        Version = "v1",
-                        Title = "接口文档"
-                    });
+            //Http
+            services.AddHttpClient();
 
-                    foreach (var item in appSettings.Swagger.Xmls)
-                    {
-                        c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, item));
-                    }
-                });
-            }
+            //数据保护
+            services.AddDataProtection();
 
+            //Mapper
+            TypeAdapterConfig.GlobalSettings.Scan(appSettings.MapperAssemblyNames.Select(name => Assembly.Load(name)).ToArray());
+            //services.AddSingleton<IMapper, Mapper>(); //不推荐IMapper注入方式，建议使用Adapt，优点：少写代码
 
-            #region Jwt
-
-            services.AddAuthentication(x =>
-            {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuer = true,//是否验证Issuer
-                    ValidateAudience = true,//是否验证Audience
-                    ValidateIssuerSigningKey = true,//是否验证SecurityKey
-                    ValidAudience = appSettings.Jwt.Audience,//Audience
-                    ValidIssuer = appSettings.Jwt.Issuer,//Issuer，这两项和前面签发jwt的设置一致
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(appSettings.Jwt.SecretKey)),//拿到SecurityKey
-                    ValidateLifetime = true,//是否验证失效时间  当设置exp和nbf时有效 同时启用ClockSkew 
-                    RequireExpirationTime = true,
-                    ClockSkew = TimeSpan.Zero, // ClockSkew 属性，默认是5分钟缓冲。
-                };
-                options.Events = new H_JwtBearerEvents();
-            });
-            #endregion
+            //批量注入
+            services.AutoDependency(appSettings.DiAssemblyNames.Select(name => Assembly.Load(name)));
 
 
             #region 数据库
@@ -83,7 +53,7 @@ namespace Hao.Core.Extensions
             #endregion
 
 
-            #region CAP
+            #region 消息中间件
             //Note: The injection of services needs before of `services.AddCap()`
             services.Scan(a =>
             {
@@ -129,18 +99,48 @@ namespace Hao.Core.Extensions
             //模型验证 ApiBehaviorOptions 的统一模型验证配置一定要放到(.AddMvc)后面
             services.AddValidateModelService();
 
-            //Http
-            services.AddHttpClient();
 
-            //数据保护
-            services.AddDataProtection();
+            #region Json Web Token
 
-            //Mapper
-            TypeAdapterConfig.GlobalSettings.Scan(appSettings.MapperAssemblyNames.Select(name => Assembly.Load(name)).ToArray());
-            //services.AddSingleton<IMapper, Mapper>(); //不推荐Map方法，建议使用Adapt，优点：少写代码
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,//是否验证Issuer
+                    ValidateAudience = true,//是否验证Audience
+                    ValidateIssuerSigningKey = true,//是否验证SecurityKey
+                    ValidAudience = appSettings.Jwt.Audience,//Audience
+                    ValidIssuer = appSettings.Jwt.Issuer,//Issuer，这两项和前面签发jwt的设置一致
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(appSettings.Jwt.SecretKey)),//拿到SecurityKey
+                    ValidateLifetime = true,//是否验证失效时间  当设置exp和nbf时有效 同时启用ClockSkew 
+                    RequireExpirationTime = true,
+                    ClockSkew = TimeSpan.Zero, // ClockSkew 属性，默认是5分钟缓冲。
+                };
+                options.Events = new H_JwtBearerEvents();
+            });
+            #endregion
 
-            //IOC
-            services.AutoDependency(appSettings.DiAssemblyNames.Select(name => Assembly.Load(name)));
+            if (env.IsDevelopment())
+            {
+                services.AddSwaggerGen(c =>
+                {
+                    //配置第一个Doc
+                    c.SwaggerDoc(appSettings.Swagger.Name, new OpenApiInfo
+                    {
+                        Version = "v1",
+                        Title = "接口文档"
+                    });
+
+                    foreach (var item in appSettings.Swagger.Xmls)
+                    {
+                        c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, item));
+                    }
+                });
+            }
 
             //AOP
             services.ConfigureDynamicProxy();

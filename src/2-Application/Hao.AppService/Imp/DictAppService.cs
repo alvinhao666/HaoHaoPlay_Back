@@ -134,7 +134,7 @@ namespace Hao.AppService
         {
             var query = queryInput.Adapt<DictQuery>();
 
-            query.OrderByFileds = $"{nameof(SysDict.Sort)},{nameof(SysDict.CreateTime)}";
+            query.OrderBy(nameof(SysDict.Sort)).OrderBy(nameof(SysDict.CreateTime));
 
             var dicts = await _dictRep.GetPagedListAysnc(query);
 
@@ -184,7 +184,15 @@ namespace Hao.AppService
 
         public async Task<List<DictDataItemVM>> GetDictDataItem(string dictCode)
         {
-            var dictItems = await _dictRep.GetListAysnc(new DictQuery { EqualDictCode = dictCode, IsQueryItem = true, OrderByFileds = $"{nameof(SysDict.Sort)},{nameof(SysDict.CreateTime)}" });
+            var query = new DictQuery
+            {
+                EqualDictCode = dictCode,
+                IsQueryItem = true
+            };
+
+            query.OrderBy(nameof(SysDict.Sort)).OrderBy(nameof(SysDict.CreateTime));
+
+            var dictItems = await _dictRep.GetListAysnc(query);
 
             return dictItems.Adapt<List<DictDataItemVM>>();
         }

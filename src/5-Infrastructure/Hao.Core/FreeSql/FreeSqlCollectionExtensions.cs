@@ -1,4 +1,5 @@
 ﻿using FreeSql;
+using FreeSql.Aop;
 using FreeSql.Internal;
 using Hao.Core;
 using Hao.Snowflake;
@@ -60,7 +61,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             fsql.Aop.AuditValue += (s, e) =>
             {
-                if (e.AuditValueType == FreeSql.Aop.AuditValueType.Insert)  //只处理id    操作人 操作时间 放仓储基类处理
+                if (e.AuditValueType == AuditValueType.Insert)  //只处理id    操作人 操作时间 放仓储基类处理
                 {
                     if (e.Property.Name == "Id")
                     {

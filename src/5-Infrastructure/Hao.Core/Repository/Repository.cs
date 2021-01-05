@@ -71,7 +71,6 @@ namespace Hao.Core
         {
             H_Check.Argument.NotNull(query, nameof(query));
 
-            var flag = string.IsNullOrWhiteSpace(query.OrderByFileds);
             var select = DbContext.Select<T>();
 
             if (query.QueryExpressions?.Count > 0)
@@ -82,10 +81,20 @@ namespace Hao.Core
                 }
             }
 
-            
-            return await select.OrderByDescending(flag, a => a.CreateTime)
-                                .OrderBy(!flag, query.OrderByFileds)
-                                .ToListAsync();
+            if (query.OrderByConditions?.Count > 0)
+            {
+                foreach (var item in query.OrderByConditions)
+                {
+                    select.OrderByPropertyName(item.FieldName, item.IsAsc);
+                }
+            }
+            else
+            {
+                select.OrderByDescending(a => a.CreateTime);
+            }
+
+
+            return await select.ToListAsync();
         }
 
 
@@ -120,7 +129,6 @@ namespace Hao.Core
         {
             H_Check.Argument.NotNull(query, nameof(query));
 
-            var flag = string.IsNullOrWhiteSpace(query.OrderByFileds);
             var select = DbContext.Select<T>();
 
             if (query.QueryExpressions?.Count > 0)
@@ -130,11 +138,23 @@ namespace Hao.Core
                     select.Where(item);
                 }
             }
+
+            if (query.OrderByConditions?.Count > 0)
+            {
+                foreach(var item in query.OrderByConditions)
+                {
+                    select.OrderByPropertyName(item.FieldName, item.IsAsc);
+                }
+            }
+            else
+            {
+                select.OrderByDescending(a => a.CreateTime);
+            }
             
-            var items = await select.OrderByDescending(flag, a => a.CreateTime)
-                                    .OrderBy(!flag, query.OrderByFileds)
-                                    .Count(out var total)
-                                    .Page(query.PageIndex, query.PageSize).ToListAsync();
+            var items = await select.Count(out var total)
+                                    .Page(query.PageIndex, query.PageSize)
+                                    .ToListAsync();
+
 
             var pageList = new PagedResult<T>()
             {
@@ -167,7 +187,6 @@ namespace Hao.Core
         {
             H_Check.Argument.NotNull(query, nameof(query));
 
-            var flag = string.IsNullOrWhiteSpace(query.OrderByFileds);
             var select = DbContext.Select<T>();
 
             if (query.QueryExpressions?.Count > 0)
@@ -178,9 +197,20 @@ namespace Hao.Core
                 }
             }
 
+            if (query.OrderByConditions?.Count > 0)
+            {
+                foreach (var item in query.OrderByConditions)
+                {
+                    select.OrderByPropertyName(item.FieldName, item.IsAsc);
+                }
+            }
+            else
+            {
+                select.OrderByDescending(a => a.CreateTime);
+            }
+
+
             return await select.DisableGlobalFilter(nameof(IsSoftDelete))
-                                .OrderByDescending(flag, a => a.CreateTime)
-                                .OrderBy(!flag, query.OrderByFileds)
                                 .ToListAsync();
         }
 

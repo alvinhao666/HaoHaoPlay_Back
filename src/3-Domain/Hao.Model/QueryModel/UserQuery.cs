@@ -16,10 +16,7 @@ namespace Hao.Model
         /// 账号
         /// </summary>
         public string LoginName { get; set; }
-        /// <summary>
-        /// 密码
-        /// </summary>
-        public string Password { get; set; }
+
         /// <summary>
         /// 姓名
         /// </summary>
@@ -61,8 +58,6 @@ namespace Hao.Model
                 List<Expression<Func<SysUser, bool>>> expressions = new List<Expression<Func<SysUser, bool>>>();
 
                 if (LoginName.HasValue()) expressions.Add(x => x.LoginName == LoginName);
-
-                if (Password.HasValue()) expressions.Add(x => x.Password == Password);
 
                 if (Name.HasValue()) expressions.Add(x => x.Name.Contains(Name));
 

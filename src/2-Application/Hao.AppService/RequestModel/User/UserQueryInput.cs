@@ -10,16 +10,6 @@ namespace Hao.AppService
     public class UserQueryInput : QueryInput
     {
         /// <summary>
-        /// 登录名
-        /// </summary>
-        public string LoginName { get; set; }
-
-        /// <summary>
-        /// 密码
-        /// </summary>
-        public string Password { get; set; }
-
-        /// <summary>
         /// 姓名
         /// </summary>
         public string Name { get; set; }

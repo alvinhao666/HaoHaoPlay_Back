@@ -40,7 +40,7 @@ namespace Hao.AppService
                .Map(x => x.Email, a => H_Util.HideEmailNumber(a.Email));
 
             config.ForType<UserQueryInput, UserQuery>()
-               .Map(x => x.OrderByFileds, a => a.SortFields.ToOrderByFields(a.SortTypes));
+               .Map(x => x.OrderByConditions, a => a.SortFields.ToOrderByConditions(a.SortTypes));
         }
 
         /// <summary>
@@ -49,10 +49,10 @@ namespace Hao.AppService
         private void MapModule(TypeAdapterConfig config)
         {
             config.ForType<SysModule, ModuleDetailVM>()
-               .Map(x => x.Code, a => string.Format("{0}_{1}", a.Layer, a.Number));
+               .Map(x => x.Code, a => $"{a.Layer}_{a.Number}");
 
             config.ForType<SysModule, ResourceItemVM>()
-               .Map(x => x.ResourceCode, a => string.Format("{0}_{1}_{2}_{3}", a.ParentAlias, a.Alias, a.Layer, a.Number));
+               .Map(x => x.ResourceCode, a => $"{a.ParentAlias}_{a.Alias}_{a.Layer}_{a.Number}");
         }
     }
 }
