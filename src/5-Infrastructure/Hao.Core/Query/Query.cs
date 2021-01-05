@@ -31,11 +31,20 @@ namespace Hao.Core
         //public virtual string OrderByFields { get; set; }
 
 
-        public Query<T> OrderBy(string fieldName, bool isAsc = true)
+        public Query<T> OrderBy(string fieldName)
         {
             if (OrderByConditions == null) OrderByConditions = new List<OrderByInfo>();
             
-            OrderByConditions.Add(new OrderByInfo {FieldName = fieldName, IsAsc = isAsc});
+            OrderByConditions.Add(new OrderByInfo {FieldName = fieldName, IsAsc = true});
+
+            return this;
+        }
+        
+        public Query<T> OrderByDescending(string fieldName)
+        {
+            if (OrderByConditions == null) OrderByConditions = new List<OrderByInfo>();
+            
+            OrderByConditions.Add(new OrderByInfo {FieldName = fieldName, IsAsc = false});
 
             return this;
         }
