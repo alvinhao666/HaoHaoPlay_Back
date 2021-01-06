@@ -48,7 +48,7 @@ namespace Hao.Core
         }
 
 
-        private void ThenBy(string fieldName,bool isAsc = true)
+        private void ThenBy(string fieldName, bool isAsc = true)
         {
             if (OrderByConditions == null) OrderByConditions = new List<OrderByInfo>();
 
