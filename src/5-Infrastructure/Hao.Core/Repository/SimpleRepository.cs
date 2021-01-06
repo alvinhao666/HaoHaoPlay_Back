@@ -62,6 +62,7 @@ namespace Hao.Core
             {
                 foreach (var item in query.QueryExpressions)
                 {
+                    if (item == null) continue;
                     select.Where(item);
                 }
             }
@@ -70,6 +71,7 @@ namespace Hao.Core
             {
                 foreach (var item in query.OrderByConditions)
                 {
+                    if (item == null) continue;
                     select.OrderByPropertyName(item.FieldName, item.IsAsc);
                 }
             }
@@ -91,6 +93,7 @@ namespace Hao.Core
             {
                 foreach (var item in query.QueryExpressions)
                 {
+                    if (item == null) continue;
                     select.Where(item);
                 }
             }
@@ -112,6 +115,7 @@ namespace Hao.Core
             {
                 foreach (var item in query.QueryExpressions)
                 {
+                    if (item == null) continue;
                     select.Where(item);
                 }
             }
@@ -120,6 +124,7 @@ namespace Hao.Core
             {
                 foreach (var item in query.OrderByConditions)
                 {
+                    if (item == null) continue;
                     select.OrderByPropertyName(item.FieldName, item.IsAsc);
                 }
             }
@@ -205,6 +210,7 @@ namespace Hao.Core
 
             foreach (var item in whereColumns)
             {
+                if (item == null) continue;
                 update.Where(item);
             }
 
@@ -237,6 +243,7 @@ namespace Hao.Core
 
             foreach (var item in whereColumns)
             {
+                if (item == null) continue;
                 update.Where(item);
             }
 
@@ -258,6 +265,7 @@ namespace Hao.Core
 
             foreach (var item in whereColumns)
             {
+                if (item == null) continue;
                 update.Where(item);
             }
 
@@ -290,6 +298,7 @@ namespace Hao.Core
 
             foreach (var item in whereColumns)
             {
+                if (item == null) continue;
                 update.Where(item);
             }
 
@@ -334,6 +343,7 @@ namespace Hao.Core
 
             foreach (var item in whereColumns)
             {
+                if (item == null) continue;
                 delete.Where(item);
             }
 
@@ -354,6 +364,7 @@ namespace Hao.Core
 
             foreach (var item in whereColumns)
             {
+                if (item == null) continue;
                 delete.Where(item);
             }
 
