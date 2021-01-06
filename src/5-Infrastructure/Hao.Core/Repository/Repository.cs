@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq.Expressions;
-using Hao.Snowflake;
 using Hao.Utility;
 using System.Linq;
 using AspectCore.DependencyInjection;
