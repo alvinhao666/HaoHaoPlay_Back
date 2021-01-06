@@ -71,7 +71,7 @@ namespace Hao.AppService
                 query.CurrentRoleLevel = _currentUser.RoleLevel;
             }
             
-            query.OrderBy(nameof(SysRole.Level));
+            query.OrderBy(a=>a.Level);
 
             var roles = await _roleRep.GetListAysnc(query);
 
@@ -91,7 +91,7 @@ namespace Hao.AppService
                 CurrentRoleLevel = _currentUser.RoleLevel
             };
             
-            query.OrderBy(nameof(SysRole.Level));
+            query.OrderBy(a=>a.Level);
             
             var roles = await _roleRep.GetListAysnc();
 

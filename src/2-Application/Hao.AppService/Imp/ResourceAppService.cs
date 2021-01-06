@@ -52,12 +52,9 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task<List<ResourceItemVM>> GetResourceList(long parentId)
         {
-            var query = new ModuleQuery()
-            {
-                ParentId = parentId
-            };
+            var query = new ModuleQuery { ParentId = parentId };
 
-            query.OrderBy(nameof(SysModule.Sort)).OrderBy(nameof(SysModule.CreateTime));
+            query.OrderBy(a=>a.Sort).OrderBy(a=>a.CreateTime);
 
             var resources = await _moduleRep.GetListAysnc(query);
 

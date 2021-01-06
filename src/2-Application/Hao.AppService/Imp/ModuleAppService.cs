@@ -68,12 +68,9 @@ namespace Hao.AppService
 
             if (result.Type == ModuleType.Sub)
             {
-                var query = new ModuleQuery()
-                {
-                    ParentId = id,
-                };
+                var query = new ModuleQuery { ParentId = id };
                 
-                query.OrderBy(nameof(SysModule.Sort)).OrderBy(nameof(SysModule.CreateTime));
+                query.OrderBy(a=>a.Sort).OrderBy(a=>a.CreateTime);
 
                 var resources = await _moduleRep.GetListAysnc(query);
 
