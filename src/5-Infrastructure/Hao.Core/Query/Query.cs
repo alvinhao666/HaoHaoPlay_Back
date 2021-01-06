@@ -46,7 +46,7 @@ namespace Hao.Core
 
             var body = column.Body as MemberExpression;
 
-            OrderByConditions.Add(new OrderByInfo { FieldName = body.Member.Name, IsAsc = true });
+            OrderByConditions.Add(new OrderByInfo { FieldName = body.Member.Name, IsAsc = false });
 
             return this;
         }
