@@ -49,7 +49,7 @@ namespace Hao.AppService
         private void MapModule(TypeAdapterConfig config)
         {
             config.ForType<SysModule, ModuleDetailVM>()
-               .Map(x => x.Code, a => $"{a.Alias}.{a.Layer}_{a.Number}");
+               .Map(x => x.Code, a => $"{a.Alias}_{a.Layer}_{a.Number}");
 
             config.ForType<SysModule, ResourceItemVM>()
                .Map(x => x.ResourceCode, a => $"{a.ParentAlias}_{a.Alias}_{a.Layer}_{a.Number}");
