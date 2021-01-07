@@ -35,7 +35,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.Snowflake", "src\6-Comm
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.Core.Extensions", "src\5-Infrastructure\Hao.Core.Extensions\Hao.Core.Extensions.csproj", "{8ED48A73-C61C-4C7D-8A01-47F564C9DBC1}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".global", ".global", "{D70011BA-8944-4796-BC98-AFCA04555DAD}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "devops", "devops", "{D70011BA-8944-4796-BC98-AFCA04555DAD}"
 	ProjectSection(SolutionItems) = preProject
 		Dockerfile = Dockerfile
 	EndProjectSection
@@ -56,9 +56,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.Repository", "src\4-Rep
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4-Repository", "4-Repository", "{73D4FF4D-8F6A-4C37-8A28-B14245805241}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hao.Word", "src\6-Common\Hao.Word\Hao.Word.csproj", "{622AAC62-509A-4D23-A064-1FD10061A5EE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.Word", "src\6-Common\Hao.Word\Hao.Word.csproj", "{622AAC62-509A-4D23-A064-1FD10061A5EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hao.Runtime", "src\5-Infrastructure\Hao.Runtime\Hao.Runtime.csproj", "{365D9F26-58D5-4EED-862C-4951E49A917E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.Runtime", "src\5-Infrastructure\Hao.Runtime\Hao.Runtime.csproj", "{365D9F26-58D5-4EED-862C-4951E49A917E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
