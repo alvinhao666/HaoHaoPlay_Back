@@ -28,6 +28,7 @@ namespace Hao.AppService
             module.Type = ModuleType.Resource;
             module.Sort = 0;
             module.ParentAlias = parentNode.Alias;
+
             await AddModule(module);
         }
 

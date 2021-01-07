@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Hao.Enum;
 using Npgsql;
 using Hao.Library;
-using MapsterMapper;
 using Mapster;
 
 namespace Hao.AppService
@@ -42,6 +41,11 @@ namespace Hao.AppService
             H_AssertEx.That(isExistSameName, "存在相同名称的模块，请重新输入");
 
             var module = vm.Adapt<SysModule>();
+
+            if (parentNode.Type == ModuleType.Sub) module.Alias = $"{parentNode.Alias}_{module.Alias}";
+
+            module.ParentAlias = parentNode.Alias;
+
             await AddModule(module);
         }
 
