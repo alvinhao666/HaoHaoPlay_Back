@@ -26,11 +26,9 @@ namespace Hao.Core
         /// <returns></returns>
         public Query<T> OrderBy<TMember>(Expression<Func<T,TMember>> column)
         {
-            if (OrderByConditions == null) OrderByConditions = new List<OrderByInfo>();
-
             var body = column.Body as MemberExpression;
 
-            OrderByConditions.Add(new OrderByInfo { FieldName = body.Member.Name, IsAsc = true });
+            ThenBy(body.Member.Name);
 
             return this;
         }
@@ -42,13 +40,19 @@ namespace Hao.Core
         /// <returns></returns>
         public Query<T> OrderByDescending<TMember>(Expression<Func<T, TMember>> column)
         {
-            if (OrderByConditions == null) OrderByConditions = new List<OrderByInfo>();
-
             var body = column.Body as MemberExpression;
 
-            OrderByConditions.Add(new OrderByInfo { FieldName = body.Member.Name, IsAsc = false });
+            ThenBy(body.Member.Name, false);
 
             return this;
+        }
+
+
+        private void ThenBy(string fieldName, bool isAsc = true)
+        {
+            if (OrderByConditions == null) OrderByConditions = new List<OrderByInfo>();
+
+            OrderByConditions.Add(new OrderByInfo { FieldName = fieldName, IsAsc = isAsc });
         }
     }
 
