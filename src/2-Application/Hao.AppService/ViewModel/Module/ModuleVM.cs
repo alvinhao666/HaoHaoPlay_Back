@@ -81,6 +81,7 @@ namespace Hao.AppService
         /// 编码
         /// </summary>
         public string Code { get; set; }
+
         /// <summary>
         /// 资源项
         /// </summary>
