@@ -25,7 +25,7 @@ namespace Hao.WebApi
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
-        [AuthCode("1_32768")]
+        [AuthCode("App_AddResource_1_32768")]
         public async Task Add([FromBody]ResourceAddRequest request) => await _moduleAppService.AddResource(request);
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace Hao.WebApi
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
-        [AuthCode("1_131072")]
+        [AuthCode("App_DeleteResource_1_131072")]
         public async Task Delete(long? id) => await _moduleAppService.DeleteResource(id.Value);
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace Hao.WebApi
         /// </summary>
         /// <returns></returns>
         [HttpGet("{parentId}")]
-        [AuthCode("1_16777216")]
+        [AuthCode("App_Search_1_16777216")]
         public async Task<List<ResourceItemVM>> GetList(long? parentId) => await _moduleAppService.GetResourceList(parentId.Value);
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace Hao.WebApi
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        [AuthCode("1_65536")]
+        [AuthCode("App_EditResource_1_65536")]
         public async Task Update(long? id, [FromBody]ResourceUpdateRequest request) => await _moduleAppService.UpdateResource(id.Value, request);
     }
 }

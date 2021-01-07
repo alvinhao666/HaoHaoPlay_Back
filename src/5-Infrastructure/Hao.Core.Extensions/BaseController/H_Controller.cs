@@ -140,19 +140,25 @@ namespace Hao.Core.Extensions
         /// <param name="userAuthNumbers"></param>
         private void CheckAuth(ActionExecutingContext context, List<long> userAuthNumbers)
         {
+            H_AssertEx.That(userAuthNumbers == null || userAuthNumbers.Count == 0, "您所拥有的权限值有误，请检查");
 
             var descriptor = context.ActionDescriptor as ControllerActionDescriptor;
             var attribute = descriptor.MethodInfo.CustomAttributes.FirstOrDefault(x => x.AttributeType == typeof(AuthCodeAttribute));
 
             if (attribute != null)
             {
-                var authInfos = attribute.ConstructorArguments.FirstOrDefault().Value.ToString().Split('_');
+                var auths = attribute.ConstructorArguments.FirstOrDefault().Value.ToString().Split('_');
 
-                if (authInfos.Length != 2 || !int.TryParse(authInfos[0], out var layer) || !long.TryParse(authInfos[1], out var authCode)) throw new H_Exception("接口权限值有误，请检查");
+                H_AssertEx.That(auths.Length < 2, "接口权限值有误，请检查");
 
-                if (userAuthNumbers == null || userAuthNumbers.Count == 0) throw new H_Exception("所拥有的权限值有误，请检查");
+                var count = auths.Length;
 
-                if ((userAuthNumbers[--layer] & authCode) != authCode) throw new H_Exception("没有接口权限");
+                int layer = 0;
+                long authNum = 0L;
+
+                H_AssertEx.That(!int.TryParse(auths[count - 2], out layer) || !long.TryParse(auths[count - 1], out authNum), "接口权限值有误，请检查");
+
+                H_AssertEx.That((userAuthNumbers[--layer] & authNum) != authNum, "没有接口权限");
             }
         }
 

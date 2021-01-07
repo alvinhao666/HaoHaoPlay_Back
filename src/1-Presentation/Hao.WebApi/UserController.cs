@@ -29,7 +29,7 @@ namespace Hao.WebApi
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
-        [AuthCode("1_32")]
+        [AuthCode("User_Add_1_32")]
         public async Task Add([FromBody]UserAddRequest request) => await _userAppService.Add(request);
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace Hao.WebApi
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [AuthCode("1_8388608")]
+        [AuthCode("User_Search_1_8388608")]
         public async Task<PagedResult<UserVM>> GetPagedList([FromQuery]UserQueryInput queryInput) => await _userAppService.GetPagedList(queryInput);
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace Hao.WebApi
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        [AuthCode("1_8388608")]
+        [AuthCode("User_Search_1_8388608")]
         public async Task<UserDetailVM> Get(long? id) => await _userAppService.Get(id.Value);
 
         ///// <summary>
@@ -65,7 +65,7 @@ namespace Hao.WebApi
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        [AuthCode("1_64")]
+        [AuthCode("User_Edit_1_64")]
         public async Task Update(long? id, [FromBody]UserUpdateRequest request) => await _userAppService.Update(id.Value, request);
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace Hao.WebApi
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        [AuthCode("1_128")]
+        [AuthCode("User_Disable_1_128")]
         public async Task Disable(long? id) => await _userAppService.UpdateStatus(id.Value, false);
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace Hao.WebApi
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        [AuthCode("1_256")]
+        [AuthCode("User_Enable_1_256")]
         public async Task Enable(long? id) => await _userAppService.UpdateStatus(id.Value, true);
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace Hao.WebApi
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
-        [AuthCode("1_512")]
+        [AuthCode("User_Delete_1_512")]
         public async Task Delete(long? id) => await _userAppService.Delete(id.Value);
 
         /// <summary>
@@ -100,7 +100,7 @@ namespace Hao.WebApi
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [AuthCode("1_8388608")]
+        [AuthCode("User_Search_1_8388608")]
         public async Task<List<RoleSelectVM>> GetRoleList() => await _roleAppService.GetRoleListByCurrentRole();
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace Hao.WebApi
         /// <param name="queryInput"></param>
         /// <returns></returns>
         [HttpGet]
-        [AuthCode("1_8388608")]
+        [AuthCode("User_Search_1_8388608")]
         public async Task<bool> IsExistUser([FromQuery] UserQueryInput queryInput) => await _userAppService.IsExist(queryInput);
 
 
@@ -119,7 +119,7 @@ namespace Hao.WebApi
         /// <param name="queryInput"></param>
         /// <returns></returns>
         [HttpGet]
-        [AuthCode("1_2048")]
+        [AuthCode("User_Export_1_2048")]
         public async Task<UserExcelVM> Export([FromQuery]UserQueryInput queryInput) => await _userAppService.Export(queryInput);
 
 
@@ -129,7 +129,7 @@ namespace Hao.WebApi
         /// <param></param>
         /// <returns></returns>
         [HttpPost]
-        [AuthCode("1_1024")]
+        [AuthCode("User_Import_1_1024")]
         public async Task Import() => await _userAppService.Import(HttpContext.Request.Form.Files);
     }
 }

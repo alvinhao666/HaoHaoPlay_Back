@@ -53,6 +53,11 @@ namespace Hao.AppService
         /// <summary>
         /// 年龄
         /// </summary>
-        Age
+        Age,
+
+        /// <summary>
+        /// 最后登录时间
+        /// </summary>
+        LastLoginTime
     }
 }

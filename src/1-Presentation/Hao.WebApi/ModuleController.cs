@@ -25,7 +25,7 @@ namespace Hao.WebApi
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
-        [AuthCode("1_4096")]
+        [AuthCode("App_Add_1_4096")]
         public async Task Add([FromBody]ModuleAddRequest request) => await _moduleAppService.Add(request);
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace Hao.WebApi
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [AuthCode("1_16777216")]
+        [AuthCode("App_Search_1_16777216")]
         public async Task<List<ModuleVM>> GetList() => await _moduleAppService.GetTreeList();
 
 
@@ -42,7 +42,7 @@ namespace Hao.WebApi
         /// </summary>
         /// <returns></returns>
         [HttpGet("{id}")]
-        [AuthCode("1_16777216")]
+        [AuthCode("App_Search_1_16777216")]
         public async Task<ModuleDetailVM> Get(long? id) => await _moduleAppService.Get(id.Value);
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace Hao.WebApi
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        [AuthCode("1_8192")]
+        [AuthCode("App_Update_1_8192")]
         public async Task Update(long? id, [FromBody]ModuleUpdateRequest request) => await _moduleAppService.Update(id.Value, request);
 
 
@@ -62,7 +62,7 @@ namespace Hao.WebApi
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
-        [AuthCode("1_16384")]
+        [AuthCode("App_Delete_1_16384")]
         public async Task Delete(long? id) => await _moduleAppService.Delete(id.Value);
     }
 }
