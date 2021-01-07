@@ -64,16 +64,15 @@ namespace Hao.AppService
         [UnitOfWork]
         public async Task Add(UserAddRequest vm)
         {
-            var users = await _userRep.GetAllAysnc(new UserQuery()
-            {
-                LoginName = vm.LoginName
-            });
-            if (users.Count > 0) throw new H_Exception("账号已存在，请重新输入");
+            var users = await _userRep.GetAllAysnc(new UserQuery { LoginName = vm.LoginName });
+
+            H_AssertEx.That(users.Count > 0, "账号已存在，请重新输入");
 
             var role = await _roleRep.GetAysnc(vm.RoleId.Value);
-            if (role == null) throw new H_Exception("角色不存在，请重新选择");
-            if (role.IsDeleted) throw new H_Exception("角色已删除，请重新选择");
-            if (role.Level <= _currentUser.RoleLevel) throw new H_Exception("无法添加同级及高级角色用户");
+            H_AssertEx.That(role == null, "角色不存在，请重新选择");
+            H_AssertEx.That(role.IsDeleted, "角色已删除，请重新选择");
+
+            H_AssertEx.That(role.Level <= _currentUser.RoleLevel, "无法添加同级及高级角色用户");
 
             var user = vm.Adapt<SysUser>();
             user.FirstNameSpell = H_Spell.GetFirstLetter(user.Name.ToCharArray()[0]);
@@ -92,7 +91,7 @@ namespace Hao.AppService
             }
             catch (PostgresException ex)
             {
-                if (ex.SqlState == H_PostgresSqlState.E23505) throw new H_Exception("账号已存在，请重新输入");//违反唯一键
+                H_AssertEx.That(ex.SqlState == H_PostgresSqlState.E23505, "账号已存在，请重新输入");
             }
 
             await _roleRep.UpdateAsync(role, a => new { a.UserCount });
@@ -245,14 +244,12 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task Import(IFormFileCollection files)
         {
-            if (files == null || files.Count == 0) throw new H_Exception("请选择Excel文件");
+            H_AssertEx.That(files == null || files.Count == 0, "请选择Excel文件");
 
             //格式限制
             var allowType = new string[] { "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" };
 
-            if (files.Any(b => !allowType.Contains(b.ContentType))) throw new H_Exception("只能上传Excel文件");
-
-
+            H_AssertEx.That(files.Any(b => !allowType.Contains(b.ContentType)), "只能上传Excel文件");
             ////大小限制
             //if (files.Sum(b => b.Length) >= 1024 * 1024 * 4)
             //{

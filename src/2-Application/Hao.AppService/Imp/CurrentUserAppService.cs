@@ -117,7 +117,9 @@ namespace Hao.AppService
         {
             var user = await _userRep.GetAysnc(_currentUser.Id.Value);
             oldPassword = H_EncryptProvider.HMACSHA256(oldPassword, _appsettings.Key.Sha256Key);
-            if (user.Password != oldPassword) throw new H_Exception("原密码错误");
+
+            H_AssertEx.That(user.Password != oldPassword, "原密码错误");
+
             user.PasswordLevel = (PasswordLevel)H_Util.CheckPasswordLevel(newPassword);
             newPassword = H_EncryptProvider.HMACSHA256(newPassword, _appsettings.Key.Sha256Key);
             user.Password = newPassword;
