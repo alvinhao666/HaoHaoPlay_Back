@@ -53,6 +53,10 @@ namespace Hao.AppService
         /// <summary>
         /// 年龄
         /// </summary>
-        Age
+        Age,
+        /// <summary>
+        /// 创建时间
+        /// </summary>
+        CreateTime
     }
 }
