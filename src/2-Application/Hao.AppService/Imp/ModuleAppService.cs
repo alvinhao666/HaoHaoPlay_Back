@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Hao.Enum;
 using Npgsql;
 using Hao.Library;
-using MapsterMapper;
 using Mapster;
 
 namespace Hao.AppService
@@ -34,13 +33,19 @@ namespace Hao.AppService
         public async Task Add(ModuleAddRequest vm)
         {
             var parentNode = await GetModuleDetail(vm.ParentId.Value);
-            if (parentNode.Type == ModuleType.Sub) throw new H_Exception("子菜单无法继续添加节点");
+
+            H_AssertEx.That(parentNode.Type == ModuleType.Sub, "子菜单无法继续添加节点");
 
             var isExistSameName = await _moduleRep.IsExistSameNameModule(vm.Name, vm.Type, vm.ParentId);
 
-            if (isExistSameName) throw new H_Exception("存在相同名称的模块，请重新输入");
+            H_AssertEx.That(isExistSameName, "存在相同名称的模块，请重新输入");
 
             var module = vm.Adapt<SysModule>();
+
+            if (parentNode.Type == ModuleType.Sub) module.Alias = $"{parentNode.Alias}_{module.Alias}";
+
+            module.ParentAlias = parentNode.Alias;
+
             await AddModule(module);
         }
 
@@ -89,12 +94,13 @@ namespace Hao.AppService
         [DistributedLock("ModuleAppService_UpdateModule")]
         public async Task Update(long id, ModuleUpdateRequest vm)
         {
-            if (id == 0) throw new H_Exception("无法操作系统根节点");
+            H_AssertEx.That(id == 0, "无法操作系统根节点");
+
             var module = await GetModuleDetail(id);
 
             var isExistSameName = await _moduleRep.IsExistSameNameModule(vm.Name, module.Type, module.ParentId, id);
 
-            if (isExistSameName) throw new H_Exception("存在相同名称的模块，请重新输入");
+            H_AssertEx.That(isExistSameName, "存在相同名称的模块，请重新输入");
 
             module.Name = vm.Name;
             module.Sort = vm.Sort;
@@ -117,7 +123,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task Delete(long id)
         {
-            if (id == 0) throw new H_Exception("无法操作系统根节点");
+            H_AssertEx.That(id == 0, "无法操作系统根节点");
 
             var module = await _moduleRep.GetAysnc(id);
 
@@ -125,7 +131,8 @@ namespace Hao.AppService
             {
                 ParentId = module.Id
             });
-            if (childs != null && childs.Count > 0) throw new H_Exception("存在子节点无法删除");
+
+            H_AssertEx.That(childs != null && childs.Count > 0, "存在子节点无法删除");
 
             await _moduleRep.DeleteAysnc(module);
         }
@@ -157,7 +164,7 @@ namespace Hao.AppService
             }
             catch (PostgresException ex)
             {
-                if (ex.SqlState == H_PostgresSqlState.E23505) throw new H_Exception("添加失败，请重新添加");//违反唯一键
+                H_AssertEx.That(ex.SqlState == H_PostgresSqlState.E23505, "添加失败，请重新添加");
             }
         }
 
@@ -194,8 +201,10 @@ namespace Hao.AppService
         private async Task<SysModule> GetModuleDetail(long id)
         {
             var module = await _moduleRep.GetAysnc(id);
-            if (module == null) throw new H_Exception("节点不存在");
-            if (module.IsDeleted) throw new H_Exception("节点已删除");
+
+            H_AssertEx.That(module == null, "节点不存在");
+            H_AssertEx.That(module.IsDeleted, "节点已删除");
+
             return module;
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 using FluentValidation;
 using Hao.Enum;
 
@@ -61,7 +62,7 @@ namespace Hao.AppService
 
             RuleFor(x => x.RouterUrl).MustHasValue("子应用路由地址").When(a => a.Type == ModuleType.Sub);
 
-            RuleFor(x => x.Alias).MustHasValue("别名").When(a => a.Type == ModuleType.Sub);
+            RuleFor(x => x.Alias).MustHasValue("别名").Must(a => Regex.IsMatch(a, "^[a-zA-Z]+$")).WithMessage("别名只能输入英文");
 
             RuleFor(x => x.Type).MustHasValue("模块类型");
 

@@ -106,14 +106,16 @@ namespace Hao.AppService
         public async Task AddDictItem(DictItemAddRequest request)
         {
             var sameItems = await _dictRep.GetListAysnc(new DictQuery { ParentId = request.ParentId, EqualItemName = request.ItemName });
-            if (sameItems.Count > 0) throw new H_Exception("数据项名称已存在，请重新输入");
+
+            H_AssertEx.That(sameItems.Count > 0, "数据项名称已存在，请重新输入");
 
 
             sameItems = await _dictRep.GetListAysnc(new DictQuery { ParentId = request.ParentId, ItemValue = request.ItemValue });
-            if (sameItems.Count > 0) throw new H_Exception("数据项值已存在，请重新输入");
+
+            H_AssertEx.That(sameItems.Count > 0, "数据项值已存在，请重新输入");
 
 
-            var parentDict = await GetDictDetail(request.ParentId.Value);
+            var parentDict = await GetAysnc(request.ParentId.Value);
             var dict = request.Adapt<SysDict>();
             dict.ParentId = parentDict.Id;
             dict.DictCode = parentDict.DictCode;
@@ -153,10 +155,12 @@ namespace Hao.AppService
             var item = await _dictRep.GetAysnc(id);
 
             var sameItems = await _dictRep.GetListAysnc(new DictQuery { ParentId = item.ParentId, EqualItemName = request.ItemName });
-            if (sameItems.Any(a => a.Id != id)) throw new H_Exception("数据项名称已存在，请重新输入");
+
+            H_AssertEx.That(sameItems.Any(a => a.Id != id), "数据项名称已存在，请重新输入");
 
             sameItems = await _dictRep.GetListAysnc(new DictQuery { ParentId = item.ParentId, ItemValue = request.ItemValue });
-            if (sameItems.Any(a => a.Id != id)) throw new H_Exception("数据项值已存在，请重新输入");
+
+            H_AssertEx.That(sameItems.Any(a => a.Id != id), "数据项值已存在，请重新输入");
 
             item.ItemName = request.ItemName;
             item.ItemValue = request.ItemValue;
@@ -205,11 +209,13 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="dictId"></param>
         /// <returns></returns>
-        private async Task<SysDict> GetDictDetail(long dictId)
+        private async Task<SysDict> GetAysnc(long dictId)
         {
             var dict = await _dictRep.GetAysnc(dictId);
-            if (dict == null) throw new H_Exception("字典数据不存在");
-            if (dict.IsDeleted) throw new H_Exception("字典数据已删除");
+
+            H_AssertEx.That(dict == null, "字典数据不存在");
+            H_AssertEx.That(dict.IsDeleted, "字典数据已删除");
+
             return dict;
         }
         #endregion
