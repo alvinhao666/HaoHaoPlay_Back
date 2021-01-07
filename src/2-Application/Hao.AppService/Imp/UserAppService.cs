@@ -25,14 +25,14 @@ namespace Hao.AppService
     /// <summary>
     /// 用户应用服务
     /// </summary>
-    public partial class UserAppService : ApplicationService, IUserAppService
+    public class UserAppService : ApplicationService, IUserAppService
     {
+
+        private readonly H_AppSettingsConfig _appsettings;
 
         private readonly ISysUserRepository _userRep;
 
         private readonly ISysRoleRepository _roleRep;
-
-        private readonly H_AppSettingsConfig _appsettings;
 
         private readonly ICurrentUser _currentUser;
 
