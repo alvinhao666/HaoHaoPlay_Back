@@ -15,6 +15,7 @@ namespace Hao.Utility
         /// <returns></returns>
         public static bool IsLetter(string value)
         {
+            if (value.IsNullOrWhiteSpace()) return false;
             return Regex.IsMatch(value, "^[a-zA-Z]+$");
         }
 
@@ -25,6 +26,7 @@ namespace Hao.Utility
         /// <returns></returns>
         public static bool IsEmail(string value)
         {
+            if (value.IsNullOrWhiteSpace()) return false;
             return Regex.IsMatch(value, "^[A-Za-z0-9](([_\\.\\-]?[a-zA-Z0-9]+)*)@([A-Za-z0-9]+)(([\\.\\-]?[a-zA-Z0-9]+)*)\\.([A-Za-z]{2,})$");
         }
 
@@ -35,6 +37,7 @@ namespace Hao.Utility
         /// <returns></returns>
         public static bool IsMobile(string value)
         {
+            if (value.IsNullOrWhiteSpace()) return false;
             return Regex.IsMatch(value, "^1\\d{10}$");
         }
 
@@ -46,6 +49,7 @@ namespace Hao.Utility
         /// <returns></returns>
         public static bool IsTel(string value)
         {
+            if (value.IsNullOrWhiteSpace()) return false;
             return Regex.IsMatch(value, "^\\d{3,4}-?\\d{6,8}$");
         }
 
@@ -56,6 +60,7 @@ namespace Hao.Utility
         /// <returns></returns>
         public static bool IsIP(string value)
         {
+            if (value.IsNullOrWhiteSpace()) return false;
             return Regex.IsMatch(value, @"^((2[0-4]\d|25[0-5]|[01]?\d\d?)\.){3}(2[0-4]\d|25[0-5]|[01]?\d\d?)$");
         }
 
@@ -66,6 +71,7 @@ namespace Hao.Utility
         /// <returns></returns>
         public static bool IsUrl(string value)
         {
+            if (value.IsNullOrWhiteSpace()) return false;
             return Regex.IsMatch(value, "^(((file|gopher|news|nntp|telnet|http|ftp|https|ftps|sftp)://)|(www\\.))+(([a-zA-Z0-9\\._-]+\\.[a-zA-Z]{2,6})|([0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}))(/[a-zA-Z0-9\\&amp;%_\\./-~-]*)?$");
         }
 
@@ -77,6 +83,7 @@ namespace Hao.Utility
         /// <returns></returns>
         public static bool IsPostCode(string value)
         {
+            if (value.IsNullOrWhiteSpace()) return false;
             return Regex.IsMatch(value, "^\\d{6}$");
         }
 
@@ -88,6 +95,7 @@ namespace Hao.Utility
         /// <returns></returns>
         public static bool IsIDCard(string value)
         {
+            if (value.IsNullOrWhiteSpace()) return false;
             if (value.Length == 18)
             {
                 return IsIDCard18(value);
@@ -155,6 +163,7 @@ namespace Hao.Utility
         /// <returns></returns>
         public static bool IsChineseChar(string value)
         {
+            if (value.IsNullOrWhiteSpace()) return false;
             return Regex.IsMatch(value, "^[\\u4e00-\\u9fa5]+$");
         }
 
@@ -165,6 +174,7 @@ namespace Hao.Utility
         /// <returns></returns>
         public static bool hasChineseChar(string value)
         {
+            if (value.IsNullOrWhiteSpace()) return false;
             return Regex.IsMatch(value, "[\\u4e00-\\u9fa5]+");
         }
 
@@ -173,10 +183,11 @@ namespace Hao.Utility
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        public static bool IsImage(string url)
+        public static bool IsImage(string value)
         {
-            url = url.ToLower();
-            return !string.IsNullOrWhiteSpace(url) && new string[]
+            if (value.IsNullOrWhiteSpace()) return false;
+            value = value.ToLower();
+            return  new string[]
             {
                 ".jpeg",
                 ".jpg",
@@ -185,7 +196,7 @@ namespace Hao.Utility
                 ".tiff",
                 ".bmp",
                 ".gif"
-            }.FirstOrDefault(d => url.EndsWith(d)) != null;
+            }.FirstOrDefault(d => value.EndsWith(d)) != null;
         }
 
         #endregion
