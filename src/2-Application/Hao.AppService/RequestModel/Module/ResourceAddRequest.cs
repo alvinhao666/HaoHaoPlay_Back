@@ -1,5 +1,5 @@
-﻿using System.Text.RegularExpressions;
-using FluentValidation;
+﻿using FluentValidation;
+using Hao.Utility;
 
 namespace Hao.AppService
 {
@@ -35,7 +35,7 @@ namespace Hao.AppService
 
             RuleFor(x => x.ParentId).MustHasValue("父节点Id");
 
-            RuleFor(x => x.Alias).MustHasValue("别名").Must(a=>Regex.IsMatch(a,"^[a-zA-Z]+$")).WithMessage("别名只能输入英文");
+            RuleFor(x => x.Alias).MustHasValue("别名").Must(a => H_Validator.IsLetter(a)).WithMessage("别名只能输入英文");
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Hao.Enum;
+using Hao.Utility;
 
 namespace Hao.AppService
 {
@@ -32,6 +33,11 @@ namespace Hao.AppService
         /// 排序
         /// </summary>
         public int? Sort { get; set; }
+
+        /// <summary>
+        /// 别名
+        /// </summary>
+        public string Alias { get; set; }
     }
 
     /// <summary>
@@ -51,6 +57,8 @@ namespace Hao.AppService
             RuleFor(x => x.RouterUrl).MustHasValue("子应用路由地址").When(a => a.Type == ModuleType.Sub);
 
             RuleFor(x => x.Sort).MustHasValue("排序值");
+
+            RuleFor(x => x.Alias).MustHasValue("别名").Must(a => H_Validator.IsLetter(a)).WithMessage("别名只能输入英文");
         }
     }
 }
