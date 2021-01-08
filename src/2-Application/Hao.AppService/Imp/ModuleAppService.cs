@@ -111,12 +111,15 @@ namespace Hao.AppService
 
             H_AssertEx.That(isExistSameAlias, "存在相同别名的模块，请重新输入");
 
+            if (module.Alias != vm.Alias)
+            {
+                var sons = await _moduleRep.GetListAysnc(new ModuleQuery { ParentId = id });
+                sons.ForEach(a => a.ParentAlias = vm.Alias);
+
+                await _moduleRep.UpdateAsync(sons, a => new { a.ParentAlias });
+            }
+
             module = vm.Adapt(module);
-
-            var sons = await _moduleRep.GetListAysnc(new ModuleQuery { ParentId = id });
-            sons.ForEach(a => a.ParentAlias = vm.Alias);
-
-            await _moduleRep.UpdateAsync(sons, a => new { a.ParentAlias });
 
             if (module.Type == ModuleType.Main)
             {
