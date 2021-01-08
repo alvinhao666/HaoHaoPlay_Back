@@ -47,5 +47,25 @@ namespace Hao.Repository
 
             return modules.Count > 0;
         }
+
+        /// <summary>
+        /// 是否存在相同别名的模块
+        /// </summary>
+        /// <param name="alias"></param>
+        /// <param name="moduleType"></param>
+        /// <param name="parentId"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<bool> IsExistSameAliasModule(string alias, ModuleType? moduleType, long? parentId, long? id = null)
+        {
+            var modules = await DbContext.Select<SysModule>()
+                                            .Where(a => a.Alias == alias)
+                                            .WhereIf(moduleType.HasValue, a => a.Type == moduleType)
+                                            .WhereIf(parentId.HasValue, a => a.ParentId == parentId)
+                                            .WhereIf(id.HasValue, a => a.Id != id)
+                                            .ToListAsync();
+
+            return modules.Count > 0;
+        }
     }
 }

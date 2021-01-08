@@ -40,6 +40,10 @@ namespace Hao.AppService
 
             H_AssertEx.That(isExistSameName, "存在相同名称的模块，请重新输入");
 
+            var isExistSameAlias = await _moduleRep.IsExistSameAliasModule(vm.Alias, vm.Type, vm.ParentId);
+
+            H_AssertEx.That(isExistSameAlias, "存在相同别名的模块，请重新输入");
+
             var module = vm.Adapt<SysModule>();
 
             if (parentNode.Type == ModuleType.Sub) module.Alias = $"{parentNode.Alias}_{module.Alias}";
@@ -92,6 +96,7 @@ namespace Hao.AppService
         /// <param name="vm"></param>
         /// <returns></returns>
         [DistributedLock("ModuleAppService_UpdateModule")]
+        [UnitOfWork]
         public async Task Update(long id, ModuleUpdateRequest vm)
         {
             H_AssertEx.That(id == 0, "无法操作系统根节点");
@@ -102,17 +107,24 @@ namespace Hao.AppService
 
             H_AssertEx.That(isExistSameName, "存在相同名称的模块，请重新输入");
 
-            module.Name = vm.Name;
-            module.Sort = vm.Sort;
+            var isExistSameAlias = await _moduleRep.IsExistSameNameModule(vm.Alias, module.Type, module.ParentId, id);
+
+            H_AssertEx.That(isExistSameAlias, "存在相同别名的模块，请重新输入");
+
+            module = vm.Adapt(module);
+
+            var sons = await _moduleRep.GetListAysnc(new ModuleQuery { ParentId = id });
+            sons.ForEach(a => a.ParentAlias = vm.Alias);
+
+            await _moduleRep.UpdateAsync(sons, a => new { a.ParentAlias });
+
             if (module.Type == ModuleType.Main)
             {
-                module.Icon = vm.Icon;
-                await _moduleRep.UpdateAsync(module, user => new { module.Name, module.Icon, module.Sort });
+                await _moduleRep.UpdateAsync(module, a => new { a.Name, a.Icon, a.Sort, a.Alias });
             }
             else if (module.Type == ModuleType.Sub)
             {
-                module.RouterUrl = vm.RouterUrl;
-                await _moduleRep.UpdateAsync(module, user => new { module.Name, module.RouterUrl, module.Sort });
+                await _moduleRep.UpdateAsync(module, a => new { a.Name, a.RouterUrl, a.Sort, a.Alias });
             }
         }
 

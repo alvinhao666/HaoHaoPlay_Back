@@ -20,5 +20,15 @@ namespace Hao.Model
         /// <param name="id"></param>
         /// <returns></returns>
         Task<bool> IsExistSameNameModule(string name, ModuleType? moduleType, long? parentId, long? id = null);
+
+        /// <summary>
+        /// 是否存在相同别名的模块
+        /// </summary>
+        /// <param name="alias"></param>
+        /// <param name="moduleType"></param>
+        /// <param name="parentId"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<bool> IsExistSameAliasModule(string alias, ModuleType? moduleType, long? parentId, long? id = null);
     }
 }

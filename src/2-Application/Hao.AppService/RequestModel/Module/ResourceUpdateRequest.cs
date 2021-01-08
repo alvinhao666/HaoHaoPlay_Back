@@ -1,7 +1,5 @@
 ﻿using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Hao.Utility;
 
 namespace Hao.AppService
 {
@@ -19,6 +17,11 @@ namespace Hao.AppService
         /// 排序值
         /// </summary>
         public int? Sort { get; set; }
+
+        /// <summary>
+        /// 别名
+        /// </summary>
+        public string Alias { get; set; }
     }
 
     /// <summary>
@@ -31,6 +34,8 @@ namespace Hao.AppService
             RuleFor(x => x.Name).MustHasValue("资源名称");
 
             RuleFor(x => x.Sort).MustHasValue("排序值");
+
+            RuleFor(x => x.Alias).MustHasValue("别名").Must(a => H_Validator.IsLetter(a)).WithMessage("别名只能输入英文");
         }
     }
 }
