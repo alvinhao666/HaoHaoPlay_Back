@@ -32,6 +32,8 @@ namespace Hao.Repository
         /// <returns></returns>
         public async Task UpdateAuth(long? roleId, string authNumbers)
         {
+            InitAsyncLocalCurrentUser();
+            
             await DbContext.Update<SysUser>()
                     .Set(a => a.AuthNumbers, authNumbers)
                     .WhereIf(roleId.HasValue, a => a.RoleId == roleId)
