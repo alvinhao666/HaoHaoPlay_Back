@@ -87,7 +87,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     Console.WriteLine($"错误信息:{e.Exception.Message}");
                 }
                 Console.ForegroundColor = ConsoleColor.DarkGreen;
-                Console.WriteLine("<<<<<<<<<<<<<<< 数据库日志 END >>>>>>>>>>>>>>>");
+                Console.WriteLine("<<<<<<<<<<<<<<< 数据库日志 END >>>>>>>>>>>>>>>>");
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine();
             };

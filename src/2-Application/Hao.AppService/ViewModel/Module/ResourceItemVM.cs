@@ -21,5 +21,10 @@
         /// 排序值
         /// </summary>
         public int? Sort { get; set; }
+        
+        /// <summary>
+        /// 别名
+        /// </summary>
+        public string Alias { get; set; }
     }
 }

@@ -34,7 +34,7 @@ namespace Hao.AppService
         /// 获取模块列表
         /// </summary>
         /// <returns></returns>
-        Task<List<ModuleVM>> GetTreeList();
+        Task<List<ModuleTreeVM>> GetTreeList();
 
         /// <summary>
         /// 获取模块详情
