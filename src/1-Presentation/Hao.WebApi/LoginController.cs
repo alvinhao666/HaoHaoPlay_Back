@@ -19,8 +19,6 @@ namespace Hao.WebApi
         private readonly ILogger _logger = LogManager.GetCurrentClassLogger(); //顺序1
 
         private readonly ILoginAppService _loginAppService;
-        
-        public string Name { get; set; }
 
         public LoginController(ILoginAppService loginService)
         {
