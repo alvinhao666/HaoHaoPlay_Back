@@ -7,11 +7,15 @@ using Hao.Utility;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
+using Hao.Runtime;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
     public static class FreeSqlCollectionExtensions
     {
+        internal static AsyncLocal<ICurrentUser> CurrentUser = new AsyncLocal<ICurrentUser>();
+        
         /// <summary>
         /// orm服务
         /// </summary>
@@ -36,7 +40,9 @@ namespace Microsoft.Extensions.DependencyInjection
                             //.UseNoneCommandParameter(true)
                             .Build();
 
-            fsql.GlobalFilter.ApplyOnly<IsSoftDelete>(nameof(IsSoftDelete), x => x.IsDeleted == false);
+            fsql.GlobalFilter
+                .ApplyOnly<IsSoftDelete>(nameof(IsSoftDelete), x => x.IsDeleted == false);
+                // .ApplyOnlyIf<IsCreateAudited>(nameof(IsCreateAudited), () => CurrentUser.Value != null, x => x.CreatorId == CurrentUser.Value.Id);
             
 #if DEBUG
             fsql.Aop.CurdBefore += (s, e) =>
