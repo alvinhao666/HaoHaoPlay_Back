@@ -6,24 +6,13 @@ using Hao.Utility;
 using System.Linq;
 using AspectCore.DependencyInjection;
 using Hao.Runtime;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Hao.Core
 {
     public abstract class Repository<T, TKey> : IRepository<T, TKey> where T : Entity<TKey>, new() where TKey : struct
     {
-        [FromServiceContext] public ICurrentUser CurrentUser { get; set; }
-
         [FromServiceContext] public IFreeSqlContext DbContext { get; set; }
 
-
-        /// <summary>
-        /// 设置当前用户，不能为异步方法
-        /// </summary>
-        protected void InitAsyncLocalCurrentUser()
-        {
-            FreeSqlCollectionExtensions.CurrentUser.Value = CurrentUser;
-        }
         
         /// <summary>
         /// 根据主键查询单条数据
@@ -32,8 +21,6 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<T> GetAysnc(TKey pkValue)
         {
-            InitAsyncLocalCurrentUser();
-            
             var entity = await DbContext.Select<T>().Where(a => a.Id.Equals(pkValue)).ToOneAsync();
             return entity;
         }
@@ -47,8 +34,6 @@ namespace Hao.Core
         {
             H_Check.Argument.NotEmpty(pkValues, nameof(pkValues));
 
-            InitAsyncLocalCurrentUser();
-            
             return await DbContext.Select<T>().Where(x => pkValues.Contains(x.Id)).ToListAsync();
         }
 
@@ -58,8 +43,6 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<List<T>> GetListAysnc()
         {
-            InitAsyncLocalCurrentUser();
-            
             return await DbContext.Select<T>().ToListAsync();
         }
 
@@ -72,8 +55,6 @@ namespace Hao.Core
         {
             H_Check.Argument.NotNull(query, nameof(query));
 
-            InitAsyncLocalCurrentUser();
-            
             var select = DbContext.Select<T>();
             
             if (query.QueryExpressions?.Count > 0)
@@ -113,8 +94,6 @@ namespace Hao.Core
             H_Check.Argument.NotNull(query, nameof(query));
 
             var select = DbContext.Select<T>();
-            
-            InitAsyncLocalCurrentUser();
 
             if (query.QueryExpressions?.Count > 0)
             {
@@ -136,8 +115,6 @@ namespace Hao.Core
         public virtual async Task<PagedResult<T>> GetPagedListAysnc(Query<T> query)
         {
             H_Check.Argument.NotNull(query, nameof(query));
-            
-            InitAsyncLocalCurrentUser();
 
             var select = DbContext.Select<T>();
 
@@ -184,8 +161,6 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<List<T>> GetAllAysnc()
         {
-            InitAsyncLocalCurrentUser();
-            
             return await DbContext.Select<T>()
                                    .DisableGlobalFilter(nameof(IsSoftDelete))
                                    .OrderByDescending(a => a.CreateTime)
@@ -200,8 +175,6 @@ namespace Hao.Core
         {
             H_Check.Argument.NotNull(query, nameof(query));
 
-            InitAsyncLocalCurrentUser();
-            
             var select = DbContext.Select<T>();
 
             if (query.QueryExpressions?.Count > 0)
@@ -239,27 +212,6 @@ namespace Hao.Core
         {
             H_Check.Argument.NotNull(entity, nameof(entity));
 
-            //var type = typeof(T);
-            //var isGuid = typeof(TKey) == H_Util.GuidType;
-            //var id = type.GetProperty(nameof(Entity<TKey>.Id));
-
-            //if (isGuid)
-            //{
-            //    id.SetValue(entity, Guid.NewGuid());
-            //}
-            //else
-            //{
-            //    id.SetValue(entity, IdWorker.NextId());
-            //}
-
-            if (CurrentUser?.Id != null)
-            {
-                entity.CreatorId = CurrentUser.Id;
-                entity.CreateTime = DateTime.Now;
-            }
-            
-            InitAsyncLocalCurrentUser();
-            
             var obj = await DbContext.Insert(entity).ExecuteInsertedAsync();
             
             return obj?.FirstOrDefault();
@@ -274,18 +226,6 @@ namespace Hao.Core
         {
             H_Check.Argument.NotEmpty(entities, nameof(entities));
 
-            var timeNow = DateTime.Now;
-            if (CurrentUser?.Id != null)
-            {
-                entities.ForEach(item =>
-                {
-                    item.CreatorId = CurrentUser.Id;
-                    item.CreateTime = timeNow;
-                });
-            }
-            
-            InitAsyncLocalCurrentUser();
-            
             return await DbContext.Insert(entities).ExecuteInsertedAsync();
         }
 
@@ -299,12 +239,6 @@ namespace Hao.Core
         {
             H_Check.Argument.NotNull(entity, nameof(entity));
 
-            if (CurrentUser?.Id != null)
-            {
-                entity.ModifierId = CurrentUser.Id;
-                entity.ModifyTime = DateTime.Now;
-            }
-
             var update = DbContext.Update<T>()
                                     .SetSource(entity);
 
@@ -313,9 +247,7 @@ namespace Hao.Core
                 if (item == null) continue;
                 update.Where(item);
             }
-            
-            InitAsyncLocalCurrentUser();
-            
+
             return await update.ExecuteAffrowsAsync();
         }
 
@@ -339,16 +271,14 @@ namespace Hao.Core
 
             var columns = body.Members.Select(a => a.Name).ToList();
 
-            if (CurrentUser?.Id != null)
-            {
-                entity.ModifierId = CurrentUser.Id;
-                entity.ModifyTime = DateTime.Now;
-                columns.Add(nameof(entity.ModifierId));
-                columns.Add(nameof(entity.ModifyTime));
-            }
+            // if (CurrentUser?.Id != null)
+            // {
+            //     entity.ModifierId = CurrentUser.Id;
+            //     entity.ModifyTime = DateTime.Now;
+            //     columns.Add(nameof(entity.ModifierId));
+            //     columns.Add(nameof(entity.ModifyTime));
+            // }
 
-            InitAsyncLocalCurrentUser();
-            
             var update = DbContext.Update<T>()
                                     .SetSource(entity)
                                     .UpdateColumns(columns.ToArray());
@@ -372,18 +302,16 @@ namespace Hao.Core
         {
             H_Check.Argument.NotEmpty(entities, nameof(entities));
 
-            if (CurrentUser?.Id != null)
-            {
-                var timeNow = DateTime.Now;
-                entities.ForEach(item =>
-                {
-                    item.ModifierId = CurrentUser.Id;
-                    item.ModifyTime = timeNow;
-                });
-            }
-            
-            InitAsyncLocalCurrentUser();
-            
+            // if (CurrentUser?.Id != null)
+            // {
+            //     var timeNow = DateTime.Now;
+            //     entities.ForEach(item =>
+            //     {
+            //         item.ModifierId = CurrentUser.Id;
+            //         item.ModifyTime = timeNow;
+            //     });
+            // }
+
             var update = DbContext.Update<T>()
                                     .SetSource(entities);
 
@@ -416,20 +344,18 @@ namespace Hao.Core
 
             var columns = body.Members.Select(a => a.Name).ToList();
 
-            if (CurrentUser?.Id != null)
-            {
-                var timeNow = DateTime.Now;
-                entities.ForEach(item =>
-                {
-                    item.ModifierId = CurrentUser.Id;
-                    item.ModifyTime = timeNow;
-                });
-                columns.Add(nameof(Entity<TKey>.ModifierId));
-                columns.Add(nameof(Entity<TKey>.ModifyTime));
-            }
+            // if (CurrentUser?.Id != null)
+            // {
+            //     var timeNow = DateTime.Now;
+            //     entities.ForEach(item =>
+            //     {
+            //         item.ModifierId = CurrentUser.Id;
+            //         item.ModifyTime = timeNow;
+            //     });
+            //     columns.Add(nameof(Entity<TKey>.ModifierId));
+            //     columns.Add(nameof(Entity<TKey>.ModifyTime));
+            // }
 
-            InitAsyncLocalCurrentUser();
-            
             var update = DbContext.Update<T>()
                                     .SetSource(entities)
                                     .UpdateColumns(columns.ToArray());
@@ -477,12 +403,8 @@ namespace Hao.Core
         /// <returns></returns>
         private async Task<int> DeleteAysnc(TKey pkValue, params Expression<Func<T, bool>>[] whereColumns)
         {
-            var existUser = CurrentUser?.Id != null;
-            
             var delete = DbContext.Update<T>()
                                     .Set(a => a.IsDeleted, true)
-                                    .SetIf(existUser, a => a.ModifierId, CurrentUser.Id)
-                                    .SetIf(existUser, a => a.ModifyTime, DateTime.Now)
                                     .Where(a => a.Id.Equals(pkValue));
 
             foreach (var item in whereColumns)
@@ -490,9 +412,7 @@ namespace Hao.Core
                 if (item == null) continue;
                 delete.Where(item);
             }
-            
-            InitAsyncLocalCurrentUser();
-            
+
             return await delete.ExecuteAffrowsAsync();
         }
 
@@ -506,12 +426,8 @@ namespace Hao.Core
         {
             H_Check.Argument.NotEmpty(pkValues, nameof(pkValues));
 
-            var existUser = CurrentUser?.Id != null;
-            
             var delete = DbContext.Update<T>()
                                     .Set(a => a.IsDeleted, true)
-                                    .SetIf(existUser, a => a.ModifierId, CurrentUser.Id)
-                                    .SetIf(existUser, a => a.ModifyTime, DateTime.Now)
                                     .Where(a => pkValues.Contains(a.Id));
 
             foreach (var item in whereColumns)
@@ -519,9 +435,7 @@ namespace Hao.Core
                 if (item == null) continue;
                 delete.Where(item);
             }
-            
-            InitAsyncLocalCurrentUser();
-            
+
             return await delete.ExecuteAffrowsAsync();
         }
     }
