@@ -57,10 +57,10 @@ namespace Hao.AppService
         /// 获取所有模块列表
         /// </summary>
         /// <returns></returns>
-        public async Task<List<ModuleVM>> GetTreeList()
+        public async Task<List<ModuleTreeVM>> GetTreeList()
         {
             var modules = await _moduleRep.GetListAysnc(new ModuleQuery() { IncludeResource = false });
-            var result = new List<ModuleVM>();
+            var result = new List<ModuleTreeVM>();
             InitModuleTree(result, null, modules);
             return result;
         }
@@ -189,19 +189,19 @@ namespace Hao.AppService
         /// <param name="result"></param>
         /// <param name="parentID"></param>
         /// <param name="sources"></param>
-        private void InitModuleTree(List<ModuleVM> result, long? parentID, List<SysModule> sources)
+        private void InitModuleTree(List<ModuleTreeVM> result, long? parentID, List<SysModule> sources)
         {
             //递归寻找子节点  
             var tempTree = sources.Where(item => item.ParentId == parentID).OrderBy(a => a.Sort);
             foreach (var item in tempTree)
             {
-                var node = new ModuleVM()
+                var node = new ModuleTreeVM()
                 {
                     key = item.Id.ToString(),
                     title = item.Name,
                     isLeaf = item.Type == ModuleType.Sub,
                     expanded = true,
-                    children = new List<ModuleVM>()
+                    children = new List<ModuleTreeVM>()
                 };
                 result.Add(node);
                 InitModuleTree(node.children, item.Id, sources);
