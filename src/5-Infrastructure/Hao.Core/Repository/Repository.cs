@@ -6,27 +6,15 @@ using Hao.Utility;
 using System.Linq;
 using AspectCore.DependencyInjection;
 using Hao.Runtime;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Hao.Core
 {
     public abstract class Repository<T, TKey> : IRepository<T, TKey> where T : Entity<TKey>, new() where TKey : struct
     {
         [FromServiceContext] public ICurrentUser CurrentUser { get; set; }
-        
-        private IFreeSqlContext _dbContext;
-        
-        [FromServiceContext]
-        public IFreeSqlContext DbContext
-        {
-            get {  return _dbContext;  }
-            
-            set
-            {
-                // 根据当前用户信息  不同租户 可以设置不同的查询条件 全局过滤器  例如以下 
-                // value.GlobalFilter.ApplyOnly<ICompanyInfo>(nameof(ICompanyInfo),CurrentUser?.CompanyId!=null,x => x.CompanyId == CurrentUser.CompanyId); // 相同名称的过滤器 最后的会覆盖前面的
-                _dbContext = value;
-            }
-        }
+
+        [FromServiceContext] public IFreeSqlContext DbContext { get; set; }
 
 
         /// <summary>
@@ -36,6 +24,8 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<T> GetAysnc(TKey pkValue)
         {
+            InitAsyncLocalCurrentUser();
+            
             var entity = await DbContext.Select<T>().Where(a => a.Id.Equals(pkValue)).ToOneAsync();
             return entity;
         }
@@ -49,6 +39,8 @@ namespace Hao.Core
         {
             H_Check.Argument.NotEmpty(pkValues, nameof(pkValues));
 
+            InitAsyncLocalCurrentUser();
+            
             return await DbContext.Select<T>().Where(x => pkValues.Contains(x.Id)).ToListAsync();
         }
 
@@ -58,6 +50,8 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<List<T>> GetListAysnc()
         {
+            InitAsyncLocalCurrentUser();
+            
             return await DbContext.Select<T>().ToListAsync();
         }
 
@@ -70,8 +64,10 @@ namespace Hao.Core
         {
             H_Check.Argument.NotNull(query, nameof(query));
 
+            InitAsyncLocalCurrentUser();
+            
             var select = DbContext.Select<T>();
-
+            
             if (query.QueryExpressions?.Count > 0)
             {
                 foreach (var item in query.QueryExpressions)
@@ -109,6 +105,8 @@ namespace Hao.Core
             H_Check.Argument.NotNull(query, nameof(query));
 
             var select = DbContext.Select<T>();
+            
+            InitAsyncLocalCurrentUser();
 
             if (query.QueryExpressions?.Count > 0)
             {
@@ -130,6 +128,8 @@ namespace Hao.Core
         public virtual async Task<PagedResult<T>> GetPagedListAysnc(Query<T> query)
         {
             H_Check.Argument.NotNull(query, nameof(query));
+            
+            InitAsyncLocalCurrentUser();
 
             var select = DbContext.Select<T>();
 
@@ -176,6 +176,8 @@ namespace Hao.Core
         /// <returns></returns>
         public virtual async Task<List<T>> GetAllAysnc()
         {
+            InitAsyncLocalCurrentUser();
+            
             return await DbContext.Select<T>()
                                    .DisableGlobalFilter(nameof(IsSoftDelete))
                                    .OrderByDescending(a => a.CreateTime)
@@ -190,6 +192,8 @@ namespace Hao.Core
         {
             H_Check.Argument.NotNull(query, nameof(query));
 
+            InitAsyncLocalCurrentUser();
+            
             var select = DbContext.Select<T>();
 
             if (query.QueryExpressions?.Count > 0)
@@ -213,8 +217,7 @@ namespace Hao.Core
             {
                 select.OrderByDescending(a => a.CreateTime);
             }
-
-
+            
             return await select.DisableGlobalFilter(nameof(IsSoftDelete))
                                 .ToListAsync();
         }
@@ -246,9 +249,11 @@ namespace Hao.Core
                 entity.CreatorId = CurrentUser.Id;
                 entity.CreateTime = DateTime.Now;
             }
-
-
+            
+            InitAsyncLocalCurrentUser();
+            
             var obj = await DbContext.Insert(entity).ExecuteInsertedAsync();
+            
             return obj?.FirstOrDefault();
         }
 
@@ -270,6 +275,9 @@ namespace Hao.Core
                     item.CreateTime = timeNow;
                 });
             }
+            
+            InitAsyncLocalCurrentUser();
+            
             return await DbContext.Insert(entities).ExecuteInsertedAsync();
         }
 
@@ -297,7 +305,9 @@ namespace Hao.Core
                 if (item == null) continue;
                 update.Where(item);
             }
-
+            
+            InitAsyncLocalCurrentUser();
+            
             return await update.ExecuteAffrowsAsync();
         }
 
@@ -329,7 +339,8 @@ namespace Hao.Core
                 columns.Add(nameof(entity.ModifyTime));
             }
 
-
+            InitAsyncLocalCurrentUser();
+            
             var update = DbContext.Update<T>()
                                     .SetSource(entity)
                                     .UpdateColumns(columns.ToArray());
@@ -362,7 +373,9 @@ namespace Hao.Core
                     item.ModifyTime = timeNow;
                 });
             }
-
+            
+            InitAsyncLocalCurrentUser();
+            
             var update = DbContext.Update<T>()
                                     .SetSource(entities);
 
@@ -407,7 +420,8 @@ namespace Hao.Core
                 columns.Add(nameof(Entity<TKey>.ModifyTime));
             }
 
-
+            InitAsyncLocalCurrentUser();
+            
             var update = DbContext.Update<T>()
                                     .SetSource(entities)
                                     .UpdateColumns(columns.ToArray());
@@ -468,7 +482,9 @@ namespace Hao.Core
                 if (item == null) continue;
                 delete.Where(item);
             }
-
+            
+            InitAsyncLocalCurrentUser();
+            
             return await delete.ExecuteAffrowsAsync();
         }
 
@@ -495,8 +511,18 @@ namespace Hao.Core
                 if (item == null) continue;
                 delete.Where(item);
             }
-
+            
+            InitAsyncLocalCurrentUser();
+            
             return await delete.ExecuteAffrowsAsync();
+        }
+
+        /// <summary>
+        /// 设置当前用户，不能为异步方法
+        /// </summary>
+        private void InitAsyncLocalCurrentUser()
+        {
+            FreeSqlCollectionExtensions.CurrentUser.Value = CurrentUser;
         }
     }
 }
