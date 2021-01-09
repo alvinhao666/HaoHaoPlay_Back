@@ -112,7 +112,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
                     if (CurrentUser.Value?.Id!=null)
                     {
-                        if (e.Property.Name == nameof(IsCreateAudited.CreatorId)) e.Value = CurrentUser.Value?.Id;
+                        if (e.Property.Name == nameof(IsCreateAudited.CreatorId)) e.Value = CurrentUser.Value.Id;
 
                         if (e.Property.Name == nameof(IsCreateAudited.CreateTime)) e.Value = DateTime.Now;
                     }
@@ -122,7 +122,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 {
                     if (CurrentUser.Value?.Id != null)
                     {
-                        if (e.Property.Name == nameof(IsModifyAudited.ModifierId)) e.Value = CurrentUser.Value?.Id;
+                        if (e.Property.Name == nameof(IsModifyAudited.ModifierId)) e.Value = CurrentUser.Value.Id;
                         
                         if (e.Property.Name == nameof(IsModifyAudited.ModifyTime)) e.Value = DateTime.Now;
                     }
