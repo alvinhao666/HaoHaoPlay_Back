@@ -18,6 +18,14 @@ namespace Hao.Core
 
 
         /// <summary>
+        /// 设置当前用户，不能为异步方法
+        /// </summary>
+        protected void InitAsyncLocalCurrentUser()
+        {
+            FreeSqlCollectionExtensions.CurrentUser.Value = CurrentUser;
+        }
+        
+        /// <summary>
         /// 根据主键查询单条数据
         /// </summary>s
         /// <param name="pkValue"></param>
@@ -515,14 +523,6 @@ namespace Hao.Core
             InitAsyncLocalCurrentUser();
             
             return await delete.ExecuteAffrowsAsync();
-        }
-
-        /// <summary>
-        /// 设置当前用户，不能为异步方法
-        /// </summary>
-        private void InitAsyncLocalCurrentUser()
-        {
-            FreeSqlCollectionExtensions.CurrentUser.Value = CurrentUser;
         }
     }
 }
