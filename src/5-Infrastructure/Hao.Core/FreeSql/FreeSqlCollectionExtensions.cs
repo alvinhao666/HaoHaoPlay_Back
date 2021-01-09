@@ -45,14 +45,32 @@ namespace Microsoft.Extensions.DependencyInjection
                 // .ApplyOnlyIf<IsCreateAudited>(nameof(IsCreateAudited), () => CurrentUser.Value != null, x => x.CreatorId == CurrentUser.Value.Id);
             
 #if DEBUG
-            fsql.Aop.CurdBefore += (s, e) =>
-            {                 
-                Console.ForegroundColor = ConsoleColor.Yellow;
+            fsql.Aop.CurdAfter += (s, e) =>
+            {
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
+                Console.WriteLine("<<<<<<<<<<<<<<< 数据库日志 BEGIN >>>>>>>>>>>>>>");
+                var curdType = "查询";
+                switch (e.CurdType)
+                {
+                    case CurdType.Select:
+                        break;
+                    case CurdType.Delete:
+                        curdType = "删除";
+                        break;
+                    case CurdType.Update:
+                        curdType = "更新";
+                        break;
+                    case CurdType.Insert:
+                        curdType = "新增";
+                        break;
+                }
+
                 Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine($"{curdType}实体：{e.EntityType.Name}");
+                Console.WriteLine($"执行时间：{e.ElapsedMilliseconds}");
                 Console.WriteLine($"{e.Sql}");
                 if (e.DbParms.Length > 0)
                 {
-                    Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.ForegroundColor = ConsoleColor.DarkYellow;
                     foreach (var item in e.DbParms)
                     {
@@ -60,6 +78,16 @@ namespace Microsoft.Extensions.DependencyInjection
                         Console.WriteLine($"{item.Value}");
                     }
                 }
+  
+                
+                if (e.Exception != null)
+                {                
+                    Console.ForegroundColor = ConsoleColor.DarkRed;
+                    Console.WriteLine($"执行Sql错误:{e.Sql}");
+                    Console.WriteLine($"错误信息:{e.Exception.Message}");
+                }
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
+                Console.WriteLine("<<<<<<<<<<<<<<< 数据库日志 END >>>>>>>>>>>>>>>");
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.WriteLine();
             };
@@ -80,6 +108,23 @@ namespace Microsoft.Extensions.DependencyInjection
                             var idWorker = services.BuildServiceProvider().GetService<IdWorker>();
                             e.Value = idWorker.NextId();
                         }
+                    }
+
+                    if (CurrentUser.Value?.Id!=null)
+                    {
+                        if (e.Property.Name == nameof(IsCreateAudited.CreatorId)) e.Value = CurrentUser.Value.Id;
+
+                        if (e.Property.Name == nameof(IsCreateAudited.CreateTime)) e.Value = DateTime.Now;
+                    }
+                }
+
+                if (e.AuditValueType == AuditValueType.Update)
+                {
+                    if (CurrentUser.Value?.Id != null)
+                    {
+                        if (e.Property.Name == nameof(IsModifyAudited.ModifierId)) e.Value = CurrentUser.Value.Id;
+                        
+                        if (e.Property.Name == nameof(IsModifyAudited.ModifyTime)) e.Value = DateTime.Now;
                     }
                 }
             };

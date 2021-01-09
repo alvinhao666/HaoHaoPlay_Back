@@ -19,8 +19,6 @@ namespace Hao.Repository
 
             //SELECT  "layer" AS "layer" , COUNT("layer") AS "count"  FROM "sysmodule"   GROUP BY "layer"  ORDER BY "layer" DESC LIMIT 1 offset 0;
 
-            InitAsyncLocalCurrentUser();
-            
             var list = await DbContext.Select<ModuleLayerCountDTO>()
                                         .DisableGlobalFilter(nameof(IsSoftDelete))
                                         .AsTable((_, oldname) => $"sysmodule")
@@ -41,8 +39,6 @@ namespace Hao.Repository
         /// <returns></returns>
         public async Task<bool> IsExistSameNameModule(string name, ModuleType? moduleType, long? parentId, long? id = null)
         {
-            InitAsyncLocalCurrentUser();
-            
             var modules = await DbContext.Select<SysModule>()
                                             .Where(a => a.Name == name)
                                             .WhereIf(moduleType.HasValue, a => a.Type == moduleType)
@@ -63,8 +59,6 @@ namespace Hao.Repository
         /// <returns></returns>
         public async Task<bool> IsExistSameAliasModule(string alias, ModuleType? moduleType, long? parentId, long? id = null)
         {
-            InitAsyncLocalCurrentUser();
-            
             var modules = await DbContext.Select<SysModule>()
                                             .Where(a => a.Alias == alias)
                                             .WhereIf(moduleType.HasValue, a => a.Type == moduleType)

@@ -5,6 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using AspectCore.DependencyInjection;
+using Hao.Runtime;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Hao.Core
 {
@@ -16,6 +19,8 @@ namespace Hao.Core
 
     class FreeSqlContext : IFreeSqlContext
     {
+        [FromServiceContext] public ICurrentUser CurrentUser { get; set; }
+        
         IFreeSql _originalFsql;
         int _transactionCount;
         DbTransaction _transaction;
@@ -31,27 +36,80 @@ namespace Hao.Core
         public IDbFirst DbFirst => _originalFsql.DbFirst;
         public GlobalFilter GlobalFilter => _originalFsql.GlobalFilter;
 
-        public ISelect<T1> Select<T1>() where T1 : class =>
-          _originalFsql.Select<T1>().WithTransaction(_transaction);
-        public ISelect<T1> Select<T1>(object dywhere) where T1 : class => Select<T1>().WhereDynamic(dywhere);
+        public ISelect<T1> Select<T1>() where T1 : class
+        {
+            InitAsyncLocalCurrentUser();
+            return _originalFsql.Select<T1>().WithTransaction(_transaction);
+        }
 
-        public IDelete<T1> Delete<T1>() where T1 : class =>
-          _originalFsql.Delete<T1>().WithTransaction(_transaction);
-        public IDelete<T1> Delete<T1>(object dywhere) where T1 : class => Delete<T1>().WhereDynamic(dywhere);
+        public ISelect<T1> Select<T1>(object dywhere) where T1 : class
+        {
+            InitAsyncLocalCurrentUser();
+            return Select<T1>().WhereDynamic(dywhere);
+        }
 
-        public IUpdate<T1> Update<T1>() where T1 : class =>
-          _originalFsql.Update<T1>().WithTransaction(_transaction);
-        public IUpdate<T1> Update<T1>(object dywhere) where T1 : class => Update<T1>().WhereDynamic(dywhere);
+        public IDelete<T1> Delete<T1>() where T1 : class
+        {
+            InitAsyncLocalCurrentUser();
+            return _originalFsql.Delete<T1>().WithTransaction(_transaction);
+        }
 
-        public IInsert<T1> Insert<T1>() where T1 : class =>
-          _originalFsql.Insert<T1>().WithTransaction(_transaction);
-        public IInsert<T1> Insert<T1>(T1 source) where T1 : class => Insert<T1>().AppendData(source);
-        public IInsert<T1> Insert<T1>(T1[] source) where T1 : class => Insert<T1>().AppendData(source);
-        public IInsert<T1> Insert<T1>(List<T1> source) where T1 : class => Insert<T1>().AppendData(source);
-        public IInsert<T1> Insert<T1>(IEnumerable<T1> source) where T1 : class => Insert<T1>().AppendData(source);
+        public IDelete<T1> Delete<T1>(object dywhere) where T1 : class
+        {
+            InitAsyncLocalCurrentUser();
+            return Delete<T1>().WhereDynamic(dywhere);
+        }
 
-        public IInsertOrUpdate<T1> InsertOrUpdate<T1>() where T1 : class =>
-          _originalFsql.InsertOrUpdate<T1>().WithTransaction(_transaction);
+        public IUpdate<T1> Update<T1>() where T1 : class
+        {
+            InitAsyncLocalCurrentUser();
+            return _originalFsql.Update<T1>().WithTransaction(_transaction);
+        }
+
+        public IUpdate<T1> Update<T1>(object dywhere) where T1 : class
+        {
+            InitAsyncLocalCurrentUser();
+            return Update<T1>().WhereDynamic(dywhere);
+        }
+
+        public IInsert<T1> Insert<T1>() where T1 : class
+        {
+            InitAsyncLocalCurrentUser();
+            return _originalFsql.Insert<T1>().WithTransaction(_transaction);
+        }
+
+        public IInsert<T1> Insert<T1>(T1 source) where T1 : class
+        {
+            InitAsyncLocalCurrentUser();
+            return Insert<T1>().AppendData(source);
+        }
+
+        public IInsert<T1> Insert<T1>(T1[] source) where T1 : class
+        {
+            InitAsyncLocalCurrentUser();
+            return Insert<T1>().AppendData(source);
+        }
+
+        public IInsert<T1> Insert<T1>(List<T1> source) where T1 : class
+        {
+            InitAsyncLocalCurrentUser();
+            return Insert<T1>().AppendData(source);
+        }
+
+        public IInsert<T1> Insert<T1>(IEnumerable<T1> source) where T1 : class
+        {
+            InitAsyncLocalCurrentUser();
+            return Insert<T1>().AppendData(source);
+        }
+
+        [Obsolete]
+        public IInsertOrUpdate<T1> InsertOrUpdate<T1>() where T1 : class
+        {
+            // InitAsyncLocalCurrentUser();
+            // return _originalFsql.InsertOrUpdate<T1>().WithTransaction(_transaction);
+            throw new H_Exception("InsertOrUpdate方法暂且不可使用");
+        }
+          
 
         public void Dispose() => TransactionCommitPriv(true);
         public void Transaction(Action handler) => TransactionPriv(null, handler);
@@ -95,6 +153,16 @@ namespace Hao.Core
                     _transaction = null;
                 }
             }
+        }
+        
+        
+
+        /// <summary>
+        /// 设置当前用户，不能为异步方法
+        /// </summary>
+        private void InitAsyncLocalCurrentUser()
+        {
+            FreeSqlCollectionExtensions.CurrentUser.Value = CurrentUser;
         }
     }
 }
