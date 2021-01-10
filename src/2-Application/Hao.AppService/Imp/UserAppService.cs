@@ -192,13 +192,13 @@ namespace Hao.AppService
         }
 
         /// <summary>
-        /// 是否存在用户
+        /// 是否存在账号
         /// </summary>
-        /// <param name="queryInput"></param>
+        /// <param name="loginName"></param>
         /// <returns></returns>
-        public async Task<bool> IsExist(UserQueryInput queryInput)
+        public async Task<bool> IsExistLoginName(string loginName)
         {
-            var query = queryInput.Adapt<UserQuery>();
+            var query = new UserQuery {LoginName = loginName};
             var users = await _userRep.GetListAysnc(query);
             return users.Count > 0;
         }
