@@ -11,9 +11,20 @@ namespace Hao.Utility
         /// <summary>
         /// 验证是否是字母
         /// </summary>
-        /// <param name="value">Email地址</param>
+        /// <param name="value"></param>
         /// <returns></returns>
         public static bool IsLetter(string value)
+        {
+            if (value.IsNullOrWhiteSpace()) return false;
+            return Regex.IsMatch(value, "^[a-zA-Z]+$");
+        }
+        
+        /// <summary>
+        /// 验证是否是字母或者数字
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static bool IsLetterOrDigit(string value)
         {
             if (value.IsNullOrWhiteSpace()) return false;
             return Regex.IsMatch(value, "^[a-zA-Z]+$");

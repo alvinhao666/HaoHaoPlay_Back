@@ -104,13 +104,13 @@ namespace Hao.WebApi
         public async Task<List<RoleSelectVM>> GetRoleList() => await _roleAppService.GetRoleListByCurrentRole();
 
         /// <summary>
-        /// 是否存在用户
+        /// 是否存在相同账号
         /// </summary>
-        /// <param name="queryInput"></param>
+        /// <param name="loginName"></param>
         /// <returns></returns>
         [HttpGet]
         [AuthCode("User_Search_1_8388608")]
-        public async Task<bool> IsExistUser([FromQuery] UserQueryInput queryInput) => await _userAppService.IsExist(queryInput);
+        public async Task<bool> IsExistLoginName(string loginName) => await _userAppService.IsExistLoginName(loginName);
 
 
         /// <summary>

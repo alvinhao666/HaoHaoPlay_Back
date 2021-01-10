@@ -61,11 +61,11 @@ namespace Hao.AppService
         Task<UserExcelVM> Export(UserQueryInput queryInput);
 
         /// <summary>
-        /// 是否存在用户
+        /// 是否存在账号
         /// </summary>
         /// <param name="queryInput"></param>
         /// <returns></returns>
-        Task<bool> IsExist(UserQueryInput queryInput);
+        Task<bool> IsExistLoginName(string loginName);
 
         /// <summary>
         /// 导入excel

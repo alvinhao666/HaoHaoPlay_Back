@@ -93,7 +93,7 @@ namespace Hao.AppService
             
             query.OrderBy(a=>a.Level);
             
-            var roles = await _roleRep.GetListAysnc();
+            var roles = await _roleRep.GetListAysnc(query);
 
             var result = roles.Adapt<List<RoleSelectVM>>();
             return result;
