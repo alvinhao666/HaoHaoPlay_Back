@@ -5,7 +5,6 @@ using System.Linq.Expressions;
 using Hao.Utility;
 using System.Linq;
 using AspectCore.DependencyInjection;
-using Hao.Runtime;
 
 namespace Hao.Core
 {
@@ -271,14 +270,6 @@ namespace Hao.Core
 
             var columns = body.Members.Select(a => a.Name).ToList();
 
-            // if (CurrentUser?.Id != null)
-            // {
-            //     entity.ModifierId = CurrentUser.Id;
-            //     entity.ModifyTime = DateTime.Now;
-            //     columns.Add(nameof(entity.ModifierId));
-            //     columns.Add(nameof(entity.ModifyTime));
-            // }
-
             var update = DbContext.Update<T>()
                                     .SetSource(entity)
                                     .UpdateColumns(columns.ToArray());
@@ -301,16 +292,6 @@ namespace Hao.Core
         public virtual async Task<int> UpdateAsync(List<T> entities, params Expression<Func<T, bool>>[] whereColumns)
         {
             H_Check.Argument.NotEmpty(entities, nameof(entities));
-
-            // if (CurrentUser?.Id != null)
-            // {
-            //     var timeNow = DateTime.Now;
-            //     entities.ForEach(item =>
-            //     {
-            //         item.ModifierId = CurrentUser.Id;
-            //         item.ModifyTime = timeNow;
-            //     });
-            // }
 
             var update = DbContext.Update<T>()
                                     .SetSource(entities);
@@ -343,18 +324,6 @@ namespace Hao.Core
             H_Check.Argument.NotEmpty(body.Members, nameof(updateColumns));
 
             var columns = body.Members.Select(a => a.Name).ToList();
-
-            // if (CurrentUser?.Id != null)
-            // {
-            //     var timeNow = DateTime.Now;
-            //     entities.ForEach(item =>
-            //     {
-            //         item.ModifierId = CurrentUser.Id;
-            //         item.ModifyTime = timeNow;
-            //     });
-            //     columns.Add(nameof(Entity<TKey>.ModifierId));
-            //     columns.Add(nameof(Entity<TKey>.ModifyTime));
-            // }
 
             var update = DbContext.Update<T>()
                                     .SetSource(entities)
