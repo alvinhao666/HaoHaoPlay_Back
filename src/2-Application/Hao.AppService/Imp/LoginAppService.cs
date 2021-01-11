@@ -184,14 +184,14 @@ namespace Hao.AppService
         /// 递归初始化菜单树
         /// </summary>
         /// <param name="result"></param>
-        /// <param name="parentID"></param>
+        /// <param name="parentId"></param>
         /// <param name="sources"></param>
         /// <param name="authNums"></param>
         /// <param name="userId"></param>
-        private void InitMenuTree(List<MenuVM> result, long? parentID, List<SysModule> sources, List<long> authNums, long userId)
+        private void InitMenuTree(List<MenuVM> result, long? parentId, List<SysModule> sources, List<long> authNums, long userId)
         {
             //递归寻找子节点  
-            var tempTree = sources.Where(item => item.ParentId == parentID).OrderBy(a => a.Sort);
+            var tempTree = sources.Where(item => item.ParentId == parentId).OrderBy(a => a.Sort);
             foreach (var item in tempTree)
             {
                 if (authNums?.Count < 1 || item.Layer.Value > authNums.Count) continue;

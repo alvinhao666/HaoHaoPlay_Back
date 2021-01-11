@@ -34,7 +34,7 @@ namespace Hao.WebApi
         /// <returns></returns>
         [HttpGet]
         [AuthCode("App_Search_1_16777216")]
-        public async Task<List<ModuleTreeVM>> GetList() => await _moduleAppService.GetTreeList();
+        public async Task<List<ModuleTreeVM>> GetTreeList() => await _moduleAppService.GetTreeList();
 
 
         /// <summary>

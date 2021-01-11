@@ -46,7 +46,14 @@ namespace Hao.AppService
 
             var module = vm.Adapt<SysModule>();
 
-            if (parentNode.Type == ModuleType.Sub) module.Alias = $"{parentNode.Alias}_{module.Alias}";
+            if (parentNode.Type == ModuleType.Sub)
+            {
+                module.Alias = $"{parentNode.Alias}_{module.Alias}";
+            }
+            else if (parentNode.Type == ModuleType.Main)
+            {
+                module.ParentId = 0;
+            }
 
             module.ParentAlias = parentNode.Alias;
 
@@ -61,7 +68,7 @@ namespace Hao.AppService
         {
             var modules = await _moduleRep.GetListAysnc(new ModuleQuery() { IncludeResource = false });
             var result = new List<ModuleTreeVM>();
-            InitModuleTree(result, null, modules);
+            InitModuleTree(result, -1, modules);
             return result;
         }
 
@@ -187,12 +194,12 @@ namespace Hao.AppService
         /// 递归初始化模块树
         /// </summary>
         /// <param name="result"></param>
-        /// <param name="parentID"></param>
+        /// <param name="parentId"></param>
         /// <param name="sources"></param>
-        private void InitModuleTree(List<ModuleTreeVM> result, long? parentID, List<SysModule> sources)
+        private void InitModuleTree(List<ModuleTreeVM> result, long parentId, List<SysModule> sources)
         {
             //递归寻找子节点  
-            var tempTree = sources.Where(item => item.ParentId == parentID).OrderBy(a => a.Sort);
+            var tempTree = sources.Where(item => item.ParentId == parentId).OrderBy(a => a.Sort);
             foreach (var item in tempTree)
             {
                 var node = new ModuleTreeVM()
