@@ -89,11 +89,9 @@ namespace Microsoft.Extensions.DependencyInjection
                 }
             }
 
-
             if (e.Exception != null)
             {
                 Console.ForegroundColor = ConsoleColor.DarkRed;
-                Console.WriteLine($"执行Sql错误:{e.Sql}");
                 Console.WriteLine($"错误信息:{e.Exception.Message}");
             }
             Console.ForegroundColor = ConsoleColor.DarkGreen;
