@@ -5,8 +5,6 @@ using Hao.Core;
 using Hao.Snowflake;
 using Hao.Utility;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using Hao.Runtime;
 
@@ -67,7 +65,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
                 Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine($"{curdType}实体：{e.EntityType.Name}");
-                Console.WriteLine($"执行时间：{e.ElapsedMilliseconds}");
+                Console.WriteLine($"执行时间：{e.ElapsedMilliseconds}毫秒");
                 Console.WriteLine($"{e.Sql}");
                 if (e.DbParms.Length > 0)
                 {

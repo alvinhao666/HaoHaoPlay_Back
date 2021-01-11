@@ -10,8 +10,7 @@ using Hao.Utility;
 namespace Hao.Core
 {
     public abstract class SimpleRepository<T, TKey> : ISimpleRepository<T, TKey> where T : SimpleEntity<TKey>, new() where TKey : struct
-    {
-      
+    {     
         [FromServiceContext] public IFreeSqlContext DbContext { get; set; }
 
         
@@ -178,20 +177,6 @@ namespace Hao.Core
         {
             H_Check.Argument.NotEmpty(entities, nameof(entities));
 
-            //var isGuid = typeof(TKey) == typeof(Guid);
-            //var type = typeof(T);
-            //var id = type.GetProperty(nameof(SimpleEntity<TKey>.Id));
-            //entities.ForEach(item =>
-            //{
-            //    if (isGuid)
-            //    {
-            //        id.SetValue(item, Guid.NewGuid());
-            //    }
-            //    else
-            //    {
-            //        id.SetValue(item, IdWorker.NextId());
-            //    }
-            //});
             return await DbContext.Insert(entities).ExecuteInsertedAsync();
         }
 
