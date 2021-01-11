@@ -46,7 +46,7 @@ namespace Microsoft.Extensions.DependencyInjection
             fsql.Aop.CurdAfter += (s, e) => Aop_CurdAfter(s, e);
 #endif
 
-            fsql.Aop.AuditValue += (s, e) => Aop_Auditer(s, e, services);
+            fsql.Aop.AuditValue += (s, e) => Aop_AuditValue(s, e, services);
 
 
             services.AddScoped<IFreeSqlContext>(a => new FreeSqlContext(fsql));
@@ -101,7 +101,7 @@ namespace Microsoft.Extensions.DependencyInjection
         }
 
 
-        private static void Aop_Auditer(object sender, AuditValueEventArgs e, IServiceCollection services)
+        private static void Aop_AuditValue(object sender, AuditValueEventArgs e, IServiceCollection services)
         {
             if (e.AuditValueType == AuditValueType.Insert)
             {
