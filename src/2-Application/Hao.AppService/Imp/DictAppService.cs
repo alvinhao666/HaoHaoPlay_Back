@@ -90,7 +90,7 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="queryInput"></param>
         /// <returns></returns>
-        public async Task<Paged<DictVM>> GetPagedList(DictQueryInput queryInput)
+        public async Task<Paged<DictVM>> GetPaged(DictQueryInput queryInput)
         {
             var query = queryInput.Adapt<DictQuery>();
             query.DictType = DictType.Main;
@@ -136,7 +136,7 @@ namespace Hao.AppService
         /// 获取字典数据
         /// </summary>
         /// <returns></returns>
-        public async Task<Paged<DictItemVM>> GetDictItemPagedList(DictQueryInput queryInput)
+        public async Task<Paged<DictItemVM>> GetDictItemPaged(DictQueryInput queryInput)
         {
             var query = queryInput.Adapt<DictQuery>();
 
