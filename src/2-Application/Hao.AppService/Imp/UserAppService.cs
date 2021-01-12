@@ -102,7 +102,7 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="queryInput"></param>
         /// <returns></returns>
-        public async Task<Paged<UserVM>> GetPagedList(UserQueryInput queryInput)
+        public async Task<Paged<UserVM>> GetPaged(UserQueryInput queryInput)
         {
             var query = queryInput.Adapt<UserQuery>();
 

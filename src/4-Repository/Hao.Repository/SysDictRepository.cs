@@ -25,11 +25,11 @@ namespace Hao.Repository
                             DictName = a.DictName,
                             Remark = a.Remark,
                             CreateTime = a.CreateTime,
-                            ItemNames = string.Join('，', DbContext.Select<SysDict>().Where(b => a.Id == b.ParentId).ToList(b => b.ItemName))
+                            ItemNames = string.Join('，', DbContext.Select<SysDict>().Where(b => b.ParentId == a.Id).ToList(b => b.ItemName))
                         });
 
 
-            return Paged<DictDto>.GetResult(items, query.PageIndex, query.PageSize, total);
+            return ToPaged(items, query.PageIndex, query.PageSize, total);
         }
     }
 }

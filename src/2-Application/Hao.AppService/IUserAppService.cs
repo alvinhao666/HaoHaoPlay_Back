@@ -29,7 +29,7 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="queryInput"></param>
         /// <returns></returns>
-        Task<Paged<UserVM>> GetPagedList(UserQueryInput queryInput);
+        Task<Paged<UserVM>> GetPaged(UserQueryInput queryInput);
 
         /// <summary>
         /// 用户详情
@@ -63,7 +63,7 @@ namespace Hao.AppService
         /// <summary>
         /// 是否存在账号
         /// </summary>
-        /// <param name="queryInput"></param>
+        /// <param name="loginName"></param>
         /// <returns></returns>
         Task<bool> IsExistLoginName(string loginName);
 

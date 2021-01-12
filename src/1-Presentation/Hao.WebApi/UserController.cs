@@ -38,7 +38,7 @@ namespace Hao.WebApi
         /// <returns></returns>
         [HttpGet]
         [AuthCode("User_Search_1_8388608")]
-        public async Task<Paged<UserVM>> GetPagedList([FromQuery]UserQueryInput queryInput) => await _userAppService.GetPagedList(queryInput);
+        public async Task<Paged<UserVM>> GetPagedList([FromQuery]UserQueryInput queryInput) => await _userAppService.GetPaged(queryInput);
 
         /// <summary>
         /// 根据id获取用户

@@ -21,7 +21,7 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="queryInput"></param>
         /// <returns></returns>
-        Task<Paged<DictVM>> GetPagedList(DictQueryInput queryInput);
+        Task<Paged<DictVM>> GetPaged(DictQueryInput queryInput);
 
         /// <summary>
         /// 修改字典
@@ -29,7 +29,7 @@ namespace Hao.AppService
         /// <param name="id"></param>
         /// <param name="request"></param>
         /// <returns></returns>
-        Task Update(long id,DictUpdateRequest request);
+        Task Update(long id, DictUpdateRequest request);
 
         /// <summary>
         /// 删除字典
@@ -37,7 +37,7 @@ namespace Hao.AppService
         /// <param name="id"></param>
         /// <returns></returns>
         Task Delete(long id);
-        
+
 
 
 
@@ -54,7 +54,7 @@ namespace Hao.AppService
         /// 查询字典数据项
         /// </summary>
         /// <returns></returns>
-        Task<Paged<DictItemVM>> GetDictItemPagedList(DictQueryInput queryInput);
+        Task<Paged<DictItemVM>> GetDictItemPaged(DictQueryInput queryInput);
 
         /// <summary>
         /// 更新数据项
