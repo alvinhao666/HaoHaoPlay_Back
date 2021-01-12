@@ -4,11 +4,8 @@ using System.Linq.Expressions;
 
 namespace Hao.Core
 {
-    public abstract class Query<T> : IPagedQuery where T : new()
+    public abstract class Query<T> : PagedQuery where T : new()
     {
-        public int PageIndex { get; set; } = 1;
-        public int PageSize { get; set; } = 10;
-
         /// <summary>
         /// 查询条件
         /// </summary>
