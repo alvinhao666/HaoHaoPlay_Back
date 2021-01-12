@@ -409,7 +409,7 @@ namespace Hao.Core
         /// <param name="total"></param>
         /// <typeparam name="T2"></typeparam>
         /// <returns></returns>
-        protected Paged<T2> ToPaged<T2>(List<T2> items, int pageIndex, int pageSize, long total)
+        protected Paged<T2> ToPaged<T2>(List<T2> items, int pageIndex, int pageSize, long total) where T2 : class, new()
         {
             var pageList = new Paged<T2>()
             {
