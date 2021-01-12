@@ -155,7 +155,7 @@ namespace Hao.AppService
             var result = new RoleModuleVM();
             result.Nodes = new List<RoleModuleItemVM>();
             result.CheckedKeys = new List<string>();
-            InitModuleTree(result.Nodes, null, modules, authNumbers, result.CheckedKeys);
+            InitModuleTree(result.Nodes, -1, modules, authNumbers, result.CheckedKeys);
             return result;
         }
 
@@ -195,7 +195,7 @@ namespace Hao.AppService
         /// <param name="sources"></param>
         /// <param name="authNumbers"></param>
         /// <param name="checkedKeys"></param>
-        private void InitModuleTree(List<RoleModuleItemVM> result, long? parentID, List<SysModule> sources, List<long> authNumbers, List<string> checkedKeys)
+        private void InitModuleTree(List<RoleModuleItemVM> result, long parentID, List<SysModule> sources, List<long> authNumbers, List<string> checkedKeys)
         {
             //递归寻找子节点  
             var tempTree = sources.Where(item => item.ParentId == parentID).OrderBy(a => a.Sort).ToList();
