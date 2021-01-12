@@ -21,7 +21,7 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="queryInput"></param>
         /// <returns></returns>
-        Task<PagedResult<DictVM>> GetPagedList(DictQueryInput queryInput);
+        Task<Paged<DictVM>> GetPagedList(DictQueryInput queryInput);
 
         /// <summary>
         /// 修改字典
@@ -54,7 +54,7 @@ namespace Hao.AppService
         /// 查询字典数据项
         /// </summary>
         /// <returns></returns>
-        Task<PagedResult<DictItemVM>> GetDictItemPagedList(DictQueryInput queryInput);
+        Task<Paged<DictItemVM>> GetDictItemPagedList(DictQueryInput queryInput);
 
         /// <summary>
         /// 更新数据项

@@ -2,7 +2,7 @@
 
 namespace Hao.Core
 {
-    public class PagedResult<T>
+    public class Paged<T>
     {
         /// <summary>
         /// 列表项
@@ -28,5 +28,19 @@ namespace Hao.Core
         /// 总共页数
         /// </summary>
         public int TotalPageCount { get; set; }
+
+
+        public static Paged<T> GetResult(List<T> items, int pageIndex, int pageSize, long total)
+        {
+            var pageList = new Paged<T>()
+            {
+                Items = items,
+                TotalCount = (int)total,
+                PageIndex = pageIndex,
+                PageSize =  pageSize,
+                TotalPageCount = ((int)total + pageSize - 1) / pageSize
+            };
+            return pageList;
+        }
     }
 }

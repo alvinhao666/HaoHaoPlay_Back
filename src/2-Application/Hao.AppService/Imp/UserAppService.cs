@@ -102,14 +102,14 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="queryInput"></param>
         /// <returns></returns>
-        public async Task<PagedResult<UserVM>> GetPagedList(UserQueryInput queryInput)
+        public async Task<Paged<UserVM>> GetPagedList(UserQueryInput queryInput)
         {
             var query = queryInput.Adapt<UserQuery>();
 
             query.CurrentRoleLevel = _currentUser.RoleLevel; //只能获取角色等级低用户
 
-            var users = await _userRep.GetPagedListAysnc(query);
-            var result = users.Adapt<PagedResult<UserVM>>();
+            var users = await _userRep.GetPagedAysnc(query);
+            var result = users.Adapt<Paged<UserVM>>();
 
             return result;
         }

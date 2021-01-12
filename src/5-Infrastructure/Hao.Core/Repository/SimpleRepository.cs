@@ -103,7 +103,7 @@ namespace Hao.Core
         /// </summary>
         /// <param name="query"></param>
         /// <returns></returns>
-        public virtual async Task<PagedResult<T>> GetPagedListAysnc(Query<T> query)
+        public virtual async Task<Paged<T>> GetPagedAysnc(Query<T> query)
         {
             H_Check.Argument.NotNull(query, nameof(query));
 
@@ -130,7 +130,7 @@ namespace Hao.Core
             var items = await select.Count(out var total)
                                     .Page(query.PageIndex, query.PageSize).ToListAsync();
 
-            var pageList = new PagedResult<T>()
+            var pageList = new Paged<T>()
             {
                 Items = items,
                 TotalCount = (int)total,
