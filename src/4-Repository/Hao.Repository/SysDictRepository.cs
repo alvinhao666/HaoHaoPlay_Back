@@ -29,7 +29,7 @@ namespace Hao.Repository
                         });
 
 
-            return ToPaged(items, query.PageIndex, query.PageSize, total);
+            return items.ToPaged(query, total);
         }
     }
 }
