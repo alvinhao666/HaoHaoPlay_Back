@@ -130,15 +130,7 @@ namespace Hao.Core
             var items = await select.Count(out var total)
                                     .Page(query.PageIndex, query.PageSize).ToListAsync();
 
-            var pageList = new Paged<T>()
-            {
-                Items = items,
-                TotalCount = (int)total,
-                PageIndex = query.PageIndex,
-                PageSize = query.PageSize,
-                TotalPageCount = ((int)total + query.PageSize - 1) / query.PageSize
-            };
-            return pageList;
+            return ToPaged(items, query.PageIndex, query.PageSize, total);
         }
         
         
@@ -373,6 +365,28 @@ namespace Hao.Core
             }
 
             return await delete.ExecuteAffrowsAsync();
+        }
+        
+        /// <summary>
+        /// 分页
+        /// </summary>
+        /// <param name="items"></param>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="total"></param>
+        /// <typeparam name="T2"></typeparam>
+        /// <returns></returns>
+        protected Paged<T2> ToPaged<T2>(List<T2> items, int pageIndex, int pageSize, long total)
+        {
+            var pageList = new Paged<T2>()
+            {
+                Items = items,
+                TotalCount = (int)total,
+                PageIndex = pageIndex,
+                PageSize =  pageSize,
+                TotalPageCount = ((int)total + pageSize - 1) / pageSize
+            };
+            return pageList;
         }
     }
 }

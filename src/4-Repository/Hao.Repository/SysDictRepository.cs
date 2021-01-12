@@ -29,7 +29,7 @@ namespace Hao.Repository
                         });
 
 
-            return Paged<DictDto>.GetResult(items, query.PageIndex, query.PageSize, total);
+            return ToPaged(items, query.PageIndex, query.PageSize, total);
         }
     }
 }
