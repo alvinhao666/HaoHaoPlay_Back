@@ -1,4 +1,5 @@
 ﻿using Hao.Core;
+using Hao.Enum;
 
 namespace Hao.Model
 {
@@ -41,5 +42,10 @@ namespace Hao.Model
         /// 备注
         /// </summary>
         public string Remark { get; set; }
+
+        /// <summary>
+        /// 字典类型
+        /// </summary>
+        public DictType DictType { get; set; }
     }
 }

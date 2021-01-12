@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using Hao.Core;
+using Hao.Enum;
 using Hao.Utility;
 
 namespace Hao.Model
@@ -52,9 +53,9 @@ namespace Hao.Model
         public int? ItemValue { get; set; }
 
         /// <summary>
-        /// 是否查询数据项
+        /// 字典类型
         /// </summary>
-        public bool? IsQueryItem { get; set; }
+        public DictType? DictType { get; set; }
 
         public override List<Expression<Func<SysDict, bool>>> QueryExpressions
         {
@@ -75,21 +76,9 @@ namespace Hao.Model
 
                 if (EqualItemName.HasValue()) result.Add(x => x.ItemName == EqualItemName);
 
-                if (ParentId.HasValue)
-                {
-                    result.Add(x => x.ParentId == ParentId);
-                }
-                else
-                {
-                    if (IsQueryItem.IsTrue())
-                    {
-                        result.Add(x => x.ParentId != null);
-                    }
-                    else
-                    {
-                        result.Add(x => x.ParentId == null);
-                    }
-                }
+                if (ParentId.HasValue) result.Add(x => x.ParentId == ParentId);
+
+                if (DictType.HasValue) result.Add(x => x.DictType == DictType);
 
                 if (ItemValue.HasValue) result.Add(x => x.ItemValue == ItemValue);
 
