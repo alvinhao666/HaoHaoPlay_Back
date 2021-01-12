@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using System.Collections.Generic;
 using Mapster;
+using Hao.Enum;
 
 namespace Hao.AppService
 {
@@ -35,6 +36,7 @@ namespace Hao.AppService
             if (sameItems.Count > 0) throw new H_Exception("字典编码已存在，请重新输入");
 
             var dict = request.Adapt<SysDict>();
+            dict.ParentId = -1;
             dict.Sort = 0;
             await _dictRep.InsertAysnc(dict);
         }
@@ -91,6 +93,7 @@ namespace Hao.AppService
         public async Task<PagedResult<DictVM>> GetPagedList(DictQueryInput queryInput)
         {
             var query = queryInput.Adapt<DictQuery>();
+            query.DictType = DictType.Main;
 
             var dicts = await _dictRep.GetPagedListAysnc(query);
 
@@ -191,7 +194,7 @@ namespace Hao.AppService
             var query = new DictQuery
             {
                 EqualDictCode = dictCode,
-                IsQueryItem = true
+                DictType = DictType.Sub
             };
 
             query.OrderBy(a=>a.Sort).OrderBy(a=>a.CreateTime);
