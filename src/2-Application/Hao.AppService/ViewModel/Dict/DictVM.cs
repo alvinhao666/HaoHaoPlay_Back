@@ -25,5 +25,10 @@ namespace Hao.AppService
         /// 创建时间
         /// </summary>
         public DateTime? CreateTime { get; set; }
+
+        /// <summary>
+        /// 数据项名称
+        /// </summary>
+        public string ItemNames { get; set; }
     }
 }

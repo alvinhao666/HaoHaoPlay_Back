@@ -29,7 +29,7 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="queryInput"></param>
         /// <returns></returns>
-        Task<PagedResult<UserVM>> GetPagedList(UserQueryInput queryInput);
+        Task<Paged<UserVM>> GetPagedList(UserQueryInput queryInput);
 
         /// <summary>
         /// 用户详情
