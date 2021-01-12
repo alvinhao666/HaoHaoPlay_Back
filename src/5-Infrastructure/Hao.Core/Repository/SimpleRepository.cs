@@ -8,7 +8,7 @@ using Hao.Utility;
 
 namespace Hao.Core
 {
-    public abstract class SimpleRepository<T, TKey> : ISimpleRepository<T, TKey> where T : SimpleEntity<TKey>, new() where TKey : struct
+    public abstract class SimpleRepository<T, TKey> : IRepository<T, TKey> where T : SimpleEntity<TKey>, new() where TKey : struct
     {     
         [FromServiceContext] public IFreeSqlContext DbContext { get; set; }
 
@@ -139,6 +139,26 @@ namespace Hao.Core
                 TotalPageCount = ((int)total + query.PageSize - 1) / query.PageSize
             };
             return pageList;
+        }
+        
+        
+        
+        /// <summary>
+        /// 查询所有数据
+        /// </summary>
+        /// <returns></returns>
+        public virtual async Task<List<T>> GetAllAysnc()
+        {
+            return await GetListAysnc();
+        }
+
+        /// <summary>
+        /// 查询所有数据
+        /// </summary>
+        /// <returns></returns>
+        public virtual async Task<List<T>> GetAllAysnc(Query<T> query)
+        {
+            return await GetListAysnc(query);
         }
 
         /// <summary>
