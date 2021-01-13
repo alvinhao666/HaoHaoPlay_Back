@@ -25,30 +25,68 @@ namespace Hao.Core.Extensions
     {
         public static IServiceCollection ConfigureServices(this IServiceCollection services, IHostEnvironment env, H_AppSettingsConfig appSettings)
         {
-            //Http
+            #region DevEnvironment
+
+            if (env.IsDevelopment())
+            {
+                services.AddSwaggerGen(c =>
+                {
+                    //配置第一个Doc
+                    c.SwaggerDoc(appSettings.Swagger.Name, new OpenApiInfo
+                    {
+                        Version = "v1",
+                        Title = "接口文档"
+                    });
+
+                    foreach (var item in appSettings.Swagger.Xmls)
+                    {
+                        c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, item));
+                    }
+                });
+            }
+
+            #endregion
+
+
+            #region HttpClient
+
             services.AddHttpClient();
 
-            //数据保护
+            #endregion
+
+
+            #region 数据保护
+
             services.AddDataProtection();
+
+            #endregion
+
+
+            #region Mapper
 
             //Mapper
             TypeAdapterConfig.GlobalSettings.Scan(appSettings.MapperAssemblyNames.Select(name => Assembly.Load(name)).ToArray());
             //services.AddSingleton<IMapper, Mapper>(); //不推荐IMapper注入方式，建议使用Adapt，优点：少写代码
 
-            //批量注入
+            #endregion
+
+
+            #region 批量注入
+
             services.AutoDependency(appSettings.DiAssemblyNames.Select(name => Assembly.Load(name)));
 
+            #endregion
 
-            #region 数据库
+
+            #region 缓存&数据库
 
             //redis
-            var redisClient = new RedisClient(appSettings.ConnectionString.Redis);
-
-            RedisHelper.AddClient(redisClient);
+            RedisHelper.AddClient(new RedisClient(appSettings.ConnectionString.Redis));
 
             //雪花id
             services.AddSingleton(new IdWorker(appSettings.SnowflakeId.WorkerId, appSettings.SnowflakeId.DataCenterId));
 
+            //orm
             services.AddOrmService(DataType.PostgreSQL, appSettings.ConnectionString.Master, appSettings.ConnectionString.Slave.Select(a => a.Connection).ToArray());
             #endregion
 
@@ -75,6 +113,9 @@ namespace Hao.Core.Extensions
             });
             #endregion
 
+
+            #region MvcBuilder
+
             //替换控制器所有者,详见有道笔记,放AddMvc前面 controller属性注入
             //services.Replace(ServiceDescriptor.Transient<IControllerActivator, ServiceBasedControllerActivator>());
 
@@ -95,9 +136,15 @@ namespace Hao.Core.Extensions
                 o.JsonSerializerOptions.Converters.Add(new LongJsonConvert());
             }); //.AddWebApiConventions() 处理HttpResponseMessage类型返回值的问题
 
+            #endregion
 
-            //模型验证 ApiBehaviorOptions 的统一模型验证配置一定要放到(.AddMvc)后面
+
+            #region 模型验证 
+
+            //ApiBehaviorOptions 的统一模型验证配置一定要放到(.AddMvc)后面
             services.AddValidateModelService();
+
+            #endregion
 
 
             #region Json Web Token
@@ -124,27 +171,14 @@ namespace Hao.Core.Extensions
             });
             #endregion
 
-            if (env.IsDevelopment())
-            {
-                services.AddSwaggerGen(c =>
-                {
-                    //配置第一个Doc
-                    c.SwaggerDoc(appSettings.Swagger.Name, new OpenApiInfo
-                    {
-                        Version = "v1",
-                        Title = "接口文档"
-                    });
 
-                    foreach (var item in appSettings.Swagger.Xmls)
-                    {
-                        c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, item));
-                    }
-                });
-            }
+            #region AOP
 
-            //AOP
             services.ConfigureDynamicProxy();
-            
+
+            #endregion
+
+
             return services;
         }
     }

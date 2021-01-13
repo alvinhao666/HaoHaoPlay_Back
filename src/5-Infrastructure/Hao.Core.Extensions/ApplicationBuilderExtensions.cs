@@ -20,6 +20,8 @@ namespace Hao.Core.Extensions
         /// <returns></returns>
         internal static IApplicationBuilder Configure(this IApplicationBuilder app, IHostEnvironment env, H_AppSettingsConfig appSettings)
         {
+            #region DevEnvironment
+
             if (env.IsDevelopment())
             {
                 app.UseSwagger();
@@ -31,10 +33,28 @@ namespace Hao.Core.Extensions
                 app.UseCors(x => x.AllowCredentials().AllowAnyMethod().AllowAnyHeader().WithOrigins(appSettings.CorsUrls));
             }
 
-            //异常捕捉中间件
+            #endregion
+
+
+            #region Nginx
+
+            // Nginx 获取ip
+            app.UseForwardedHeaders(new ForwardedHeadersOptions()
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
+
+            #endregion
+
+
+            #region 异常中间件
+
             app.UseExceptionMiddleware();
 
-            #region 文件
+            #endregion
+
+
+            #region 文件信息
             //使用默认文件夹wwwroot
             app.UseStaticFiles();
 
@@ -72,11 +92,7 @@ namespace Hao.Core.Extensions
             #endregion
 
 
-            // Nginx 获取ip
-            app.UseForwardedHeaders(new ForwardedHeadersOptions()
-            {
-                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
-            });
+            #region 路由&权限
 
             app.UseRouting();
 
@@ -88,6 +104,9 @@ namespace Hao.Core.Extensions
             {
                 endpoints.MapControllers();
             });
+
+            #endregion
+
 
             return app;
         }
