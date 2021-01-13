@@ -8,23 +8,23 @@ namespace Hao.AppService
     public class DictQueryInput : QueryInput
     {
         /// <summary>
-        /// 字典编码
+        /// 字典编码 模糊查询
         /// </summary>
-        public string DictCode { get; set; }
+        public string LikeDictCode { get; set; }
 
         /// <summary>
-        /// 字典名称
+        /// 字典名称 模糊查询
         /// </summary>
-        public string DictName { get; set; }
+        public string LikeDictName { get; set; }
 
         /// <summary>
         /// 父级id
         /// </summary>
         public long? ParentId { get; set; }
-        
+
         /// <summary>
-        /// 数据项名称
+        /// 数据项名称 模糊查询
         /// </summary>
-        public string ItemName { get; set; }
+        public string LikeItemName { get; set; }
     }
 }

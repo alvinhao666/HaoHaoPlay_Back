@@ -18,17 +18,20 @@ namespace Hao.Model
         public string LoginName { get; set; }
 
         /// <summary>
-        /// 姓名
+        /// 姓名 模糊查询
         /// </summary>
-        public string Name { get; set; }
+        public string LikeName { get; set; }
+
         /// <summary>
         /// 性别
         /// </summary>
         public Gender? Gender { get; set; }
+
         /// <summary>
-        /// 手机号码
+        /// 手机号码 模糊查询
         /// </summary>
-        public string Phone { get; set; }
+        public string LikePhone { get; set; }
+
         /// <summary>
         /// 是否启用
         /// </summary>
@@ -59,9 +62,9 @@ namespace Hao.Model
 
                 if (LoginName.HasValue()) expressions.Add(x => x.LoginName == LoginName);
 
-                if (Name.HasValue()) expressions.Add(x => x.Name.Contains(Name));
+                if (LikeName.HasValue()) expressions.Add(x => x.Name.Contains(LikeName));
 
-                if (Phone.HasValue()) expressions.Add(x => x.Phone.Contains(Phone));
+                if (LikePhone.HasValue()) expressions.Add(x => x.Phone.Contains(LikePhone));
 
                 if (Gender.HasValue) expressions.Add(x => x.Gender == Gender);
 

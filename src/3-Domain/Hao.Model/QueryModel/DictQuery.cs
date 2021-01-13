@@ -13,7 +13,7 @@ namespace Hao.Model
     public class DictQuery : Query<SysDict>
     {
         /// <summary>
-        /// 字典编码
+        /// 字典编码 模糊查询
         /// </summary>
         public string LikeDictCode { get; set; }
 
@@ -23,7 +23,7 @@ namespace Hao.Model
         public string DictCode { get; set; }
 
         /// <summary>
-        /// 字典名称
+        /// 字典名称 模糊查询
         /// </summary>
         public string LikeDictName { get; set; }
 

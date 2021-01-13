@@ -10,9 +10,9 @@ namespace Hao.AppService
     public class UserQueryInput : QueryInput
     {
         /// <summary>
-        /// 姓名
+        /// 姓名 模糊查询
         /// </summary>
-        public string Name { get; set; }
+        public string LikeName { get; set; }
 
         /// <summary>
         /// 性别
@@ -20,9 +20,9 @@ namespace Hao.AppService
         public Gender? Gender { get; set; }
 
         /// <summary>
-        /// 手机号
+        /// 手机号 模糊查询
         /// </summary>
-        public string Phone { get; set; }
+        public string LikePhone { get; set; }
 
         /// <summary>
         /// 是否启用
