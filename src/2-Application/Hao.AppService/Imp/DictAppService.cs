@@ -29,10 +29,10 @@ namespace Hao.AppService
         [DistributedLock("DictAppService_AddDict")]
         public async Task Add(DictAddRequest request)
         {
-            var sameItems = await _dictRep.GetListAysnc(new DictQuery { EqualDictName = request.DictName });
+            var sameItems = await _dictRep.GetListAysnc(new DictQuery { DictName = request.DictName });
             if (sameItems.Count > 0) throw new H_Exception("字典名称已存在，请重新输入");
 
-            sameItems = await _dictRep.GetListAysnc(new DictQuery { EqualDictCode = request.DictCode });
+            sameItems = await _dictRep.GetListAysnc(new DictQuery { DictCode = request.DictCode });
             if (sameItems.Count > 0) throw new H_Exception("字典编码已存在，请重新输入");
 
             var dict = request.Adapt<SysDict>();
@@ -50,10 +50,10 @@ namespace Hao.AppService
         [DistributedLock("DictAppService_UpdateDict")]
         public async Task Update(long id, DictUpdateRequest request)
         {
-            var sameItems = await _dictRep.GetListAysnc(new DictQuery { EqualDictName = request.DictName });
+            var sameItems = await _dictRep.GetListAysnc(new DictQuery { DictName = request.DictName });
             if (sameItems.Where(a => a.Id != id).Count() > 0) throw new H_Exception("字典名称已存在，请重新输入");
 
-            sameItems = await _dictRep.GetListAysnc(new DictQuery { EqualDictCode = request.DictCode });
+            sameItems = await _dictRep.GetListAysnc(new DictQuery { DictCode = request.DictCode });
             if (sameItems.Where(a => a.Id != id).Count() > 0) throw new H_Exception("字典编码已存在，请重新输入");
 
             var dict = await _dictRep.GetAysnc(id);
@@ -109,7 +109,7 @@ namespace Hao.AppService
         [DistributedLock("DictAppService_AddDictItem")]
         public async Task AddDictItem(DictItemAddRequest request)
         {
-            var sameItems = await _dictRep.GetListAysnc(new DictQuery { ParentId = request.ParentId, EqualItemName = request.ItemName });
+            var sameItems = await _dictRep.GetListAysnc(new DictQuery { ParentId = request.ParentId, ItemName = request.ItemName });
 
             H_AssertEx.That(sameItems.Count > 0, "数据项名称已存在，请重新输入");
 
@@ -158,7 +158,7 @@ namespace Hao.AppService
         {
             var item = await _dictRep.GetAysnc(id);
 
-            var sameItems = await _dictRep.GetListAysnc(new DictQuery { ParentId = item.ParentId, EqualItemName = request.ItemName });
+            var sameItems = await _dictRep.GetListAysnc(new DictQuery { ParentId = item.ParentId, ItemName = request.ItemName });
 
             H_AssertEx.That(sameItems.Any(a => a.Id != id), "数据项名称已存在，请重新输入");
 
@@ -194,7 +194,7 @@ namespace Hao.AppService
         {
             var query = new DictQuery
             {
-                EqualDictCode = dictCode,
+                DictCode = dictCode,
                 DictType = DictType.Sub
             };
 

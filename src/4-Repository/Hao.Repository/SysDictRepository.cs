@@ -12,8 +12,8 @@ namespace Hao.Repository
         {
             var items = await DbContext.Select<SysDict>()
                         .WhereIf(query.DictType.HasValue, a => a.DictType == query.DictType)
-                        .WhereIf(query.DictName.HasValue(), a => a.DictName.Contains(query.DictName))
-                        .WhereIf(query.DictCode.HasValue(), a => a.DictCode.Contains(query.DictCode))
+                        .WhereIf(query.LikeDictName.HasValue(), a => a.DictName.Contains(query.LikeDictName))
+                        .WhereIf(query.LikeDictCode.HasValue(), a => a.DictCode.Contains(query.LikeDictCode))
                         .OrderByDescending(a => a.CreateTime)
                         .Count(out var total)
                         .Page(query.PageIndex, query.PageSize)
