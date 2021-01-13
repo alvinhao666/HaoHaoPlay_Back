@@ -21,11 +21,11 @@ namespace Hao.Core
 
         public void InitCurrentUser(T eventData)
         {
-            if (eventData?.CurrentUser == null) return;
+            if (eventData?.PublishUser == null) return;
 
             var user = CurrentUser as CurrentUser;
 
-            user = eventData.CurrentUser.Adapt(user);
+            user = eventData.PublishUser.Adapt(user);
         }
     }
 }

@@ -169,7 +169,7 @@ namespace Hao.AppService
                 await _publisher.PublishAsync(nameof(LogoutEventData), new LogoutEventData
                 {
                     UserIds = new List<long> { userId },
-                    CurrentUser = _currentUser as CurrentUser
+                    PublishUser = _currentUser as CurrentUser
                 });
             }
         }
