@@ -2,7 +2,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Hao.Utility
+namespace Hao.Core.Extensions
 {
     public class DatetimeJsonConverter : JsonConverter<DateTime>  // 包括了 DateTime?  
     {
