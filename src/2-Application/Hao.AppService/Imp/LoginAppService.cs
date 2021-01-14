@@ -8,6 +8,7 @@ using Hao.Model;
 using Hao.Utility;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -63,7 +64,7 @@ namespace Hao.AppService
 
             H_AssertEx.That(string.IsNullOrWhiteSpace(user.AuthNumbers), "没有系统权限，暂时无法登录，请联系管理员");
 
-            var authNums = H_JsonSerializer.Deserialize<List<long>>(user.AuthNumbers);
+            var authNums = JsonConvert.DeserializeObject<List<long>>(user.AuthNumbers);
 
             H_AssertEx.That(authNums.Count == 0, "没有系统权限，暂时无法登录，请联系管理员");
 
@@ -94,7 +95,7 @@ namespace Hao.AppService
             };
 
             int expireSeconds = (int)expireTime.Subtract(timeNow).Duration().TotalSeconds + 1;
-            await RedisHelper.SetAsync($"{_appsettings.RedisPrefix.Login}{user.Id}_{jti}", H_JsonSerializer.Serialize(userValue), expireSeconds);
+            await RedisHelper.SetAsync($"{_appsettings.RedisPrefix.Login}{user.Id}_{jti}", JsonConvert.SerializeObject(userValue), expireSeconds);
 
             //同步登录信息，例如ip等等
             await AsyncLoginInfo(user.Id, timeNow, request.Ip, expireTime, jti);

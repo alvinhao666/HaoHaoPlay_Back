@@ -4,6 +4,7 @@ using Hao.Library;
 using Hao.Model;
 using Hao.Utility;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using System.Threading.Tasks;
 
 namespace Hao.EventBus
@@ -40,7 +41,7 @@ namespace Hao.EventBus
                     var value = await RedisHelper.GetAsync(key);
                     if (value.IsNullOrWhiteSpace()) continue;
 
-                    var cacheUser = H_JsonSerializer.Deserialize<H_CacheUser>(value);
+                    var cacheUser = JsonConvert.DeserializeObject<H_CacheUser>(value);
                     cacheUser.IsAuthUpdate = true;
                     cacheUser.LoginStatus = LoginStatus.Offline;
 
@@ -50,7 +51,7 @@ namespace Hao.EventBus
 
                     var expireTime = await RedisHelper.TtlAsync(key);
 
-                    await RedisHelper.SetAsync(key, H_JsonSerializer.Serialize(cacheUser), (int)expireTime); //false 失效 ttl: -1  true:继续保持原先的time，redis6.0.0才有效
+                    await RedisHelper.SetAsync(key, JsonConvert.SerializeObject(cacheUser), (int)expireTime); //false 失效 ttl: -1  true:继续保持原先的time，redis6.0.0才有效
                 }
 
             }

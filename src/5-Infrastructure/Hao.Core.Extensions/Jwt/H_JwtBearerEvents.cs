@@ -1,8 +1,9 @@
 ﻿using Hao.Library;
 using Hao.Response;
-using Hao.Utility;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
+using System.Text.Encodings.Web;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Hao.Core.Extensions
@@ -74,7 +75,14 @@ namespace Hao.Core.Extensions
                 ErrorCode = nameof(H_Error.E100001).GetErrorCode(),
                 ErrorMsg = H_Error.E100001
             };
-            await context.Response.WriteAsync(H_JsonSerializer.Serialize(response));
+
+            var options = new JsonSerializerOptions
+            {
+                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping, //解决中文乱码
+                PropertyNamingPolicy = null //PropertyNamingPolicy = JsonNamingPolicy.CamelCase //开头字母小写 默认
+            };
+
+            await context.Response.WriteAsync(JsonSerializer.Serialize(response, options));
         }
     }
 }

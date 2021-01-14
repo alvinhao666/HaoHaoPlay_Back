@@ -10,6 +10,7 @@ using Hao.TencentCloud.Cos;
 using Hao.Utility;
 using TencentCloud.Sts.V20180813.Models;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 
 namespace Hao.WebApi
 {
@@ -80,11 +81,11 @@ namespace Hao.WebApi
             if (tokenCache.IsNullOrWhiteSpace())
             {
                 result = _tencentCosProvider.GetFederationToken();
-                await RedisHelper.SetAsync(key, H_JsonSerializer.Serialize(result), 7200);
+                await RedisHelper.SetAsync(key, JsonConvert.SerializeObject(result), 7200);
             }
             else
             {
-                result = H_JsonSerializer.Deserialize<GetFederationTokenResponse>(tokenCache);
+                result = JsonConvert.DeserializeObject<GetFederationTokenResponse>(tokenCache);
             }
 
             return new {

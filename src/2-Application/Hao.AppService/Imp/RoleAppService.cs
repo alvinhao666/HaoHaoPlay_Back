@@ -10,6 +10,7 @@ using Hao.Model;
 using Hao.Runtime;
 using Hao.Utility;
 using Mapster;
+using Newtonsoft.Json;
 using Npgsql;
 
 namespace Hao.AppService
@@ -126,7 +127,7 @@ namespace Hao.AppService
                 authNumbers.Add(authNumber);
             }
 
-            role.AuthNumbers = H_JsonSerializer.Serialize(authNumbers);
+            role.AuthNumbers = JsonConvert.SerializeObject(authNumbers);
             var users = await _userRep.GetListAysnc(new UserQuery() { RoleLevel = role.Level });
             var ids = users.Where(a => a.AuthNumbers != role.AuthNumbers).Select(a => a.Id).ToList();
 
@@ -150,7 +151,7 @@ namespace Hao.AppService
         public async Task<RoleModuleVM> GetRoleModule(long id)
         {
             var role = await GetRoleDetail(id);
-            var authNumbers = string.IsNullOrWhiteSpace(role.AuthNumbers) ? null : H_JsonSerializer.Deserialize<List<long>>(role.AuthNumbers);
+            var authNumbers = string.IsNullOrWhiteSpace(role.AuthNumbers) ? null : JsonConvert.DeserializeObject<List<long>>(role.AuthNumbers);
             var modules = await _moduleRep.GetListAysnc();
             var result = new RoleModuleVM();
             result.Nodes = new List<RoleModuleItemVM>();
