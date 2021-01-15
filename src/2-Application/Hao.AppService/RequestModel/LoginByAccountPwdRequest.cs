@@ -5,7 +5,7 @@ namespace Hao.AppService
     /// <summary>
     /// 登录请求  abp框架 用户输入参数的验证工作也应该在应用层实现
     /// </summary>
-    public class LoginRequest
+    public class LoginByAccountPwdRequest
     {
         /// <summary>
         /// 账号
@@ -21,11 +21,6 @@ namespace Hao.AppService
         /// </summary>
         public bool IsRememberLogin { get; set; }
 
-        /// <summary>
-        /// 登录ip
-        /// </summary>
-        public string Ip { get; set; }
-
 
         //public List<int> Codes { get; set; }
     }
@@ -33,9 +28,9 @@ namespace Hao.AppService
     /// <summary>
     /// 验证
     /// </summary>
-    public class LoginValidator : AbstractValidator<LoginRequest>
+    public class LoginByAccountPwdValidator : AbstractValidator<LoginByAccountPwdRequest>
     {
-        public LoginValidator()
+        public LoginByAccountPwdValidator()
         {
             RuleFor(x => x.LoginName).MustHasValue("账号");
 

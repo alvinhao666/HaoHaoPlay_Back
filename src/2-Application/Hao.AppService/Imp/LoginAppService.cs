@@ -45,23 +45,39 @@ namespace Hao.AppService
             _moduleRep = moduleRep;
         }
 
+
         /// <summary>
-        /// 登录
+        /// 账号密码登录
         /// </summary>
         /// <param name="request"></param>
-        /// <param name="ip"></param>
+        /// <param name="fromIP"></param>
         /// <returns></returns>
-        public async Task<LoginVM> Login(LoginRequest request)
+        public async Task<LoginVM> LoginByAccountPwd(LoginByAccountPwdRequest request, string fromIP)
         {
-            var timeNow = DateTime.Now;
-            var expireTime = timeNow.AddDays(request.IsRememberLogin ? 3 : 1);
             //rsa解密
             var password = H_EncryptProvider.RsaDecrypt(_appsettings.Key.RsaPrivateKey, request.Password);
+
             //sha256加密
-            password = H_EncryptProvider.HMACSHA256(password, _appsettings.Key.Sha256Key); 
+            password = H_EncryptProvider.HMACSHA256(password, _appsettings.Key.Sha256Key);
 
             //根据账号密码查询用户
             var user = await GetUserByLoginName(request.LoginName, password);
+
+            return await Login(user, fromIP, request.IsRememberLogin);
+        }
+
+
+        /// <summary>
+        /// 登录
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="fromIP"></param>
+        /// <param name="isRememberLogin"></param>
+        /// <returns></returns>
+        private async Task<LoginVM> Login(SysUser user, string fromIP, bool isRememberLogin)
+        {
+            var timeNow = DateTime.Now;
+            var expireTime = timeNow.AddDays(isRememberLogin ? 3 : 1);
 
             H_AssertEx.That(string.IsNullOrWhiteSpace(user.AuthNumbers), "没有系统权限，暂时无法登录，请联系管理员");
 
@@ -86,7 +102,7 @@ namespace Hao.AppService
             var cacheUser = user.Adapt<H_CacheUser>();
             cacheUser.AuthNums = authNums;
             cacheUser.Jti = jti.ToString();
-            cacheUser.LoginIp = request.Ip;
+            cacheUser.LoginIp = fromIP;
             cacheUser.LoginTime = timeNow;
             cacheUser.LoginStatus = LoginStatus.Online;
             
@@ -95,7 +111,7 @@ namespace Hao.AppService
             RedisHelper.Set($"{_appsettings.RedisPrefix.Login}{user.Id}_{jti}", JsonConvert.SerializeObject(cacheUser), expireSeconds);
 
             //同步登录信息，例如ip等等
-            await AsyncLoginInfo(user.Id, timeNow, request.Ip, expireTime, jti);
+            await AsyncLoginInfo(user.Id, timeNow, fromIP, expireTime, jti);
 
             var result = user.Adapt<LoginVM>();
             result.Jwt = jwt;
