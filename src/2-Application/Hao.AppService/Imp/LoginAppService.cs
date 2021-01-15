@@ -90,7 +90,7 @@ namespace Hao.AppService
             var menus = new List<MenuVM>();
 
             //找主菜单一级 parentId=0
-            InitMenuTree(menus, 0, modules, authNums, user.Id); 
+            InitMenuTree(menus, 0, modules, authNums, user.Id);
 
             H_AssertEx.That(menus.Count == 0, "没有系统权限，暂时无法登录，请联系管理员");
 
@@ -105,7 +105,7 @@ namespace Hao.AppService
             cacheUser.LoginIp = fromIP;
             cacheUser.LoginTime = timeNow;
             cacheUser.LoginStatus = LoginStatus.Online;
-            
+
 
             int expireSeconds = (int)expireTime.Subtract(timeNow).Duration().TotalSeconds + 1;
             RedisHelper.Set($"{_appsettings.RedisPrefix.Login}{user.Id}_{jti}", JsonConvert.SerializeObject(cacheUser), expireSeconds);
@@ -151,7 +151,7 @@ namespace Hao.AppService
         /// <param name="jti"></param>
         /// <param name="user"></param>
         /// <returns></returns>
-        private string CreateJwt(DateTime timeNow, DateTime expireTime,Guid jti, SysUser user)
+        private string CreateJwt(DateTime timeNow, DateTime expireTime, Guid jti, SysUser user)
         {
             var claims = new Claim[]
             {
@@ -218,7 +218,7 @@ namespace Hao.AppService
                 };
                 result.Add(node);
                 InitMenuTree(node.ChildMenus, item.Id, sources, authNums, userId);
-                if (item.Type == ModuleType.Main &&node.ChildMenus.Count < 1) result.Remove(node);
+                if (item.Type == ModuleType.Main && node.ChildMenus.Count < 1) result.Remove(node);
             }
         }
     }
