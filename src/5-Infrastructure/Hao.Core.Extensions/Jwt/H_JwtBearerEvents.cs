@@ -72,7 +72,7 @@ namespace Hao.Core.Extensions
             var response = new H_Response()
             {
                 Success = false,
-                ErrorCode = nameof(H_Error.E100001).GetErrorCode(),
+                ErrorCode = nameof(H_Error.E100001).ToCode(),
                 ErrorMsg = H_Error.E100001
             };
 

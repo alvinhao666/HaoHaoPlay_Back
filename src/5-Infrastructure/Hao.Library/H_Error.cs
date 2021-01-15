@@ -12,7 +12,7 @@
         /// </summary>
         /// <param name="errorName"></param>
         /// <returns></returns>
-        public static int GetErrorCode(this string errorName)
+        public static int ToCode(this string errorName)
         {
             int result = 0;
             if (!string.IsNullOrWhiteSpace(errorName))
