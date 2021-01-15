@@ -8,11 +8,11 @@ namespace Hao.AppService
     public interface ILoginAppService
     {
         /// <summary>
-        /// 登录
+        /// 账号密码登录
         /// </summary>
         /// <param name="request"></param>
         /// <param name="fromIP"></param>
         /// <returns></returns>
-        Task<LoginVM> Login(LoginRequest request, string fromIP);
+        Task<LoginVM> LoginByAccountPwd(LoginByAccountPwdRequest request, string fromIP);
     }
 }
