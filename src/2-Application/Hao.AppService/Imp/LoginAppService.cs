@@ -6,6 +6,7 @@ using Hao.EventData;
 using Hao.Library;
 using Hao.Model;
 using Hao.Utility;
+using Mapster;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
@@ -82,33 +83,25 @@ namespace Hao.AppService
             var jwt = CreateJwt(timeNow, expireTime, jti, user);
 
             //存入redis
-            var userValue = new H_CacheUser
-            {
-                Id = user.Id,
-                Name = user.Name,
-                RoleLevel = user.RoleLevel,
-                AuthNumbers = authNums,
-                Jwt = jwt,
-                LoginStatus = LoginStatus.Online,
-                Ip = request.Ip,
-                LoginTime = timeNow
-            };
+            var cacheUser = user.Adapt<H_CacheUser>();
+            cacheUser.AuthNums = authNums;
+            cacheUser.Jwt = jwt;
+            cacheUser.Ip = request.Ip;
+            cacheUser.LoginTime = timeNow;
+            cacheUser.LoginStatus = LoginStatus.Online;
 
             int expireSeconds = (int)expireTime.Subtract(timeNow).Duration().TotalSeconds + 1;
-            RedisHelper.Set($"{_appsettings.RedisPrefix.Login}{user.Id}_{jti}", JsonConvert.SerializeObject(userValue), expireSeconds);
+            RedisHelper.Set($"{_appsettings.RedisPrefix.Login}{user.Id}_{jti}", JsonConvert.SerializeObject(cacheUser), expireSeconds);
 
             //同步登录信息，例如ip等等
             await AsyncLoginInfo(user.Id, timeNow, request.Ip, expireTime, jti);
 
-            return new LoginVM
-            {
-                Name = user.Name,
-                FirstNameSpell = user.FirstNameSpell,
-                HeadImgUrl = user.HeadImgUrl,
-                Jwt = jwt,
-                AuthNums = authNums,
-                Menus = menus
-            };
+            var result = user.Adapt<LoginVM>();
+            result.Jwt = jwt;
+            result.AuthNums = authNums;
+            result.Menus = menus;
+
+            return result;
         }
 
 
