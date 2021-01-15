@@ -33,11 +33,11 @@ namespace Hao.WebApi
         [HttpPost]
         public async Task<LoginVM> Login(LoginRequest request)
         {
-            request.Ip = HttpContext.GetIp();
+            string ip = HttpContext.GetIp();
 
-            _logger.Info(new H_Log() { Method = "Login", Data = request , Description = $"登录请求TraceId：{HttpContext.TraceIdentifier}，IP：{request.Ip}" });
+            _logger.Info(new H_Log() { Method = "Login", Data = request , Description = $"登录请求TraceId：{HttpContext.TraceIdentifier}，IP：{ip}" });
 
-            var result = await _loginAppService.Login(request);
+            var result = await _loginAppService.Login(request, ip);
 
             _logger.Info(new H_Log() { Method = "Login", Data = result, Description = $"登录返回TraceId：{HttpContext.TraceIdentifier}" });
 

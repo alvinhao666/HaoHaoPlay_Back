@@ -49,9 +49,9 @@ namespace Hao.AppService
         /// 登录
         /// </summary>
         /// <param name="request"></param>
-        /// <param name="ip"></param>
+        /// <param name="fromIP"></param>
         /// <returns></returns>
-        public async Task<LoginVM> Login(LoginRequest request)
+        public async Task<LoginVM> Login(LoginRequest request, string fromIP)
         {
             var timeNow = DateTime.Now;
             var expireTime = timeNow.AddDays(request.IsRememberLogin ? 3 : 1);
@@ -86,7 +86,7 @@ namespace Hao.AppService
             var cacheUser = user.Adapt<H_CacheUser>();
             cacheUser.AuthNums = authNums;
             cacheUser.Jti = jti.ToString();
-            cacheUser.LoginIp = request.Ip;
+            cacheUser.LoginIp = fromIP;
             cacheUser.LoginTime = timeNow;
             cacheUser.LoginStatus = LoginStatus.Online;
             
@@ -95,7 +95,7 @@ namespace Hao.AppService
             RedisHelper.Set($"{_appsettings.RedisPrefix.Login}{user.Id}_{jti}", JsonConvert.SerializeObject(cacheUser), expireSeconds);
 
             //同步登录信息，例如ip等等
-            await AsyncLoginInfo(user.Id, timeNow, request.Ip, expireTime, jti);
+            await AsyncLoginInfo(user.Id, timeNow, fromIP, expireTime, jti);
 
             var result = user.Adapt<LoginVM>();
             result.Jwt = jwt;

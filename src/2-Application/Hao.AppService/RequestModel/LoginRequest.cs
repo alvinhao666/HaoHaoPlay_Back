@@ -21,11 +21,6 @@ namespace Hao.AppService
         /// </summary>
         public bool IsRememberLogin { get; set; }
 
-        /// <summary>
-        /// 登录ip
-        /// </summary>
-        public string Ip { get; set; }
-
 
         //public List<int> Codes { get; set; }
     }

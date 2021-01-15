@@ -11,7 +11,8 @@ namespace Hao.AppService
         /// 登录
         /// </summary>
         /// <param name="request"></param>
+        /// <param name="fromIP"></param>
         /// <returns></returns>
-        Task<LoginVM> Login(LoginRequest request);
+        Task<LoginVM> Login(LoginRequest request, string fromIP);
     }
 }
