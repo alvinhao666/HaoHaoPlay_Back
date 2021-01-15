@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Hao.Core
 {
@@ -8,19 +9,19 @@ namespace Hao.Core
 
         public H_Exception() { }
 
-        public H_Exception(int? code)
-        {
-            this.Code = Code;
-        }
 
         public H_Exception(string message) : base(message) { }
+
 
         public H_Exception(string message, int? code) : base(message)
         {
             this.Code = code;
         }
 
-        public H_Exception(string message, Exception innerException) : base(message, innerException) { }
+        public H_Exception(KeyValuePair<int, string> pair) : base(pair.Value)
+        {
+            this.Code = pair.Key;
+        }
     }
 
 

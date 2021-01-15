@@ -1,25 +1,27 @@
-﻿namespace Hao.Library
+﻿using System.Collections.Generic;
+
+namespace Hao.Library
 {
     public static class H_Error
     {
-        public const string E100001 = "认证失败，请重新登录";
-        public const string E100002 = "用户未登录，请重新登录";
-        public const string E100003 = "用户权限值已变更，请重新登录";
-        public const string E100004 = "IP地址发生变更，请重新登录";
+        /// <summary>
+        /// 认证失败，请重新登录
+        /// </summary>
+        public static KeyValuePair<int, string> E100001 = new KeyValuePair<int, string>(100001, "认证失败，请重新登录");
 
         /// <summary>
-        /// 返回错误Code
+        /// 用户未登录，请重新登录
         /// </summary>
-        /// <param name="errorName"></param>
-        /// <returns></returns>
-        public static int GetErrorCode(this string errorName)
-        {
-            int result = 0;
-            if (!string.IsNullOrWhiteSpace(errorName))
-            {
-                int.TryParse(errorName.Substring(1), out result);
-            }
-            return result;
-        }
+        public static KeyValuePair<int, string> E100002 = new KeyValuePair<int, string>(100002, "用户未登录，请重新登录");
+
+        /// <summary>
+        /// 用户权限值已变更，请重新登录
+        /// </summary>
+        public static KeyValuePair<int, string> E100003 = new KeyValuePair<int, string>(100003, "用户权限值已变更，请重新登录");
+
+        /// <summary>
+        /// IP地址发生变更，请重新登录
+        /// </summary>
+        public static KeyValuePair<int, string> E100004 = new KeyValuePair<int, string>(100004, "IP地址发生变更，请重新登录");
     }
 }

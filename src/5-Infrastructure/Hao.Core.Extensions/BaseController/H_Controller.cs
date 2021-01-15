@@ -117,7 +117,7 @@ namespace Hao.Core.Extensions
 
             var value = RedisHelper.Get($"{prefix}{userId}_{jti}");
 
-            if (string.IsNullOrWhiteSpace(value)) throw new H_Exception(H_Error.E100002, nameof(H_Error.E100002).GetErrorCode());
+            if (string.IsNullOrWhiteSpace(value)) throw new H_Exception(H_Error.E100002);
 
             H_CacheUser cacheUser;
 
@@ -127,16 +127,16 @@ namespace Hao.Core.Extensions
             }
             catch
             {
-                throw new H_Exception(H_Error.E100002, nameof(H_Error.E100002).GetErrorCode());
+                throw new H_Exception(H_Error.E100002);
             }
 
-            if (cacheUser == null) throw new H_Exception(H_Error.E100002, nameof(H_Error.E100002).GetErrorCode());
+            if (cacheUser == null) throw new H_Exception(H_Error.E100002);
 
             if (cacheUser.LoginStatus == LoginStatus.Offline)
             {
-                if (cacheUser.IsAuthUpdate) throw new H_Exception(H_Error.E100003, nameof(H_Error.E100003).GetErrorCode());
+                if (cacheUser.IsAuthUpdate) throw new H_Exception(H_Error.E100003);
 
-                throw new H_Exception(H_Error.E100002, nameof(H_Error.E100002).GetErrorCode());
+                throw new H_Exception(H_Error.E100002);
             }
 
             return cacheUser;

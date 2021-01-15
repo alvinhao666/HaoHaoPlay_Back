@@ -72,8 +72,8 @@ namespace Hao.Core.Extensions
             var response = new H_Response()
             {
                 Success = false,
-                ErrorCode = nameof(H_Error.E100001).GetErrorCode(),
-                ErrorMsg = H_Error.E100001
+                ErrorCode = H_Error.E100001.Key,
+                ErrorMsg = H_Error.E100001.Value
             };
 
             var options = new JsonSerializerOptions
