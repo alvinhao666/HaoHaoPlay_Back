@@ -85,9 +85,8 @@ namespace Hao.AppService
             //存入redis
             var cacheUser = user.Adapt<H_CacheUser>();
             cacheUser.AuthNums = authNums;
-            cacheUser.Jwt = jwt;
             cacheUser.Jti = jti.ToString();
-            cacheUser.Ip = request.Ip;
+            cacheUser.LoginIp = request.Ip;
             cacheUser.LoginTime = timeNow;
             cacheUser.LoginStatus = LoginStatus.Online;
             

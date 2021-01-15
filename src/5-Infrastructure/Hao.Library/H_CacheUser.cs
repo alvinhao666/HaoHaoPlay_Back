@@ -8,6 +8,8 @@ namespace Hao.Library
     /// </summary>
     public class H_CacheUser
     {
+        #region User信息，属性名跟CurrentUser属性名对应
+
         /// <summary>
         /// 主键id
         /// </summary>
@@ -17,26 +19,24 @@ namespace Hao.Library
         /// 姓名
         /// </summary>
         public string Name { get; set; }
-        
+
         /// <summary>
         /// 角色等级
         /// </summary>
         public int RoleLevel { get; set; }
 
-        /// <summary>
-        /// 权限
-        /// </summary>
-        public List<long> AuthNums { get; set; }
-
-        /// <summary>
-        /// token值
-        /// </summary>
-        public string Jwt { get; set; }
 
         /// <summary>
         /// token唯一标识
         /// </summary>
         public string Jti { get; set; }
+
+        #endregion
+
+        /// <summary>
+        /// 登录时间
+        /// </summary>
+        public DateTime LoginTime { get; set; }
 
         /// <summary>
         /// 登录状态
@@ -44,19 +44,19 @@ namespace Hao.Library
         public LoginStatus LoginStatus { get; set; }
 
         /// <summary>
+        /// ip地址
+        /// </summary>
+        public string LoginIp { get; set; }
+
+        /// <summary>
         /// 是否权限更新
         /// </summary>
         public bool IsAuthUpdate { get; set; }
 
         /// <summary>
-        /// ip地址
+        /// 拥有权限值集合
         /// </summary>
-        public string Ip { get; set; }
-
-        /// <summary>
-        /// 登录时间
-        /// </summary>
-        public DateTime LoginTime { get; set; }
+        public List<long> AuthNums { get; set; }
     }
 
     /// <summary>
