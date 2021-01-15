@@ -86,9 +86,11 @@ namespace Hao.AppService
             var cacheUser = user.Adapt<H_CacheUser>();
             cacheUser.AuthNums = authNums;
             cacheUser.Jwt = jwt;
+            cacheUser.Jti = jti.ToString();
             cacheUser.Ip = request.Ip;
             cacheUser.LoginTime = timeNow;
             cacheUser.LoginStatus = LoginStatus.Online;
+            
 
             int expireSeconds = (int)expireTime.Subtract(timeNow).Duration().TotalSeconds + 1;
             RedisHelper.Set($"{_appsettings.RedisPrefix.Login}{user.Id}_{jti}", JsonConvert.SerializeObject(cacheUser), expireSeconds);

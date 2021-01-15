@@ -12,6 +12,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using Hao.Runtime;
 using Newtonsoft.Json;
+using Mapster;
 
 namespace Hao.Core.Extensions
 {
@@ -52,11 +53,7 @@ namespace Hao.Core.Extensions
             
             var currentUser = context.HttpContext.RequestServices.GetService(typeof(ICurrentUser)) as CurrentUser;
 
-            currentUser.Id = userId.ToLongOrNull();
-            currentUser.Name = cache.Name;
-            currentUser.Jti = jti;
-            currentUser.RoleLevel = cache.RoleLevel;
-
+            currentUser = cache.Adapt(currentUser);
 
             if (currentUser.Id == 2)
             {
