@@ -15,8 +15,8 @@ namespace Hao.Repository
                         .ToListAsync(a => new RoleDto
                         {
                             Id = a.Id,
-                            Name =a.Name,
-                            UserCount = (int)DbContext.Select<SysUser>().Where(b => b.RoleLevel == a.Level).Count()
+                            Name = a.Name,
+                            UserCount = (int)DbContext.Select<SysUser>().Where(b => b.RoleLevel == a.Level && b.Enabled == true).Count()
                         });
 
             return roles;
