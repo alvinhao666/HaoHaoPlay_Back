@@ -46,6 +46,6 @@ namespace Hao.AppService
         /// 注销登录
         /// </summary>
         /// <returns></returns>
-        Task Logout();
+        void Logout();
     }
 }

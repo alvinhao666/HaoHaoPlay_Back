@@ -141,16 +141,13 @@ namespace Hao.AppService
         /// 注销当前登录
         /// </summary>
         /// <returns></returns>
-        public async Task Logout()
+        public void Logout()
         {
             var key = $"{_appsettings.RedisPrefix.Login}{_currentUser.Id.Value}_{_currentUser.Jti}";
 
-            var value = await RedisHelper.GetAsync(key);
+            var value = RedisHelper.Get(key);
 
-            if (value.HasValue())
-            {
-                await RedisHelper.DelAsync(key);
-            }
+            if (value.HasValue()) RedisHelper.Del(key);
         }
     }
 }

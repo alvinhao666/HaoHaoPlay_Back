@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using Hao.Runtime;
+using Newtonsoft.Json;
 
 namespace Hao.Core.Extensions
 {
@@ -118,7 +119,7 @@ namespace Hao.Core.Extensions
 
             if (string.IsNullOrWhiteSpace(value)) throw new H_Exception(H_Error.E100002, nameof(H_Error.E100002).GetErrorCode());
 
-            var cacheUser = H_JsonSerializer.Deserialize<H_CacheUser>(value);
+            var cacheUser = JsonConvert.DeserializeObject<H_CacheUser>(value);
 
             if (cacheUser?.Id == null) throw new H_Exception(H_Error.E100002, nameof(H_Error.E100002).GetErrorCode());
 

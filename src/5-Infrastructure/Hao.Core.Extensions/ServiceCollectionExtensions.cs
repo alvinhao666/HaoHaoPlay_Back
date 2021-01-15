@@ -2,7 +2,6 @@
 using FluentValidation.AspNetCore;
 using Hao.Library;
 using Hao.Snowflake;
-using Hao.Utility;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

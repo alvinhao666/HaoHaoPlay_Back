@@ -13,24 +13,24 @@ namespace Hao.Model
     public class DictQuery : Query<SysDict>
     {
         /// <summary>
+        /// 字典编码 模糊查询
+        /// </summary>
+        public string LikeDictCode { get; set; }
+
+        /// <summary>
         /// 字典编码
         /// </summary>
         public string DictCode { get; set; }
 
         /// <summary>
-        /// 字典编码
+        /// 字典名称 模糊查询
         /// </summary>
-        public string EqualDictCode { get; set; }
+        public string LikeDictName { get; set; }
 
         /// <summary>
         /// 字典名称
         /// </summary>
         public string DictName { get; set; }
-
-        /// <summary>
-        /// 字典名称
-        /// </summary>
-        public string EqualDictName { get; set; }
 
         /// <summary>
         /// 父级id
@@ -40,12 +40,12 @@ namespace Hao.Model
         /// <summary>
         /// 数据项名称，模糊查询
         /// </summary>
-        public string ItemName { get; set; }
+        public string LikeItemName { get; set; }
 
         /// <summary>
         /// 数据项名称
         /// </summary>
-        public string EqualItemName { get; set; }
+        public string ItemName { get; set; }
 
         /// <summary>
         /// 数据项值
@@ -64,17 +64,17 @@ namespace Hao.Model
             {
                 var result = new List<Expression<Func<SysDict, bool>>>();
 
-                if (DictCode.HasValue()) result.Add(x => x.DictCode.Contains(DictCode));
+                if (LikeDictCode.HasValue()) result.Add(x => x.DictCode.Contains(LikeDictCode));
 
-                if (EqualDictCode.HasValue()) result.Add(x => x.DictCode == EqualDictCode);
+                if (DictCode.HasValue()) result.Add(x => x.DictCode == DictCode);
 
-                if (DictName.HasValue()) result.Add(x => x.DictName.Contains(DictName));
+                if (LikeDictName.HasValue()) result.Add(x => x.DictName.Contains(LikeDictName));
 
-                if (EqualDictName.HasValue()) result.Add(x => x.DictName == EqualDictName);
+                if (DictName.HasValue()) result.Add(x => x.DictName == DictName);
 
-                if (ItemName.HasValue()) result.Add(x => x.ItemName.Contains(ItemName));
+                if (LikeItemName.HasValue()) result.Add(x => x.ItemName.Contains(LikeItemName));
 
-                if (EqualItemName.HasValue()) result.Add(x => x.ItemName == EqualItemName);
+                if (ItemName.HasValue()) result.Add(x => x.ItemName == ItemName);
 
                 if (ParentId.HasValue) result.Add(x => x.ParentId == ParentId);
 

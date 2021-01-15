@@ -127,10 +127,10 @@ namespace Hao.Core
                 }
             }
 
-            var items = await select.Count(out var total)
+            var items = await select.Count(out var totalCount)
                                     .Page(query.PageIndex, query.PageSize).ToListAsync();
 
-            return items.ToPaged(query, total);
+            return items.ToPaged(query, totalCount);
         }
         
         

@@ -34,15 +34,15 @@ namespace Hao.Core
 
     public static class Paged
     {
-        public static Paged<T> ToPaged<T>(this IEnumerable<T> items, IPagedQuery query, long total) where T : class, new()
+        public static Paged<T> ToPaged<T>(this IEnumerable<T> items, IPagedQuery query, long totalCount) where T : class, new()
         {
             var pageList = new Paged<T>()
             {
                 Items = items,
-                TotalCount = (int)total,
+                TotalCount = (int)totalCount,
                 PageIndex = query.PageIndex,
                 PageSize =  query.PageSize,
-                TotalPageCount = ((int)total + query.PageSize - 1) / query.PageSize
+                TotalPageCount = ((int)totalCount + query.PageSize - 1) / query.PageSize
             };
             return pageList;
         }

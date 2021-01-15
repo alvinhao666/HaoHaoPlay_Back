@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,7 +20,7 @@ namespace Hao.Utility
         public static async Task<TResult> Post<T, TResult>(this HttpClient httpClient, string url, T t,
             int timeoutSeconds = 30) where T : class, new() where TResult : class, new()
         {
-            var json = H_JsonSerializer.Serialize(t);
+            var json = JsonConvert.SerializeObject(t);
 
             httpClient.Timeout = new TimeSpan(0, 0, timeoutSeconds);
 
@@ -29,7 +30,7 @@ namespace Hao.Utility
             {
                 string content = await response.Content.ReadAsStringAsync();
 
-                var result = H_JsonSerializer.Deserialize<TResult>(content);
+                var result = JsonConvert.DeserializeObject<TResult>(content);
 
                 return result;
             }
@@ -56,7 +57,7 @@ namespace Hao.Utility
             {
                 string content = await response.Content.ReadAsStringAsync();
 
-                var result = H_JsonSerializer.Deserialize<TResult>(content);
+                var result = JsonConvert.DeserializeObject<TResult>(content);
 
                 return result;
             }
