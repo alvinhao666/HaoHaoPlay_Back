@@ -48,7 +48,7 @@ namespace Hao.Core.Extensions
 
             //if (ip != cache.Ip) throw new H_Exception("请重新登录", nameof(H_Error.E100004).GetErrorCode());
 
-            CheckAuth(context, cache.AuthNumbers);
+            CheckAuth(context, cache.AuthNums);
             
             var currentUser = context.HttpContext.RequestServices.GetService(typeof(ICurrentUser)) as CurrentUser;
 
@@ -125,8 +125,7 @@ namespace Hao.Core.Extensions
 
             if (cacheUser.LoginStatus.HasValue
                 && cacheUser.LoginStatus == LoginStatus.Offline
-                && cacheUser.IsAuthUpdate.HasValue
-                && cacheUser.IsAuthUpdate.Value) throw new H_Exception(H_Error.E100003, nameof(H_Error.E100003).GetErrorCode());
+                && cacheUser.IsAuthUpdate) throw new H_Exception(H_Error.E100003, nameof(H_Error.E100003).GetErrorCode());
 
             if (!cacheUser.LoginStatus.HasValue || cacheUser.LoginStatus == LoginStatus.Offline) throw new H_Exception(H_Error.E100002, nameof(H_Error.E100002).GetErrorCode());
 

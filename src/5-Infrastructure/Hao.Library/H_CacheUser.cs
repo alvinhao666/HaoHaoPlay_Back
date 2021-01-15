@@ -26,7 +26,7 @@ namespace Hao.Library
         /// <summary>
         /// 权限
         /// </summary>
-        public List<long> AuthNumbers { get; set; }
+        public List<long> AuthNums { get; set; }
 
         /// <summary>
         /// token值
@@ -41,7 +41,7 @@ namespace Hao.Library
         /// <summary>
         /// 是否权限更新
         /// </summary>
-        public bool? IsAuthUpdate { get; set; }
+        public bool IsAuthUpdate { get; set; }
 
         /// <summary>
         /// ip地址
