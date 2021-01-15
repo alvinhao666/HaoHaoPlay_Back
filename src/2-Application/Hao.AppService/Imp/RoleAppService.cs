@@ -70,10 +70,8 @@ namespace Hao.AppService
             {
                 query.CurrentRoleLevel = _currentUser.RoleLevel;
             }
-            
-            query.OrderBy(a=>a.Level);
 
-            var roles = await _roleRep.GetListAysnc(query);
+            var roles = await _roleRep.GetRoleList(query);
 
             var result = roles.Adapt<List<RoleVM>>();
 

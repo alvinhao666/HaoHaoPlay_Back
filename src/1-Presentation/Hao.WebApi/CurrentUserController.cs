@@ -61,6 +61,6 @@ namespace Hao.WebApi
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task Logout() => await _currentUserAppService.Logout();
+        public void Logout() => _currentUserAppService.Logout();
     }
 }

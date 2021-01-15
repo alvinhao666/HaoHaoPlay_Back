@@ -61,7 +61,6 @@ namespace Hao.AppService
         /// <param name="vm"></param>
         /// <returns></returns>
         [DistributedLock("UserAppService_AddUser")]
-        [UnitOfWork]
         public async Task Add(UserAddRequest vm)
         {
             var users = await _userRep.GetAllAysnc(new UserQuery { LoginName = vm.LoginName });
@@ -84,7 +83,6 @@ namespace Hao.AppService
             user.AuthNumbers = role.AuthNumbers;
             user.RoleLevel = role.Level;
 
-            role.UserCount = role.UserCount.HasValue ? ++role.UserCount : 1;
             try
             {
                 await _userRep.InsertAysnc(user);
@@ -93,8 +91,6 @@ namespace Hao.AppService
             {
                 H_AssertEx.That(ex.SqlState == H_PostgresSqlState.E23505, "账号已存在，请重新输入");
             }
-
-            await _roleRep.UpdateAsync(role, a => new { a.UserCount });
         }
 
         /// <summary>
@@ -132,18 +128,12 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        [DistributedLock("UserAppService_DeleteUser")]
-        [UnitOfWork]
         public async Task Delete(long userId)
         {
             CheckUser(userId);
             var user = await GetUserDetail(userId);
 
-            var role = await _roleRep.GetAysnc(user.RoleId.Value);
-            role.UserCount--;
-
             await _userRep.DeleteAysnc(user);
-            await _roleRep.UpdateAsync(role, a => new { a.UserCount });
 
             await _publisher.PublishAsync(nameof(LogoutEventData), new LogoutEventData
             {
