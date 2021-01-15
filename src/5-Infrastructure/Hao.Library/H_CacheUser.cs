@@ -34,6 +34,11 @@ namespace Hao.Library
         public string Jwt { get; set; }
 
         /// <summary>
+        /// token唯一标识
+        /// </summary>
+        public string Jti { get; set; }
+
+        /// <summary>
         /// 登录状态
         /// </summary>
         public LoginStatus LoginStatus { get; set; }
