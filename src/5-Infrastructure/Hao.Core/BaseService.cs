@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using NLog;
 using System;
 using System.Threading.Tasks;
+using DotNetCore.CAP;
 
 namespace Hao.Core
 {
@@ -20,6 +21,8 @@ namespace Hao.Core
             {
                 var freeSql = context.ServiceProvider.GetService(typeof(IFreeSqlContext)) as IFreeSqlContext;
 
+                var capPublisher = context.ServiceProvider.GetService(typeof(ICapPublisher)) as ICapPublisher;
+                
                 try
                 {
 #if DEBUG
@@ -28,7 +31,7 @@ namespace Hao.Core
                     Console.WriteLine($"开始事务：{freeSql.GetHashCode()}");
                     Console.WriteLine();
 #endif
-                    freeSql.Transaction(null);
+                    freeSql.Transaction(null, capPublisher);
                     await next(context);
 #if DEBUG
                     Console.ForegroundColor = ConsoleColor.Blue;

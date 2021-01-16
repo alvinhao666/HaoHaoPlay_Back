@@ -16,14 +16,13 @@ namespace Hao.Core
     {
         void Commit();
         void Rollback();
+        void Transaction(Action handler, ICapPublisher capPublisher);
     }
 
     class FreeSqlContext : IFreeSqlContext
     {
         [FromServiceContext] public ICurrentUser CurrentUser { get; set; }
-        
-        [FromServiceContext] public ICapPublisher CapPublisher { get; set; }
-        
+
         IFreeSql _originalFsql;
         int _transactionCount;
         DbTransaction _transaction;
@@ -115,9 +114,11 @@ namespace Hao.Core
           
 
         public void Dispose() => TransactionCommitPriv(true);
-        public void Transaction(Action handler) => TransactionPriv(null, handler);
-        public void Transaction(IsolationLevel isolationLevel, Action handler) => TransactionPriv(isolationLevel, handler);
-        void TransactionPriv(IsolationLevel? isolationLevel, Action handler)
+        
+        public void Transaction(Action handler,ICapPublisher capPublisher) => TransactionPriv(null, handler, capPublisher);
+        public void Transaction(Action handler) => TransactionPriv(null, handler, null);
+        public void Transaction(IsolationLevel isolationLevel, Action handler) => TransactionPriv(isolationLevel, handler, null);
+        void TransactionPriv(IsolationLevel? isolationLevel, Action handler, ICapPublisher capPublisher)
         {
             if (_transaction != null)
             {
@@ -127,7 +128,7 @@ namespace Hao.Core
             try
             {
                 if (_connection == null) _connection = _originalFsql.Ado.MasterPool.Get();
-                _transaction = isolationLevel == null ? _connection.Value.BeginTransaction(CapPublisher) as DbTransaction : _connection.Value.BeginTransaction(isolationLevel.Value);
+                _transaction = isolationLevel == null ? (DbTransaction)_connection.Value.BeginTransaction(capPublisher).DbTransaction : _connection.Value.BeginTransaction(isolationLevel.Value);
                 _transactionCount = 0;
             }
             catch
