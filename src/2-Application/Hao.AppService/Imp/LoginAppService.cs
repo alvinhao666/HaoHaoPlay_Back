@@ -119,7 +119,6 @@ namespace Hao.AppService
             result.AuthNums = authNums;
             result.Menus = menus;
 
-            throw new Exception("12312");
             return result;
         }
 
