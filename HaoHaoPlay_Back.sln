@@ -38,6 +38,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "global", "global", "{D70011BA-8944-4796-BC98-AFCA04555DAD}"
 	ProjectSection(SolutionItems) = preProject
 		Dockerfile = Dockerfile
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.Excel", "src\6-Common\Hao.Excel\Hao.Excel.csproj", "{FF2CC4EA-55D7-423F-9DA4-09F7C719EF9B}"
