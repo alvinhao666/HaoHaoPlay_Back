@@ -128,6 +128,7 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
+        [UnitOfWork]
         public async Task Delete(long userId)
         {
             CheckUser(userId);
@@ -147,6 +148,7 @@ namespace Hao.AppService
         /// <param name="userId"></param>
         /// <param name="enabled"></param>
         /// <returns></returns>
+        [UnitOfWork]
         public async Task UpdateStatus(long userId, bool enabled)
         {
             CheckUser(userId);

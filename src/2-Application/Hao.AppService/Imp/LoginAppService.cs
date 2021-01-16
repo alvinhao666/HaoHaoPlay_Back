@@ -52,6 +52,7 @@ namespace Hao.AppService
         /// <param name="request"></param>
         /// <param name="fromIP"></param>
         /// <returns></returns>
+        [UnitOfWork]
         public async Task<LoginVM> LoginByAccountPwd(LoginByAccountPwdRequest request, string fromIP)
         {
             //rsa解密
@@ -118,6 +119,7 @@ namespace Hao.AppService
             result.AuthNums = authNums;
             result.Menus = menus;
 
+            throw new Exception("12312");
             return result;
         }
 

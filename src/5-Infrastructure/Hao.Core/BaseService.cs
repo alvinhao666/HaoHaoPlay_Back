@@ -11,7 +11,7 @@ namespace Hao.Core
         protected readonly ILogger Logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
-        /// 工作单元，事务，原子操作
+        /// 工作单元，事务，原子操作,[UnitOfWork]必须作用于接口实现的方法上
         /// </summary>
         [AttributeUsage(AttributeTargets.Method)]
         protected class UnitOfWorkAttribute : AbstractInterceptorAttribute
