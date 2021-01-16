@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using AspectCore.DependencyInjection;
+using DotNetCore.CAP;
 using Hao.Runtime;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -20,6 +21,8 @@ namespace Hao.Core
     class FreeSqlContext : IFreeSqlContext
     {
         [FromServiceContext] public ICurrentUser CurrentUser { get; set; }
+        
+        [FromServiceContext] public ICapPublisher CapPublisher { get; set; }
         
         IFreeSql _originalFsql;
         int _transactionCount;
@@ -124,8 +127,8 @@ namespace Hao.Core
             try
             {
                 if (_connection == null) _connection = _originalFsql.Ado.MasterPool.Get();
-                _transaction = isolationLevel == null ? _connection.Value.BeginTransaction() : _connection.Value.BeginTransaction(isolationLevel.Value);
-                _transactionCount = 0; //
+                _transaction = isolationLevel == null ? _connection.Value.BeginTransaction(CapPublisher) as DbTransaction : _connection.Value.BeginTransaction(isolationLevel.Value);
+                _transactionCount = 0;
             }
             catch
             {
@@ -156,7 +159,6 @@ namespace Hao.Core
         }
         
         
-
         /// <summary>
         /// 设置当前用户，不能为异步方法
         /// </summary>
