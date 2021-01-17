@@ -70,7 +70,7 @@ namespace Hao.WebApi
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<object> GetTencentCosFederationToken()
+        public object GetTencentCosFederationToken()
         {
             string key = "HaoHaoPlay_Back_FederationToken";
 

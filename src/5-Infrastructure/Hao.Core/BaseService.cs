@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using NLog;
 using System;
 using System.Threading.Tasks;
+using DotNetCore.CAP;
 
 namespace Hao.Core
 {
@@ -29,6 +30,51 @@ namespace Hao.Core
                     Console.WriteLine();
 #endif
                     freeSql.Transaction(null);
+                    await next(context);
+#if DEBUG
+                    Console.ForegroundColor = ConsoleColor.Blue;
+
+                    Console.WriteLine($"提交事务：{freeSql.GetHashCode()}");
+                    Console.WriteLine();
+#endif
+                    freeSql.Commit();
+                }
+                catch (Exception ex)
+                {
+#if DEBUG
+                    Console.ForegroundColor = ConsoleColor.Red;
+
+                    Console.WriteLine($"回滚事务：{freeSql.GetHashCode()}");
+                    Console.WriteLine();
+#endif
+                    freeSql.Rollback();
+                    throw ex;
+                }
+            }
+        }
+        
+        
+        /// <summary>
+        /// 工作单元，事务，原子操作,包含发送事件消息，[UnitOfWorkCoverCap]必须作用于接口实现的方法上
+        /// </summary>
+        [AttributeUsage(AttributeTargets.Method)]
+        protected class CapUnitOfWorkAttribute : AbstractInterceptorAttribute
+        {
+            public override async Task Invoke(AspectContext context, AspectDelegate next)
+            {
+                var freeSql = context.ServiceProvider.GetService(typeof(IFreeSqlContext)) as IFreeSqlContext;
+
+                var capPublisher = context.ServiceProvider.GetService(typeof(ICapPublisher)) as ICapPublisher;
+                
+                try
+                {
+#if DEBUG
+                    Console.ForegroundColor = ConsoleColor.Blue;
+
+                    Console.WriteLine($"开始事务：{freeSql.GetHashCode()}");
+                    Console.WriteLine();
+#endif
+                    freeSql.Transaction(null, capPublisher);
                     await next(context);
 #if DEBUG
                     Console.ForegroundColor = ConsoleColor.Blue;

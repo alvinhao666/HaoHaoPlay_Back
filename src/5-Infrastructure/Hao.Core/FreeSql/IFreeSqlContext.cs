@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Reflection;
 using AspectCore.DependencyInjection;
 using DotNetCore.CAP;
 using Hao.Runtime;
@@ -16,18 +17,19 @@ namespace Hao.Core
     {
         void Commit();
         void Rollback();
+        void Transaction(Action handler, ICapPublisher capPublisher);
     }
 
     class FreeSqlContext : IFreeSqlContext
     {
         [FromServiceContext] public ICurrentUser CurrentUser { get; set; }
-        
-        [FromServiceContext] public ICapPublisher CapPublisher { get; set; }
-        
+
         IFreeSql _originalFsql;
         int _transactionCount;
         DbTransaction _transaction;
         Object<DbConnection> _connection;
+
+        ICapPublisher _capPublisher;
         public FreeSqlContext(IFreeSql fsql)
         {
             _originalFsql = fsql;
@@ -115,9 +117,11 @@ namespace Hao.Core
           
 
         public void Dispose() => TransactionCommitPriv(true);
+        
+        public void Transaction(Action handler,ICapPublisher capPublisher) => TransactionPriv(null, handler, capPublisher);
         public void Transaction(Action handler) => TransactionPriv(null, handler);
         public void Transaction(IsolationLevel isolationLevel, Action handler) => TransactionPriv(isolationLevel, handler);
-        void TransactionPriv(IsolationLevel? isolationLevel, Action handler)
+        void TransactionPriv(IsolationLevel? isolationLevel, Action handler, ICapPublisher capPublisher = null)
         {
             if (_transaction != null)
             {
@@ -127,7 +131,17 @@ namespace Hao.Core
             try
             {
                 if (_connection == null) _connection = _originalFsql.Ado.MasterPool.Get();
-                _transaction = isolationLevel == null ? _connection.Value.BeginTransaction(CapPublisher) as DbTransaction : _connection.Value.BeginTransaction(isolationLevel.Value);
+                
+                if (capPublisher == null)
+                {
+                    _transaction = isolationLevel == null ? _connection.Value.BeginTransaction() : _connection.Value.BeginTransaction(isolationLevel.Value);
+                }
+                else
+                {
+                    _transaction = (DbTransaction) _connection.Value.BeginTransaction(capPublisher).DbTransaction;
+                    _capPublisher = capPublisher;
+                }
+                
                 _transactionCount = 0;
             }
             catch
@@ -145,7 +159,11 @@ namespace Hao.Core
             try
             {
                 if (iscommit == false) _transaction.Rollback();
-                else if (_transactionCount <= 0) _transaction.Commit();
+                else if (_transactionCount <= 0)
+                {
+                    _transaction.Commit();
+                    if (_capPublisher != null) _capPublisher.Transaction.Value.Flush();
+                }
             }
             finally
             {
@@ -165,6 +183,15 @@ namespace Hao.Core
         private void InitAsyncLocalCurrentUser()
         {
             FreeSqlCollectionExtensions.CurrentUser.Value = CurrentUser;
+        }
+    }
+
+
+    public static class CapUnitOfWorkExtensions
+    {
+        public static void Flush(this ICapTransaction capTransaction)
+        {
+            capTransaction?.GetType().GetMethod("Flush", BindingFlags.Instance | BindingFlags.NonPublic)?.Invoke(capTransaction, null);
         }
     }
 }
