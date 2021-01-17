@@ -103,7 +103,7 @@ namespace Hao.AppService
         /// <param name="id"></param>
         /// <param name="vm"></param>
         /// <returns></returns>
-        [UnitOfWork]
+        [CapUnitOfWork]
         public async Task UpdateRoleAuth(long id, RoleUpdateRequest vm)
         {
             var role = await GetRoleDetail(id);

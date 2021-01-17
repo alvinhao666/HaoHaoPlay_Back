@@ -52,7 +52,7 @@ namespace Hao.AppService
         /// <param name="request"></param>
         /// <param name="fromIP"></param>
         /// <returns></returns>
-        [UnitOfWork]
+        [CapUnitOfWork]
         public async Task<LoginVM> LoginByAccountPwd(LoginByAccountPwdRequest request, string fromIP)
         {
             //rsa解密
@@ -111,13 +111,19 @@ namespace Hao.AppService
             int expireSeconds = (int)expireTime.Subtract(timeNow).Duration().TotalSeconds + 1;
             RedisHelper.Set($"{_appsettings.RedisPrefix.Login}{user.Id}_{jti}", JsonConvert.SerializeObject(cacheUser), expireSeconds);
 
-            //同步登录信息，例如ip等等
-            await AsyncLoginInfo(user.Id, timeNow, fromIP, expireTime, jti);
-
             var result = user.Adapt<LoginVM>();
             result.Jwt = jwt;
             result.AuthNums = authNums;
             result.Menus = menus;
+            
+            await _publisher.PublishAsync(nameof(LoginEventData), new LoginEventData
+            {
+                UserId = user.Id,
+                LoginTime = timeNow,
+                LoginIP = fromIP,
+                JwtExpireTime = expireTime,
+                JwtJti = jti
+            });
 
             return result;
         }
@@ -174,22 +180,6 @@ namespace Hao.AppService
             ));
 
             return jwt;
-        }
-
-        /// <summary>
-        /// 同步登录信息
-        /// </summary>
-        /// <returns></returns>
-        private async Task AsyncLoginInfo(long userId, DateTime loginTime, string ip, DateTime expireTime, Guid jwtJti)
-        {
-            await _publisher.PublishAsync(nameof(LoginEventData), new LoginEventData
-            {
-                UserId = userId,
-                LoginTime = loginTime,
-                LoginIP = ip,
-                JwtExpireTime = expireTime,
-                JwtJti = jwtJti
-            });
         }
 
         /// <summary>
