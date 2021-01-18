@@ -25,14 +25,7 @@ namespace Hao.Utility
         /// <summary>
         /// 名称
         /// </summary>
-        public string Name
-        {
-            get
-            {
-                FieldInfo field = Field;
-                return field == null ? null : field.Name;
-            }
-        }
+        public string Name => Field?.Name;
 
         /// <summary>
         /// 值

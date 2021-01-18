@@ -12,7 +12,27 @@ namespace Hao.Utility
     public class H_Description
     {
         private static readonly ConcurrentDictionary<Type, List<H_DescriptionAttribute>> _enumCache = new ConcurrentDictionary<Type, List<H_DescriptionAttribute>>();
+        
+        internal static H_DescriptionAttribute Get(Type enumType, string fieldName)
+        {
+            return Get(enumType).SingleOrDefault(d => d.Name == fieldName); // SingleOrDefault只取一个 如果没有数据等于 null， 如果>1异常
+        }
 
+        private static H_DescriptionAttribute Get(FieldInfo fieldInfo)
+        {
+            var customAttribute = fieldInfo.GetCustomAttribute<H_DescriptionAttribute>();
+            if (customAttribute == null) return null;
+            customAttribute.Field = fieldInfo;
+            return customAttribute;
+        }
+        
+        
+        private static H_DescriptionAttribute Get(Type enumType, int value)
+        {
+            return Get(enumType).SingleOrDefault(d => (int)d.Value == value);
+        }
+
+        
         /// <summary>
         /// 获取所有字段
         /// </summary>
@@ -26,31 +46,6 @@ namespace Hao.Utility
             }
             
             return new List<H_DescriptionAttribute>();
-        }
-
-        internal static H_DescriptionAttribute Get(Type enumType, string fieldName)
-        {
-            return Get(enumType).SingleOrDefault(d => d.Name == fieldName); // SingleOrDefault只取一个 如果没有数据等于 null， 如果>1异常
-        }
-
-        private static H_DescriptionAttribute Get(FieldInfo fieldInfo)
-        {
-            var customAttribute = fieldInfo.GetCustomAttribute<H_DescriptionAttribute>();
-            if (customAttribute == null) return null;
-            customAttribute.Field = fieldInfo;
-            return customAttribute;
-        }
-
-
-        /// <summary>
-        /// 获取字段
-        /// </summary>
-        /// <param name="enumType">枚举类型</param>
-        /// <param name="value">值</param>
-        /// <returns></returns>
-        private static H_DescriptionAttribute Get(Type enumType, int value)
-        {
-            return Get(enumType).SingleOrDefault(d => (int)d.Value == value);
         }
 
 
