@@ -1,6 +1,7 @@
 ﻿using Hao.Core;
 using Hao.Enum;
 using System;
+using Hao.Utility;
 
 namespace Hao.AppService
 {
@@ -53,11 +54,13 @@ namespace Hao.AppService
         /// <summary>
         /// 年龄
         /// </summary>
+        [H_Description("年龄")]
         Age,
 
         /// <summary>
         /// 最后登录时间
         /// </summary>
+        [H_Description("最后登录时间")]
         LastLoginTime
     }
 }

@@ -11,8 +11,9 @@ namespace Hao.Utility
     /// </summary>
     public class H_Description
     {
-        private static readonly ConcurrentDictionary<Type, List<H_DescriptionAttribute>> _enumCache = new ConcurrentDictionary<Type, List<H_DescriptionAttribute>>();
-        
+        private static readonly ConcurrentDictionary<Type, List<H_DescriptionAttribute>> _enumCache =
+            new ConcurrentDictionary<Type, List<H_DescriptionAttribute>>();
+
         /// <summary>
         /// 获取所有字段
         /// </summary>
@@ -21,9 +22,8 @@ namespace Hao.Utility
         public static List<H_DescriptionAttribute> Get(Type enumType)
         {
             if (enumType.IsEnum)
-            {
-                return _enumCache.GetOrAdd(enumType, type => type.GetFields(BindingFlags.Static | BindingFlags.Public).Select(Get).ToList());
-            }
+                return _enumCache.GetOrAdd(enumType,
+                    type => type.GetFields(BindingFlags.Static | BindingFlags.Public).Select(Get).ToList());
 
             return new List<H_DescriptionAttribute>();
         }
@@ -43,17 +43,42 @@ namespace Hao.Utility
 
 
         /// <summary>
+        /// 获取字段
+        /// </summary>
+        /// <param name="enumType">枚举类型</param>
+        /// <param name="value">值</param>
+        /// <returns></returns>
+        private static H_DescriptionAttribute Get(Type enumType, int value)
+        {
+            return Get(enumType).SingleOrDefault(d => (int)d.Value == value);
+        }
+
+
+        /// <summary>
+        /// 获取描述
+        /// </summary>
+        /// <param name="enumType">枚举类型</param>
+        /// <param name="value">值</param>
+        /// <returns></returns>
+        public static string GetDescription(Type enumType, int value)
+        {
+            var description = Get(enumType, value);
+
+            return description?.Description;
+        }
+
+
+        /// <summary>
         /// 根据描述获取枚举
         /// </summary>
         /// <typeparam name="TEnum"></typeparam>
         /// <param name="description"></param>
         /// <returns></returns>
-        public static TEnum? ToEnum<TEnum>(string description) where TEnum: struct, Enum
+        public static TEnum? ToEnum<TEnum>(string description) where TEnum : struct, Enum
         {
             var descriptions = Get(typeof(TEnum));
             var type = descriptions.SingleOrDefault(a => a.Description == description);
-            if (type == null) return null;
-            return (TEnum)type.Value;
+            return (TEnum?) type?.Value;
         }
     }
 }

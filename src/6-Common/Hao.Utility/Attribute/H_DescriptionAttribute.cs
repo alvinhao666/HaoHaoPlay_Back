@@ -29,24 +29,14 @@ namespace Hao.Utility
         {
             get
             {
-                FieldInfo field = this.Field;
-                if (field == null)
-                {
-                    return null;
-                }
-                return field.Name;
+                FieldInfo field = Field;
+                return field == null ? null : field.Name;
             }
         }
 
         /// <summary>
         /// 值
         /// </summary>
-        public IConvertible Value
-        {
-            get
-            {
-                return (IConvertible)this.Field.GetValue(null);
-            }
-        }
+        public IConvertible Value => (IConvertible) Field.GetValue(null);
     }
 }
