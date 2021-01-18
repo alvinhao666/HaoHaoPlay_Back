@@ -38,6 +38,9 @@ namespace Hao.Core.Extensions
                     });
                     
                     c.SchemaFilter<EnumSchemaFilter>();
+                    c.SchemaFilter<SwaggerIgnoreFilter>();
+                    c.OperationFilter<IgnorePropertyFilter>();
+                    
                     foreach (var item in appSettings.Swagger.Xmls)
                     {
                         c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, item));
