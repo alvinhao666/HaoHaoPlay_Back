@@ -11,8 +11,7 @@ namespace Hao.Utility
     /// </summary>
     public class H_Description
     {
-        private static readonly ConcurrentDictionary<Type, List<H_DescriptionAttribute>> _enumCache =
-            new ConcurrentDictionary<Type, List<H_DescriptionAttribute>>();
+        private static readonly ConcurrentDictionary<Type, List<H_DescriptionAttribute>> _enumCache = new ConcurrentDictionary<Type, List<H_DescriptionAttribute>>();
 
         /// <summary>
         /// 获取所有字段
@@ -22,9 +21,10 @@ namespace Hao.Utility
         public static List<H_DescriptionAttribute> Get(Type enumType)
         {
             if (enumType.IsEnum)
-                return _enumCache.GetOrAdd(enumType,
-                    type => type.GetFields(BindingFlags.Static | BindingFlags.Public).Select(Get).ToList());
-
+            {
+                return _enumCache.GetOrAdd(enumType, type => type.GetFields(BindingFlags.Static | BindingFlags.Public).Select(Get).ToList());
+            }
+            
             return new List<H_DescriptionAttribute>();
         }
 
