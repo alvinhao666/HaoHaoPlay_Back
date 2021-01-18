@@ -22,9 +22,7 @@ namespace Hao.Core
             foreach (var name in enumNames)
             {
                 var value = ((OpenApiPrimitive<int>) enumValues[i]).Value;
-
-                schema.Enum.Add(
-                    new OpenApiString($"{value} = {name} = {H_Description.GetDescription(context.Type, value)}"));
+                schema.Enum.Add(new OpenApiString($"{value} = {name} = {H_Description.GetDescription(context.Type, value)}"));
                 i++;
             }
         }
