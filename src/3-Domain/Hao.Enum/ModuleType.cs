@@ -1,22 +1,20 @@
+using Hao.Utility;
+
 namespace Hao.Enum
 {
     public enum ModuleType
     {
-        /// <summary>
-        /// 系统
-        /// </summary>
+
+        [H_Description("系统")]
         System,
-        /// <summary>
-        /// 主菜单
-        /// </summary>
+
+        [H_Description("主菜单")]
         Main,
-        /// <summary>
-        /// 子菜单
-        /// </summary>
+
+        [H_Description("子菜单")]
         Sub,
-        /// <summary>
-        /// 资源
-        /// </summary>
+
+        [H_Description("资源")]
         Resource
     }
 }

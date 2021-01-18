@@ -36,7 +36,8 @@ namespace Hao.Core.Extensions
                         Version = "v1",
                         Title = "接口文档"
                     });
-
+                    
+                    c.SchemaFilter<EnumSchemaFilter>();
                     foreach (var item in appSettings.Swagger.Xmls)
                     {
                         c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, item));
