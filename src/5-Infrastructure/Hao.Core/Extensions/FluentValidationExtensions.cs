@@ -2,6 +2,9 @@
 
 namespace FluentValidation
 {
+    /// <summary>
+    /// FluentValidation扩展
+    /// </summary>
     public static class FluentValidationExtensions
     {
         /// <summary>

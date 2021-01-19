@@ -10,6 +10,9 @@ using Hao.Runtime;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
+    /// <summary>
+    /// freesql
+    /// </summary>
     public static class FreeSqlCollectionExtensions
     {
         internal static AsyncLocal<ICurrentUser> CurrentUser = new AsyncLocal<ICurrentUser>();

@@ -8,11 +8,11 @@ namespace Hao.EventBus
     /// <summary>
     /// 注销事件订阅
     /// </summary>
-    public class LogoutForUpdateAuthEventSubcriber : EventSubscriber<LogoutForUpdateAuthEventData>
+    public class LogoutForUpdateAuthEventListener : EventListener<LogoutForUpdateAuthEventData>
     {
         private readonly ILogoutEventHandler _handler;
 
-        public LogoutForUpdateAuthEventSubcriber(ILogoutEventHandler handler)
+        public LogoutForUpdateAuthEventListener(ILogoutEventHandler handler)
         {
             _handler = handler;
         }

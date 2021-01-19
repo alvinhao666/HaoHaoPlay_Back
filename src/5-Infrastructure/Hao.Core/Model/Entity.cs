@@ -3,6 +3,10 @@ using System;
 
 namespace Hao.Core
 {
+    /// <summary>
+    /// 实体类
+    /// </summary>
+    /// <typeparam name="TKey"></typeparam>
     public abstract class Entity<TKey> : IEntity<TKey>, IsCreateAudited, IsModifyAudited, IsSoftDelete where TKey : struct
     {
         /// <summary>

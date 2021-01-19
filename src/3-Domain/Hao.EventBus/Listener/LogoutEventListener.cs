@@ -8,12 +8,12 @@ namespace Hao.EventBus
     /// <summary>
     /// 注销事件订阅
     /// </summary>
-    public class LogoutEventSubscriber : EventSubscriber<LogoutEventData>
+    public class LogoutEventListener : EventListener<LogoutEventData>
     {
         private readonly ILogoutEventHandler _handler;
 
 
-        public LogoutEventSubscriber(ILogoutEventHandler handler)
+        public LogoutEventListener(ILogoutEventHandler handler)
         {
             _handler = handler;
         }

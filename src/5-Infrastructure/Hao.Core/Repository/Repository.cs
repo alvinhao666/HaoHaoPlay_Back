@@ -8,8 +8,16 @@ using AspectCore.DependencyInjection;
 
 namespace Hao.Core
 {
+    /// <summary>
+    /// 仓储抽象类，Entity
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="TKey"></typeparam>
     public abstract class Repository<T, TKey> : IRepository<T, TKey> where T : Entity<TKey>, new() where TKey : struct
     {
+        /// <summary>
+        /// FreeSql
+        /// </summary>
         [FromServiceContext] public IFreeSqlContext DbContext { get; set; }
 
         

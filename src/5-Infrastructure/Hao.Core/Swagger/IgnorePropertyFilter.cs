@@ -5,6 +5,9 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Hao.Core
 {
+    /// <summary>
+    /// 属性忽略过滤器
+    /// </summary>
     public class IgnorePropertyFilter : IOperationFilter
     {
         public void Apply(OpenApiOperation operation, OperationFilterContext context)
@@ -50,6 +53,9 @@ namespace Hao.Core
         // }
     }
     
+    /// <summary>
+    /// 属性忽略过滤器
+    /// </summary>
     public class SwaggerIgnoreFilter : ISchemaFilter
     {
         public void Apply(OpenApiSchema schema, SchemaFilterContext context)

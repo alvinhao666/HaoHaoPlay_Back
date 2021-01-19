@@ -8,6 +8,11 @@ using Hao.Utility;
 
 namespace Hao.Core
 {
+    /// <summary>
+    /// 仓储抽象类，SimpleEntity
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="TKey"></typeparam>
     public abstract class SimpleRepository<T, TKey> : IRepository<T, TKey> where T : SimpleEntity<TKey>, new() where TKey : struct
     {     
         [FromServiceContext] public IFreeSqlContext DbContext { get; set; }

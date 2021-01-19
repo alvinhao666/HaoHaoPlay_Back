@@ -12,7 +12,7 @@ namespace Hao.EventBus
     /// <summary>
     /// 注销
     /// </summary>
-    public class LogoutEventHandler : EventHandleService, ILogoutEventHandler
+    public class LogoutEventHandler : EventHandler, ILogoutEventHandler
     {
         private readonly ISysLoginRecordRepository _loginRecordRep;
 

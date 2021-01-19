@@ -2,6 +2,9 @@
 
 namespace Hao.Core
 {
+    /// <summary>
+    /// 修改信息接口
+    /// </summary>
     public interface IsModifyAudited
     {
         /// <summary>
