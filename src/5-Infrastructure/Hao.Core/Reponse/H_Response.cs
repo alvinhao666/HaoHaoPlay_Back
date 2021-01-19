@@ -1,7 +1,7 @@
 ﻿namespace Hao.Response
 {
     /// <summary>
-    /// 视图输出根类
+    /// 返回对象
     /// </summary>
     public class H_Response
     {

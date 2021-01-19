@@ -8,11 +8,11 @@ namespace Hao.EventBus
     /// <summary>
     /// 登录事件订阅
     /// </summary>
-    public class LoginEventSubscriber : EventSubscriber<LoginEventData>
+    public class LoginEventListener : EventListener<LoginEventData>
     {
         private readonly ILoginEventHandler _handler;
 
-        public LoginEventSubscriber(ILoginEventHandler handler)
+        public LoginEventListener(ILoginEventHandler handler)
         {
             _handler = handler;
         }

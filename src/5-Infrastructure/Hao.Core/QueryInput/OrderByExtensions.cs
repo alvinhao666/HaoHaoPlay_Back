@@ -4,6 +4,9 @@ using System.Text;
 
 namespace Hao.Core
 {
+    /// <summary>
+    /// 排序扩展
+    /// </summary>
     public static class OrderByExtensions
     {
         ///// <summary>
