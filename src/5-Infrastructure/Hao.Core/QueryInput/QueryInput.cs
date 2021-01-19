@@ -32,9 +32,15 @@ namespace Hao.Core
     /// </summary>
     public enum SortType
     {
+        /// <summary>
+        /// 升序
+        /// </summary>
         [H_Description("升序")]
         Asc = 0,
 
+        /// <summary>
+        /// 降序
+        /// </summary>
         [H_Description("降序")]
         Desc = 1
     }

@@ -2,6 +2,10 @@
 
 namespace Hao.Core
 {
+    /// <summary>
+    /// 分页类
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class Paged<T>
     {
         /// <summary>
@@ -31,9 +35,19 @@ namespace Hao.Core
         
     }
 
-
+    /// <summary>
+    /// 分页
+    /// </summary>
     public static class Paged
     {
+        /// <summary>
+        /// 转换为分页数据
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="items"></param>
+        /// <param name="query"></param>
+        /// <param name="totalCount"></param>
+        /// <returns></returns>
         public static Paged<T> ToPaged<T>(this IEnumerable<T> items, IPagedQuery query, long totalCount) where T : class, new()
         {
             var pageList = new Paged<T>()

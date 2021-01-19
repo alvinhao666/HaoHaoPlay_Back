@@ -4,6 +4,10 @@ using System.Linq.Expressions;
 
 namespace Hao.Core
 {
+    /// <summary>
+    /// 实体查询类，适用于单表查询
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public abstract class Query<T> : PagedQuery where T : new()
     {
         /// <summary>
@@ -53,12 +57,19 @@ namespace Hao.Core
         }
     }
 
-
+    /// <summary>
+    /// 排序信息
+    /// </summary>
     public class OrderByInfo
     {
+        /// <summary>
+        /// 字段名
+        /// </summary>
         public string FieldName { get; internal set; }
 
-
+        /// <summary>
+        /// 是否升序
+        /// </summary>
         public bool IsAsc { get; internal set; }
     }
 }

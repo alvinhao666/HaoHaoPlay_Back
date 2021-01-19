@@ -2,6 +2,9 @@
 
 namespace Hao.Core
 {
+    /// <summary>
+    /// 创建信息接口
+    /// </summary>
     public interface IsCreateAudited
     {
         /// <summary>
