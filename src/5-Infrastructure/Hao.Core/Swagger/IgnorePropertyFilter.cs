@@ -14,19 +14,24 @@ namespace Hao.Core
         
             if (!context.ApiDescription.ParameterDescriptions.Any())
                 return;
-            
-        
+
+            //https://stackoverflow.com/questions/60837108/ignore-property-from-swagger-ui
+            //[JsonIgnore] will just ignore property if the way of model binding is [FromBody] and it does not work for [FromQuery] and[FromForm] use this filter to ignore properties in all binding way
+
+            //var list = context.ApiDescription.ParameterDescriptions.Where(p => p.Source.Equals(BindingSource.Form)
+            //                                                    && p.CustomAttributes().Any(p => p.GetType().Equals(typeof(SwaggerIgnoreAttribute)))).ToList();
+
+            //list.ForEach(p => operation.RequestBody.Content.Values.Single(v => v.Schema.Properties.Remove(p.Name)));
+
+
             var list = context.ApiDescription.ParameterDescriptions.Where(p => p.Source.Equals(BindingSource.Query)
-                                                                    && p.CustomAttributes().Any(a => a.GetType() == typeof(SwaggerIgnoreAttribute)));
-            
-            
-            foreach (var p in list)
-            {
-                operation.Parameters.Remove(operation.Parameters.Single(w => w.Name.Equals(p.Name)));
-            }
-        
+                                                                && p.CustomAttributes().Any(a => a.GetType() == typeof(SwaggerIgnoreAttribute))).ToList();
+
+
+            list.ForEach(p => operation.Parameters.Remove(operation.Parameters.Single(w => w.Name.Equals(p.Name))));
         }
-        
+
+
         // public void Apply(OpenApiOperation operation, OperationFilterContext context)
         // {
         //     var ignoredProperties = context.MethodInfo.GetParameters()
