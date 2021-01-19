@@ -13,13 +13,30 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Hao.Core
 {
+    /// <summary>
+    /// freesql上下文
+    /// </summary>
     public interface IFreeSqlContext : IFreeSql
     {
+        /// <summary>
+        /// 提交事务
+        /// </summary>
         void Commit();
+        /// <summary>
+        /// 回滚事务
+        /// </summary>
         void Rollback();
+        /// <summary>
+        /// 发起事务
+        /// </summary>
+        /// <param name="handler"></param>
+        /// <param name="capPublisher"></param>
         void Transaction(Action handler, ICapPublisher capPublisher);
     }
 
+    /// <summary>
+    /// freesql上下文实现类，默认访问修饰符internal
+    /// </summary>
     class FreeSqlContext : IFreeSqlContext
     {
         [FromServiceContext] public ICurrentUser CurrentUser { get; set; }
@@ -176,7 +193,6 @@ namespace Hao.Core
             }
         }
         
-        
         /// <summary>
         /// 设置当前用户，不能为异步方法
         /// </summary>
@@ -185,9 +201,8 @@ namespace Hao.Core
             FreeSqlCollectionExtensions.CurrentUser.Value = CurrentUser;
         }
     }
-
-
-    public static class CapUnitOfWorkExtensions
+    
+    static class CapUnitOfWorkExtensions
     {
         public static void Flush(this ICapTransaction capTransaction)
         {

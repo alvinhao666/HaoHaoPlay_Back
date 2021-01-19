@@ -3,13 +3,13 @@ using FreeSql.DataAnnotations;
 namespace Hao.Core
 {
     /// <summary>
-    /// 简单实体，不包含创建信息，修改信息，删除信息
+    /// 绠�鍗曞疄浣撶被锛屼笉鍖呮嫭鍒涘缓淇℃伅锛屼慨鏀逛俊鎭紝閫昏緫鍒犻櫎
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
     public abstract class SimpleEntity<TKey> : IEntity<TKey> where TKey : struct
     {
         /// <summary>
-        /// 主键 唯一标识 id
+        /// 涓婚敭id
         /// </summary>
         [Column(IsPrimary = true)]
         public TKey Id { get; set; }
