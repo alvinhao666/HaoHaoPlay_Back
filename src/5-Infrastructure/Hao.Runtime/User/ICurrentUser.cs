@@ -8,12 +8,12 @@ namespace Hao.Runtime
     public interface ICurrentUser : IScopeDependency
     {
         /// <summary>
-        /// 主键id
+        /// 用户id
         /// </summary>
         public long? Id { get; }
 
         /// <summary>
-        /// 姓名
+        /// 用户姓名
         /// </summary>
         public string Name { get; }
 
