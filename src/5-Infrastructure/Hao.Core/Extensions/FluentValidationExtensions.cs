@@ -13,7 +13,7 @@ namespace FluentValidation
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="TProperty"></typeparam>
         /// <param name="ruleBuilder"></param>
-        /// <param name="description"></param>
+        /// <param name="fieldName"></param>
         /// <returns></returns>
         public static IRuleBuilderOptions<T, TProperty> MustHasValue<T, TProperty>(
             this IRuleBuilder<T, TProperty> ruleBuilder, string fieldName)
@@ -26,7 +26,6 @@ namespace FluentValidation
         /// 判断提示不能为空，且指定字符串长度范围
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <typeparam name="TProperty"></typeparam>
         /// <param name="ruleBuilder"></param>
         /// <param name="fieldName"></param>
         /// <param name="minLength"></param>
@@ -46,7 +45,7 @@ namespace FluentValidation
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="TProperty"></typeparam>
         /// <param name="ruleBuilder"></param>
-        /// <param name="description"></param>
+        /// <param name="enumName"></param>
         /// <returns></returns>
         public static IRuleBuilderOptions<T, TProperty?> EnumMustHasValue<T, TProperty>(
             this IRuleBuilder<T, TProperty?> ruleBuilder, string enumName) where TProperty : struct, Enum

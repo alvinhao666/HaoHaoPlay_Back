@@ -10,6 +10,11 @@ namespace Hao.Core
     /// </summary>
     public class IgnorePropertyFilter : IOperationFilter
     {
+        /// <summary>
+        /// Apply实现方法
+        /// </summary>
+        /// <param name="operation"></param>
+        /// <param name="context"></param>
         public void Apply(OpenApiOperation operation, OperationFilterContext context)
         {
             if (context.ApiDescription == null || operation.Parameters == null)
@@ -58,6 +63,11 @@ namespace Hao.Core
     /// </summary>
     public class SwaggerIgnoreFilter : ISchemaFilter
     {
+        /// <summary>
+        /// Apply实现方法
+        /// </summary>
+        /// <param name="schema"></param>
+        /// <param name="context"></param>
         public void Apply(OpenApiSchema schema, SchemaFilterContext context)
         {
             if (schema?.Properties == null || schema.Properties.Count == 0) return;

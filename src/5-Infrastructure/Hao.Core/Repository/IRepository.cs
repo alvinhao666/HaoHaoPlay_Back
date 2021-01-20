@@ -116,6 +116,7 @@ namespace Hao.Core
         /// 删除数据
         /// </summary>
         /// <param name="entity"></param>
+        /// <param name="whereColumns"></param>
         /// <returns></returns>
         Task<int> DeleteAysnc(T entity, params Expression<Func<T, bool>>[] whereColumns);
 
@@ -123,6 +124,7 @@ namespace Hao.Core
         /// 删除数据（批量）
         /// </summary>
         /// <param name="entities"></param>
+        /// <param name="whereColumns"></param>
         /// <returns></returns>
         Task<int> DeleteAysnc(List<T> entities, params Expression<Func<T, bool>>[] whereColumns);
 

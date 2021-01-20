@@ -14,7 +14,10 @@ namespace Hao.Core
     /// <typeparam name="T"></typeparam>
     /// <typeparam name="TKey"></typeparam>
     public abstract class SimpleRepository<T, TKey> : IRepository<T, TKey> where T : SimpleEntity<TKey>, new() where TKey : struct
-    {     
+    {
+        /// <summary>
+        /// FreeSql上下文对象
+        /// </summary>
         [FromServiceContext] public IFreeSqlContext DbContext { get; set; }
 
         

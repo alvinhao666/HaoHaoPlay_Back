@@ -5,6 +5,9 @@ using System.IO;
 
 namespace Hao.Core
 {
+    /// <summary>
+    /// Redis帮助类
+    /// </summary>
     public static class RedisHelper
     {
         private static RedisClient _redisClient;

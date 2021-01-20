@@ -7,8 +7,16 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Hao.Core
 {
+    /// <summary>
+    /// swagger枚举处理
+    /// </summary>
     public class EnumSchemaFilter : ISchemaFilter
     {
+        /// <summary>
+        /// Apply实现方法
+        /// </summary>
+        /// <param name="schema"></param>
+        /// <param name="context"></param>
         public void Apply(OpenApiSchema schema, SchemaFilterContext context)
         {
             if (!context.Type.IsEnum) return;

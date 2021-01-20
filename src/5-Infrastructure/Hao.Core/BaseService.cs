@@ -8,10 +8,13 @@ using DotNetCore.CAP;
 namespace Hao.Core
 {
     /// <summary>
-    /// 抽象类，封装了对一些通用功能，例如UnitOfWork，DistributedLock功能
+    /// 抽象类，封装了对一些通用功能，例如UnitOfWork，DistributedLock功能，相当于AbpServiceBase
     /// </summary>
     public abstract class BaseService
     {
+        /// <summary>
+        /// 日志对象
+        /// </summary>
         protected readonly ILogger Logger = LogManager.GetCurrentClassLogger();
 
         /// <summary>
