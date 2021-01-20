@@ -1,5 +1,8 @@
 ﻿namespace Hao.Runtime
 {
+    /// <summary>
+    /// 当前用户抽象方法
+    /// </summary>
     public class CurrentUser : ICurrentUser
     {
         public long? Id { get; set; }

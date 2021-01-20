@@ -2,6 +2,9 @@
 
 namespace Hao.Runtime
 {
+    /// <summary>
+    /// 当前用户接口
+    /// </summary>
     public interface ICurrentUser : IScopeDependency
     {
         /// <summary>
