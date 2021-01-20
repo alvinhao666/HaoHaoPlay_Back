@@ -1,9 +1,9 @@
 ﻿using AspectCore.DynamicProxy;
 using Microsoft.Extensions.Configuration;
-using NLog;
 using System;
 using System.Threading.Tasks;
 using DotNetCore.CAP;
+using Serilog;
 
 namespace Hao.Core
 {
@@ -15,7 +15,7 @@ namespace Hao.Core
         /// <summary>
         /// 日志对象
         /// </summary>
-        protected readonly ILogger Logger = LogManager.GetCurrentClassLogger();
+        protected readonly ILogger Logger = new LoggerConfiguration().CreateLogger();
 
         /// <summary>
         /// 工作单元，事务，原子操作，[UnitOfWork]必须作用于接口实现的方法上
@@ -111,7 +111,7 @@ namespace Hao.Core
         [AttributeUsage(AttributeTargets.Method)]
         protected class DistributedLockAttribute : AbstractInterceptorAttribute
         {
-            private readonly ILogger _logger = LogManager.GetCurrentClassLogger();
+            private readonly ILogger _logger = new LoggerConfiguration().CreateLogger();
 
             private string _lockName;
 

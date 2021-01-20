@@ -3,17 +3,17 @@ using Hao.Response;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
-using NLog;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Serilog;
 
 namespace Hao.Core.Extensions
 {
     internal static class ExceptionMiddleware
     {
-        private readonly static ILogger _logger = LogManager.GetCurrentClassLogger();
+        private static readonly ILogger _logger = new LoggerConfiguration().CreateLogger();
 
         public static void UseExceptionMiddleware(this IApplicationBuilder app)
         {

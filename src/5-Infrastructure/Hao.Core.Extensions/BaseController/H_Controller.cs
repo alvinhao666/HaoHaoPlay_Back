@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Configuration;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -12,6 +11,7 @@ using System.Linq;
 using Hao.Runtime;
 using Newtonsoft.Json;
 using Mapster;
+using Serilog;
 
 namespace Hao.Core.Extensions
 {
@@ -23,7 +23,7 @@ namespace Hao.Core.Extensions
     [Route("[controller]/[action]")]
     public class H_Controller : Controller
     {
-        protected readonly ILogger Logger = LogManager.GetCurrentClassLogger();
+        protected readonly ILogger Logger = new LoggerConfiguration().CreateLogger();
 
         //public IOptionsSnapshot<H_AppSettingsConfig> AppsettingsOptions { get; set; } //属性注入必须public IOptionsSnapshot修改即更新  和IConfiguration效果一样  热更新
 
@@ -40,12 +40,12 @@ namespace Hao.Core.Extensions
 
             var ip = context.HttpContext.GetIp();
 
-            Logger.Info(new H_Log
+            Logger.Information(new H_Log
             {
                 Method = context.HttpContext.Request.Path.Value,
                 Data = context.ActionArguments,
                 Description = $"请求信息TraceId：{context.HttpContext.TraceIdentifier}，UserId：{userId}，IP：{ip}"
-            });
+            }.ToString());
 
             var cache = GetCacheUser(userId, jti);
 
@@ -91,12 +91,12 @@ namespace Hao.Core.Extensions
 
             var userId = context.HttpContext.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sid)?.Value;
 
-            Logger.Info(new H_Log
+            Logger.Information(new H_Log
             {
                 Method = HttpContext.Request.Path.Value,
                 Data = result,
                 Description = $"响应结果TraceId：{context.HttpContext.TraceIdentifier}，UserId：{userId}"
-            });
+            }.ToString());
 
             base.OnActionExecuted(context);
         }
