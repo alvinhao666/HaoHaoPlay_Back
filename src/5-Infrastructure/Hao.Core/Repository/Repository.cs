@@ -16,7 +16,7 @@ namespace Hao.Core
     public abstract class Repository<T, TKey> : IRepository<T, TKey> where T : Entity<TKey>, new() where TKey : struct
     {
         /// <summary>
-        /// FreeSql
+        /// FreeSql上下文对象
         /// </summary>
         [FromServiceContext] public IFreeSqlContext DbContext { get; set; }
 

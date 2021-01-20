@@ -16,7 +16,7 @@ namespace Microsoft.Extensions.DependencyInjection
     public static class FreeSqlCollectionExtensions
     {
         internal static AsyncLocal<ICurrentUser> CurrentUser = new AsyncLocal<ICurrentUser>();
-        
+
         /// <summary>
         /// orm服务
         /// </summary>
@@ -43,7 +43,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
             fsql.GlobalFilter
                 .ApplyOnly<IsSoftDelete>(nameof(IsSoftDelete), x => x.IsDeleted == false);
-              //.ApplyOnlyIf<IsCreateAudited>(nameof(IsCreateAudited), () => CurrentUser.Value != null, x => x.CreatorId == CurrentUser.Value.Id);
+            //.ApplyOnlyIf<IsCreateAudited>(nameof(IsCreateAudited), () => CurrentUser.Value != null, x => x.CreatorId == CurrentUser.Value.Id);
 
 #if DEBUG
             fsql.Aop.CurdAfter += (s, e) => Aop_CurdAfter(s, e);
@@ -138,11 +138,11 @@ namespace Microsoft.Extensions.DependencyInjection
                     switch (e.Property.Name)
                     {
                         case nameof(IsModifyAudited.ModifierId):
-                            if (CurrentUser.Value?.Id != null) e.Value = CurrentUser.Value.Id;
+                            e.Value = CurrentUser.Value.Id;
                             break;
 
                         case nameof(IsModifyAudited.ModifyTime):
-                            if (CurrentUser.Value?.Id != null) e.Value = DateTime.Now;
+                            e.Value = DateTime.Now;
                             break;
                     }
                 }

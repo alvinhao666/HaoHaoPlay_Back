@@ -13,32 +13,57 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Hao.Core
 {
+    /// <summary>
+    /// freesql上下文
+    /// </summary>
     public interface IFreeSqlContext : IFreeSql
     {
+        /// <summary>
+        /// 提交事务
+        /// </summary>
         void Commit();
+        /// <summary>
+        /// 回滚事务
+        /// </summary>
         void Rollback();
+        /// <summary>
+        /// 发起事务
+        /// </summary>
+        /// <param name="handler"></param>
+        /// <param name="capPublisher"></param>
         void Transaction(Action handler, ICapPublisher capPublisher);
     }
 
+    /// <summary>
+    /// freesql上下文实现类，默认访问修饰符internal
+    /// </summary>
     class FreeSqlContext : IFreeSqlContext
     {
         [FromServiceContext] public ICurrentUser CurrentUser { get; set; }
 
+        ICapPublisher _capPublisher;
+
         IFreeSql _originalFsql;
+
         int _transactionCount;
+
         DbTransaction _transaction;
+
         Object<DbConnection> _connection;
 
-        ICapPublisher _capPublisher;
         public FreeSqlContext(IFreeSql fsql)
         {
             _originalFsql = fsql;
         }
 
         public IAdo Ado => _originalFsql.Ado;
+
         public IAop Aop => _originalFsql.Aop;
+
         public ICodeFirst CodeFirst => _originalFsql.CodeFirst;
+
         public IDbFirst DbFirst => _originalFsql.DbFirst;
+
         public GlobalFilter GlobalFilter => _originalFsql.GlobalFilter;
 
         public ISelect<T1> Select<T1>() where T1 : class
@@ -110,17 +135,19 @@ namespace Hao.Core
         [Obsolete]
         public IInsertOrUpdate<T1> InsertOrUpdate<T1>() where T1 : class
         {
-            // InitAsyncLocalCurrentUser();
-            // return _originalFsql.InsertOrUpdate<T1>().WithTransaction(_transaction);
+            //InitAsyncLocalCurrentUser();
+            //return _originalFsql.InsertOrUpdate<T1>().WithTransaction(_transaction);
             throw new H_Exception("InsertOrUpdate方法暂且不可使用");
         }
           
-
         public void Dispose() => TransactionCommitPriv(true);
         
         public void Transaction(Action handler,ICapPublisher capPublisher) => TransactionPriv(null, handler, capPublisher);
+
         public void Transaction(Action handler) => TransactionPriv(null, handler);
+
         public void Transaction(IsolationLevel isolationLevel, Action handler) => TransactionPriv(isolationLevel, handler);
+
         void TransactionPriv(IsolationLevel? isolationLevel, Action handler, ICapPublisher capPublisher = null)
         {
             if (_transaction != null)
@@ -151,7 +178,9 @@ namespace Hao.Core
             }
         }
         public void Commit() => TransactionCommitPriv(true);
+
         public void Rollback() => TransactionCommitPriv(false);
+
         void TransactionCommitPriv(bool iscommit)
         {
             if (_transaction == null) return;
@@ -176,7 +205,6 @@ namespace Hao.Core
             }
         }
         
-        
         /// <summary>
         /// 设置当前用户，不能为异步方法
         /// </summary>
@@ -185,9 +213,8 @@ namespace Hao.Core
             FreeSqlCollectionExtensions.CurrentUser.Value = CurrentUser;
         }
     }
-
-
-    public static class CapUnitOfWorkExtensions
+    
+    static class CapUnitOfWorkExtensions
     {
         public static void Flush(this ICapTransaction capTransaction)
         {

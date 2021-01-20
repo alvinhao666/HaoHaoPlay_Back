@@ -1,5 +1,4 @@
 ﻿using Hao.Library;
-using Hao.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
@@ -13,9 +12,13 @@ using System.Linq;
 using Hao.Runtime;
 using Newtonsoft.Json;
 using Mapster;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Hao.Core.Extensions
 {
+    /// <summary>
+    /// Controller基类
+    /// </summary>
     [Authorize]
     [ApiController]
     [Route("[controller]/[action]")]
@@ -50,8 +53,8 @@ namespace Hao.Core.Extensions
             //if (ip != cache.Ip) throw new H_Exception("请重新登录", nameof(H_Error.E100004).GetErrorCode());
 
             CheckAuth(context, cache.AuthNums);
-            
-            var currentUser = context.HttpContext.RequestServices.GetService(typeof(ICurrentUser)) as CurrentUser;
+
+            var currentUser = context.HttpContext.RequestServices.GetService<ICurrentUser>();
 
             currentUser = cache.Adapt(currentUser);
 
@@ -169,7 +172,9 @@ namespace Hao.Core.Extensions
             }
         }
 
-
+        /// <summary>
+        /// 权限值特性
+        /// </summary>
         [AttributeUsage(AttributeTargets.Method)]
         protected class AuthCodeAttribute : Attribute
         {
@@ -180,30 +185,31 @@ namespace Hao.Core.Extensions
         }
 
 
-        //        protected async Task<HttpResponseMessage> DownFile(string filePath, string fileName)
-        //        {
-        //            return await Task.Factory.StartNew(() =>
-        //            {
-        //                HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
-        //#if DEBUG
+//        protected async Task<HttpResponseMessage> DownFile(string filePath, string fileName)
+//        {
+//            return await Task.Factory.StartNew(() =>
+//            {
+//                HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
+//#if DEBUG
 
-        //                Stream stream = new FileStream(filePath, FileMode.Open);
-        //                response.Content = new StreamContent(stream);
-        //#else
-        //                        response.Content = new StringContent("");
-        //#endif
-        //                response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
-        //                response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
-        //                response.Content.Headers.ContentDisposition.FileName = fileName;
+//                        Stream stream = new FileStream(filePath, FileMode.Open);
+//                response.Content = new StreamContent(stream);
+//#else
+//                                response.Content = new StringContent("");
+//#endif
+//                        response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+//                response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
+//                response.Content.Headers.ContentDisposition.FileName = fileName;
 
-        //#if DEBUG
-        //#else
-        //                        response.Content.Headers.Add("X-Accel-Redirect", $"/Api/ExportExcel/{fileName}");
-        //#endif
-        //                return response;
-        //            });
+//#if DEBUG
+//#else
+//                                response.Content.Headers.Add("X-Accel-Redirect", $"/Api/ExportExcel/{fileName}");
+//#endif
+//                        return response;
+//            });
 
-        //        }
+//        }
+
 
         ///// <summary>
         ///// 读取body参数    （.net core 3.0 system.text.json不支持隐式转换   转换不通过会报错  不需要此方法验证)

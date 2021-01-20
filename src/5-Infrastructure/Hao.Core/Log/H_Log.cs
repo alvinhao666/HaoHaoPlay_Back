@@ -3,6 +3,9 @@ using System.Text.Json;
 
 namespace Hao.Core
 {
+    /// <summary>
+    /// 日志
+    /// </summary>
     public class H_Log
     {
         /// <summary>

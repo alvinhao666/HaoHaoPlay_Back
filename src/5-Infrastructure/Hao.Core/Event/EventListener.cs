@@ -6,8 +6,15 @@ using Mapster;
 
 namespace Hao.Core
 {
+    /// <summary>
+    /// 事件监听
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public abstract class EventListener<T>: ICapSubscribe where T: H_EventData
     {
+        /// <summary>
+        /// 当前用户
+        /// </summary>
         [FromServiceContext]
         public ICurrentUser CurrentUser { get; set; }
 
