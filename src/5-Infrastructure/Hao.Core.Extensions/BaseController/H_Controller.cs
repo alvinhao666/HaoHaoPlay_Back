@@ -12,7 +12,6 @@ using System.Linq;
 using Hao.Runtime;
 using Newtonsoft.Json;
 using Mapster;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Hao.Core.Extensions
 {
@@ -53,8 +52,8 @@ namespace Hao.Core.Extensions
             //if (ip != cache.Ip) throw new H_Exception("请重新登录", nameof(H_Error.E100004).GetErrorCode());
 
             CheckAuth(context, cache.AuthNums);
-
-            var currentUser = context.HttpContext.RequestServices.GetService<ICurrentUser>();
+            
+            var currentUser = context.HttpContext.RequestServices.GetService(typeof(ICurrentUser)) as CurrentUser;
 
             currentUser = cache.Adapt(currentUser);
 
