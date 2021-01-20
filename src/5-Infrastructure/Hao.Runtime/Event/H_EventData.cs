@@ -7,8 +7,14 @@ namespace Hao.Runtime
     /// </summary>
     public abstract class H_EventData
     {
-        public CurrentUser PublishUser { get; set; }
-        
+        /// <summary>
+        /// 事件发布者
+        /// </summary>
+        public CurrentUser PublishUser { get; set; } //只能用类，接口和抽象类，反序列化报错
+
+        /// <summary>
+        /// 事件发布时间
+        /// </summary>
         public DateTime PublishTime { get; set; } = DateTime.Now;
     }
 }

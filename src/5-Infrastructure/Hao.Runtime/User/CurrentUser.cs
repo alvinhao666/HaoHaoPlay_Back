@@ -1,7 +1,7 @@
 ﻿namespace Hao.Runtime
 {
     /// <summary>
-    /// 当前用户抽象方法
+    /// 当前用户
     /// </summary>
     public class CurrentUser : ICurrentUser
     {
