@@ -19,22 +19,6 @@ namespace Hao.WebApi
     /// </summary>
     public class CommonController : H_Controller
     {
-        private readonly IDictAppService _dictAppService;
-
-        private readonly ITencentCosProvider _tencentCosProvider;
-
-        private readonly ICurrentUser _currentUser;
-
-        private readonly IConfiguration _config;
-
-        public CommonController(IConfiguration config,IDictAppService dictAppService,ICurrentUser currentUser,ITencentCosProvider tencentCosProvider)
-        {
-            _dictAppService = dictAppService;
-            _tencentCosProvider = tencentCosProvider;
-            _currentUser = currentUser;
-            _config = config;
-        }
-
         /// <summary>
         /// 获取服务器当前时间
         /// </summary>
@@ -47,9 +31,11 @@ namespace Hao.WebApi
         /// 根据字典编码查询数据项
         /// </summary>
         /// <param name="dictCode"></param>
+        /// <param name="dictAppService"></param>
         /// <returns></returns>
         [HttpGet("{dictCode}")]
-        public async Task<List<DictDataItemVM>> GetDictItemList(string dictCode) => await _dictAppService.GetDictDataItem(dictCode);
+        public async Task<List<DictDataItemVM>> GetDictItemList(string dictCode,
+            [FromServices] IDictAppService dictAppService) => await dictAppService.GetDictDataItem(dictCode);
 
 
         /// <summary>
@@ -57,20 +43,23 @@ namespace Hao.WebApi
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public object GetUploadAvatarInfo() => new
+        public object GetUploadAvatarInfo([FromServices] IConfiguration config, [FromServices] ICurrentUser currentUser)
         {
-            Bucket = _config["TencentCos:Bucket"],
-            Key = _config["TencentCos:AvatarKey"] + $"/{_currentUser.Id}_{H_Util.GetUnixTimestamp()}",
-            Region = _config["TencentCos:Region"]
-        };
+            return new
+            {
+                Bucket = config["TencentCos:Bucket"],
+                Key = config["TencentCos:AvatarKey"] + $"/{currentUser.Id}_{H_Util.GetUnixTimestamp()}",
+                Region = config["TencentCos:Region"]
+            };
+        }
 
-        
+
         /// <summary>
         /// 获取腾讯云cos联合身份临时访问凭证
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public object GetTencentCosFederationToken()
+        public object GetTencentCosFederationToken([FromServices] ITencentCosProvider tencentCosProvider)
         {
             string key = "HaoHaoPlay_Back_FederationToken";
 
@@ -80,7 +69,7 @@ namespace Hao.WebApi
 
             if (tokenCache.IsNullOrWhiteSpace())
             {
-                result = _tencentCosProvider.GetFederationToken();
+                result = tencentCosProvider.GetFederationToken();
                 RedisHelper.Set(key, JsonConvert.SerializeObject(result), 7200);
             }
             else
@@ -88,10 +77,11 @@ namespace Hao.WebApi
                 result = JsonConvert.DeserializeObject<GetFederationTokenResponse>(tokenCache);
             }
 
-            return new {
-                result.Credentials, 
-                result.ExpiredTime, 
-                StartTime = H_Util.GetUnixTimestamp(DateTime.Now), 
+            return new
+            {
+                result.Credentials,
+                result.ExpiredTime,
+                StartTime = H_Util.GetUnixTimestamp(DateTime.Now),
                 result.RequestId,
             };
         }
