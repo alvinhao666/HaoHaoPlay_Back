@@ -38,12 +38,12 @@ namespace Hao.Core.Extensions
 
             var ip = context.HttpContext.GetIp();
 
-            Log.Information(new H_Log
+            Log.Information(LogTemplate.Default, new H_Log
             {
                 Method = context.HttpContext.Request.Path.Value,
                 Data = context.ActionArguments,
                 Description = $"请求信息TraceId：{context.HttpContext.TraceIdentifier}，UserId：{userId}，IP：{ip}"
-            }.ToString());
+            });
 
             var cache = GetCacheUser(userId, jti);
 
@@ -89,12 +89,12 @@ namespace Hao.Core.Extensions
 
             var userId = context.HttpContext.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sid)?.Value;
 
-            Log.Information(new H_Log
+            Log.Information(LogTemplate.Default, new H_Log
             {
                 Method = HttpContext.Request.Path.Value,
                 Data = result,
                 Description = $"响应结果TraceId：{context.HttpContext.TraceIdentifier}，UserId：{userId}"
-            }.ToString());
+            });
 
             base.OnActionExecuted(context);
         }

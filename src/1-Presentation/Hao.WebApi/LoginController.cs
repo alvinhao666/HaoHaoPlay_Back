@@ -33,11 +33,11 @@ namespace Hao.WebApi
         {
             string ip = HttpContext.GetIp();
 
-            Log.Information(new H_Log() { Method = "LoginByAccountPwd", Data = request , Description = $"登录请求TraceId：{HttpContext.TraceIdentifier}，IP：{ip}" }.ToString());
+            Log.Information(LogTemplate.Default, new H_Log() { Method = "LoginByAccountPwd", Data = request , Description = $"登录请求TraceId：{HttpContext.TraceIdentifier}，IP：{ip}" });
 
             var result = await _loginAppService.LoginByAccountPwd(request, ip);
 
-            Log.Information(new H_Log() { Method = "LoginByAccountPwd", Data = result, Description = $"登录返回TraceId：{HttpContext.TraceIdentifier}" }.ToString());
+            Log.Information(LogTemplate.Default, new H_Log() { Method = "LoginByAccountPwd", Data = result, Description = $"登录返回TraceId：{HttpContext.TraceIdentifier}" });
 
             return result;
         }
