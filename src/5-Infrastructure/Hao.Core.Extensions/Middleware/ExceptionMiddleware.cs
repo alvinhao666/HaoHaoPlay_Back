@@ -57,7 +57,7 @@ namespace Hao.Core.Extensions
             }
 #endif
 
-            Log.Error(ex, $"系统错误信息TraceId：{context.TraceIdentifier}，Path：{context.Request.Path.Value}"); //异常信息，记录到日志中
+            Log.Error(ex, "系统错误信息 TraceId:{TraceId}，Path:{Path}", context.TraceIdentifier, context.Request.Path.Value); //异常信息，记录到日志中
 
             var options = new JsonSerializerOptions
             {

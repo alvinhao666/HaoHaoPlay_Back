@@ -27,19 +27,6 @@ namespace Hao.Core.Extensions
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-//                     webBuilder.ConfigureLogging((hostingContext, logBuilder) =>
-//                     {
-//                         logBuilder.ClearProviders()
-// #if DEBUG
-//                                   .SetMinimumLevel(LogLevel.Information)
-//                                   .AddFilter("Microsoft.Hosting", LogLevel.Information)
-//                                   .AddFilter("Microsoft", LogLevel.Error)
-//                                   .AddFilter("System", LogLevel.Error) //过滤Error等级以下（不报括Error）的信息
-//                                   //.AddFilter("DotNetCore.CAP", LogLevel.Information)
-//                                   .AddConsole()
-// #endif
-//                                   .AddNLog($"ConfigFile/nlog.{hostingContext.HostingEnvironment.EnvironmentName}.config");
-//                     })
                     webBuilder.UseStartup<TStartup>();
                 })
                 .Build()
