@@ -1,28 +1,29 @@
 ﻿using AspectCore.DynamicProxy;
 using Microsoft.Extensions.Configuration;
-using NLog;
 using System;
 using System.Threading.Tasks;
 using DotNetCore.CAP;
+using Serilog;
 
 namespace Hao.Core
 {
     /// <summary>
-    /// 抽象类，封装了对一些通用功能，例如UnitOfWork，DistributedLock功能，相当于AbpServiceBase
+    /// 抽象基础服务类，封装了对一些通用功能，例如UnitOfWork，DistributedLock功能，相当于AbpServiceBase
     /// </summary>
     public abstract class BaseService
     {
-        /// <summary>
-        /// 日志对象
-        /// </summary>
-        protected readonly ILogger Logger = LogManager.GetCurrentClassLogger();
-
         /// <summary>
         /// 工作单元，事务，原子操作，[UnitOfWork]必须作用于接口实现的方法上
         /// </summary>
         [AttributeUsage(AttributeTargets.Method)]
         protected class UnitOfWorkAttribute : AbstractInterceptorAttribute
         {
+            /// <summary>
+            /// 重写Invoke
+            /// </summary>
+            /// <param name="context"></param>
+            /// <param name="next"></param>
+            /// <returns></returns>
             public override async Task Invoke(AspectContext context, AspectDelegate next)
             {
                 var freeSql = context.ServiceProvider.GetService(typeof(IFreeSqlContext)) as IFreeSqlContext;
@@ -45,7 +46,7 @@ namespace Hao.Core
 #endif
                     freeSql.Commit();
                 }
-                catch (Exception ex)
+                catch
                 {
 #if DEBUG
                     Console.ForegroundColor = ConsoleColor.Red;
@@ -54,7 +55,7 @@ namespace Hao.Core
                     Console.WriteLine();
 #endif
                     freeSql.Rollback();
-                    throw ex;
+                    throw;
                 }
             }
         }
@@ -66,6 +67,12 @@ namespace Hao.Core
         [AttributeUsage(AttributeTargets.Method)]
         protected class CapUnitOfWorkAttribute : AbstractInterceptorAttribute
         {
+            /// <summary>
+            /// 重写Invoke
+            /// </summary>
+            /// <param name="context"></param>
+            /// <param name="next"></param>
+            /// <returns></returns>
             public override async Task Invoke(AspectContext context, AspectDelegate next)
             {
                 var freeSql = context.ServiceProvider.GetService(typeof(IFreeSqlContext)) as IFreeSqlContext;
@@ -90,7 +97,7 @@ namespace Hao.Core
 #endif
                     freeSql.Commit();
                 }
-                catch (Exception ex)
+                catch
                 {
 #if DEBUG
                     Console.ForegroundColor = ConsoleColor.Red;
@@ -99,7 +106,7 @@ namespace Hao.Core
                     Console.WriteLine();
 #endif
                     freeSql.Rollback();
-                    throw ex;
+                    throw;
                 }
             }
         }
@@ -111,14 +118,18 @@ namespace Hao.Core
         [AttributeUsage(AttributeTargets.Method)]
         protected class DistributedLockAttribute : AbstractInterceptorAttribute
         {
-            private readonly ILogger _logger = LogManager.GetCurrentClassLogger();
-
             private string _lockName;
 
             private int _timeoutSeconds;
 
             private bool _autoDelay;
 
+            /// <summary>
+            /// DistributedLockAttribute构造函数
+            /// </summary>
+            /// <param name="lockName"></param>
+            /// <param name="timeoutSeconds"></param>
+            /// <param name="autoDelay"></param>
             public DistributedLockAttribute(string lockName, int timeoutSeconds = 10, bool autoDelay = true)
             {
                 _lockName = lockName;
@@ -126,6 +137,12 @@ namespace Hao.Core
                 _autoDelay = autoDelay;
             }
 
+            /// <summary>
+            /// 重写Invoke
+            /// </summary>
+            /// <param name="context"></param>
+            /// <param name="next"></param>
+            /// <returns></returns>
             public override async Task Invoke(AspectContext context, AspectDelegate next)
             {
                 var config = context.ServiceProvider.GetService(typeof(IConfiguration)) as IConfiguration;
@@ -138,7 +155,7 @@ namespace Hao.Core
                 {
                     if (redisLock == null)
                     {
-                        _logger.Error("系统异常：开启Redis分布式锁失败");
+                        Log.Error("系统异常：开启Redis分布式锁失败");
                         throw new H_Exception("系统异常");
                     }
 

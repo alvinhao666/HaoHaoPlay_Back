@@ -31,7 +31,7 @@ namespace Microsoft.Extensions.DependencyInjection
                             .UseConnectionString(dbType, connectionString)
                             .UseSlave(slaveConnectionStrings)
                             .UseNameConvert(NameConvertType.ToLower)
-                            // .UseMonitorCommand(cmd => {
+                            //.UseMonitorCommand(cmd => {
                             //     Console.ForegroundColor = ConsoleColor.DarkYellow;
                             //     Console.Write("SQL：");
                             //     Console.ForegroundColor = ConsoleColor.Cyan;
@@ -78,7 +78,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     break;
             }
 
-            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
             Console.WriteLine($"{curdType}实体：{e.EntityType.Name}");
             Console.WriteLine($"执行时间：{e.ElapsedMilliseconds}毫秒");
             Console.WriteLine($"{e.Sql}");

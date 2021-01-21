@@ -22,10 +22,12 @@ namespace Hao.Core
         /// 提交事务
         /// </summary>
         void Commit();
+
         /// <summary>
         /// 回滚事务
         /// </summary>
         void Rollback();
+
         /// <summary>
         /// 发起事务
         /// </summary>
@@ -139,10 +141,10 @@ namespace Hao.Core
             //return _originalFsql.InsertOrUpdate<T1>().WithTransaction(_transaction);
             throw new H_Exception("InsertOrUpdate方法暂且不可使用");
         }
-          
+
         public void Dispose() => TransactionCommitPriv(true);
-        
-        public void Transaction(Action handler,ICapPublisher capPublisher) => TransactionPriv(null, handler, capPublisher);
+
+        public void Transaction(Action handler, ICapPublisher capPublisher) => TransactionPriv(null, handler, capPublisher);
 
         public void Transaction(Action handler) => TransactionPriv(null, handler);
 
@@ -158,17 +160,17 @@ namespace Hao.Core
             try
             {
                 if (_connection == null) _connection = _originalFsql.Ado.MasterPool.Get();
-                
+
                 if (capPublisher == null)
                 {
                     _transaction = isolationLevel == null ? _connection.Value.BeginTransaction() : _connection.Value.BeginTransaction(isolationLevel.Value);
                 }
                 else
                 {
-                    _transaction = (DbTransaction) _connection.Value.BeginTransaction(capPublisher).DbTransaction;
+                    _transaction = (DbTransaction)_connection.Value.BeginTransaction(capPublisher).DbTransaction;
                     _capPublisher = capPublisher;
                 }
-                
+
                 _transactionCount = 0;
             }
             catch
@@ -204,7 +206,7 @@ namespace Hao.Core
                 }
             }
         }
-        
+
         /// <summary>
         /// 设置当前用户，不能为异步方法
         /// </summary>
@@ -213,7 +215,7 @@ namespace Hao.Core
             FreeSqlCollectionExtensions.CurrentUser.Value = CurrentUser;
         }
     }
-    
+
     static class CapUnitOfWorkExtensions
     {
         public static void Flush(this ICapTransaction capTransaction)

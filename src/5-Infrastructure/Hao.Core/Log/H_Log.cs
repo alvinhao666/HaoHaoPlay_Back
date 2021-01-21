@@ -38,4 +38,15 @@ namespace Hao.Core
             });
         }
     }
+
+    /// <summary>
+    /// 日志模板
+    /// </summary>
+    public static class LogTemplate
+    {
+        /// <summary>
+        /// 默认模板
+        /// </summary>
+        public const string Default = "{@Log}";
+    }
 }

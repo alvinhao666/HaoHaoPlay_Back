@@ -3,18 +3,16 @@ using Hao.Response;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
-using NLog;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Serilog;
 
 namespace Hao.Core.Extensions
 {
     internal static class ExceptionMiddleware
     {
-        private readonly static ILogger _logger = LogManager.GetCurrentClassLogger();
-
         public static void UseExceptionMiddleware(this IApplicationBuilder app)
         {
             app.UseExceptionHandler(new ExceptionHandlerOptions
@@ -59,7 +57,7 @@ namespace Hao.Core.Extensions
             }
 #endif
 
-            _logger.Error(ex, $"系统错误信息TraceId：{context.TraceIdentifier}，Path：{context.Request.Path.Value}"); //异常信息，记录到日志中
+            Log.Error(ex, "系统错误信息 TraceId:{TraceId}，Path:{Path}", context.TraceIdentifier, context.Request.Path.Value); //异常信息，记录到日志中
 
             var options = new JsonSerializerOptions
             {

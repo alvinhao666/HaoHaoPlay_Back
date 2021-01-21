@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Configuration;
-using NLog;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -12,7 +11,7 @@ using System.Linq;
 using Hao.Runtime;
 using Newtonsoft.Json;
 using Mapster;
-using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 
 namespace Hao.Core.Extensions
 {
@@ -24,8 +23,6 @@ namespace Hao.Core.Extensions
     [Route("[controller]/[action]")]
     public class H_Controller : Controller
     {
-        protected readonly ILogger Logger = LogManager.GetCurrentClassLogger();
-
         //public IOptionsSnapshot<H_AppSettingsConfig> AppsettingsOptions { get; set; } //属性注入必须public IOptionsSnapshot修改即更新  和IConfiguration效果一样  热更新
 
         /// <summary>
@@ -41,7 +38,7 @@ namespace Hao.Core.Extensions
 
             var ip = context.HttpContext.GetIp();
 
-            Logger.Info(new H_Log
+            Log.Information(LogTemplate.Default, new H_Log
             {
                 Method = context.HttpContext.Request.Path.Value,
                 Data = context.ActionArguments,
@@ -53,8 +50,8 @@ namespace Hao.Core.Extensions
             //if (ip != cache.Ip) throw new H_Exception("请重新登录", nameof(H_Error.E100004).GetErrorCode());
 
             CheckAuth(context, cache.AuthNums);
-
-            var currentUser = context.HttpContext.RequestServices.GetService<ICurrentUser>();
+            
+            var currentUser = context.HttpContext.RequestServices.GetService(typeof(ICurrentUser)) as CurrentUser;
 
             currentUser = cache.Adapt(currentUser);
 
@@ -92,7 +89,7 @@ namespace Hao.Core.Extensions
 
             var userId = context.HttpContext.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sid)?.Value;
 
-            Logger.Info(new H_Log
+            Log.Information(LogTemplate.Default, new H_Log
             {
                 Method = HttpContext.Request.Path.Value,
                 Data = result,

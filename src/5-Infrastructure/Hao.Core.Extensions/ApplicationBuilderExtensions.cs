@@ -6,6 +6,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using System.Collections.Generic;
 using System.IO;
+using Serilog;
 
 namespace Hao.Core.Extensions
 {
@@ -35,6 +36,7 @@ namespace Hao.Core.Extensions
 
             #endregion
 
+            app.UseSerilogRequestLogging();
 
             #region Nginx
 
