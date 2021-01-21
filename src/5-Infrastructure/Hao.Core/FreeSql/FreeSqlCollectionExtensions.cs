@@ -31,7 +31,7 @@ namespace Microsoft.Extensions.DependencyInjection
                             .UseConnectionString(dbType, connectionString)
                             .UseSlave(slaveConnectionStrings)
                             .UseNameConvert(NameConvertType.ToLower)
-                            // .UseMonitorCommand(cmd => {
+                            //.UseMonitorCommand(cmd => {
                             //     Console.ForegroundColor = ConsoleColor.DarkYellow;
                             //     Console.Write("SQL：");
                             //     Console.ForegroundColor = ConsoleColor.Cyan;
