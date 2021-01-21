@@ -18,8 +18,6 @@ namespace Hao.WebApi
     //2.行为自定义 像MVC框架的大部分组件一样，ApiControllerAttribute的行为是高度可自定义的。首先，上面说的大部分内容都是可以简单的用 on/off 来切换。具体的设置是在startup方法里面通过ApiBehaviorOptions来实现
     public class LoginController : ControllerBase
     {
-        [FromServiceContext]public ILogger<LoginController> _logger { get; set; }
-
         private readonly ILoginAppService _loginAppService;
 
         public LoginController(ILoginAppService loginService)
@@ -37,11 +35,11 @@ namespace Hao.WebApi
         {
             string ip = HttpContext.GetIp();
 
-            _logger.LogInformation(new H_Log() { Method = "LoginByAccountPwd", Data = request , Description = $"登录请求TraceId：{HttpContext.TraceIdentifier}，IP：{ip}" }.ToString());
+            Log.Information(new H_Log() { Method = "LoginByAccountPwd", Data = request , Description = $"登录请求TraceId：{HttpContext.TraceIdentifier}，IP：{ip}" }.ToString());
 
             var result = await _loginAppService.LoginByAccountPwd(request, ip);
 
-            _logger.LogInformation(new H_Log() { Method = "LoginByAccountPwd", Data = result, Description = $"登录返回TraceId：{HttpContext.TraceIdentifier}" }.ToString());
+            Log.Information(new H_Log() { Method = "LoginByAccountPwd", Data = result, Description = $"登录返回TraceId：{HttpContext.TraceIdentifier}" }.ToString());
 
             return result;
         }

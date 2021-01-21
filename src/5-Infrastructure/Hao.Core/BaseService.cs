@@ -13,11 +13,6 @@ namespace Hao.Core
     public abstract class BaseService
     {
         /// <summary>
-        /// 日志对象
-        /// </summary>
-        protected readonly ILogger Logger = new LoggerConfiguration().CreateLogger();
-
-        /// <summary>
         /// 工作单元，事务，原子操作，[UnitOfWork]必须作用于接口实现的方法上
         /// </summary>
         [AttributeUsage(AttributeTargets.Method)]
@@ -111,8 +106,6 @@ namespace Hao.Core
         [AttributeUsage(AttributeTargets.Method)]
         protected class DistributedLockAttribute : AbstractInterceptorAttribute
         {
-            private readonly ILogger _logger = new LoggerConfiguration().CreateLogger();
-
             private string _lockName;
 
             private int _timeoutSeconds;
@@ -138,7 +131,7 @@ namespace Hao.Core
                 {
                     if (redisLock == null)
                     {
-                        _logger.Error("系统异常：开启Redis分布式锁失败");
+                        Log.Error("系统异常：开启Redis分布式锁失败");
                         throw new H_Exception("系统异常");
                     }
 

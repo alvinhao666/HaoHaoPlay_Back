@@ -13,8 +13,6 @@ namespace Hao.Core.Extensions
 {
     internal static class ExceptionMiddleware
     {
-        private static readonly ILogger _logger = new LoggerConfiguration().CreateLogger();
-
         public static void UseExceptionMiddleware(this IApplicationBuilder app)
         {
             app.UseExceptionHandler(new ExceptionHandlerOptions
@@ -59,7 +57,7 @@ namespace Hao.Core.Extensions
             }
 #endif
 
-            _logger.Error(ex, $"系统错误信息TraceId：{context.TraceIdentifier}，Path：{context.Request.Path.Value}"); //异常信息，记录到日志中
+            Log.Error(ex, $"系统错误信息TraceId：{context.TraceIdentifier}，Path：{context.Request.Path.Value}"); //异常信息，记录到日志中
 
             var options = new JsonSerializerOptions
             {

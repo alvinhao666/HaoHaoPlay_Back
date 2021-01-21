@@ -23,8 +23,6 @@ namespace Hao.Core.Extensions
     [Route("[controller]/[action]")]
     public class H_Controller : Controller
     {
-        protected readonly ILogger Logger = new LoggerConfiguration().CreateLogger();
-
         //public IOptionsSnapshot<H_AppSettingsConfig> AppsettingsOptions { get; set; } //属性注入必须public IOptionsSnapshot修改即更新  和IConfiguration效果一样  热更新
 
         /// <summary>
@@ -40,7 +38,7 @@ namespace Hao.Core.Extensions
 
             var ip = context.HttpContext.GetIp();
 
-            Logger.Information(new H_Log
+            Log.Information(new H_Log
             {
                 Method = context.HttpContext.Request.Path.Value,
                 Data = context.ActionArguments,
@@ -91,7 +89,7 @@ namespace Hao.Core.Extensions
 
             var userId = context.HttpContext.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sid)?.Value;
 
-            Logger.Information(new H_Log
+            Log.Information(new H_Log
             {
                 Method = HttpContext.Request.Path.Value,
                 Data = result,
