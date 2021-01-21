@@ -1,10 +1,8 @@
 ﻿using System.Threading.Tasks;
-using AspectCore.DependencyInjection;
 using Hao.AppService;
 using Hao.Core;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Serilog;
 
 namespace Hao.WebApi
