@@ -78,7 +78,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     break;
             }
 
-            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
             Console.WriteLine($"{curdType}实体：{e.EntityType.Name}");
             Console.WriteLine($"执行时间：{e.ElapsedMilliseconds}毫秒");
             Console.WriteLine($"{e.Sql}");
