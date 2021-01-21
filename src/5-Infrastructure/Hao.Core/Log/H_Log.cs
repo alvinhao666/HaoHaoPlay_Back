@@ -42,7 +42,7 @@ namespace Hao.Core
     /// <summary>
     /// 日志模板
     /// </summary>
-    public class LogTemplate
+    public static class LogTemplate
     {
         /// <summary>
         /// 默认模板
