@@ -15,12 +15,9 @@ namespace Hao.WebApi
     {
         private readonly IUserAppService _userAppService;
 
-        private readonly IRoleAppService _roleAppService;
-
-        public UserController(IUserAppService userService, IRoleAppService roleAppService)
+        public UserController(IUserAppService userService)
         {
             _userAppService = userService;
-            _roleAppService = roleAppService;
         }
 
         /// <summary>
@@ -101,7 +98,7 @@ namespace Hao.WebApi
         /// <returns></returns>
         [HttpGet]
         [AuthCode("User_Search_1_8388608")]
-        public async Task<List<RoleSelectVM>> GetRoleList() => await _roleAppService.GetRoleListByCurrentRole();
+        public async Task<List<RoleSelectVM>> GetRoleList([FromServices]IRoleAppService roleAppService) => await roleAppService.GetRoleListByCurrentRole();
 
         /// <summary>
         /// 是否存在相同账号
