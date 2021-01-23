@@ -168,7 +168,7 @@ namespace Hao.Core.Extensions
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(appSettings.Jwt.SecretKey)),//拿到SecurityKey
                     ValidateLifetime = true,//是否验证失效时间  当设置exp和nbf时有效 同时启用ClockSkew 
                     RequireExpirationTime = true,
-                    ClockSkew = TimeSpan.Zero, // ClockSkew 属性，默认是5分钟缓冲。
+                    ClockSkew = TimeSpan.Zero // 失效偏离时间，可以设置失效后xx时间内有效
                 };
                 options.Events = new H_JwtBearerEvents();
             });
