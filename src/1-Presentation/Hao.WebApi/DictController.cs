@@ -25,7 +25,7 @@ namespace Hao.WebApi
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
-        [AuthCode("Dict_Add_1_1048576")]
+        [AuthCode("Dict_Add_1_2097152")]
         public async Task AddDict([FromBody]DictAddRequest request) => await _dictAppService.Add(request);
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace Hao.WebApi
         /// <param name="queryInput"></param>
         /// <returns></returns>
         [HttpGet]
-        [AuthCode("Dict_Search_1_67108864")]
+        [AuthCode("Dict_Search_1_1048576")]
         public async Task<Paged<DictVM>> GetDictPagedList([FromQuery]DictQueryInput queryInput) => await _dictAppService.GetPaged(queryInput);
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace Hao.WebApi
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        [AuthCode("Dict_Edit_1_2097152")]
+        [AuthCode("Dict_Edit_1_4194304")]
         public async Task UpdateDict(long? id, [FromBody]DictUpdateRequest request) => await _dictAppService.Update(id.Value, request);
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace Hao.WebApi
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
-        [AuthCode("Dict_Delete_1_4194304")]
+        [AuthCode("Dict_Delete_1_8388608")]
         public async Task DeleteDict(long? id) => await _dictAppService.Delete(id.Value);
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace Hao.WebApi
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
-        [AuthCode("Dict_Add_1_1048576")]
+        [AuthCode("Dict_Add_1_2097152")]
         public async Task AddDictItem([FromBody]DictItemAddRequest request) => await _dictAppService.AddDictItem(request);
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace Hao.WebApi
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [AuthCode("Dict_Search_1_67108864")]
+        [AuthCode("Dict_Search_1_1048576")]
         public async Task<Paged<DictItemVM>> GetDictItemPagedList([FromQuery]DictQueryInput queryInput) => await _dictAppService.GetDictItemPaged(queryInput);
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace Hao.WebApi
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        [AuthCode("Dict_Edit_1_2097152")]
+        [AuthCode("Dict_Edit_1_4194304")]
         public async Task UpdateDictItem(long? id, [FromBody]DictItemUpdateRequest request) => await _dictAppService.UpdateDictItem(id.Value, request);
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace Hao.WebApi
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
-        [AuthCode("Dict_Delete_1_4194304")]
+        [AuthCode("Dict_Delete_1_8388608")]
         public async Task DeleteDictItem(long? id) => await _dictAppService.DeleteDictItem(id.Value);
     }
 }
