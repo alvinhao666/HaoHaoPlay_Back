@@ -40,9 +40,9 @@ namespace Hao.Core.Extensions
 
             Log.Information(LogTemplate.Default, new H_Log
             {
-                Method = context.HttpContext.Request.Path.Value,
+                Position = context.HttpContext.Request.Path.Value,
                 Data = context.ActionArguments,
-                Description = $"请求信息TraceId：{context.HttpContext.TraceIdentifier}，UserId：{userId}，IP：{ip}"
+                ExtraContent = $"请求信息TraceId：{context.HttpContext.TraceIdentifier}，UserId：{userId}，IP：{ip}"
             });
 
             var cache = GetCacheUser(userId, jti);
@@ -91,9 +91,9 @@ namespace Hao.Core.Extensions
 
             Log.Information(LogTemplate.Default, new H_Log
             {
-                Method = HttpContext.Request.Path.Value,
+                Position = HttpContext.Request.Path.Value,
                 Data = result,
-                Description = $"响应结果TraceId：{context.HttpContext.TraceIdentifier}，UserId：{userId}"
+                ExtraContent = $"响应结果TraceId：{context.HttpContext.TraceIdentifier}，UserId：{userId}"
             });
 
             base.OnActionExecuted(context);

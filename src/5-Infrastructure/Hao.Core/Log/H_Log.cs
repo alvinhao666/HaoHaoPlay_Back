@@ -4,24 +4,24 @@ using System.Text.Json;
 namespace Hao.Core
 {
     /// <summary>
-    /// 日志
+    /// 日志信息
     /// </summary>
     public class H_Log
     {
         /// <summary>
-        /// 方法名
+        /// 记录当前位置，请求路径或者方法名称
         /// </summary>
-        public string Method { get; set; }
+        public string Position { get; set; }
 
         /// <summary>
-        /// 数据
+        /// 需记录的数据
         /// </summary>
         public object Data { get; set; }
 
         /// <summary>
-        /// 描述
+        /// 其他内容描述
         /// </summary>
-        public string Description { get; set; }
+        public string ExtraContent { get; set; }
 
         /// <summary>
         /// 重写方法，必须，用于日志记录

@@ -51,10 +51,10 @@ namespace Hao.AppService
         public async Task Update(long id, DictUpdateRequest request)
         {
             var sameItems = await _dictRep.GetListAysnc(new DictQuery { DictName = request.DictName });
-            if (sameItems.Where(a => a.Id != id).Count() > 0) throw new H_Exception("字典名称已存在，请重新输入");
+            if (sameItems.Any(a => a.Id != id)) throw new H_Exception("字典名称已存在，请重新输入");
 
             sameItems = await _dictRep.GetListAysnc(new DictQuery { DictCode = request.DictCode });
-            if (sameItems.Where(a => a.Id != id).Count() > 0) throw new H_Exception("字典编码已存在，请重新输入");
+            if (sameItems.Any(a => a.Id != id)) throw new H_Exception("字典编码已存在，请重新输入");
 
             var dict = await _dictRep.GetAysnc(id);
             dict.DictCode = request.DictCode;

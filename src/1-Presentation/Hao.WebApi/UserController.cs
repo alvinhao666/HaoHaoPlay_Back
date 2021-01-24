@@ -26,15 +26,32 @@ namespace Hao.WebApi
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPost]
-        [AuthCode("User_Add_1_32")]
+        [AuthCode("User_Add_1_128")]
         public async Task Add([FromBody]UserAddRequest request) => await _userAppService.Add(request);
+        
+        /// <summary>
+        /// 获取角色列表
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [AuthCode("User_Add_1_128")]
+        public async Task<List<RoleSelectVM>> GetRoleList([FromServices]IRoleAppService roleAppService) => await roleAppService.GetRoleListByCurrentRole();
+
+        /// <summary>
+        /// 是否存在相同账号
+        /// </summary>
+        /// <param name="loginName"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [AuthCode("User_Add_1_128")]
+        public async Task<bool> IsExistLoginName(string loginName) => await _userAppService.IsExistLoginName(loginName);
 
         /// <summary>
         /// 查询用户分页列表
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [AuthCode("User_Search_1_8388608")]
+        [AuthCode("User_Search_1_64")]
         public async Task<Paged<UserVM>> GetPagedList([FromQuery]UserQueryInput queryInput) => await _userAppService.GetPaged(queryInput);
 
         /// <summary>
@@ -43,7 +60,7 @@ namespace Hao.WebApi
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        [AuthCode("User_Search_1_8388608")]
+        [AuthCode("User_View_1_1024")]
         public async Task<UserDetailVM> Get(long? id) => await _userAppService.Get(id.Value);
 
         ///// <summary>
@@ -56,13 +73,13 @@ namespace Hao.WebApi
         //public async Task<UserDetailVM> Get([Required] long? id) => await _userAppService.Get(id.Value);
 
         /// <summary>
-        /// 修改用户
+        /// 更新用户信息
         /// </summary>
         /// <param name="id"></param>
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        [AuthCode("User_Edit_1_64")]
+        [AuthCode("User_Update_1_256")]
         public async Task Update(long? id, [FromBody]UserUpdateRequest request) => await _userAppService.Update(id.Value, request);
 
         /// <summary>
@@ -71,7 +88,7 @@ namespace Hao.WebApi
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        [AuthCode("User_Disable_1_128")]
+        [AuthCode("User_Disable_1_16777216")]
         public async Task Disable(long? id) => await _userAppService.UpdateStatus(id.Value, false);
 
         /// <summary>
@@ -80,7 +97,7 @@ namespace Hao.WebApi
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
-        [AuthCode("User_Enable_1_256")]
+        [AuthCode("User_Enable_1_33554432")]
         public async Task Enable(long? id) => await _userAppService.UpdateStatus(id.Value, true);
 
         /// <summary>
@@ -91,23 +108,6 @@ namespace Hao.WebApi
         [HttpDelete("{id}")]
         [AuthCode("User_Delete_1_512")]
         public async Task Delete(long? id) => await _userAppService.Delete(id.Value);
-
-        /// <summary>
-        /// 获取角色列表
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        [AuthCode("User_Search_1_8388608")]
-        public async Task<List<RoleSelectVM>> GetRoleList([FromServices]IRoleAppService roleAppService) => await roleAppService.GetRoleListByCurrentRole();
-
-        /// <summary>
-        /// 是否存在相同账号
-        /// </summary>
-        /// <param name="loginName"></param>
-        /// <returns></returns>
-        [HttpGet]
-        [AuthCode("User_Search_1_8388608")]
-        public async Task<bool> IsExistLoginName(string loginName) => await _userAppService.IsExistLoginName(loginName);
 
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace Hao.WebApi
         /// <param></param>
         /// <returns></returns>
         [HttpPost]
-        [AuthCode("User_Import_1_1024")]
+        [AuthCode("User_Import_1_4096")]
         public async Task Import() => await _userAppService.Import(HttpContext.Request.Form.Files);
     }
 }
