@@ -14,7 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Hao.Core
 {
     /// <summary>
-    /// freesql上下文
+    /// FreeSql上下文
     /// </summary>
     public interface IFreeSqlContext : IFreeSql
     {
@@ -37,77 +37,77 @@ namespace Hao.Core
     }
 
     /// <summary>
-    /// freesql上下文实现类，默认访问修饰符internal
+    /// FreeSql上下文实现类，默认访问修饰符internal
     /// </summary>
-    class FreeSqlContext : IFreeSqlContext
+    internal class FreeSqlContext : IFreeSqlContext
     {
         [FromServiceContext] public ICurrentUser CurrentUser { get; set; }
 
-        ICapPublisher _capPublisher;
+        private ICapPublisher _capPublisher;
 
-        IFreeSql _originalFsql;
+        private readonly IFreeSql _originalFreeSql;
 
-        int _transactionCount;
+        private int _transactionCount;
 
-        DbTransaction _transaction;
+        private DbTransaction _transaction;
 
-        Object<DbConnection> _connection;
+        private Object<DbConnection> _connection;
 
-        public FreeSqlContext(IFreeSql fsql)
+        public FreeSqlContext(IFreeSql freeSql)
         {
-            _originalFsql = fsql;
+            _originalFreeSql = freeSql;
         }
 
-        public IAdo Ado => _originalFsql.Ado;
+        public IAdo Ado => _originalFreeSql.Ado;
 
-        public IAop Aop => _originalFsql.Aop;
+        public IAop Aop => _originalFreeSql.Aop;
 
-        public ICodeFirst CodeFirst => _originalFsql.CodeFirst;
+        public ICodeFirst CodeFirst => _originalFreeSql.CodeFirst;
 
-        public IDbFirst DbFirst => _originalFsql.DbFirst;
+        public IDbFirst DbFirst => _originalFreeSql.DbFirst;
 
-        public GlobalFilter GlobalFilter => _originalFsql.GlobalFilter;
+        public GlobalFilter GlobalFilter => _originalFreeSql.GlobalFilter;
 
         public ISelect<T1> Select<T1>() where T1 : class
         {
             InitAsyncLocalCurrentUser();
-            return _originalFsql.Select<T1>().WithTransaction(_transaction);
+            return _originalFreeSql.Select<T1>().WithTransaction(_transaction);
         }
 
-        public ISelect<T1> Select<T1>(object dywhere) where T1 : class
+        public ISelect<T1> Select<T1>(object dyWhere) where T1 : class
         {
             InitAsyncLocalCurrentUser();
-            return Select<T1>().WhereDynamic(dywhere);
+            return Select<T1>().WhereDynamic(dyWhere);
         }
 
         public IDelete<T1> Delete<T1>() where T1 : class
         {
             InitAsyncLocalCurrentUser();
-            return _originalFsql.Delete<T1>().WithTransaction(_transaction);
+            return _originalFreeSql.Delete<T1>().WithTransaction(_transaction);
         }
 
-        public IDelete<T1> Delete<T1>(object dywhere) where T1 : class
+        public IDelete<T1> Delete<T1>(object dyWhere) where T1 : class
         {
             InitAsyncLocalCurrentUser();
-            return Delete<T1>().WhereDynamic(dywhere);
+            return Delete<T1>().WhereDynamic(dyWhere);
         }
 
         public IUpdate<T1> Update<T1>() where T1 : class
         {
             InitAsyncLocalCurrentUser();
-            return _originalFsql.Update<T1>().WithTransaction(_transaction);
+            return _originalFreeSql.Update<T1>().WithTransaction(_transaction);
         }
 
-        public IUpdate<T1> Update<T1>(object dywhere) where T1 : class
+        public IUpdate<T1> Update<T1>(object dyWhere) where T1 : class
         {
             InitAsyncLocalCurrentUser();
-            return Update<T1>().WhereDynamic(dywhere);
+            return Update<T1>().WhereDynamic(dyWhere);
         }
 
         public IInsert<T1> Insert<T1>() where T1 : class
         {
             InitAsyncLocalCurrentUser();
-            return _originalFsql.Insert<T1>().WithTransaction(_transaction);
+            return _originalFreeSql.Insert<T1>().WithTransaction(_transaction);
         }
 
         public IInsert<T1> Insert<T1>(T1 source) where T1 : class
@@ -138,19 +138,19 @@ namespace Hao.Core
         public IInsertOrUpdate<T1> InsertOrUpdate<T1>() where T1 : class
         {
             //InitAsyncLocalCurrentUser();
-            //return _originalFsql.InsertOrUpdate<T1>().WithTransaction(_transaction);
+            //return _originalFreeSql.InsertOrUpdate<T1>().WithTransaction(_transaction);
             throw new H_Exception("InsertOrUpdate方法暂且不可使用");
         }
 
-        public void Dispose() => TransactionCommitPriv(true);
+        public void Dispose() => TransactionPrivate(true);
 
-        public void Transaction(Action handler, ICapPublisher capPublisher) => TransactionPriv(null, handler, capPublisher);
+        public void Transaction(Action handler, ICapPublisher capPublisher) => TransactionPrivate(null, handler, capPublisher);
 
-        public void Transaction(Action handler) => TransactionPriv(null, handler);
+        public void Transaction(Action handler) => TransactionPrivate(null, handler);
 
-        public void Transaction(IsolationLevel isolationLevel, Action handler) => TransactionPriv(isolationLevel, handler);
+        public void Transaction(IsolationLevel isolationLevel, Action handler) => TransactionPrivate(isolationLevel, handler);
 
-        void TransactionPriv(IsolationLevel? isolationLevel, Action handler, ICapPublisher capPublisher = null)
+        private void TransactionPrivate(IsolationLevel? isolationLevel, Action handler, ICapPublisher capPublisher = null)
         {
             if (_transaction != null)
             {
@@ -159,7 +159,7 @@ namespace Hao.Core
             }
             try
             {
-                if (_connection == null) _connection = _originalFsql.Ado.MasterPool.Get();
+                if (_connection == null) _connection = _originalFreeSql.Ado.MasterPool.Get();
 
                 if (capPublisher == null)
                 {
@@ -175,21 +175,21 @@ namespace Hao.Core
             }
             catch
             {
-                TransactionCommitPriv(false);
+                TransactionPrivate(false);
                 throw;
             }
         }
-        public void Commit() => TransactionCommitPriv(true);
+        public void Commit() => TransactionPrivate(true);
 
-        public void Rollback() => TransactionCommitPriv(false);
+        public void Rollback() => TransactionPrivate(false);
 
-        void TransactionCommitPriv(bool iscommit)
+        private void TransactionPrivate(bool isCommit)
         {
             if (_transaction == null) return;
             _transactionCount--;
             try
             {
-                if (iscommit == false) _transaction.Rollback();
+                if (isCommit == false) _transaction.Rollback();
                 else if (_transactionCount <= 0)
                 {
                     _transaction.Commit();
@@ -198,9 +198,9 @@ namespace Hao.Core
             }
             finally
             {
-                if (iscommit == false || _transactionCount <= 0)
+                if (isCommit == false || _transactionCount <= 0)
                 {
-                    _originalFsql.Ado.MasterPool.Return(_connection);
+                    _originalFreeSql.Ado.MasterPool.Return(_connection);
                     _connection = null;
                     _transaction = null;
                 }
@@ -216,7 +216,7 @@ namespace Hao.Core
         }
     }
 
-    static class CapUnitOfWorkExtensions
+    internal static class CapUnitOfWorkExtensions
     {
         public static void Flush(this ICapTransaction capTransaction)
         {
