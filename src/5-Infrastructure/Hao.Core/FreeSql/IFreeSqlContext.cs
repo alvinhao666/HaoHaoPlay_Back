@@ -142,15 +142,15 @@ namespace Hao.Core
             throw new H_Exception("InsertOrUpdate方法暂且不可使用");
         }
 
-        public void Dispose() => TransactionPrivate(true);
+        public void Dispose() => HandleTransaction(true);
 
-        public void Transaction(Action handler, ICapPublisher capPublisher) => TransactionPrivate(null, handler, capPublisher);
+        public void Transaction(Action handler, ICapPublisher capPublisher) => HandleTransaction(null, handler, capPublisher);
 
-        public void Transaction(Action handler) => TransactionPrivate(null, handler);
+        public void Transaction(Action handler) => HandleTransaction(null, handler);
 
-        public void Transaction(IsolationLevel isolationLevel, Action handler) => TransactionPrivate(isolationLevel, handler);
+        public void Transaction(IsolationLevel isolationLevel, Action handler) => HandleTransaction(isolationLevel, handler);
 
-        private void TransactionPrivate(IsolationLevel? isolationLevel, Action handler, ICapPublisher capPublisher = null)
+        private void HandleTransaction(IsolationLevel? isolationLevel, Action handler, ICapPublisher capPublisher = null)
         {
             if (_transaction != null)
             {
@@ -175,15 +175,15 @@ namespace Hao.Core
             }
             catch
             {
-                TransactionPrivate(false);
+                HandleTransaction(false);
                 throw;
             }
         }
-        public void Commit() => TransactionPrivate(true);
+        public void Commit() => HandleTransaction(true);
 
-        public void Rollback() => TransactionPrivate(false);
+        public void Rollback() => HandleTransaction(false);
 
-        private void TransactionPrivate(bool isCommit)
+        private void HandleTransaction(bool isCommit)
         {
             if (_transaction == null) return;
             _transactionCount--;
