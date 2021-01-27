@@ -11,11 +11,14 @@ using Hao.Runtime;
 namespace Microsoft.Extensions.DependencyInjection
 {
     /// <summary>
-    /// freesql
+    /// FreeSql
     /// </summary>
     public static class FreeSqlCollectionExtensions
     {
-        internal static AsyncLocal<ICurrentUser> CurrentUser = new AsyncLocal<ICurrentUser>();
+        /// <summary>
+        /// 当前用户信息
+        /// </summary>
+        internal static readonly AsyncLocal<ICurrentUser> CurrentUser = new AsyncLocal<ICurrentUser>();
 
         /// <summary>
         /// orm服务
@@ -46,7 +49,7 @@ namespace Microsoft.Extensions.DependencyInjection
             //.ApplyOnlyIf<IsCreateAudited>(nameof(IsCreateAudited), () => CurrentUser.Value != null, x => x.CreatorId == CurrentUser.Value.Id);
 
 #if DEBUG
-            fsql.Aop.CurdAfter += (s, e) => Aop_CurdAfter(s, e);
+            fsql.Aop.CurdAfter += Aop_CurdAfter;
 #endif
 
             fsql.Aop.AuditValue += (s, e) => Aop_AuditValue(s, e, services);
@@ -133,18 +136,16 @@ namespace Microsoft.Extensions.DependencyInjection
             }
             else if (e.AuditValueType == AuditValueType.Update)
             {
-                if (CurrentUser.Value?.Id != null)
+                if (CurrentUser.Value?.Id == null) return;
+                switch (e.Property.Name)
                 {
-                    switch (e.Property.Name)
-                    {
-                        case nameof(IsModifyAudited.ModifierId):
-                            e.Value = CurrentUser.Value.Id;
-                            break;
+                    case nameof(IsModifyAudited.ModifierId):
+                        e.Value = CurrentUser.Value.Id;
+                        break;
 
-                        case nameof(IsModifyAudited.ModifyTime):
-                            e.Value = DateTime.Now;
-                            break;
-                    }
+                    case nameof(IsModifyAudited.ModifyTime):
+                        e.Value = DateTime.Now;
+                        break;
                 }
             }
         }
