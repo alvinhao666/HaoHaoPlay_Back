@@ -8,12 +8,12 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 namespace Hao.Core
 {
     /// <summary>
-    /// swagger枚举处理
+    /// swagger
     /// </summary>
     public class EnumSchemaFilter : ISchemaFilter
     {
         /// <summary>
-        /// Apply实现方法
+        /// Apply
         /// </summary>
         /// <param name="schema"></param>
         /// <param name="context"></param>
