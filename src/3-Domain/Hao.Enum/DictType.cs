@@ -5,12 +5,22 @@ using Hao.Utility;
 
 namespace Hao.Enum
 {
+    /// <summary>
+    /// 字典类型
+    /// </summary>
+    [H_EnumDescription("字典类型")]
     public enum DictType
     {
-        [H_Description("字典")]
+        /// <summary>
+        /// 字典
+        /// </summary>
+        [H_EnumDescription("字典")]
         Main,
         
-        [H_Description("字典项")]
+        /// <summary>
+        /// 字典项
+        /// </summary>
+        [H_EnumDescription("字典项")]
         Sub
     }
 }

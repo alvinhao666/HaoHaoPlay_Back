@@ -47,20 +47,21 @@ namespace Hao.AppService
     }
 
     /// <summary>
-    /// 排序枚举
+    /// 用户排序字段
     /// </summary>
+    [H_EnumDescription("用户排序字段")]
     public enum SortUser
     {
         /// <summary>
         /// 年龄
         /// </summary>
-        [H_Description("年龄")]
+        [H_EnumDescription("年龄")]
         Age,
 
         /// <summary>
         /// 最后登录时间
         /// </summary>
-        [H_Description("最后登录时间")]
+        [H_EnumDescription("最后登录时间")]
         LastLoginTime
     }
 }
