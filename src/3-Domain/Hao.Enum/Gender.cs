@@ -2,12 +2,22 @@
 
 namespace Hao.Enum
 {
+    /// <summary>
+    /// 性别
+    /// </summary>
+    [H_EnumDescription("性别")]
     public enum Gender
     {
-        [H_Description("女")]
+        /// <summary>
+        /// 女
+        /// </summary>
+        [H_EnumDescription("女")]
         Women,
 
-        [H_Description("男")]
+        /// <summary>
+        /// 男
+        /// </summary>
+        [H_EnumDescription("男")]
         Man
     }
 }

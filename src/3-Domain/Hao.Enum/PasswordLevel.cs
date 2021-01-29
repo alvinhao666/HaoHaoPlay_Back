@@ -2,15 +2,26 @@
 
 namespace Hao.Enum
 {
+    /// <summary>
+    /// 密码强弱等级
+    /// </summary>
+    [H_EnumDescription("密码强弱等级")]
     public enum PasswordLevel
     {
-        [H_Description("弱")]
+        /// <summary>
+        /// 弱
+        /// </summary>
+        [H_EnumDescription("弱")]
         Weak,
-
-        [H_Description("中")]
+        /// <summary>
+        /// 中
+        /// </summary>
+        [H_EnumDescription("中")]
         Medium,
-
-        [H_Description("强")]
+        /// <summary>
+        /// 强
+        /// </summary>
+        [H_EnumDescription("强")]
         Strong
     }
 }

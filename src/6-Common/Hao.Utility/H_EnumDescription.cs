@@ -9,25 +9,25 @@ namespace Hao.Utility
     /// <summary>
     /// 获取枚举描述
     /// </summary>
-    public class H_Description
+    public static class H_EnumDescription
     {
-        private static readonly ConcurrentDictionary<Type, List<H_DescriptionAttribute>> _enumCache = new ConcurrentDictionary<Type, List<H_DescriptionAttribute>>();
+        private static readonly ConcurrentDictionary<Type, List<H_EnumDescriptionAttribute>> _enumCache = new ConcurrentDictionary<Type, List<H_EnumDescriptionAttribute>>();
         
-        internal static H_DescriptionAttribute Get(Type enumType, string fieldName)
+        internal static H_EnumDescriptionAttribute Get(Type enumType, string fieldName)
         {
             return Get(enumType).SingleOrDefault(d => d.Name == fieldName); // SingleOrDefault只取一个 如果没有数据等于 null， 如果>1异常
         }
 
-        private static H_DescriptionAttribute Get(FieldInfo fieldInfo)
+        private static H_EnumDescriptionAttribute Get(FieldInfo fieldInfo)
         {
-            var customAttribute = fieldInfo.GetCustomAttribute<H_DescriptionAttribute>();
+            var customAttribute = fieldInfo.GetCustomAttribute<H_EnumDescriptionAttribute>();
             if (customAttribute == null) return null;
             customAttribute.Field = fieldInfo;
             return customAttribute;
         }
         
         
-        private static H_DescriptionAttribute Get(Type enumType, int value)
+        private static H_EnumDescriptionAttribute Get(Type enumType, int value)
         {
             return Get(enumType).SingleOrDefault(d => (int)d.Value == value);
         }
@@ -38,14 +38,14 @@ namespace Hao.Utility
         /// </summary>
         /// <param name="enumType">枚举类型</param>
         /// <returns></returns>
-        public static List<H_DescriptionAttribute> Get(Type enumType)
+        public static List<H_EnumDescriptionAttribute> Get(Type enumType)
         {
             if (enumType.IsEnum)
             {
                 return _enumCache.GetOrAdd(enumType, type => type.GetFields(BindingFlags.Static | BindingFlags.Public).Select(Get).ToList());
             }
             
-            return new List<H_DescriptionAttribute>();
+            return new List<H_EnumDescriptionAttribute>();
         }
 
 

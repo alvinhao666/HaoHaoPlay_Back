@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Reflection;
 using Hao.Utility;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
@@ -8,12 +9,12 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 namespace Hao.Core
 {
     /// <summary>
-    /// swagger枚举处理
+    /// swagger
     /// </summary>
     public class EnumSchemaFilter : ISchemaFilter
     {
         /// <summary>
-        /// Apply实现方法
+        /// Apply
         /// </summary>
         /// <param name="schema"></param>
         /// <param name="context"></param>
@@ -23,14 +24,21 @@ namespace Hao.Core
 
             var enumValues = schema.Enum.ToArray();
             var enumNames = Enum.GetNames(context.Type).ToList();
+            
+            var attribute = context.Type.GetCustomAttributes().FirstOrDefault(a => a.GetType() == typeof(H_EnumDescriptionAttribute));
 
-            var i = 0;
+            if (attribute != null)
+            {
+                schema.Description = ((H_EnumDescriptionAttribute) attribute).Description;
+            }
+            
             schema.Enum.Clear();
-
+            var i = 0;
+            
             foreach (var name in enumNames)
             {
                 var value = ((OpenApiPrimitive<int>) enumValues[i]).Value;
-                schema.Enum.Add(new OpenApiString($"{value} = {name} = {H_Description.GetDescription(context.Type, value)}"));
+                schema.Enum.Add(new OpenApiString($"{value} = {name} = {H_EnumDescription.GetDescription(context.Type, value)}"));
                 i++;
             }
         }

@@ -141,15 +141,19 @@ namespace Hao.Core
             //return _originalFreeSql.InsertOrUpdate<T1>().WithTransaction(_transaction);
             throw new H_Exception("InsertOrUpdate方法暂且不可使用");
         }
-
-        public void Dispose() => HandleTransaction(true);
-
+        
         public void Transaction(Action handler, ICapPublisher capPublisher) => HandleTransaction(null, handler, capPublisher);
 
         public void Transaction(Action handler) => HandleTransaction(null, handler);
 
         public void Transaction(IsolationLevel isolationLevel, Action handler) => HandleTransaction(isolationLevel, handler);
+        
+        public void Commit() => HandleTransaction(isCommit:true);
 
+        public void Rollback() => HandleTransaction(isCommit:false);
+
+        public void Dispose() => HandleTransaction(isCommit:true);
+        
         private void HandleTransaction(IsolationLevel? isolationLevel, Action handler, ICapPublisher capPublisher = null)
         {
             if (_transaction != null)
@@ -179,10 +183,7 @@ namespace Hao.Core
                 throw;
             }
         }
-        public void Commit() => HandleTransaction(true);
-
-        public void Rollback() => HandleTransaction(false);
-
+        
         private void HandleTransaction(bool isCommit)
         {
             if (_transaction == null) return;

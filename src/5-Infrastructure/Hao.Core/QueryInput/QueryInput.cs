@@ -30,18 +30,19 @@ namespace Hao.Core
     /// <summary>
     /// 排序类型
     /// </summary>
+    [H_EnumDescription("排序类型")]
     public enum SortType
     {
         /// <summary>
         /// 升序
         /// </summary>
-        [H_Description("升序")]
+        [H_EnumDescription("升序")]
         Asc = 0,
 
         /// <summary>
         /// 降序
         /// </summary>
-        [H_Description("降序")]
+        [H_EnumDescription("降序")]
         Desc = 1
     }
 }

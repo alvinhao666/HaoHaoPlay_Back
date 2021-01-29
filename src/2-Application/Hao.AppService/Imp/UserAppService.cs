@@ -102,7 +102,7 @@ namespace Hao.AppService
         {
             var query = queryInput.Adapt<UserQuery>();
 
-            query.CurrentRoleLevel = _currentUser.RoleLevel; //只能获取角色等级低用户
+            query.CurrentRoleLevel = _currentUser.RoleLevel; 
 
             var users = await _userRep.GetPagedAysnc(query);
             var result = users.Adapt<Paged<UserVM>>();
