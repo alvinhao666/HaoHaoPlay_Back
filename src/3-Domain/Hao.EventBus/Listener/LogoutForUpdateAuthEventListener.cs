@@ -6,7 +6,7 @@ using Hao.EventData;
 namespace Hao.EventBus
 {
     /// <summary>
-    /// 注销事件订阅
+    /// 注销事件监听
     /// </summary>
     public class LogoutForUpdateAuthEventListener : EventListener<LogoutForUpdateAuthEventData>
     {
@@ -19,7 +19,7 @@ namespace Hao.EventBus
 
 
         [CapSubscribe(nameof(LogoutForUpdateAuthEventData))]
-        public override async Task Subscribe(LogoutForUpdateAuthEventData eventData)
+        public override async Task Listen(LogoutForUpdateAuthEventData eventData)
         {
             await _handler.LogoutForUpdateAuth(eventData);
         }

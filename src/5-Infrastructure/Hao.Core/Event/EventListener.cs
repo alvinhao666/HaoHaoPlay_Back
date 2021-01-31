@@ -20,18 +20,18 @@ namespace Hao.Core
 
         
         /// <summary>
-        /// 订阅方法
+        /// 监听方法
         /// </summary>
         /// <param name="eventData"></param>
         /// <returns></returns>
-        public abstract Task Subscribe(T eventData);
+        public abstract Task Listen(T eventData);
 
 
         /// <summary>
         /// 初始化当前用户
         /// </summary>
         /// <param name="eventData"></param>
-        public void InitCurrentUser(T eventData)
+        protected void InitCurrentUser(T eventData)
         {
             if (eventData?.PublishUser == null) return;
 
