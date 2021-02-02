@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/aspnet:5.0-buster-slim AS base
+FROM mcr.microsoft.com/dotnet/aspnet:5.0-focal AS base
 WORKDIR /app
 
 ENV TZ=Asia/Shanghai
@@ -6,7 +6,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezoness
 
 EXPOSE 8000
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:5.0-focal AS build
 WORKDIR /code
 COPY src/*/*/*.csproj ./
 
