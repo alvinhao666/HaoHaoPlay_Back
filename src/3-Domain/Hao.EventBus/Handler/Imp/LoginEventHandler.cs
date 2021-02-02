@@ -1,7 +1,8 @@
-﻿using Hao.Core;
+﻿using System;
 using Hao.EventData;
 using Hao.Model;
 using System.Threading.Tasks;
+using EventHandler = Hao.Core.EventHandler;
 
 namespace Hao.EventBus
 {

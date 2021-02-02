@@ -13,7 +13,7 @@
     <PackageReference Include="DotNetCore.CAP" Version="3.1.2" />
     <PackageReference Include="DotNetCore.CAP.PostgreSql" Version="3.1.2" />
     <PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="3.1.2" />
-    <PackageReference Include="FluentValidation" Version="9.4.0" />
+    <PackageReference Include="FluentValidation" Version="9.5.0" />
     <PackageReference Include="FreeRedis" Version="0.3.0" />
     <PackageReference Include="FreeSql" Version="2.0.105" />
     <PackageReference Include="FreeSql.Provider.PostgreSQL" Version="2.0.105" />

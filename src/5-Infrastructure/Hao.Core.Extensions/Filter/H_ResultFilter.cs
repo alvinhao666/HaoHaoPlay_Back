@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 namespace Hao.Core.Extensions
 {
     /// <summary>
-    /// 全局过滤器
+    /// 结果返回过滤器
     /// </summary>
     internal class H_ResultFilter : ResultFilterAttribute
     {

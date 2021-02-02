@@ -11,6 +11,9 @@ using Serilog;
 
 namespace Hao.Core.Extensions
 {
+    /// <summary>
+    /// 异常中间件
+    /// </summary>
     internal static class ExceptionMiddleware
     {
         public static void UseExceptionMiddleware(this IApplicationBuilder app)
@@ -24,15 +27,17 @@ namespace Hao.Core.Extensions
         //静态方法效率上要比实例化高，静态方法的缺点是不自动进行销毁，而实例化的则可以做销毁。
 
         //静态方法和静态变量创建后始终使用同一块内存，而使用实例的方式会创建多个内存。
+        /// <summary>
+        /// 异常处理，不会处理eventbus中的异常
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
         private static async Task Invoke(HttpContext context)
         {
             context.Response.StatusCode = StatusCodes.Status200OK;
             context.Response.ContentType = "application/json";
-            var response = new H_Response
-            {
-                Success = false,
-                ErrorMsg = "系统异常"
-            };
+            
+            var response = new H_Response {Success = false};
 
             var ex = context.Features.Get<IExceptionHandlerFeature>().Error;
 
@@ -56,7 +61,8 @@ namespace Hao.Core.Extensions
                 response.ErrorMsg = ex.Message;
             }
 #endif
-
+            if (string.IsNullOrWhiteSpace(response.ErrorMsg)) response.ErrorMsg = "系统异常";
+            
             Log.Error(ex, "系统错误信息 TraceId:{TraceId}，Path:{Path}", context.TraceIdentifier, context.Request.Path.Value); //异常信息，记录到日志中
 
             var options = new JsonSerializerOptions
