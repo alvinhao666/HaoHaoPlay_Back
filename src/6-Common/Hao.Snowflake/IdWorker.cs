@@ -41,12 +41,12 @@ namespace Hao.Snowflake
             // 如果超出范围就抛出异常
             if (workerId > MaxWorkerId || workerId < 0)
             {
-                throw new ArgumentException(string.Format("worker Id 必须大于0，且不能大于MaxWorkerId： {0}", MaxWorkerId));
+                throw new ArgumentException($"worker Id 必须大于0，且不能大于MaxWorkerId： {MaxWorkerId}");
             }
 
             if (datacenterId > MaxDatacenterId || datacenterId < 0)
             {
-                throw new ArgumentException(string.Format("region Id 必须大于0，且不能大于MaxWorkerId： {0}", MaxDatacenterId));
+                throw new ArgumentException($"region Id 必须大于0，且不能大于MaxWorkerId： {MaxDatacenterId}");
             }
 
             //先检验再赋值
@@ -63,7 +63,7 @@ namespace Hao.Snowflake
                 var timestamp = TimeGen();
                 if (timestamp < _lastTimestamp)
                 {
-                    throw new Exception(string.Format("时间戳必须大于上一次生成ID的时间戳.  拒绝为{0}毫秒生成id", _lastTimestamp - timestamp));
+                    throw new Exception($"时间戳必须大于上一次生成ID的时间戳.  拒绝为{_lastTimestamp - timestamp}毫秒生成id");
                 }
 
                 //如果上次生成时间和当前时间相同,在同一毫秒内

@@ -50,9 +50,9 @@ namespace Hao.Core.Extensions
 
 
             #region 异常中间件
-
-            app.UseExceptionMiddleware();
-
+            
+            // app.UseExceptionMiddleware();
+            
             #endregion
 
 

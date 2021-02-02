@@ -6,7 +6,7 @@ using Hao.EventData;
 namespace Hao.EventBus
 {
     /// <summary>
-    /// 登录事件订阅
+    /// 登录事件监听
     /// </summary>
     public class LoginEventListener : EventListener<LoginEventData>
     {
@@ -19,7 +19,7 @@ namespace Hao.EventBus
 
 
         [CapSubscribe(nameof(LoginEventData))]
-        public override async Task Subscribe(LoginEventData eventData)
+        public override async Task Listen(LoginEventData eventData)
         {
             await _handler.UpdateLogin(eventData);
         }
