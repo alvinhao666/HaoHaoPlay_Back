@@ -3,17 +3,17 @@ using System;
 namespace Hao.Runtime
 {
     /// <summary>
-    /// ÊÂ¼ş´«ÊäÊµÌå»ùÀà
+    /// äº‹ä»¶æ€»çº¿ä¼ è¾“å¯¹è±¡
     /// </summary>
     public abstract class H_EventData
     {
         /// <summary>
-        /// ÊÂ¼ş·¢²¼Õß
+        /// äº‹ä»¶å‘å¸ƒè€…
         /// </summary>
-        public CurrentUser PublishUser { get; set; } //Ö»ÄÜÓÃÀà£¬½Ó¿ÚºÍ³éÏóÀà·´ĞòÁĞ»¯»á±¨´í
+        public CurrentUser PublishUser { get; set; } //ä¸èƒ½ä½¿ç”¨æ¥å£ï¼Œæ¥å£æ— æ³•jsonåºåˆ—åŒ–
 
         /// <summary>
-        /// ÊÂ¼ş·¢²¼Ê±¼ä
+        /// äº‹ä»¶å‘å¸ƒå¯¹è±¡
         /// </summary>
         public DateTime PublishTime { get; set; } = DateTime.Now;
     }
