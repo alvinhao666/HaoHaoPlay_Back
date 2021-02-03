@@ -41,7 +41,7 @@ namespace Hao.Core
     /// </summary>
     internal class FreeSqlContext : IFreeSqlContext
     {
-        [FromServiceContext] public ICurrentUser CurrentUser { get; set; }
+        [FromServiceContext] public ICurrentUser CurrentUser { get; internal set; }
 
         private ICapPublisher _capPublisher;
 
