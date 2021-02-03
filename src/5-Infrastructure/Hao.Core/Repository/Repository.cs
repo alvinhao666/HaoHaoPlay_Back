@@ -18,7 +18,7 @@ namespace Hao.Core
         /// <summary>
         /// FreeSql上下文对象
         /// </summary>
-        [FromServiceContext] public IFreeSqlContext DbContext { get; set; }
+        [FromServiceContext] public IFreeSqlContext DbContext { get; internal set; }
 
         
         /// <summary>
