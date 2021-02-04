@@ -19,7 +19,7 @@ namespace Hao.Core.Extensions
         {
             Host.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration(InitBuild)
-                .UseServiceContext()  //aspectcore di容器 [fromservicecontext] 属性注入
+                .UseServiceContext()  //AspectCore di容器 [FromServiceContext] 属性注入
                 .UseSerilog((context, configure) =>
                 {
                     configure.ReadFrom.Configuration(context.Configuration);
