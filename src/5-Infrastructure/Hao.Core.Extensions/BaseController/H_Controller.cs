@@ -11,6 +11,7 @@ using System.Linq;
 using Hao.Runtime;
 using Newtonsoft.Json;
 using Mapster;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Serilog;
 
 namespace Hao.Core.Extensions
@@ -38,6 +39,10 @@ namespace Hao.Core.Extensions
 
             var ip = context.HttpContext.GetIp();
 
+            var servicesParams = context.ActionDescriptor.Parameters.Where(a => a.BindingInfo.BindingSource == BindingSource.Services).Select(a => a.Name);
+
+            foreach (var paramName in servicesParams) context.ActionArguments.Remove(paramName);
+            
             Log.Information(LogTemplate.Default, new H_Log
             {
                 Position = context.HttpContext.Request.Path.Value,
