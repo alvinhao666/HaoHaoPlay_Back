@@ -39,6 +39,7 @@ namespace Hao.Core.Extensions
 
             var ip = context.HttpContext.GetIp();
 
+            //去除[FromServices]参数
             var servicesParams = context.ActionDescriptor.Parameters.Where(a => a.BindingInfo.BindingSource == BindingSource.Services).Select(a => a.Name);
 
             foreach (var paramName in servicesParams) context.ActionArguments.Remove(paramName);
