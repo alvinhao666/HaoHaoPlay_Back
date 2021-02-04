@@ -9,8 +9,11 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using Hao.Runtime;
+using Hao.Utility;
 using Newtonsoft.Json;
 using Mapster;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Newtonsoft.Json.Linq;
 using Serilog;
 
 namespace Hao.Core.Extensions
@@ -37,11 +40,13 @@ namespace Hao.Core.Extensions
             var jti = User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti)?.Value;
 
             var ip = context.HttpContext.GetIp();
+            
+            var servicesParams = context.ActionDescriptor.Parameters.Where(a => a.BindingInfo.BindingSource == BindingSource.Services).Select(a => a.Name);
 
             Log.Information(LogTemplate.Default, new H_Log
             {
                 Position = context.HttpContext.Request.Path.Value,
-                Data = context.ActionArguments,
+                Data = servicesParams.Any() ? context.ActionArguments.Where(a => !servicesParams.Contains(a.Key)) : context.ActionArguments,
                 ExtraContent = $"请求信息TraceId：{context.HttpContext.TraceIdentifier}，UserId：{userId}，IP：{ip}"
             });
 
