@@ -18,65 +18,65 @@ namespace Hao.Core
         /// </summary>
         /// <param name="pkValue"></param>
         /// <returns></returns>
-        Task<T> GetAysnc(TKey pkValue);
+        Task<T> GetAsync(TKey pkValue);
 
         /// <summary>
         /// 根据主键集合查询多条数据
         /// </summary>
         /// <param name="pkValues"></param>
         /// <returns>泛型实体</returns>
-        Task<List<T>> GetListAysnc(List<TKey> pkValues);
+        Task<List<T>> GetListAsync(List<TKey> pkValues);
 
         /// <summary>
         /// 查询所有数据（未删除）
         /// </summary>
         /// <returns></returns>
-        Task<List<T>> GetListAysnc();
+        Task<List<T>> GetListAsync();
 
         /// <summary>
         /// 根据条件查询所有数据（未删除）
         /// </summary>
         /// <returns></returns>
-        Task<List<T>> GetListAysnc(Query<T> query);
+        Task<List<T>> GetListAsync(Query<T> query);
 
         /// <summary>
         /// 根据条件查询所有数据数量（未删除）
         /// </summary>
         /// <returns></returns>
-        Task<int> GetCountAysnc(Query<T> query);
+        Task<int> GetCountAsync(Query<T> query);
 
         /// <summary>
         /// 根据条件查询分页数据（未删除）
         /// </summary>
         /// <returns></returns>
-        Task<Paged<T>> GetPagedAysnc(Query<T> query);
+        Task<Paged<T>> GetPagedAsync(Query<T> query);
 
 
         /// <summary>
         /// 查询所有数据（包含已删除）
         /// </summary>
         /// <returns></returns>
-        Task<List<T>> GetAllAysnc();
+        Task<List<T>> GetAllAsync();
 
         /// <summary>
         /// 查询所有数据（包含已删除）
         /// </summary>
         /// <returns></returns>
-        Task<List<T>> GetAllAysnc(Query<T> query);
+        Task<List<T>> GetAllAsync(Query<T> query);
 
         /// <summary>
         /// 插入数据
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        Task<T> InsertAysnc(T entity);
+        Task<T> InsertAsync(T entity);
 
         /// <summary>
         /// 插入数据（批量）
         /// </summary>
         /// <param name="entities"></param>
         /// <returns></returns>
-        Task<List<T>> InsertAysnc(List<T> entities);
+        Task<List<T>> InsertAsync(List<T> entities);
 
         /// <summary>
         /// 更新数据
@@ -118,7 +118,7 @@ namespace Hao.Core
         /// <param name="entity"></param>
         /// <param name="whereColumns"></param>
         /// <returns></returns>
-        Task<int> DeleteAysnc(T entity, params Expression<Func<T, bool>>[] whereColumns);
+        Task<int> DeleteAsync(T entity, params Expression<Func<T, bool>>[] whereColumns);
 
         /// <summary>
         /// 删除数据（批量）
@@ -126,7 +126,7 @@ namespace Hao.Core
         /// <param name="entities"></param>
         /// <param name="whereColumns"></param>
         /// <returns></returns>
-        Task<int> DeleteAysnc(List<T> entities, params Expression<Func<T, bool>>[] whereColumns);
+        Task<int> DeleteAsync(List<T> entities, params Expression<Func<T, bool>>[] whereColumns);
 
         ///// <summary>
         ///// 删除数据
@@ -134,7 +134,7 @@ namespace Hao.Core
         ///// <param name="pkValue"></param>
         ///// <param name="whereColumns"></param>
         ///// <returns></returns>
-        //Task<int> DeleteAysnc(TKey pkValue, params Expression<Func<T, bool>>[] whereColumns);
+        //Task<int> DeleteAsync(TKey pkValue, params Expression<Func<T, bool>>[] whereColumns);
 
         ///// <summary>
         ///// 删除数据
@@ -142,6 +142,6 @@ namespace Hao.Core
         ///// <param name="pkValues"></param>
         ///// <param name="whereColumns"></param>
         ///// <returns></returns>
-        //Task<int> DeleteAysnc(List<TKey> pkValues, params Expression<Func<T, bool>>[] whereColumns);
+        //Task<int> DeleteAsync(List<TKey> pkValues, params Expression<Func<T, bool>>[] whereColumns);
     }
 }

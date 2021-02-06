@@ -29,16 +29,16 @@ namespace Hao.AppService
         [DistributedLock("DictAppService_AddDict")]
         public async Task Add(DictAddRequest request)
         {
-            var sameItems = await _dictRep.GetListAysnc(new DictQuery { DictName = request.DictName });
+            var sameItems = await _dictRep.GetListAsync(new DictQuery { DictName = request.DictName });
             if (sameItems.Count > 0) throw new H_Exception("字典名称已存在，请重新输入");
 
-            sameItems = await _dictRep.GetListAysnc(new DictQuery { DictCode = request.DictCode });
+            sameItems = await _dictRep.GetListAsync(new DictQuery { DictCode = request.DictCode });
             if (sameItems.Count > 0) throw new H_Exception("字典编码已存在，请重新输入");
 
             var dict = request.Adapt<SysDict>();
             dict.ParentId = -1;
             dict.Sort = 0;
-            await _dictRep.InsertAysnc(dict);
+            await _dictRep.InsertAsync(dict);
         }
 
         /// <summary>
@@ -50,13 +50,13 @@ namespace Hao.AppService
         [DistributedLock("DictAppService_UpdateDict")]
         public async Task Update(long id, DictUpdateRequest request)
         {
-            var sameItems = await _dictRep.GetListAysnc(new DictQuery { DictName = request.DictName });
+            var sameItems = await _dictRep.GetListAsync(new DictQuery { DictName = request.DictName });
             if (sameItems.Any(a => a.Id != id)) throw new H_Exception("字典名称已存在，请重新输入");
 
-            sameItems = await _dictRep.GetListAysnc(new DictQuery { DictCode = request.DictCode });
+            sameItems = await _dictRep.GetListAsync(new DictQuery { DictCode = request.DictCode });
             if (sameItems.Any(a => a.Id != id)) throw new H_Exception("字典编码已存在，请重新输入");
 
-            var dict = await _dictRep.GetAysnc(id);
+            var dict = await _dictRep.GetAsync(id);
             dict.DictCode = request.DictCode;
             dict.DictName = request.DictName;
             dict.Remark = request.Remark;
@@ -72,15 +72,15 @@ namespace Hao.AppService
         [UnitOfWork]
         public async Task Delete(long id)
         {
-            var dict = await _dictRep.GetAysnc(id);
+            var dict = await _dictRep.GetAsync(id);
 
-            var dictItems = await _dictRep.GetListAysnc(new DictQuery { ParentId = id });
+            var dictItems = await _dictRep.GetListAsync(new DictQuery { ParentId = id });
 
-            await _dictRep.DeleteAysnc(dict);
+            await _dictRep.DeleteAsync(dict);
 
             if (dictItems.Count < 1) return;
 
-            await _dictRep.DeleteAysnc(dictItems);
+            await _dictRep.DeleteAsync(dictItems);
         }
 
 
@@ -109,27 +109,27 @@ namespace Hao.AppService
         [DistributedLock("DictAppService_AddDictItem")]
         public async Task AddDictItem(DictItemAddRequest request)
         {
-            var sameItems = await _dictRep.GetListAysnc(new DictQuery { ParentId = request.ParentId, ItemName = request.ItemName });
+            var sameItems = await _dictRep.GetListAsync(new DictQuery { ParentId = request.ParentId, ItemName = request.ItemName });
 
             H_AssertEx.That(sameItems.Count > 0, "数据项名称已存在，请重新输入");
 
 
-            sameItems = await _dictRep.GetListAysnc(new DictQuery { ParentId = request.ParentId, ItemValue = request.ItemValue });
+            sameItems = await _dictRep.GetListAsync(new DictQuery { ParentId = request.ParentId, ItemValue = request.ItemValue });
 
             H_AssertEx.That(sameItems.Count > 0, "数据项值已存在，请重新输入");
 
 
-            var parentDict = await GetAysnc(request.ParentId.Value);
+            var parentDict = await GetAsync(request.ParentId.Value);
             var dict = request.Adapt<SysDict>();
             dict.ParentId = parentDict.Id;
             dict.DictCode = parentDict.DictCode;
             dict.DictName = parentDict.DictName;
             if (!dict.Sort.HasValue)
             {
-                var dictItems = await _dictRep.GetListAysnc(new DictQuery { ParentId = request.ParentId.Value });
+                var dictItems = await _dictRep.GetListAsync(new DictQuery { ParentId = request.ParentId.Value });
                 dict.Sort = dictItems.Count + 1;
             }
-            await _dictRep.InsertAysnc(dict);
+            await _dictRep.InsertAsync(dict);
         }
 
         /// <summary>
@@ -142,7 +142,7 @@ namespace Hao.AppService
 
             query.OrderBy(a=>a.Sort).OrderBy(a=>a.CreateTime);
 
-            var dicts = await _dictRep.GetPagedAysnc(query);
+            var dicts = await _dictRep.GetPagedAsync(query);
 
             return dicts.Adapt<Paged<DictItemVM>>();
         }
@@ -156,13 +156,13 @@ namespace Hao.AppService
         [DistributedLock("DictAppService_UpdateDictItem")]
         public async Task UpdateDictItem(long id, DictItemUpdateRequest request)
         {
-            var item = await _dictRep.GetAysnc(id);
+            var item = await _dictRep.GetAsync(id);
 
-            var sameItems = await _dictRep.GetListAysnc(new DictQuery { ParentId = item.ParentId, ItemName = request.ItemName });
+            var sameItems = await _dictRep.GetListAsync(new DictQuery { ParentId = item.ParentId, ItemName = request.ItemName });
 
             H_AssertEx.That(sameItems.Any(a => a.Id != id), "数据项名称已存在，请重新输入");
 
-            sameItems = await _dictRep.GetListAysnc(new DictQuery { ParentId = item.ParentId, ItemValue = request.ItemValue });
+            sameItems = await _dictRep.GetListAsync(new DictQuery { ParentId = item.ParentId, ItemValue = request.ItemValue });
 
             H_AssertEx.That(sameItems.Any(a => a.Id != id), "数据项值已存在，请重新输入");
 
@@ -180,8 +180,8 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task DeleteDictItem(long id)
         {
-            var dict = await _dictRep.GetAysnc(id);
-            await _dictRep.DeleteAysnc(dict);
+            var dict = await _dictRep.GetAsync(id);
+            await _dictRep.DeleteAsync(dict);
         }
 
         /// <summary>
@@ -200,7 +200,7 @@ namespace Hao.AppService
 
             query.OrderBy(a=>a.Sort).OrderBy(a=>a.CreateTime);
 
-            var dictItems = await _dictRep.GetListAysnc(query);
+            var dictItems = await _dictRep.GetListAsync(query);
 
             return dictItems.Adapt<List<DictDataItemVM>>();
         }
@@ -213,9 +213,9 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="dictId"></param>
         /// <returns></returns>
-        private async Task<SysDict> GetAysnc(long dictId)
+        private async Task<SysDict> GetAsync(long dictId)
         {
-            var dict = await _dictRep.GetAysnc(dictId);
+            var dict = await _dictRep.GetAsync(dictId);
 
             H_AssertEx.That(dict == null, "字典数据不存在");
             H_AssertEx.That(dict.IsDeleted, "字典数据已删除");

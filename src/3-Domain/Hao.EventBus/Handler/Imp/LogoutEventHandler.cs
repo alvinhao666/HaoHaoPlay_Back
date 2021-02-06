@@ -16,11 +16,11 @@ namespace Hao.EventBus
     {
         private readonly ISysLoginRecordRepository _loginRecordRep;
 
-        private readonly H_AppSettingsConfig _appsettings;
+        private readonly H_AppSettingsConfig _appSettings;
 
-        public LogoutEventHandler(IOptionsSnapshot<H_AppSettingsConfig> appsettingsOptions, ISysLoginRecordRepository loginRecordRep)
+        public LogoutEventHandler(IOptionsSnapshot<H_AppSettingsConfig> appSettingsOptions, ISysLoginRecordRepository loginRecordRep)
         {
-            _appsettings = appsettingsOptions.Value;
+            _appSettings = appSettingsOptions.Value;
             _loginRecordRep = loginRecordRep;
         }
 
@@ -28,7 +28,7 @@ namespace Hao.EventBus
         {
             foreach (var userId in data.UserIds)
             {
-                //var keys = await RedisHelper.KeysAsync($"{_appsettings.RedisPrefix.Login}{userId}_*"); //不会自动加prefix
+                //var keys = await RedisHelper.KeysAsync($"{_appSettings.RedisPrefix.Login}{userId}_*"); //不会自动加prefix
 
                 //一般在测试环境中，可以使用keys命令，模糊查询到需要的key，但这个操作只适合在测试环境中使用，不适合在生产环境中使用
                 //原因是redis是单线程运行的，当redis中的数据量很大时，由于此操作会遍历所有数据，并将结果一次性全部返回，执行时间会比较长，从而导致后续操作等待，直接影响系统的正常运行
@@ -37,7 +37,7 @@ namespace Hao.EventBus
 
                 foreach(var item in records)
                 {
-                    var key = $"{_appsettings.RedisPrefix.Login}{userId}_{item.JwtJti}";
+                    var key = $"{_appSettings.RedisPrefix.Login}{userId}_{item.JwtJti}";
                     var value = RedisHelper.Get(key);
                     if (value.IsNullOrWhiteSpace()) continue;
 
@@ -70,7 +70,7 @@ namespace Hao.EventBus
 
                 foreach (var item in records)
                 {
-                    var key = $"{_appsettings.RedisPrefix.Login}{userId}_{item.JwtJti}";
+                    var key = $"{_appSettings.RedisPrefix.Login}{userId}_{item.JwtJti}";
                     RedisHelper.Del(key);
                 }
             }

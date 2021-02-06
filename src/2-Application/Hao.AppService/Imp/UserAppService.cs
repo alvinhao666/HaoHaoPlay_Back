@@ -28,7 +28,7 @@ namespace Hao.AppService
     public class UserAppService : ApplicationService, IUserAppService
     {
 
-        private readonly H_AppSettingsConfig _appsettings;
+        private readonly H_AppSettingsConfig _appSettings;
 
         private readonly ISysUserRepository _userRep;
 
@@ -41,17 +41,17 @@ namespace Hao.AppService
         private readonly ITimeLimitedDataProtector _protector;
 
         public UserAppService(ISysRoleRepository roleRep,
-            IOptionsSnapshot<H_AppSettingsConfig> appsettingsOptions, 
+            IOptionsSnapshot<H_AppSettingsConfig> appSettingsOptions, 
             ISysUserRepository userRepository,
             ICurrentUser currentUser,
             ICapPublisher publisher,
             IDataProtectionProvider provider)
         {
             _userRep = userRepository;
-            _appsettings = appsettingsOptions.Value;
+            _appSettings = appSettingsOptions.Value;
             _currentUser = currentUser;
             _roleRep = roleRep;
-            _protector = provider.CreateProtector(appsettingsOptions.Value.DataProtectorPurpose.FileDownload).ToTimeLimitedDataProtector();
+            _protector = provider.CreateProtector(appSettingsOptions.Value.DataProtectorPurpose.FileDownload).ToTimeLimitedDataProtector();
             _publisher = publisher;
         }
 
@@ -63,11 +63,11 @@ namespace Hao.AppService
         [DistributedLock("UserAppService_AddUser")]
         public async Task Add(UserAddRequest vm)
         {
-            var users = await _userRep.GetAllAysnc(new UserQuery { LoginName = vm.LoginName });
+            var users = await _userRep.GetAllAsync(new UserQuery { LoginName = vm.LoginName });
 
             H_AssertEx.That(users.Count > 0, "账号已存在，请重新输入");
 
-            var role = await _roleRep.GetAysnc(vm.RoleId.Value);
+            var role = await _roleRep.GetAsync(vm.RoleId.Value);
             H_AssertEx.That(role == null, "角色不存在，请重新选择");
             H_AssertEx.That(role.IsDeleted, "角色已删除，请重新选择");
 
@@ -76,7 +76,7 @@ namespace Hao.AppService
             var user = vm.Adapt<SysUser>();
             user.FirstNameSpell = H_Spell.GetFirstLetter(user.Name.ToCharArray()[0]);
             user.PasswordLevel = (PasswordLevel)H_Util.CheckPasswordLevel(user.Password);
-            user.Password = H_EncryptProvider.HMACSHA256(user.Password, _appsettings.Key.Sha256Key);
+            user.Password = H_EncryptProvider.HMACSHA256(user.Password, _appSettings.Key.Sha256Key);
             user.Enabled = true;
             user.RoleId = role.Id;
             user.RoleName = role.Name;
@@ -85,7 +85,7 @@ namespace Hao.AppService
 
             try
             {
-                await _userRep.InsertAysnc(user);
+                await _userRep.InsertAsync(user);
             }
             catch (PostgresException ex)
             {
@@ -104,7 +104,7 @@ namespace Hao.AppService
 
             query.CurrentRoleLevel = _currentUser.RoleLevel; 
 
-            var users = await _userRep.GetPagedAysnc(query);
+            var users = await _userRep.GetPagedAsync(query);
             var result = users.Adapt<Paged<UserVM>>();
 
             return result;
@@ -134,7 +134,7 @@ namespace Hao.AppService
             CheckUser(userId);
             var user = await GetUserDetail(userId);
 
-            await _userRep.DeleteAysnc(user);
+            await _userRep.DeleteAsync(user);
 
             await _publisher.PublishAsync(nameof(LogoutEventData), new LogoutEventData
             {
@@ -191,7 +191,7 @@ namespace Hao.AppService
         public async Task<bool> IsExistLoginName(string loginName)
         {
             var query = new UserQuery {LoginName = loginName};
-            var users = await _userRep.GetListAysnc(query);
+            var users = await _userRep.GetListAsync(query);
             return users.Count > 0;
         }
 
@@ -204,7 +204,7 @@ namespace Hao.AppService
         public async Task<UserExcelVM> Export(UserQueryInput queryInput)
         {
             var query = queryInput.Adapt<UserQuery>();
-            var users = await _userRep.GetListAysnc(query);
+            var users = await _userRep.GetListAsync(query);
 
             var exportData = users.Select(a => new Dictionary<string, string>{
                 {"姓名",a.Name},
@@ -219,7 +219,7 @@ namespace Hao.AppService
             });
 
             string fileName = $"{Guid.NewGuid()}.xlsx";
-            string rootPath = _appsettings.FilePath.ExportExcelPath;
+            string rootPath = _appSettings.FilePath.ExportExcelPath;
 
             H_File.CreateDirectory(rootPath);
             string filePath = Path.Combine(rootPath, $"{fileName}");
@@ -252,7 +252,7 @@ namespace Hao.AppService
 
             foreach (IFormFile file in files)
             {
-                string rootPath = _appsettings.FilePath.ImportExcelPath;
+                string rootPath = _appSettings.FilePath.ImportExcelPath;
 
                 H_File.CreateDirectory(rootPath);
 
@@ -285,7 +285,7 @@ namespace Hao.AppService
                             var user = new SysUser();
                             user.Name = ws.Cells[i, colStart].Text;
                             user.FirstNameSpell = H_Spell.GetFirstLetter(user.Name.ToCharArray()[0]);
-                            user.Password = H_EncryptProvider.HMACSHA256("123456", _appsettings.Key.Sha256Key);
+                            user.Password = H_EncryptProvider.HMACSHA256("123456", _appSettings.Key.Sha256Key);
                             users.Add(user);
                         }
                     }
@@ -294,7 +294,7 @@ namespace Hao.AppService
 
             if (users.Count == 0) return;
 
-            await _userRep.InsertAysnc(users);
+            await _userRep.InsertAsync(users);
         }
 
         #region private
@@ -315,7 +315,7 @@ namespace Hao.AppService
         /// <returns></returns>
         private async Task<SysUser> GetUserDetail(long userId)
         {
-            var user = await _userRep.GetAysnc(userId);
+            var user = await _userRep.GetAsync(userId);
             if (user == null) throw new H_Exception("用户不存在");
             if (user.IsDeleted) throw new H_Exception("用户已删除");
             if (user.RoleLevel <= _currentUser.RoleLevel) throw new H_Exception("无法操作同级及高级角色用户");

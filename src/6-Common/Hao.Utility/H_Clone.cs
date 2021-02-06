@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+using Mapster;
 
 namespace Hao.Utility
 {
@@ -13,9 +13,9 @@ namespace Hao.Utility
         /// <param name="source"></param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static T DeepClone<T>(this T source) where T : class, new()
+        public static T DeepClone<T>(this T source)
         {
-            return ReferenceEquals(source, null) ? default(T) : JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(source));
+            return source.Adapt<T>();
         }
     }
 }
