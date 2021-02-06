@@ -69,7 +69,7 @@ namespace Hao.Core.Extensions
             #region Mapper
             
             TypeAdapterConfig.GlobalSettings.Scan(appSettings.MapperAssemblyNames.Select(Assembly.Load).ToArray());
-            services.AddSingleton<IMapper, Mapper>(); //建议采用Adapt方法
+            // services.AddSingleton<IMapper, Mapper>(); //建议采用Adapt方法
 
             #endregion
 
