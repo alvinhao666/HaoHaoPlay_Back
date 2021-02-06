@@ -53,7 +53,7 @@ namespace Hao.AppService
 
             H_AssertEx.That(node.Type != ModuleType.Resource, "非资源项无法删除");
 
-            await _moduleRep.DeleteAysnc(node);
+            await _moduleRep.DeleteAsync(node);
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace Hao.AppService
 
             query.OrderBy(a=>a.Sort).OrderBy(a=>a.CreateTime);
 
-            var resources = await _moduleRep.GetListAysnc(query);
+            var resources = await _moduleRep.GetListAsync(query);
 
             var result = resources.Adapt<List<ResourceItemVM>>();
             return result;

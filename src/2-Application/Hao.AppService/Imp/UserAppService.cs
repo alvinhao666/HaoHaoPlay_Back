@@ -63,11 +63,11 @@ namespace Hao.AppService
         [DistributedLock("UserAppService_AddUser")]
         public async Task Add(UserAddRequest vm)
         {
-            var users = await _userRep.GetAllAysnc(new UserQuery { LoginName = vm.LoginName });
+            var users = await _userRep.GetAllAsync(new UserQuery { LoginName = vm.LoginName });
 
             H_AssertEx.That(users.Count > 0, "账号已存在，请重新输入");
 
-            var role = await _roleRep.GetAysnc(vm.RoleId.Value);
+            var role = await _roleRep.GetAsync(vm.RoleId.Value);
             H_AssertEx.That(role == null, "角色不存在，请重新选择");
             H_AssertEx.That(role.IsDeleted, "角色已删除，请重新选择");
 
@@ -85,7 +85,7 @@ namespace Hao.AppService
 
             try
             {
-                await _userRep.InsertAysnc(user);
+                await _userRep.InsertAsync(user);
             }
             catch (PostgresException ex)
             {
@@ -104,7 +104,7 @@ namespace Hao.AppService
 
             query.CurrentRoleLevel = _currentUser.RoleLevel; 
 
-            var users = await _userRep.GetPagedAysnc(query);
+            var users = await _userRep.GetPagedAsync(query);
             var result = users.Adapt<Paged<UserVM>>();
 
             return result;
@@ -134,7 +134,7 @@ namespace Hao.AppService
             CheckUser(userId);
             var user = await GetUserDetail(userId);
 
-            await _userRep.DeleteAysnc(user);
+            await _userRep.DeleteAsync(user);
 
             await _publisher.PublishAsync(nameof(LogoutEventData), new LogoutEventData
             {
@@ -191,7 +191,7 @@ namespace Hao.AppService
         public async Task<bool> IsExistLoginName(string loginName)
         {
             var query = new UserQuery {LoginName = loginName};
-            var users = await _userRep.GetListAysnc(query);
+            var users = await _userRep.GetListAsync(query);
             return users.Count > 0;
         }
 
@@ -204,7 +204,7 @@ namespace Hao.AppService
         public async Task<UserExcelVM> Export(UserQueryInput queryInput)
         {
             var query = queryInput.Adapt<UserQuery>();
-            var users = await _userRep.GetListAysnc(query);
+            var users = await _userRep.GetListAsync(query);
 
             var exportData = users.Select(a => new Dictionary<string, string>{
                 {"姓名",a.Name},
@@ -294,7 +294,7 @@ namespace Hao.AppService
 
             if (users.Count == 0) return;
 
-            await _userRep.InsertAysnc(users);
+            await _userRep.InsertAsync(users);
         }
 
         #region private
@@ -315,7 +315,7 @@ namespace Hao.AppService
         /// <returns></returns>
         private async Task<SysUser> GetUserDetail(long userId)
         {
-            var user = await _userRep.GetAysnc(userId);
+            var user = await _userRep.GetAsync(userId);
             if (user == null) throw new H_Exception("用户不存在");
             if (user.IsDeleted) throw new H_Exception("用户已删除");
             if (user.RoleLevel <= _currentUser.RoleLevel) throw new H_Exception("无法操作同级及高级角色用户");

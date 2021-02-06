@@ -24,7 +24,7 @@ namespace Hao.EventBus
         [UnitOfWork]
         public async Task UpdateLogin(LoginEventData data)
         {
-            var user = await _userRep.GetAysnc(data.UserId.Value);
+            var user = await _userRep.GetAsync(data.UserId.Value);
             if (user == null) return;
             user.LastLoginTime = data.LoginTime;
             user.LastLoginIP = data.LoginIP;
@@ -40,7 +40,7 @@ namespace Hao.EventBus
             record.JwtExpireTime = data.JwtExpireTime;
             record.JwtJti = data.JwtJti;
 
-            await _recordRep.InsertAysnc(record);
+            await _recordRep.InsertAsync(record);
         }
     }
 }

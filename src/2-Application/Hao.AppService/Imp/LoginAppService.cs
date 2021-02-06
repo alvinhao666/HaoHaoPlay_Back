@@ -87,7 +87,7 @@ namespace Hao.AppService
             H_AssertEx.That(authNums.Count == 0, "没有系统权限，暂时无法登录，请联系管理员");
 
             //查询用户菜单
-            var modules = await _moduleRep.GetListAysnc(new ModuleQuery { IncludeResource = false });
+            var modules = await _moduleRep.GetListAsync(new ModuleQuery { IncludeResource = false });
             var menus = new List<MenuVM>();
 
             //找主菜单一级 parentId=0

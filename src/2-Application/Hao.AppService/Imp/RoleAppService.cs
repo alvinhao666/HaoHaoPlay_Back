@@ -50,7 +50,7 @@ namespace Hao.AppService
             var role = new SysRole() { Name = vm.Name };
             try
             {
-                await _roleRep.InsertAysnc(role);
+                await _roleRep.InsertAsync(role);
             }
             catch (PostgresException ex)
             {
@@ -91,7 +91,7 @@ namespace Hao.AppService
             
             query.OrderBy(a=>a.Level);
             
-            var roles = await _roleRep.GetListAysnc(query);
+            var roles = await _roleRep.GetListAsync(query);
 
             var result = roles.Adapt<List<RoleSelectVM>>();
             return result;
@@ -110,7 +110,7 @@ namespace Hao.AppService
 
             if (role.Level != (int)RoleLevelType.SuperAdministrator && _currentUser.RoleLevel >= role.Level) throw new H_Exception("无法操作该角色的权限");
 
-            var modules = await _moduleRep.GetListAysnc(vm.ModuleIds);
+            var modules = await _moduleRep.GetListAsync(vm.ModuleIds);
             var maxLayer = modules.Max(a => a.Layer);
 
             var authNumbers = new List<long>();
@@ -126,7 +126,7 @@ namespace Hao.AppService
             }
 
             role.AuthNumbers = JsonConvert.SerializeObject(authNumbers);
-            var users = await _userRep.GetListAysnc(new UserQuery() { RoleLevel = role.Level });
+            var users = await _userRep.GetListAsync(new UserQuery() { RoleLevel = role.Level });
             var ids = users.Where(a => a.AuthNumbers != role.AuthNumbers).Select(a => a.Id).ToList();
 
             await _roleRep.UpdateAsync(role, a => new { a.AuthNumbers });
@@ -150,7 +150,7 @@ namespace Hao.AppService
         {
             var role = await GetRoleDetail(id);
             var authNumbers = string.IsNullOrWhiteSpace(role.AuthNumbers) ? null : JsonConvert.DeserializeObject<List<long>>(role.AuthNumbers);
-            var modules = await _moduleRep.GetListAysnc();
+            var modules = await _moduleRep.GetListAsync();
             var result = new RoleModuleVM();
             result.Nodes = new List<RoleModuleItemVM>();
             result.CheckedKeys = new List<string>();
@@ -166,9 +166,9 @@ namespace Hao.AppService
         public async Task Delete(long id)
         {
             var role = await GetRoleDetail(id);
-            var users = await _userRep.GetListAysnc(new UserQuery() { RoleLevel = role.Level });
+            var users = await _userRep.GetListAsync(new UserQuery() { RoleLevel = role.Level });
             if (users.Count > 0) throw new H_Exception("该角色下存在用户，暂时无法删除");
-            await _roleRep.DeleteAysnc(role);
+            await _roleRep.DeleteAsync(role);
         }
 
 
@@ -180,7 +180,7 @@ namespace Hao.AppService
         /// <returns></returns>
         private async Task<SysRole> GetRoleDetail(long userId)
         {
-            var item = await _roleRep.GetAysnc(userId);
+            var item = await _roleRep.GetAsync(userId);
             if (item == null) throw new H_Exception("角色不存在");
             if (item.IsDeleted) throw new H_Exception("角色已删除");
             return item;

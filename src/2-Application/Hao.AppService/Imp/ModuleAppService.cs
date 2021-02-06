@@ -66,7 +66,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task<List<ModuleTreeVM>> GetTreeList()
         {
-            var modules = await _moduleRep.GetListAysnc(new ModuleQuery() { IncludeResource = false });
+            var modules = await _moduleRep.GetListAsync(new ModuleQuery() { IncludeResource = false });
             var result = new List<ModuleTreeVM>();
             InitModuleTree(result, -1, modules);
             return result;
@@ -88,7 +88,7 @@ namespace Hao.AppService
                 
                 query.OrderBy(a=>a.Sort).OrderBy(a=>a.CreateTime);
 
-                var resources = await _moduleRep.GetListAysnc(query);
+                var resources = await _moduleRep.GetListAsync(query);
 
                 result.Resources = resources.Adapt<List<ResourceItemVM>>();
             }
@@ -120,7 +120,7 @@ namespace Hao.AppService
 
             if (module.Alias != vm.Alias)
             {
-                var sons = await _moduleRep.GetListAysnc(new ModuleQuery { ParentId = id });
+                var sons = await _moduleRep.GetListAsync(new ModuleQuery { ParentId = id });
                 sons.ForEach(a => a.ParentAlias = vm.Alias);
 
                 await _moduleRep.UpdateAsync(sons, a => new { a.ParentAlias });
@@ -147,16 +147,16 @@ namespace Hao.AppService
         {
             H_AssertEx.That(id == 0, "无法操作系统根节点");
 
-            var module = await _moduleRep.GetAysnc(id);
+            var module = await _moduleRep.GetAsync(id);
 
-            var childs = await _moduleRep.GetListAysnc(new ModuleQuery()
+            var childs = await _moduleRep.GetListAsync(new ModuleQuery()
             {
                 ParentId = module.Id
             });
 
             H_AssertEx.That(childs != null && childs.Count > 0, "存在子节点无法删除");
 
-            await _moduleRep.DeleteAysnc(module);
+            await _moduleRep.DeleteAsync(module);
         }
 
 
@@ -182,7 +182,7 @@ namespace Hao.AppService
 
             try
             {
-                await _moduleRep.InsertAysnc(module);
+                await _moduleRep.InsertAsync(module);
             }
             catch (PostgresException ex)
             {
@@ -222,7 +222,7 @@ namespace Hao.AppService
         /// <returns></returns>
         private async Task<SysModule> GetModuleDetail(long id)
         {
-            var module = await _moduleRep.GetAysnc(id);
+            var module = await _moduleRep.GetAsync(id);
 
             H_AssertEx.That(module == null, "节点不存在");
             H_AssertEx.That(module.IsDeleted, "节点已删除");

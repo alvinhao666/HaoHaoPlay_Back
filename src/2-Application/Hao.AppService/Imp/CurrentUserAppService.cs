@@ -40,7 +40,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task<CurrentUserVM> Get()
         {
-            var user = await _userRep.GetAysnc(_currentUser.Id.Value);
+            var user = await _userRep.GetAsync(_currentUser.Id.Value);
             return user.Adapt<CurrentUserVM>();
         }
 
@@ -63,7 +63,7 @@ namespace Hao.AppService
         //         image.Save(imgPath);
         //     }
         //
-        //     var user = await _userRep.GetAysnc(_currentUser.Id.Value);
+        //     var user = await _userRep.GetAsync(_currentUser.Id.Value);
         //     string oldImgUrl = user.HeadImgUrl;
         //     user.HeadImgUrl = imgName;
         //     await _userRep.UpdateAsync(user, user => new { user.HeadImgUrl });
@@ -80,7 +80,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task UpdateHeadImg(UpdateHeadImgRequest request)
         {
-            var user = await _userRep.GetAysnc(_currentUser.Id.Value);
+            var user = await _userRep.GetAsync(_currentUser.Id.Value);
             user.HeadImgUrl = $"https://{request.HeadImageUrl}";
             await _userRep.UpdateAsync(user, user => new { user.HeadImgUrl });
         }
@@ -92,7 +92,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task UpdateBaseInfo(CurrentUserUpdateRequest vm)
         {
-            var user = await _userRep.GetAysnc(_currentUser.Id.Value);
+            var user = await _userRep.GetAsync(_currentUser.Id.Value);
             user.Phone = vm.Phone;
             user.WeChat = vm.WeChat;
             user.Profile = vm.Profile;
@@ -115,7 +115,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task UpdatePassword(string oldPassword, string newPassword)
         {
-            var user = await _userRep.GetAysnc(_currentUser.Id.Value);
+            var user = await _userRep.GetAsync(_currentUser.Id.Value);
             oldPassword = H_EncryptProvider.HMACSHA256(oldPassword, _appsettings.Key.Sha256Key);
 
             H_AssertEx.That(user.Password != oldPassword, "原密码错误");
@@ -131,7 +131,7 @@ namespace Hao.AppService
         /// </summary>
         public async Task<UserSecurityVM> GetSecurityInfo()
         {
-            var user = await _userRep.GetAysnc(_currentUser.Id.Value);
+            var user = await _userRep.GetAsync(_currentUser.Id.Value);
             var result = user.Adapt<UserSecurityVM>();
             return result;
         }
