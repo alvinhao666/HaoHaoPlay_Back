@@ -23,15 +23,15 @@ namespace Hao.AppService
 
         private readonly ICurrentUser _currentUser;
 
-        private readonly H_AppSettingsConfig _appsettings;
+        private readonly H_AppSettingsConfig _appSettings;
 
 
         public CurrentUserAppService(ISysUserRepository userRepository, ICurrentUser currentUser,
-            IOptionsSnapshot<H_AppSettingsConfig> appsettingsOptions)
+            IOptionsSnapshot<H_AppSettingsConfig> appSettingsOptions)
         {
             _userRep = userRepository;
             _currentUser = currentUser;
-            _appsettings = appsettingsOptions.Value;
+            _appSettings = appSettingsOptions.Value;
         }
 
         /// <summary>
@@ -55,9 +55,9 @@ namespace Hao.AppService
         //     if (str.Length < 2) throw new H_Exception("图片格式不对");
         //     byte[] imageBytes = Convert.FromBase64String(str[1]);
         //
-        //     H_File.CreateDirectory(_appsettings.FilePath.AvatarPath);
+        //     H_File.CreateDirectory(_appSettings.FilePath.AvatarPath);
         //     string imgName = $"{_currentUser.Id}_{H_Util.GetUnixTimestamp()}.png";
-        //     string imgPath = Path.Combine(_appsettings.FilePath.AvatarPath, imgName);
+        //     string imgPath = Path.Combine(_appSettings.FilePath.AvatarPath, imgName);
         //     using (SixLabors.ImageSharp.Image image = SixLabors.ImageSharp.Image.Load(imageBytes))
         //     {
         //         image.Save(imgPath);
@@ -69,7 +69,7 @@ namespace Hao.AppService
         //     await _userRep.UpdateAsync(user, user => new { user.HeadImgUrl });
         //     if (!string.IsNullOrWhiteSpace(oldImgUrl))
         //     {
-        //         H_File.DeleteFile(Path.Combine(_appsettings.FilePath.AvatarPath, oldImgUrl));
+        //         H_File.DeleteFile(Path.Combine(_appSettings.FilePath.AvatarPath, oldImgUrl));
         //     }
         // }
         
@@ -116,12 +116,12 @@ namespace Hao.AppService
         public async Task UpdatePassword(string oldPassword, string newPassword)
         {
             var user = await _userRep.GetAsync(_currentUser.Id.Value);
-            oldPassword = H_EncryptProvider.HMACSHA256(oldPassword, _appsettings.Key.Sha256Key);
+            oldPassword = H_EncryptProvider.HMACSHA256(oldPassword, _appSettings.Key.Sha256Key);
 
             H_AssertEx.That(user.Password != oldPassword, "原密码错误");
 
             user.PasswordLevel = (PasswordLevel)H_Util.CheckPasswordLevel(newPassword);
-            newPassword = H_EncryptProvider.HMACSHA256(newPassword, _appsettings.Key.Sha256Key);
+            newPassword = H_EncryptProvider.HMACSHA256(newPassword, _appSettings.Key.Sha256Key);
             user.Password = newPassword;
             await _userRep.UpdateAsync(user, user => new { user.Password, user.PasswordLevel });
         }
@@ -143,7 +143,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public void Logout()
         {
-            var key = $"{_appsettings.RedisPrefix.Login}{_currentUser.Id.Value}_{_currentUser.Jti}";
+            var key = $"{_appSettings.RedisPrefix.Login}{_currentUser.Id.Value}_{_currentUser.Jti}";
 
             var value = RedisHelper.Get(key);
 

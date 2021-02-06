@@ -31,16 +31,16 @@ namespace Hao.AppService
 
         private readonly ICapPublisher _publisher;
 
-        private readonly H_AppSettingsConfig _appsettings;
+        private readonly H_AppSettingsConfig _appSettings;
 
         public LoginAppService(
             ISysUserRepository userRep,
             ISysModuleRepository moduleRep,
             ICapPublisher publisher,
-            IOptionsSnapshot<H_AppSettingsConfig> appsettingsOptions)
+            IOptionsSnapshot<H_AppSettingsConfig> appSettingsOptions)
         {
             _userRep = userRep;
-            _appsettings = appsettingsOptions.Value; //IOptionsSnapshot动态获取配置
+            _appSettings = appSettingsOptions.Value; //IOptionsSnapshot动态获取配置
             _publisher = publisher;
             _moduleRep = moduleRep;
         }
@@ -56,10 +56,10 @@ namespace Hao.AppService
         public async Task<LoginVM> LoginByAccountPwd(LoginByAccountPwdRequest request, string fromIP)
         {
             //rsa解密
-            var password = H_EncryptProvider.RsaDecrypt(_appsettings.Key.RsaPrivateKey, request.Password);
+            var password = H_EncryptProvider.RsaDecrypt(_appSettings.Key.RsaPrivateKey, request.Password);
 
             //sha256加密
-            password = H_EncryptProvider.HMACSHA256(password, _appsettings.Key.Sha256Key);
+            password = H_EncryptProvider.HMACSHA256(password, _appSettings.Key.Sha256Key);
 
             //根据账号密码查询用户
             var user = await GetUserByLoginName(request.LoginName, password);
@@ -109,7 +109,7 @@ namespace Hao.AppService
 
 
             int expireSeconds = (int)expireTime.Subtract(timeNow).Duration().TotalSeconds + 1;
-            RedisHelper.Set($"{_appsettings.RedisPrefix.Login}{user.Id}_{jti}", JsonConvert.SerializeObject(cacheUser), expireSeconds);
+            RedisHelper.Set($"{_appSettings.RedisPrefix.Login}{user.Id}_{jti}", JsonConvert.SerializeObject(cacheUser), expireSeconds);
 
             var result = user.Adapt<LoginVM>();
             result.Jwt = jwt;
@@ -162,17 +162,17 @@ namespace Hao.AppService
         {
             var claims = new Claim[]
             {
-                new Claim(JwtRegisteredClaimNames.Sub, _appsettings.Jwt.Subject), //主题
+                new Claim(JwtRegisteredClaimNames.Sub, _appSettings.Jwt.Subject), //主题
                 new Claim(JwtRegisteredClaimNames.Jti, jti.ToString()), //针对当前 token 的唯一标识 jwt的唯一身份标识，避免重复
                 new Claim(JwtRegisteredClaimNames.Sid, user.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Iat, H_Util.GetUnixTimestamp(timeNow).ToString(), ClaimValueTypes.Integer64), //token 创建时间
             };
 
-            var secretKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_appsettings.Jwt.SecretKey));
+            var secretKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_appSettings.Jwt.SecretKey));
 
             var jwt = new JwtSecurityTokenHandler().WriteToken(new JwtSecurityToken(
-                issuer: _appsettings.Jwt.Issuer,
-                audience: _appsettings.Jwt.Audience,
+                issuer: _appSettings.Jwt.Issuer,
+                audience: _appSettings.Jwt.Audience,
                 claims: claims,
                 notBefore: timeNow, //生效时间
                 expires: expireTime,//过期时间

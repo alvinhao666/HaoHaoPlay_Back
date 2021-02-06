@@ -28,7 +28,7 @@ namespace Hao.AppService
     public class UserAppService : ApplicationService, IUserAppService
     {
 
-        private readonly H_AppSettingsConfig _appsettings;
+        private readonly H_AppSettingsConfig _appSettings;
 
         private readonly ISysUserRepository _userRep;
 
@@ -41,17 +41,17 @@ namespace Hao.AppService
         private readonly ITimeLimitedDataProtector _protector;
 
         public UserAppService(ISysRoleRepository roleRep,
-            IOptionsSnapshot<H_AppSettingsConfig> appsettingsOptions, 
+            IOptionsSnapshot<H_AppSettingsConfig> appSettingsOptions, 
             ISysUserRepository userRepository,
             ICurrentUser currentUser,
             ICapPublisher publisher,
             IDataProtectionProvider provider)
         {
             _userRep = userRepository;
-            _appsettings = appsettingsOptions.Value;
+            _appSettings = appSettingsOptions.Value;
             _currentUser = currentUser;
             _roleRep = roleRep;
-            _protector = provider.CreateProtector(appsettingsOptions.Value.DataProtectorPurpose.FileDownload).ToTimeLimitedDataProtector();
+            _protector = provider.CreateProtector(appSettingsOptions.Value.DataProtectorPurpose.FileDownload).ToTimeLimitedDataProtector();
             _publisher = publisher;
         }
 
@@ -76,7 +76,7 @@ namespace Hao.AppService
             var user = vm.Adapt<SysUser>();
             user.FirstNameSpell = H_Spell.GetFirstLetter(user.Name.ToCharArray()[0]);
             user.PasswordLevel = (PasswordLevel)H_Util.CheckPasswordLevel(user.Password);
-            user.Password = H_EncryptProvider.HMACSHA256(user.Password, _appsettings.Key.Sha256Key);
+            user.Password = H_EncryptProvider.HMACSHA256(user.Password, _appSettings.Key.Sha256Key);
             user.Enabled = true;
             user.RoleId = role.Id;
             user.RoleName = role.Name;
@@ -219,7 +219,7 @@ namespace Hao.AppService
             });
 
             string fileName = $"{Guid.NewGuid()}.xlsx";
-            string rootPath = _appsettings.FilePath.ExportExcelPath;
+            string rootPath = _appSettings.FilePath.ExportExcelPath;
 
             H_File.CreateDirectory(rootPath);
             string filePath = Path.Combine(rootPath, $"{fileName}");
@@ -252,7 +252,7 @@ namespace Hao.AppService
 
             foreach (IFormFile file in files)
             {
-                string rootPath = _appsettings.FilePath.ImportExcelPath;
+                string rootPath = _appSettings.FilePath.ImportExcelPath;
 
                 H_File.CreateDirectory(rootPath);
 
@@ -285,7 +285,7 @@ namespace Hao.AppService
                             var user = new SysUser();
                             user.Name = ws.Cells[i, colStart].Text;
                             user.FirstNameSpell = H_Spell.GetFirstLetter(user.Name.ToCharArray()[0]);
-                            user.Password = H_EncryptProvider.HMACSHA256("123456", _appsettings.Key.Sha256Key);
+                            user.Password = H_EncryptProvider.HMACSHA256("123456", _appSettings.Key.Sha256Key);
                             users.Add(user);
                         }
                     }
