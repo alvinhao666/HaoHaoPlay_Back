@@ -17,6 +17,7 @@ using AspectCore.Extensions.DependencyInjection;
 using Mapster;
 using FreeSql;
 using FreeRedis;
+using MapsterMapper;
 
 namespace Hao.Core.Extensions
 {
@@ -66,17 +67,16 @@ namespace Hao.Core.Extensions
 
 
             #region Mapper
-
-            //Mapper
-            TypeAdapterConfig.GlobalSettings.Scan(appSettings.MapperAssemblyNames.Select(name => Assembly.Load(name)).ToArray());
-            //services.AddSingleton<IMapper, Mapper>(); //不推荐IMapper注入方式，建议使用Adapt，优点：少写代码
+            
+            TypeAdapterConfig.GlobalSettings.Scan(appSettings.MapperAssemblyNames.Select(Assembly.Load).ToArray());
+            services.AddSingleton<IMapper, Mapper>(); //建议采用Adapt方法
 
             #endregion
 
 
             #region 批量注入
 
-            services.AutoDependency(appSettings.DiAssemblyNames.Select(name => Assembly.Load(name)));
+            services.AutoDependency(appSettings.DiAssemblyNames.Select(Assembly.Load));
 
             #endregion
 
@@ -124,15 +124,15 @@ namespace Hao.Core.Extensions
 
             services.AddControllers(x =>
             {
-                x.ModelBinderProviders.Insert(0, new StringTrimModelBinderProvider()); //去除模型字符串首尾 空格 fromquery 评估模型绑定器时，按顺序检查提供程序的集合。 使用第一个返回与输入模型匹配的联编程序的提供程序。 因此，将提供程序添加到集合的末尾可能会导致在自定义联编程序有可能之前调用内置模型联编程序 https://docs.microsoft.com/zh-cn/aspnet/core/mvc/advanced/custom-model-binding?view=aspnetcore-3.1
+                x.ModelBinderProviders.Insert(0, new StringTrimModelBinderProvider()); //去除模型字符串首尾 空格 FromQuery 评估模型绑定器时，按顺序检查提供程序的集合。 使用第一个返回与输入模型匹配的联编程序的提供程序。 因此，将提供程序添加到集合的末尾可能会导致在自定义联编程序有可能之前调用内置模型联编程序 https://docs.microsoft.com/zh-cn/aspnet/core/mvc/advanced/custom-model-binding?view=aspnetcore-3.1
                 x.Filters.Add<H_ExceptionFilter>();
                 x.Filters.Add<H_ResultFilter>();
             })
             .AddControllersAsServices() //controller属性注入 .net core 3.1版本   //实现了两件事情 - 它将您应用程序中的所有控制器注册到 DI 容器（如果尚未注册），并将IControllerActivator注册为ServiceBasedControllerActivator
-            .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblies(appSettings.ValidatorAssemblyNames.Select(name => Assembly.Load(name))))
+            .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblies(appSettings.ValidatorAssemblyNames.Select(Assembly.Load)))
             .AddJsonOptions(o =>
             {
-                //frombody的数据        
+                //FromBody的数据        
                 o.JsonSerializerOptions.Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping;
                 o.JsonSerializerOptions.PropertyNamingPolicy = null; //o.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase //开头字母小写 默认
                 o.JsonSerializerOptions.Converters.Add(new StringJsonConvert()); //去除模型字符串首尾 空格
