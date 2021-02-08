@@ -12,7 +12,7 @@ namespace Hao.Utility
     public static class H_EnumDescription
     {
         private static readonly ConcurrentDictionary<Type, List<H_EnumDescriptionAttribute>> _enumCache = new ConcurrentDictionary<Type, List<H_EnumDescriptionAttribute>>();
-        
+
         internal static H_EnumDescriptionAttribute Get(Type enumType, string fieldName)
         {
             return Get(enumType).SingleOrDefault(d => d.Name == fieldName); // SingleOrDefault只取一个 如果没有数据等于 null， 如果>1异常
@@ -25,14 +25,14 @@ namespace Hao.Utility
             customAttribute.Field = fieldInfo;
             return customAttribute;
         }
-        
-        
+
+
         private static H_EnumDescriptionAttribute Get(Type enumType, int value)
         {
             return Get(enumType).SingleOrDefault(d => (int)d.Value == value);
         }
 
-        
+
         /// <summary>
         /// 获取所有字段
         /// </summary>
@@ -42,9 +42,10 @@ namespace Hao.Utility
         {
             if (enumType.IsEnum)
             {
-                return _enumCache.GetOrAdd(enumType, type => type.GetFields(BindingFlags.Static | BindingFlags.Public).Select(Get).ToList());
+                return _enumCache.GetOrAdd(enumType,
+                    type => type.GetFields(BindingFlags.Static | BindingFlags.Public).Select(Get).Where(a => a != null).ToList());
             }
-            
+
             return new List<H_EnumDescriptionAttribute>();
         }
 
@@ -73,7 +74,7 @@ namespace Hao.Utility
         {
             var descriptions = Get(typeof(TEnum));
             var type = descriptions.SingleOrDefault(a => a.Description == description);
-            return (TEnum?) type?.Value;
+            return (TEnum?)type?.Value;
         }
     }
 }
