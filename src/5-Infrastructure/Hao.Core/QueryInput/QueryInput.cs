@@ -37,12 +37,12 @@ namespace Hao.Core
         /// 升序
         /// </summary>
         [H_EnumDescription("升序")]
-        Asc = 0,
+        Asc,
 
         /// <summary>
         /// 降序
         /// </summary>
         [H_EnumDescription("降序")]
-        Desc = 1
+        Desc
     }
 }
