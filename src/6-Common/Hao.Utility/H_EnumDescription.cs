@@ -42,7 +42,7 @@ namespace Hao.Utility
         {
             if (enumType.IsEnum)
             {
-                return _enumCache.GetOrAdd(enumType, type => type.GetFields(BindingFlags.Static | BindingFlags.Public).Select(Get).ToList());
+                return _enumCache.GetOrAdd(enumType, type => type.GetFields(BindingFlags.Static | BindingFlags.Public).Select(Get).Where(a => a != null).ToList());
             }
             
             return new List<H_EnumDescriptionAttribute>();

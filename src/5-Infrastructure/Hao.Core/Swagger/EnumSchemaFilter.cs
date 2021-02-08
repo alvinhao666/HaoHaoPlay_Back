@@ -27,18 +27,19 @@ namespace Hao.Core
             
             var attribute = context.Type.GetCustomAttributes().FirstOrDefault(a => a.GetType() == typeof(H_EnumDescriptionAttribute));
 
-            if (attribute != null)
-            {
-                schema.Description = ((H_EnumDescriptionAttribute) attribute).Description;
-            }
-            
+            if (attribute != null) schema.Description = ((H_EnumDescriptionAttribute)attribute).Description;
+
             schema.Enum.Clear();
             var i = 0;
             
             foreach (var name in enumNames)
             {
                 var value = ((OpenApiPrimitive<int>) enumValues[i]).Value;
-                schema.Enum.Add(new OpenApiString($"{value} = {name} = {H_EnumDescription.GetDescription(context.Type, value)}"));
+                var description = H_EnumDescription.GetDescription(context.Type, value);
+
+                if (!string.IsNullOrWhiteSpace(description)) description = $"= {description}";
+
+                schema.Enum.Add(new OpenApiString($"{value} = {name} {description}"));
                 i++;
             }
         }
