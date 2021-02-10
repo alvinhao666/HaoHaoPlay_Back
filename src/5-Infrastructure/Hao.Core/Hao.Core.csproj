@@ -17,7 +17,7 @@
     <PackageReference Include="FreeRedis" Version="0.3.0" />
     <PackageReference Include="FreeSql" Version="2.0.105" />
     <PackageReference Include="FreeSql.Provider.PostgreSQL" Version="2.0.105" />
-    <PackageReference Include="Microsoft.AspNetCore.DataProtection.Extensions" Version="5.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection.Extensions" Version="5.0.3" />
     <PackageReference Include="Serilog.AspNetCore" Version="3.4.0" />
     <PackageReference Include="Serilog.Settings.Configuration" Version="3.1.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
