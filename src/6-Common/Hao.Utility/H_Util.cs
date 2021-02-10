@@ -13,32 +13,6 @@ namespace Hao.Utility
 {
     public static class H_Util
     {
-        public static Type IntType = typeof(int);
-        public static Type IntTypeNull = typeof(int?);
-        public static Type LongType = typeof(long);
-        public static Type LongTypeNull = typeof(long?);
-        public static Type GuidType = typeof(Guid);
-        public static Type GuidTypeNull = typeof(Guid?);
-        public static Type BoolType = typeof(bool);
-        public static Type BoolTypeNull = typeof(bool?);
-        public static Type ByteType = typeof(Byte);
-        public static Type ObjType = typeof(object);
-        public static Type DobType = typeof(double);
-        public static Type DobTypeNull = typeof(double?);
-        public static Type FloatType = typeof(float);
-        public static Type FloatTypeNull = typeof(float?);
-        public static Type ShortType = typeof(short);
-        public static Type ShortTypeNull = typeof(short?);
-        public static Type DecType = typeof(decimal);
-        public static Type DecTypeNull = typeof(decimal?);
-        public static Type StringType = typeof(string);
-        public static Type DateType = typeof(DateTime);
-        public static Type DateTypeNull = typeof(DateTime?);
-        public static Type DateTimeOffsetType = typeof(DateTimeOffset);
-        public static Type TimeSpanType = typeof(TimeSpan);
-        public static Type ByteArrayType = typeof(byte[]);
-        public static Type DynamicType = typeof(ExpandoObject);
-
         /// <summary>
         /// 计算机中的UNIX时间戳，是以GMT/UTC时间「1970-01-01T00:00:00」为起点，到具体时间的秒数，不考虑闰秒。这么做当然是为了简化计算机对时间操作的复杂度。
         /// 比如我的电脑现在的系统时间为2015年2月27日15点43分0秒，因为我的电脑默认时区为东8区，则0时区的时间为2015年2月27日7点43分0秒，则UNIX时间戳为1425022980秒。
