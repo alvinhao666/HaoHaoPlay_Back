@@ -22,7 +22,7 @@ namespace Hao.Core
         /// <summary>
         /// 异常构造函数
         /// </summary>
-        /// <param name="pair">key:异常代码值，vluae:异常消息</param>
+        /// <param name="pair">key:异常代码值，value:异常消息</param>
         public H_Exception(KeyValuePair<int, string> pair) : base(pair.Value)
         {
             Code = pair.Key;
