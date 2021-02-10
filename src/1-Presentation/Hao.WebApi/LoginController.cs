@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Hao.AppService;
 using Hao.Core;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 
