@@ -9,20 +9,20 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AspectCore.Abstractions" Version="2.1.0" />
+    <PackageReference Include="AspectCore.Abstractions" Version="2.2.0" />
     <PackageReference Include="DotNetCore.CAP" Version="3.1.2" />
     <PackageReference Include="DotNetCore.CAP.PostgreSql" Version="3.1.2" />
     <PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="3.1.2" />
-    <PackageReference Include="FluentValidation" Version="9.5.0" />
+    <PackageReference Include="FluentValidation" Version="9.5.1" />
     <PackageReference Include="FreeRedis" Version="0.3.0" />
     <PackageReference Include="FreeSql" Version="2.0.105" />
     <PackageReference Include="FreeSql.Provider.PostgreSQL" Version="2.0.105" />
-    <PackageReference Include="Microsoft.AspNetCore.DataProtection.Extensions" Version="5.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection.Extensions" Version="5.0.3" />
     <PackageReference Include="Serilog.AspNetCore" Version="3.4.0" />
     <PackageReference Include="Serilog.Settings.Configuration" Version="3.1.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
     <PackageReference Include="SixLabors.ImageSharp" Version="1.0.2" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.0.2" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.0.5" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.8.0" />
   </ItemGroup>
 

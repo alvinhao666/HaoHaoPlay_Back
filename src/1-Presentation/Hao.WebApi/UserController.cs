@@ -1,7 +1,6 @@
 ﻿using Hao.AppService;
 using Hao.Core;
 using Hao.Core.Extensions;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;

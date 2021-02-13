@@ -114,11 +114,11 @@ namespace Microsoft.Extensions.DependencyInjection
                 switch (e.Property.Name)
                 {
                     case "Id":
-                        if (e.Column.CsType == H_Util.GuidType)
+                        if (e.Column.CsType == H_Type.GuidType)
                         {
                             e.Value = Guid.NewGuid();
                         }
-                        else if (e.Column.CsType == H_Util.LongType)
+                        else if (e.Column.CsType == H_Type.LongType)
                         {
                             var idWorker = services.BuildServiceProvider().GetService<IdWorker>();
                             e.Value = idWorker.NextId();

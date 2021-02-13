@@ -4,6 +4,11 @@ namespace Hao.Library
 {
     public static class H_Error
     {
+        ///// <summary>
+        ///// 认证失败，请重新登录
+        ///// </summary>
+        //public static Lazy<KeyValuePair<int, string>> E100001 = new Lazy<KeyValuePair<int, string>>(() => new KeyValuePair<int, string>(100001, "认证失败，请重新登录"));
+
         /// <summary>
         /// 认证失败，请重新登录
         /// </summary>
