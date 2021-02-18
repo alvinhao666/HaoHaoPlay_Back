@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using Hao.Utility;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
@@ -29,19 +30,23 @@ namespace Hao.Core
 
             if (attribute != null) schema.Description = ((H_EnumDescriptionAttribute)attribute).Description;
 
-            schema.Enum.Clear();
-            var i = 0;
-            
+            StringBuilder sb = new StringBuilder();
+            sb.Append(" ");
+
+            var i = 0;      
+
             foreach (var name in enumNames)
             {
                 var value = ((OpenApiPrimitive<int>) enumValues[i]).Value;
                 var description = H_EnumDescription.GetDescription(context.Type, value);
 
-                if (!string.IsNullOrWhiteSpace(description)) description = $"= {description}";
+                sb.Append($"{value}£º{name}  {description}£¬");
 
-                schema.Enum.Add(new OpenApiString($"{value} = {name} {description}"));
                 i++;
             }
+            
+            schema.Format = sb.ToString().TrimEnd('£¬');
+            return;
         }
     }
 }

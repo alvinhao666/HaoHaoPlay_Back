@@ -16,9 +16,9 @@ namespace Hao.EventBus
     {
         private readonly ISysLoginRecordRepository _loginRecordRep;
 
-        private readonly H_AppSettingsConfig _appSettings;
+        private readonly H_AppSettings _appSettings;
 
-        public LogoutEventHandler(IOptionsSnapshot<H_AppSettingsConfig> appSettingsOptions, ISysLoginRecordRepository loginRecordRep)
+        public LogoutEventHandler(IOptionsSnapshot<H_AppSettings> appSettingsOptions, ISysLoginRecordRepository loginRecordRep)
         {
             _appSettings = appSettingsOptions.Value;
             _loginRecordRep = loginRecordRep;

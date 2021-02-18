@@ -23,7 +23,7 @@ namespace Hao.Core.Extensions
 {
     internal static class ServiceCollectionExtensions
     {
-        public static IServiceCollection ConfigureServices(this IServiceCollection services, IHostEnvironment env, H_AppSettingsConfig appSettings)
+        public static IServiceCollection ConfigureServices(this IServiceCollection services, IHostEnvironment env, H_AppSettings appSettings)
         {
             #region DevEnvironment
 

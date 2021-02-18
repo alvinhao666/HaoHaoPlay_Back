@@ -54,7 +54,7 @@ namespace Hao.AppService
             }
             catch (PostgresException ex)
             {
-                if (ex.SqlState == H_PostgresSqlState.E23505) throw new H_Exception("角色名称已存在，请重新输入");//违反唯一键
+                H_AssertEx.That(ex.SqlState == H_PostgresSqlState.E23505, "角色名称已存在，请重新输入");//违反唯一键
             }
         }
 
@@ -167,7 +167,8 @@ namespace Hao.AppService
         {
             var role = await GetRoleDetail(id);
             var users = await _userRep.GetListAsync(new UserQuery() { RoleLevel = role.Level });
-            if (users.Count > 0) throw new H_Exception("该角色下存在用户，暂时无法删除");
+
+            H_AssertEx.That(users.Count > 0, "该角色下存在用户，暂时无法删除");
             await _roleRep.DeleteAsync(role);
         }
 
