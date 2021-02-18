@@ -40,12 +40,14 @@ namespace Hao.Core
                 var value = ((OpenApiPrimitive<int>) enumValues[i]).Value;
                 var description = H_EnumDescription.GetDescription(context.Type, value);
 
-                sb.Append($"{value}£º{name}  {description}£¬");
+                sb.Append($"{value}£º{name}  {description}");
+
+                if (i < enumValues.Length - 1) sb.Append("£¬");
 
                 i++;
             }
             
-            schema.Format = sb.ToString().TrimEnd('£¬');
+            schema.Format = sb.ToString();
             return;
         }
     }
