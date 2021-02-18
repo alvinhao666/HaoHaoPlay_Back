@@ -8,7 +8,7 @@ using Hao.TencentCloud.Cos;
 
 namespace HaoHaoPlay_Back.Host
 {
-    public class Startup<TConfig> : H_Startup<TConfig> where TConfig : H_AppSettingsConfig, new()
+    public class Startup<TConfig> : H_Startup<TConfig> where TConfig : H_AppSettings, new()
     {
         public Startup(IHostEnvironment env, IConfiguration cfg) : base(env, cfg)
         {

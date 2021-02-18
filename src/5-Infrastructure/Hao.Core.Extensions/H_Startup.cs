@@ -9,7 +9,7 @@ using System.IO;
 
 namespace Hao.Core.Extensions
 {
-    public abstract class H_Startup<TConfig> where TConfig : H_AppSettingsConfig, new()
+    public abstract class H_Startup<TConfig> where TConfig : H_AppSettings, new()
     {
         protected readonly IHostEnvironment Env;
 
@@ -44,15 +44,15 @@ namespace Hao.Core.Extensions
         /// <param name="services"></param>
         public virtual void ConfigureServices(IServiceCollection services)
         {
-            var filePathOption = Configuration.GetSection(nameof(H_AppSettingsConfig.FilePath));
+            var filePathOption = Configuration.GetSection(nameof(H_AppSettings.FilePath));
 
-            filePathOption.GetSection(nameof(H_AppSettingsConfig.FilePath.ExportExcelPath)).Value = _appSettings.FilePath.ExportExcelPath;
-            filePathOption.GetSection(nameof(H_AppSettingsConfig.FilePath.ImportExcelPath)).Value = _appSettings.FilePath.ImportExcelPath;
-            filePathOption.GetSection(nameof(H_AppSettingsConfig.FilePath.AvatarPath)).Value = _appSettings.FilePath.AvatarPath;
+            filePathOption.GetSection(nameof(H_AppSettings.FilePath.ExportExcelPath)).Value = _appSettings.FilePath.ExportExcelPath;
+            filePathOption.GetSection(nameof(H_AppSettings.FilePath.ImportExcelPath)).Value = _appSettings.FilePath.ImportExcelPath;
+            filePathOption.GetSection(nameof(H_AppSettings.FilePath.AvatarPath)).Value = _appSettings.FilePath.AvatarPath;
 
             services.Configure<TConfig>(Configuration); //绑定配置对象 子类 （新增配置信息）
 
-            services.Configure<H_AppSettingsConfig>(Configuration); //绑定配置对象 基类
+            services.Configure<H_AppSettings>(Configuration); //绑定配置对象 基类
 
             services.ConfigureServices(Env, _appSettings);
         }
@@ -72,7 +72,7 @@ namespace Hao.Core.Extensions
         /// 检查配置
         /// </summary>
         /// <param name="config"></param>
-        public virtual void CheckAppSettings(H_AppSettingsConfig config)
+        public virtual void CheckAppSettings(H_AppSettings config)
         {
             var message = "配置异常：";
 

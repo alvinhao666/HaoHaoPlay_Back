@@ -31,13 +31,13 @@ namespace Hao.AppService
 
         private readonly ICapPublisher _publisher;
 
-        private readonly H_AppSettingsConfig _appSettings;
+        private readonly H_AppSettings _appSettings;
 
         public LoginAppService(
             ISysUserRepository userRep,
             ISysModuleRepository moduleRep,
             ICapPublisher publisher,
-            IOptionsSnapshot<H_AppSettingsConfig> appSettingsOptions)
+            IOptionsSnapshot<H_AppSettings> appSettingsOptions)
         {
             _userRep = userRep;
             _appSettings = appSettingsOptions.Value; //IOptionsSnapshot动态获取配置
