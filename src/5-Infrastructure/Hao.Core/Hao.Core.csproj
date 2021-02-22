@@ -15,8 +15,8 @@
     <PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="3.1.2" />
     <PackageReference Include="FluentValidation" Version="9.5.1" />
     <PackageReference Include="FreeRedis" Version="0.3.0" />
-    <PackageReference Include="FreeSql" Version="2.0.105" />
-    <PackageReference Include="FreeSql.Provider.PostgreSQL" Version="2.0.105" />
+    <PackageReference Include="FreeSql" Version="2.3.100" />
+    <PackageReference Include="FreeSql.Provider.PostgreSQL" Version="2.3.100" />
     <PackageReference Include="Microsoft.AspNetCore.DataProtection.Extensions" Version="5.0.3" />
     <PackageReference Include="Serilog.AspNetCore" Version="3.4.0" />
     <PackageReference Include="Serilog.Settings.Configuration" Version="3.1.0" />
