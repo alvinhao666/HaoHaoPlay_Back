@@ -2,7 +2,7 @@
 
 namespace Hao.Snowflake
 {
-    public class SnowflakeOption
+    public class SnowflakeOptions
     {
         /// <summary>
         /// 工作机器ID

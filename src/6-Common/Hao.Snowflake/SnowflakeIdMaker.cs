@@ -9,7 +9,7 @@ namespace Hao.Snowflake
 {
     public class SnowflakeIdMaker : ISnowflakeIdMaker
     {
-        private readonly SnowflakeOption _option;
+        private readonly SnowflakeOptions _option;
         static object locker = new object();
         //最后的时间戳
         private long lastTimestamp = -1L;
@@ -41,7 +41,7 @@ namespace Hao.Snowflake
         private readonly IServiceProvider _provider;
 
 
-        public SnowflakeIdMaker(IOptions<SnowflakeOption> options, IServiceProvider provider)
+        public SnowflakeIdMaker(IOptions<SnowflakeOptions> options, IServiceProvider provider)
         {
             _provider = provider;
             _option = options.Value;

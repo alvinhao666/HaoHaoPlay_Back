@@ -19,6 +19,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Hao.Runtime;
 using Mapster;
+using ToolGood.Words;
 
 namespace Hao.AppService
 {
@@ -74,7 +75,7 @@ namespace Hao.AppService
             H_AssertEx.That(role.Level <= _currentUser.RoleLevel, "无法添加同级及高级角色用户");
 
             var user = vm.Adapt<SysUser>();
-            user.FirstNameSpell = H_Spell.GetFirstLetter(user.Name.ToCharArray()[0]);
+            user.FirstNameSpell = WordsHelper.GetFirstPinyin(user.Name.Substring(0,1));
             user.PasswordLevel = (PasswordLevel)H_Util.CheckPasswordLevel(user.Password);
             user.Password = H_EncryptProvider.HMACSHA256(user.Password, _appSettings.Key.Sha256Key);
             user.Enabled = true;
@@ -284,7 +285,7 @@ namespace Hao.AppService
                         {
                             var user = new SysUser();
                             user.Name = ws.Cells[i, colStart].Text;
-                            user.FirstNameSpell = H_Spell.GetFirstLetter(user.Name.ToCharArray()[0]);
+                            user.FirstNameSpell = WordsHelper.GetFirstPinyin(user.Name.Substring(0, 1));
                             user.Password = H_EncryptProvider.HMACSHA256("123456", _appSettings.Key.Sha256Key);
                             users.Add(user);
                         }
