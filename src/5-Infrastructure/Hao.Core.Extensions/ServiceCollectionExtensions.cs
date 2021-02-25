@@ -1,7 +1,6 @@
 ﻿using DotNetCore.CAP;
 using FluentValidation.AspNetCore;
 using Hao.Library;
-using Hao.Snowflake;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -85,8 +84,16 @@ namespace Hao.Core.Extensions
             //redis
             RedisHelper.AddClient(new RedisClient(appSettings.ConnectionString.Redis));
 
-            //雪花id
-            services.AddSingleton(new IdWorker(appSettings.SnowflakeId.WorkerId, appSettings.SnowflakeId.DataCenterId));
+            ////雪花id
+            //services.AddSingleton(new IdWorker(appSettings.SnowflakeId.WorkerId, appSettings.SnowflakeId.DataCenterId));
+
+            services.AddSnowflakeWithRedis(opt =>
+            {
+                opt.Database = 15;
+                opt.InstanceName = "Snowflake:";
+                opt.ConnectionString = appSettings.ConnectionString.Redis;
+                opt.RefreshAliveInterval = TimeSpan.FromHours(1);
+            });
 
             //orm
             services.AddOrmService(DataType.PostgreSQL, appSettings.ConnectionString.Master, appSettings.ConnectionString.Slave.Select(a => a.Connection).ToArray());

@@ -52,7 +52,8 @@ namespace Microsoft.Extensions.DependencyInjection
             fsql.Aop.CurdAfter += Aop_CurdAfter;
 #endif
 
-            fsql.Aop.AuditValue += (s, e) => Aop_AuditValue(s, e, services);
+            IServiceProvider serviceProvider = services.BuildServiceProvider();
+            fsql.Aop.AuditValue += (s, e) => Aop_AuditValue(s, e, serviceProvider);
 
 
             services.AddScoped<IFreeSqlContext>(a => new FreeSqlContext(fsql));
@@ -107,7 +108,7 @@ namespace Microsoft.Extensions.DependencyInjection
         }
 
 
-        private static void Aop_AuditValue(object sender, AuditValueEventArgs e, IServiceCollection services)
+        private static void Aop_AuditValue(object sender, AuditValueEventArgs e, IServiceProvider serviceProvider)
         {
             if (e.AuditValueType == AuditValueType.Insert)
             {
@@ -120,7 +121,7 @@ namespace Microsoft.Extensions.DependencyInjection
                         }
                         else if (e.Column.CsType == H_Type.LongType)
                         {
-                            var idWorker = services.BuildServiceProvider().GetService<IdWorker>();
+                            var idWorker = serviceProvider.GetService<ISnowflakeIdMaker>();
                             e.Value = idWorker.NextId();
                         }
                         break;
