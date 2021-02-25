@@ -11,12 +11,12 @@ namespace Hao.Snowflake.Redis
     public class RedisClient : IRedisClient
     {
         private readonly string _instance;
-        private readonly RedisOption _options;
+        private readonly RedisOptions _options;
         private readonly SemaphoreSlim _connectionLock = new SemaphoreSlim(initialCount: 1, maxCount: 1);
         private volatile ConnectionMultiplexer _connection;
         private readonly ConcurrentDictionary<int, IDatabase> _dataBases = new ConcurrentDictionary<int, IDatabase>();
 
-        public RedisClient( IOptions<RedisOption> options)
+        public RedisClient( IOptions<RedisOptions> options)
         {
             _options = options.Value;
             _instance = _options.InstanceName;

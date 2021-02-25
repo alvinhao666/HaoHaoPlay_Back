@@ -8,12 +8,12 @@ namespace Hao.Snowflake
 {
     public class SnowflakeBackgroundServices : BackgroundService
     {
-        private readonly ISnowflakeIdMaker _idMaker;
         private readonly IDistributedSupport _distributed;
-        private readonly SnowflakeOption option;
-        public SnowflakeBackgroundServices(ISnowflakeIdMaker idMaker, IDistributedSupport distributed, IOptions<SnowflakeOption> options)
+
+        private readonly SnowflakeOptions option;
+
+        public SnowflakeBackgroundServices(IDistributedSupport distributed, IOptions<SnowflakeOptions> options)
         {
-            _idMaker = idMaker;
             option = options.Value;
             _distributed = distributed;
         }
@@ -28,7 +28,6 @@ namespace Hao.Snowflake
                     await _distributed.RefreshAlive();
                     await Task.Delay(option.RefreshAliveInterval.Add(TimeSpan.FromMinutes(1)), stoppingToken);
                 }
-
             }
         }
     }

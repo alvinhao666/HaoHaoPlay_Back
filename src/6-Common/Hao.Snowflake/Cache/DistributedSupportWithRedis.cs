@@ -18,10 +18,11 @@ namespace Hao.Snowflake.Redis
         /// </summary>
         private readonly string _inUse;
 
-        private readonly RedisOption _redisOption;
+        private readonly RedisOptions _redisOption;
 
         private int _workId;
-        public DistributedSupportWithRedis(IRedisClient redisClient, IOptions<RedisOption> redisOption)
+
+        public DistributedSupportWithRedis(IRedisClient redisClient, IOptions<RedisOptions> redisOption)
         {
             _redisClient = redisClient;
             _redisOption = redisOption.Value;
@@ -47,6 +48,7 @@ namespace Hao.Snowflake.Redis
             await _redisClient.SortedAddAsync(_inUse, _workId.ToString(), GetTimestamp());
             return _workId;
         }
+
         private long GetTimestamp(DateTime? time = null)
         {
             if (time == null)
@@ -56,6 +58,7 @@ namespace Hao.Snowflake.Redis
             var dt1970 = new DateTime(1970, 1, 1);
             return (time.Value.Ticks - dt1970.Ticks) / 10000;
         }
+
         public async Task RefreshAlive()
         {
             await _redisClient.SortedAddAsync(_inUse, _workId.ToString(), GetTimestamp());

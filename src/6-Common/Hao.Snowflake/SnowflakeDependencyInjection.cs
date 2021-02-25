@@ -6,9 +6,9 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class SnowflakeDependencyInjection
     {
-        public static IServiceCollection AddSnowflakeWithRedis(this IServiceCollection services, Action<RedisOption> option)
+        public static IServiceCollection AddSnowflakeWithRedis(this IServiceCollection services, Action<RedisOptions> options)
         {
-            services.Configure(option);
+            services.Configure(options);
             services.AddSingleton<ISnowflakeIdMaker, SnowflakeIdMaker>();
             services.AddSingleton<IRedisClient, RedisClient>();
             services.AddSingleton<IDistributedSupport, DistributedSupportWithRedis>();
