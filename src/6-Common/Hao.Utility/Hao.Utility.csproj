@@ -7,6 +7,7 @@
   <ItemGroup>
     <PackageReference Include="Mapster" Version="7.1.5" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.3" />
     <PackageReference Include="ToolGood.Words" Version="3.0.2.4" />
   </ItemGroup>
 </Project>
