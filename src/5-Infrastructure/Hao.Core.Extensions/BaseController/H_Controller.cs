@@ -45,9 +45,10 @@ namespace Hao.Core.Extensions
             {
                 Position = context.HttpContext.Request.Path.Value,
                 Data = servicesParams.Any() ? context.ActionArguments.Where(a => !servicesParams.Contains(a.Key)) : context.ActionArguments,
-                ExtraContent = $"请求信息",
+                ExtraContent = "请求信息",
                 TraceId = context.HttpContext.TraceIdentifier,
-                UserId = userId
+                UserId = userId,
+                IP = ip
             });
 
             var cache = GetCacheUser(userId, jti);
@@ -98,7 +99,7 @@ namespace Hao.Core.Extensions
             {
                 Position = HttpContext.Request.Path.Value,
                 Data = result,
-                ExtraContent = $"响应结果",
+                ExtraContent = "响应结果",
                 TraceId = context.HttpContext.TraceIdentifier,
                 UserId = userId
             });

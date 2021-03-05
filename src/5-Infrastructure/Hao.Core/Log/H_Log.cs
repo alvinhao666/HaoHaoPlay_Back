@@ -19,6 +19,11 @@ namespace Hao.Core
         public string TraceId { get; set; }
 
         /// <summary>
+        /// 客户端ip地址
+        /// </summary>
+        public string IP { get; set; }
+
+        /// <summary>
         /// 额外内容描述
         /// </summary>
         public string ExtraContent { get; set; }
