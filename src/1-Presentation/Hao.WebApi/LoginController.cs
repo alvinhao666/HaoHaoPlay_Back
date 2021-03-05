@@ -37,8 +37,8 @@ namespace Hao.WebApi
                 Position = "LoginByAccountPwd",
                 Data = request,
                 TraceId = HttpContext.TraceIdentifier,
-                ExtraContent = "登录请求",
-                IP = ip
+                IP = ip,
+                ExtraContent = "登录请求"
             });
 
             var result = await _loginAppService.LoginByAccountPwd(request, ip);
@@ -48,8 +48,8 @@ namespace Hao.WebApi
                 Position = "LoginByAccountPwd",
                 Data = result,
                 TraceId = HttpContext.TraceIdentifier,
-                ExtraContent = "登录返回",
-                IP = ip
+                IP = ip,
+                ExtraContent = "登录返回"
             });
 
             return result;
