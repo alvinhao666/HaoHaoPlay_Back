@@ -14,14 +14,25 @@ namespace Hao.Core
         public string Position { get; set; }
 
         /// <summary>
+        /// 日志跟踪信息id
+        /// </summary>
+        public string TraceId { get; set; }
+
+        /// <summary>
+        /// 额外内容描述
+        /// </summary>
+        public string ExtraContent { get; set; }
+
+        /// <summary>
+        /// 用户id
+        /// </summary>
+        public string UserId { get; set; }
+
+        /// <summary>
         /// 需记录的数据
         /// </summary>
         public object Data { get; set; }
 
-        /// <summary>
-        /// 其他内容描述
-        /// </summary>
-        public string ExtraContent { get; set; }
 
         /// <summary>
         /// 重写方法，必须，用于日志记录
