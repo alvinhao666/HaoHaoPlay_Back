@@ -32,7 +32,7 @@ namespace Hao.WebApi
         {
             string ip = HttpContext.GetIp();
 
-            Log.Information(LogTemplate.Default, new H_Log()
+            Log.Information(H_LogTemplate.Default, new H_Log()
             {
                 Position = "LoginByAccountPwd",
                 Data = request,
@@ -43,7 +43,7 @@ namespace Hao.WebApi
 
             var result = await _loginAppService.LoginByAccountPwd(request, ip);
 
-            Log.Information(LogTemplate.Default, new H_Log()
+            Log.Information(H_LogTemplate.Default, new H_Log()
             {
                 Position = "LoginByAccountPwd",
                 Data = result,
