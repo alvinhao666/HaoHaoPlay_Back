@@ -48,12 +48,7 @@ namespace Hao.Core.Extensions
             }
             else if(ex is AspectInvocationException aspectException) 
             {
-                var errorSplit = "--->";
-
-                if (aspectException.Message.Contains(errorSplit))
-                {
-                    response.ErrorMsg = aspectException.Message.Split(errorSplit)[1].Trim().TrimEnd('.');
-                }
+                response.ErrorMsg = aspectException.InnerException?.Message;
             }
 #if DEBUG  //开发环境 能看具体错误
             else
