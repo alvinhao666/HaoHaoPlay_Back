@@ -42,7 +42,7 @@ namespace Hao.Core.Extensions
             
             context.Result = new JsonResult(response);
 
-            Log.Error(ex, "系统错误信息:{@Log}", new H_Log() { Position = context.HttpContext.Request.Path.Value, TraceId = context.HttpContext.TraceIdentifier }); //异常信息，记录到日志中
+            Log.Error(ex, "系统错误信息:{@Log}", new LogConent() { Location = context.HttpContext.Request.Path.Value, TraceId = context.HttpContext.TraceIdentifier }); //异常信息，记录到日志中
             
             base.OnException(context);  //返回结果 不会经过ResultFilter
         }

@@ -58,7 +58,7 @@ namespace Hao.Core.Extensions
 #endif
             if (string.IsNullOrWhiteSpace(response.ErrorMsg)) response.ErrorMsg = "系统异常";
 
-            Log.Error(ex, "系统错误信息:{@Log}", new H_Log() { Position = context.Request.Path.Value, TraceId = context.TraceIdentifier }); //异常信息，记录到日志中
+            Log.Error(ex, "系统错误信息:{@Log}", new LogConent() { Location = context.Request.Path.Value, TraceId = context.TraceIdentifier }); //异常信息，记录到日志中
 
             var options = new JsonSerializerOptions
             {

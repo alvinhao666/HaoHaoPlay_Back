@@ -12,7 +12,6 @@ using Hao.Runtime;
 using Newtonsoft.Json;
 using Mapster;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Serilog;
 
 namespace Hao.Core.Extensions
 {
@@ -41,14 +40,14 @@ namespace Hao.Core.Extensions
             
             var servicesParams = context.ActionDescriptor.Parameters.Where(a => a.BindingInfo.BindingSource == BindingSource.Services).Select(a => a.Name);
 
-            Log.Information(H_LogTemplate.Default, new H_Log
+            H_Log.Info(new LogConent
             {
-                Position = context.HttpContext.Request.Path.Value,
+                Location = context.HttpContext.Request.Path.Value,
                 Data = servicesParams.Any() ? context.ActionArguments.Where(a => !servicesParams.Contains(a.Key)) : context.ActionArguments,
                 TraceId = context.HttpContext.TraceIdentifier,
                 UserId = userId,
                 IP = ip,
-                ExtraContent = "请求信息"
+                Extra = "请求信息"
             });
 
             var cache = GetCacheUser(userId, jti);
@@ -95,13 +94,13 @@ namespace Hao.Core.Extensions
 
             var userId = context.HttpContext.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sid)?.Value;
 
-            Log.Information(H_LogTemplate.Default, new H_Log
+            H_Log.Info(new LogConent
             {
-                Position = HttpContext.Request.Path.Value,
+                Location = HttpContext.Request.Path.Value,
                 Data = result,
                 TraceId = context.HttpContext.TraceIdentifier,
                 UserId = userId,
-                ExtraContent = "响应结果"
+                Extra = "响应结果"
             });
 
             base.OnActionExecuted(context);

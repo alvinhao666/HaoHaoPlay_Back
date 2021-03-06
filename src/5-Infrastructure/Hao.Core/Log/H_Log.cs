@@ -1,68 +1,53 @@
-using System.Text.Encodings.Web;
-using System.Text.Json;
+using System;
+using Serilog;
 
 namespace Hao.Core
 {
     /// <summary>
-    /// 日志信息
+    /// 日志
     /// </summary>
-    public class H_Log
-    {
-        /// <summary>
-        /// 记录当前位置，请求路径或者方法名称
-        /// </summary>
-        public string Position { get; set; }
-
-        /// <summary>
-        /// 日志跟踪信息id
-        /// </summary>
-        public string TraceId { get; set; }
-
-        /// <summary>
-        /// 客户端ip地址
-        /// </summary>
-        public string IP { get; set; }
-
-        /// <summary>
-        /// 额外内容描述
-        /// </summary>
-        public string ExtraContent { get; set; }
-
-        /// <summary>
-        /// 用户id
-        /// </summary>
-        public string UserId { get; set; }
-
-        /// <summary>
-        /// 需记录的数据
-        /// </summary>
-        public object Data { get; set; }
-
-
-        /// <summary>
-        /// 重写方法，必须，用于日志记录
-        /// </summary>
-        /// <returns></returns>
-        public override string ToString()
-        {
-            return JsonSerializer.Serialize(this, new JsonSerializerOptions()
-            {
-                //在默认情况下，System.Text.Json 序列化程序对所有非 ASCII 字符进行转义；这就是中文被转义的根本原因
-                //可以不必设置例外而达到不转义的效果，这个模式就是“非严格JSON”模式
-                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
-                PropertyNamingPolicy = null  //PropertyNamingPolicy = JsonNamingPolicy.CamelCase //开头字母小写 默认
-            });
-        }
-    }
-
-    /// <summary>
-    /// 日志模板
-    /// </summary>
-    public static class H_LogTemplate
+    public static  class H_Log
     {
         /// <summary>
         /// 默认模板
         /// </summary>
-        public const string Default = "{@Log}";
+        private const string _defaultTemplate = "{@Log}";
+
+        /// <summary>
+        /// Verbose日志
+        /// </summary>
+        /// <param name="content">日志内容</param>
+        public static void Verbose(LogConent content) => Log.Verbose(_defaultTemplate, content);
+        
+        /// <summary>
+        /// Debug日志
+        /// </summary>
+        /// <param name="content">日志内容</param>
+        public static void Debug(LogConent content) => Log.Debug(_defaultTemplate, content);
+        
+        /// <summary>
+        /// Info
+        /// </summary>
+        /// <param name="conent">日志内容</param>
+        public static void Info(LogConent conent) => Log.Information(_defaultTemplate, conent);
+        
+        /// <summary>
+        /// Warn
+        /// </summary>
+        /// <param name="conent">日志内容</param>
+        public static void Warn(LogConent conent) => Log.Warning(_defaultTemplate, conent);
+        
+        /// <summary>
+        /// Error
+        /// </summary>
+        /// <param name="ex">异常</param>
+        /// <param name="conent">日志内容</param>
+        public static void Error(Exception ex, LogConent conent) => Log.Error(ex, _defaultTemplate, conent);
+        
+        /// <summary>
+        /// Fatal
+        /// </summary>
+        /// <param name="content">日志内容</param>
+        public static void Fatal(LogConent content) => Log.Fatal(_defaultTemplate, content);
     }
 }
