@@ -7,7 +7,6 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Serilog;
 
 namespace Hao.Core.Extensions
 {
@@ -58,7 +57,12 @@ namespace Hao.Core.Extensions
 #endif
             if (string.IsNullOrWhiteSpace(response.ErrorMsg)) response.ErrorMsg = "系统异常";
 
-            Log.Error(ex, "系统错误信息:{@Log}", new LogConent() { Location = context.Request.Path.Value, TraceId = context.TraceIdentifier }); //异常信息，记录到日志中
+            H_Log.Error(ex, new LogConent()
+            {
+                Location = context.Request.Path.Value,
+                TraceId = context.TraceIdentifier,
+                Extra = "系统异常信息"
+            }); //异常信息，记录到日志中
 
             var options = new JsonSerializerOptions
             {

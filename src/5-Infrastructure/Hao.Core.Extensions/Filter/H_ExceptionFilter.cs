@@ -2,7 +2,6 @@ using AspectCore.DynamicProxy;
 using Hao.Response;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Serilog;
 
 namespace Hao.Core.Extensions
 {
@@ -42,7 +41,12 @@ namespace Hao.Core.Extensions
             
             context.Result = new JsonResult(response);
 
-            Log.Error(ex, "系统错误信息:{@Log}", new LogConent() { Location = context.HttpContext.Request.Path.Value, TraceId = context.HttpContext.TraceIdentifier }); //异常信息，记录到日志中
+            H_Log.Error(ex, new LogConent()
+            {
+                Location = context.HttpContext.Request.Path.Value,
+                TraceId = context.HttpContext.TraceIdentifier,
+                Extra = "系统异常信息"
+            }); //异常信息，记录到日志中
             
             base.OnException(context);  //返回结果 不会经过ResultFilter
         }

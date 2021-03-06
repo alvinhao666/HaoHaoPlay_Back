@@ -3,7 +3,6 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Threading.Tasks;
 using DotNetCore.CAP;
-using Serilog;
 
 namespace Hao.Core
 {
@@ -155,7 +154,7 @@ namespace Hao.Core
                 {
                     if (redisLock == null)
                     {
-                        Log.Error("系统异常：开启Redis分布式锁失败");
+                        H_Log.Error("系统异常：开启Redis分布式锁失败");
                         throw new H_Exception("系统异常");
                     }
 
