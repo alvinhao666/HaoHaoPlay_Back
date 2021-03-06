@@ -48,12 +48,7 @@ namespace Hao.Core.Extensions
             }
             else if(ex is AspectInvocationException aspectException) 
             {
-                var errorSplit = "--->";
-
-                if (aspectException.Message.Contains(errorSplit))
-                {
-                    response.ErrorMsg = aspectException.Message.Split(errorSplit)[1].Trim().TrimEnd('.');
-                }
+                response.ErrorMsg = aspectException.InnerException?.Message;
             }
 #if DEBUG  //开发环境 能看具体错误
             else
@@ -62,8 +57,8 @@ namespace Hao.Core.Extensions
             }
 #endif
             if (string.IsNullOrWhiteSpace(response.ErrorMsg)) response.ErrorMsg = "系统异常";
-            
-            Log.Error(ex, "系统错误信息 TraceId:{TraceId}，Path:{Path}", context.TraceIdentifier, context.Request.Path.Value); //异常信息，记录到日志中
+
+            Log.Error(ex, "系统错误信息:{@Log}", new LogConent() { Location = context.Request.Path.Value, TraceId = context.TraceIdentifier }); //异常信息，记录到日志中
 
             var options = new JsonSerializerOptions
             {

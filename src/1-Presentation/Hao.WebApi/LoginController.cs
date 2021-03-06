@@ -2,7 +2,6 @@
 using Hao.AppService;
 using Hao.Core;
 using Microsoft.AspNetCore.Mvc;
-using Serilog;
 
 namespace Hao.WebApi
 {
@@ -32,11 +31,25 @@ namespace Hao.WebApi
         {
             string ip = HttpContext.GetIp();
 
-            Log.Information(LogTemplate.Default, new H_Log() { Position = "LoginByAccountPwd", Data = request , ExtraContent = $"登录请求TraceId：{HttpContext.TraceIdentifier}，IP：{ip}" });
+            H_Log.Info(new LogConent()
+            {
+                Location = "LoginByAccountPwd",
+                Data = request,
+                TraceId = HttpContext.TraceIdentifier,
+                IP = ip,
+                Extra = "登录请求"
+            });
 
             var result = await _loginAppService.LoginByAccountPwd(request, ip);
 
-            Log.Information(LogTemplate.Default, new H_Log() { Position = "LoginByAccountPwd", Data = result, ExtraContent = $"登录返回TraceId：{HttpContext.TraceIdentifier}" });
+            H_Log.Info(new LogConent()
+            {
+                Location = "LoginByAccountPwd",
+                Data = result,
+                TraceId = HttpContext.TraceIdentifier,
+                IP = ip,
+                Extra = "登录返回"
+            });
 
             return result;
         }

@@ -21,35 +21,28 @@ namespace Hao.Core.Extensions
 
             var response = new H_Response {Success = false};
 
-            switch (ex)
+            if (ex is H_Exception exception)
             {
-                case H_Exception exception:
-                    response.ErrorCode = exception.Code;
-                    response.ErrorMsg = exception.Message;
-                    break;
-                case AspectInvocationException aspectException:
-                {
-                    var errorSplit = "--->";
-
-                    if (aspectException.Message.Contains(errorSplit))
-                    {
-                        response.ErrorMsg = aspectException.Message.Split(errorSplit)[1].Trim().TrimEnd('.');
-                    }
-
-                    break;
-                }
-#if DEBUG //开发环境 能看具体错误
-                default:
-                    response.ErrorMsg = ex.Message;
-                    break;
-#endif
+                response.ErrorCode = exception.Code;
+                response.ErrorMsg = exception.Message;
             }
+            else if (ex is AspectInvocationException aspectException)
+            {
+                response.ErrorMsg = aspectException.InnerException?.Message;
+            }
+#if DEBUG  //开发环境 能看具体错误
+            else
+            {
+                response.ErrorMsg = ex.Message;
+            }
+#endif
+
 
             if (string.IsNullOrWhiteSpace(response.ErrorMsg)) response.ErrorMsg = "系统异常";
             
             context.Result = new JsonResult(response);
 
-            Log.Error(ex, "系统错误信息 TraceId:{TraceId}，Path:{Path}", context.HttpContext.TraceIdentifier, context.HttpContext.Request.Path.Value); //异常信息，记录到日志中
+            Log.Error(ex, "系统错误信息:{@Log}", new LogConent() { Location = context.HttpContext.Request.Path.Value, TraceId = context.HttpContext.TraceIdentifier }); //异常信息，记录到日志中
             
             base.OnException(context);  //返回结果 不会经过ResultFilter
         }
