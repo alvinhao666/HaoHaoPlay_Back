@@ -14,13 +14,13 @@ namespace Hao.Core
         private const string _defaultTemplate = "{@Log}";
 
         /// <summary>
-        /// Verbose日志
+        /// Verbose
         /// </summary>
         /// <param name="content">日志内容</param>
         public static void Verbose(LogConent content) => Log.Verbose(_defaultTemplate, content);
         
         /// <summary>
-        /// Debug日志
+        /// Debug
         /// </summary>
         /// <param name="content">日志内容</param>
         public static void Debug(LogConent content) => Log.Debug(_defaultTemplate, content);
