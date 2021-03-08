@@ -6,7 +6,7 @@ namespace Hao.Core
     /// <summary>
     /// 日志信息
     /// </summary>
-    public class LogConent
+    public class LogNote
     {
         /// <summary>
         /// 记录当前位置，请求路径或者方法名称

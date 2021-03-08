@@ -16,75 +16,75 @@ namespace Hao.Core
         /// <summary>
         /// Verbose
         /// </summary>
-        /// <param name="content">日志内容</param>
-        public static void Verbose(string content) => Log.Verbose(content);
+        /// <param name="note">日志内容</param>
+        public static void Verbose(string note) => Log.Verbose(note);
 
         /// <summary>
         /// Verbose
         /// </summary>
-        /// <param name="content">日志内容</param>
-        public static void Verbose(LogConent content) => Log.Verbose(_defaultTemplate, content);
+        /// <param name="note">日志内容</param>
+        public static void Verbose(LogNote note) => Log.Verbose(_defaultTemplate, note);
 
         /// <summary>
         /// Debug
         /// </summary>
-        /// <param name="content">日志内容</param>
-        public static void Debug(string content) => Log.Debug(content);
+        /// <param name="note">日志内容</param>
+        public static void Debug(string note) => Log.Debug(note);
 
         /// <summary>
         /// Debug
         /// </summary>
-        /// <param name="content">日志内容</param>
-        public static void Debug(LogConent content) => Log.Debug(_defaultTemplate, content);
+        /// <param name="note">日志内容</param>
+        public static void Debug(LogNote note) => Log.Debug(_defaultTemplate, note);
 
         /// <summary>
         /// Info
         /// </summary>
-        /// <param name="content">日志内容</param>
-        public static void Info(string content) => Log.Information(content);
+        /// <param name="note">日志内容</param>
+        public static void Info(string note) => Log.Information(note);
 
         /// <summary>
         /// Info
         /// </summary>
-        /// <param name="conent">日志内容</param>
-        public static void Info(LogConent conent) => Log.Information(_defaultTemplate, conent);
+        /// <param name="note">日志内容</param>
+        public static void Info(LogNote note) => Log.Information(_defaultTemplate, note);
 
 
         /// <summary>
         /// Warn
         /// </summary>
-        /// <param name="content">日志内容</param>
-        public static void Warn(string content) => Log.Warning(content);
+        /// <param name="note">日志内容</param>
+        public static void Warn(string note) => Log.Warning(note);
 
         /// <summary>
         /// Warn
         /// </summary>
-        /// <param name="conent">日志内容</param>
-        public static void Warn(LogConent conent) => Log.Warning(_defaultTemplate, conent);
+        /// <param name="note">日志内容</param>
+        public static void Warn(LogNote note) => Log.Warning(_defaultTemplate, note);
 
         /// <summary>
         /// Error
         /// </summary>
-        /// <param name="content">日志内容</param>
-        public static void Error(string content) => Log.Error(content);
+        /// <param name="note">日志内容</param>
+        public static void Error(string note) => Log.Error(note);
 
         /// <summary>
         /// Error
         /// </summary>
         /// <param name="ex">异常</param>
-        /// <param name="conent">日志内容</param>
-        public static void Error(Exception ex, LogConent conent) => Log.Error(ex, _defaultTemplate, conent);
+        /// <param name="note">日志内容</param>
+        public static void Error(Exception ex, LogNote note) => Log.Error(ex, _defaultTemplate, note);
 
         /// <summary>
         /// Fatal
         /// </summary>
-        /// <param name="content">日志内容</param>
-        public static void Fatal(string content) => Log.Fatal(content);
+        /// <param name="note">日志内容</param>
+        public static void Fatal(string note) => Log.Fatal(note);
 
         /// <summary>
         /// Fatal
         /// </summary>
-        /// <param name="content">日志内容</param>
-        public static void Fatal(LogConent content) => Log.Fatal(_defaultTemplate, content);
+        /// <param name="note">日志内容</param>
+        public static void Fatal(LogNote note) => Log.Fatal(_defaultTemplate, note);
     }
 }

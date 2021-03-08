@@ -40,7 +40,7 @@ namespace Hao.Core.Extensions
             
             var servicesParams = context.ActionDescriptor.Parameters.Where(a => a.BindingInfo.BindingSource == BindingSource.Services).Select(a => a.Name);
 
-            H_Log.Info(new LogConent
+            H_Log.Info(new LogNote
             {
                 Location = context.HttpContext.Request.Path.Value,
                 Data = servicesParams.Any() ? context.ActionArguments.Where(a => !servicesParams.Contains(a.Key)) : context.ActionArguments,
@@ -94,7 +94,7 @@ namespace Hao.Core.Extensions
 
             var userId = context.HttpContext.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sid)?.Value;
 
-            H_Log.Info(new LogConent
+            H_Log.Info(new LogNote
             {
                 Location = HttpContext.Request.Path.Value,
                 Data = result,
