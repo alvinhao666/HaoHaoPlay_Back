@@ -16,7 +16,7 @@ namespace Hao.AppService
         /// <summary>
         /// 账号
         /// </summary>
-        public string LoginName { get; set; }
+        public string Account { get; set; }
         /// <summary>
         /// 密码
         /// </summary>
@@ -68,7 +68,7 @@ namespace Hao.AppService
     {
         public UserAddValidator()
         {
-            RuleFor(x => x.LoginName).MustHasValue("账号").Must(a => H_Validator.IsLetterOrDigit(a)).WithMessage("只能输入英文或者数字");
+            RuleFor(x => x.Account).MustHasValue("账号").Must(a => H_Validator.IsLetterOrDigit(a)).WithMessage("只能输入英文或者数字");
             
             RuleFor(x => x.Password).MustFixedLength("密码", 6, 16);
 

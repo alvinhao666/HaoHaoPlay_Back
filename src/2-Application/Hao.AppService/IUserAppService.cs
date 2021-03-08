@@ -63,9 +63,9 @@ namespace Hao.AppService
         /// <summary>
         /// 是否存在账号
         /// </summary>
-        /// <param name="loginName"></param>
+        /// <param name="account"></param>
         /// <returns></returns>
-        Task<bool> IsExistLoginName(string loginName);
+        Task<bool> IsExistAccount(string account);
 
         /// <summary>
         /// 导入excel

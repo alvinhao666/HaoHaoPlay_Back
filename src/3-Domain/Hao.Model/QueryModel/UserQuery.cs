@@ -15,7 +15,7 @@ namespace Hao.Model
         /// <summary>
         /// 账号
         /// </summary>
-        public string LoginName { get; set; }
+        public string Account { get; set; }
 
         /// <summary>
         /// 姓名 模糊查询
@@ -60,7 +60,7 @@ namespace Hao.Model
             {
                 List<Expression<Func<SysUser, bool>>> expressions = new List<Expression<Func<SysUser, bool>>>();
 
-                if (LoginName.HasValue()) expressions.Add(x => x.LoginName == LoginName);
+                if (Account.HasValue()) expressions.Add(x => x.Account == Account);
 
                 if (LikeName.HasValue()) expressions.Add(x => x.Name.Contains(LikeName));
 

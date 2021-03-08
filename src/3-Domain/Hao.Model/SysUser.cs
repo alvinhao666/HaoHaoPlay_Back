@@ -10,9 +10,9 @@ namespace Hao.Model
     public class SysUser : Entity<long>
     {
         /// <summary>
-        /// 登录名
+        /// 账号
         /// </summary>
-        public string LoginName { get; set; }
+        public string Account { get; set; }
         /// <summary>
         /// 密码
         /// </summary>

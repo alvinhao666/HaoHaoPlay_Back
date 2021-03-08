@@ -64,7 +64,7 @@ namespace Hao.AppService
         [DistributedLock("UserAppService_AddUser")]
         public async Task Add(UserAddRequest vm)
         {
-            var users = await _userRep.GetAllAsync(new UserQuery { LoginName = vm.LoginName });
+            var users = await _userRep.GetAllAsync(new UserQuery { Account = vm.Account });
 
             H_AssertEx.That(users.Count > 0, "账号已存在，请重新输入");
 
@@ -187,11 +187,11 @@ namespace Hao.AppService
         /// <summary>
         /// 是否存在账号
         /// </summary>
-        /// <param name="loginName"></param>
+        /// <param name="account"></param>
         /// <returns></returns>
-        public async Task<bool> IsExistLoginName(string loginName)
+        public async Task<bool> IsExistAccount(string account)
         {
-            var query = new UserQuery {LoginName = loginName};
+            var query = new UserQuery {Account = account };
             var users = await _userRep.GetListAsync(query);
             return users.Count > 0;
         }
