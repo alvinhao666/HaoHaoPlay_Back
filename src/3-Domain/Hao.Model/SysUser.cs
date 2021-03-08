@@ -36,26 +36,32 @@ namespace Hao.Model
         /// QQ
         /// </summary>
         public string QQ { get; set; }
+
         /// <summary>
         /// 微信
         /// </summary>
         public string WeChat { get; set; }
+
         /// <summary>
         /// 手机
         /// </summary>
         public string Phone { get; set; }
+
         /// <summary>
         /// 邮箱
         /// </summary>
         public string Email { get; set; }
+
         /// <summary>
         /// 是否启用
         /// </summary>
         public bool? Enabled { get; set; } 
+
         /// <summary>
         /// 名字首字母
         /// </summary>
-        public string FirstNameSpell { get; set; }
+        public string FirstNameInitial { get; set; }
+
         /// <summary>
         /// 最后登录时间
         /// </summary>

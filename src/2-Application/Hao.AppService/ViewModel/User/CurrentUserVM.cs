@@ -37,7 +37,7 @@ namespace Hao.AppService
         /// <summary>
         /// 姓的拼音首字母
         /// </summary>
-        public string FirstNameSpell { get; set; }
+        public string FirstNameInitial { get; set; }
         
         /// <summary>
         /// 手机号
