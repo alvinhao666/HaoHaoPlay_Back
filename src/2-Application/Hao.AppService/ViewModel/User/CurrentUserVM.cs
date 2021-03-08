@@ -34,11 +34,6 @@ namespace Hao.AppService
         /// </summary>
         public Gender? Gender { get; set; }
 
-        // /// <summary>
-        // /// 年龄
-        // /// </summary>
-        // public int? Age { get; set; }
-        
         /// <summary>
         /// 姓的拼音首字母
         /// </summary>

@@ -181,7 +181,7 @@ namespace Hao.AppService
             user = vm.Adapt(user);
 
             await _userRep.UpdateAsync(user,
-                user => new { user.Name, user.Age, user.Gender, user.Phone, user.Email, user.WeChat, user.QQ, user.RoleId, user.RoleName });
+                user => new { user.Name, user.Birthday, user.Gender, user.Phone, user.Email, user.WeChat, user.QQ, user.RoleId, user.RoleName });
         }
 
         /// <summary>
@@ -210,7 +210,7 @@ namespace Hao.AppService
             var exportData = users.Select(a => new Dictionary<string, string>{
                 {"姓名",a.Name},
                 {"性别", a.Gender.ToDescription() },
-                {"年龄",a.Age.ToString()},
+                {"出生日期",a.Birthday.ToDateTimeString()},
                 {"手机号",a.Phone},
                 {"邮箱",a.Email},
                 {"微信",a.WeChat},

@@ -31,9 +31,9 @@ namespace Hao.AppService
         public string GenderString { get; set; }
 
         /// <summary>
-        /// 年龄
+        /// 出生日期
         /// </summary>
-        public int? Age { get; set; }
+        public DateTime? Birthday { get; set; }
 
         /// <summary>
         /// 手机号

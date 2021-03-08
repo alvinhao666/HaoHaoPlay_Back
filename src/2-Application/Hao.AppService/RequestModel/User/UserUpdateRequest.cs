@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Hao.Enum;
+using System;
 
 namespace Hao.AppService
 {
@@ -14,9 +15,10 @@ namespace Hao.AppService
         public string Name { get; set; }
 
         /// <summary>
-        /// 年龄
+        /// 出生日期
         /// </summary>
-        public int? Age { get; set; }
+        public DateTime? Birthday { get; set; }
+
         /// <summary>
         /// 性别
         /// </summary>
@@ -51,7 +53,7 @@ namespace Hao.AppService
 
             RuleFor(x => x.Gender).EnumMustHasValue("性别");
 
-            RuleFor(x => x.Age).MustHasValue("年龄");
+            RuleFor(x => x.Birthday).MustHasValue("出生日期");
         }
     }
 }

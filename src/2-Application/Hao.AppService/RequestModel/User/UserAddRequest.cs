@@ -21,16 +21,17 @@ namespace Hao.AppService
         /// 密码
         /// </summary>
         public string Password { get; set; }
-        
-        
+             
         /// <summary>
         /// 姓名
         /// </summary>
         public string Name { get; set; }
+
         /// <summary>
-        /// 年龄
+        /// 出生日期
         /// </summary>
-        public int?  Age { get; set; }
+        public DateTime? Birthday { get; set; }
+
         /// <summary>
         /// 性别
         /// </summary>
@@ -75,8 +76,8 @@ namespace Hao.AppService
             
             RuleFor(x => x.Gender).EnumMustHasValue("性别");
 
-            RuleFor(x => x.Age).MustHasValue("年龄");
-            
+            RuleFor(x => x.Birthday).MustHasValue("出生日期");
+
             RuleFor(x => x.Phone).MustHasValue("手机");
 
             RuleFor(x => x.RoleId).MustHasValue("角色Id");

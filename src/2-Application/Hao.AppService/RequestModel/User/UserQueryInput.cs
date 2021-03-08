@@ -56,7 +56,7 @@ namespace Hao.AppService
         /// 年龄
         /// </summary>
         [H_EnumDescription("年龄")]
-        Age,
+        Birthday,
 
         /// <summary>
         /// 最后登录时间

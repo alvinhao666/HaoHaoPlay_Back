@@ -23,11 +23,6 @@ namespace Hao.Model
         public string Name { get; set; }
 
         /// <summary>
-        /// 年龄
-        /// </summary>
-        public int? Age { get; set; }
-
-        /// <summary>
         /// 出生日期
         /// </summary>
         public DateTime? Birthday { get; set; }
