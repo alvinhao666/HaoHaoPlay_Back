@@ -5,6 +5,7 @@ using Hao.Enum;
 using Hao.EventData;
 using Hao.Library;
 using Hao.Model;
+using Hao.Redis;
 using Hao.Utility;
 using Mapster;
 using Microsoft.Extensions.Options;

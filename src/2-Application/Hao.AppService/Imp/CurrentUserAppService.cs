@@ -11,6 +11,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Hao.Runtime;
 using Mapster;
+using Hao.Redis;
 
 namespace Hao.AppService
 {

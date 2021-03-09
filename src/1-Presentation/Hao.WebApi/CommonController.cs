@@ -11,6 +11,7 @@ using Hao.Utility;
 using TencentCloud.Sts.V20180813.Models;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using Hao.Redis;
 
 namespace Hao.WebApi
 {

@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Threading.Tasks;
 using DotNetCore.CAP;
+using Hao.Redis;
 
 namespace Hao.Core
 {

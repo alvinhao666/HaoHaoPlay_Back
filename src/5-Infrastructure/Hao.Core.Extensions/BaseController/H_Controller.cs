@@ -12,6 +12,7 @@ using Hao.Runtime;
 using Newtonsoft.Json;
 using Mapster;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Hao.Redis;
 
 namespace Hao.Core.Extensions
 {

@@ -17,6 +17,7 @@ using Mapster;
 using FreeSql;
 using FreeRedis;
 using MapsterMapper;
+using Hao.Redis;
 
 namespace Hao.Core.Extensions
 {
