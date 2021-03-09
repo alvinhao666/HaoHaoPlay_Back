@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Hao.Core
+namespace Hao.Redis
 {
     /// <summary>
     /// Redis帮助类

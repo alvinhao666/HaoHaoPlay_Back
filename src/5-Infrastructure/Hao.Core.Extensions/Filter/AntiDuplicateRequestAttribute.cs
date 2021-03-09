@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Filters;
+﻿using Hao.Redis;
+using Microsoft.AspNetCore.Mvc.Filters;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;

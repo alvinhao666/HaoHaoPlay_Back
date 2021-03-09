@@ -13,8 +13,7 @@
     <PackageReference Include="DotNetCore.CAP" Version="3.1.2" />
     <PackageReference Include="DotNetCore.CAP.PostgreSql" Version="3.1.2" />
     <PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="3.1.2" />
-    <PackageReference Include="FluentValidation" Version="9.5.1" />
-    <PackageReference Include="FreeRedis" Version="0.3.0" />
+    <PackageReference Include="FluentValidation" Version="9.5.2" />
     <PackageReference Include="FreeSql" Version="2.3.200" />
     <PackageReference Include="FreeSql.Provider.PostgreSQL" Version="2.3.200" />
     <PackageReference Include="Microsoft.AspNetCore.DataProtection.Extensions" Version="5.0.3" />
@@ -28,6 +27,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\6-Common\Hao.Dependency\Hao.Dependency.csproj" />
+    <ProjectReference Include="..\..\6-Common\Hao.Redis\Hao.Redis.csproj" />
     <ProjectReference Include="..\..\6-Common\Hao.Snowflake\Hao.Snowflake.csproj" />
     <ProjectReference Include="..\..\6-Common\Hao.Utility\Hao.Utility.csproj" />
     <ProjectReference Include="..\Hao.Runtime\Hao.Runtime.csproj" />
