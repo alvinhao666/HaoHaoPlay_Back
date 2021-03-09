@@ -1,7 +1,9 @@
-﻿using Hao.Core;
+﻿using System;
+using Hao.Core;
 using Hao.Model;
 using Hao.Utility;
 using Mapster;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.DateTime;
 
 namespace Hao.AppService
 {
@@ -27,8 +29,9 @@ namespace Hao.AppService
         {
 
             config.ForType<SysUser, UserVM>()
-               .Map(x => x.GenderString, a => a.Gender.ToDescription())
-               .Map(x => x.EnabledString, a => a.Enabled.IsTrue() ? "有效" : "注销");
+                .Map(x => x.GenderString, a => a.Gender.ToDescription())
+                .Map(x => x.EnabledString, a => a.Enabled.IsTrue() ? "有效" : "注销")
+                .Map(x => x.Age, a => DateTime.Now.Year - a.Birthday.Value.Year);
 
             config.ForType<SysUser, UserDetailVM>()
                .Map(x => x.GenderString, a => a.Gender.ToDescription())
