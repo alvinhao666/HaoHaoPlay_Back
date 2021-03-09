@@ -1,6 +1,6 @@
 ﻿namespace Hao.Snowflake.Redis
 {
-    public class RedisOptions: SnowflakeOptions
+    public class RedisOptions : SnowflakeOptions
     {
         public int Database { get; set; }
 
