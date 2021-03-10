@@ -9,8 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Hao.Utility\Hao.Utility.csproj" />
+    <ProjectReference Include="..\Hao.Utility\Hao.Utility.csproj" />
   </ItemGroup>
-
 
 </Project>
