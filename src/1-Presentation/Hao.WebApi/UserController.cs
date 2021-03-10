@@ -39,11 +39,11 @@ namespace Hao.WebApi
         /// <summary>
         /// 是否存在相同账号
         /// </summary>
-        /// <param name="loginName"></param>
+        /// <param name="account"></param>
         /// <returns></returns>
         [HttpGet]
         [AuthCode("User_Add_1_128")]
-        public async Task<bool> IsExistLoginName(string loginName) => await _userAppService.IsExistLoginName(loginName);
+        public async Task<bool> IsExistAccount(string account) => await _userAppService.IsExistAccount(account);
 
         /// <summary>
         /// 查询用户分页列表

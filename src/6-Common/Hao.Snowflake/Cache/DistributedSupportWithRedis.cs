@@ -36,13 +36,13 @@ namespace Hao.Snowflake.Redis
             if (_workId > 1 << _redisOption.WorkIdLength)
             {
                 //表示所有节点已全部被使用过，则从历史列表中，获取当前已回收的节点id
-                var newWorkdId = await _redisClient.SortedRangeByScoreWithScoresAsync(_inUse, 0,
+                var newWorkdIdDic = await _redisClient.SortedRangeByScoreWithScoresAsync(_inUse, 0,
                     GetTimestamp(DateTime.Now.AddMinutes(5)), 0, 1, Order.Ascending);
-                if (!newWorkdId.Any())
+                if (!newWorkdIdDic.Any())
                 {
                     throw new Exception("没有可用的节点");
                 }
-                _workId = int.Parse(newWorkdId.First().Key);
+                _workId = int.Parse(newWorkdIdDic.First().Key);
             }
             //将正在使用的workId写入到有序列表中
             await _redisClient.SortedAddAsync(_inUse, _workId.ToString(), GetTimestamp());

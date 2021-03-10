@@ -16,7 +16,7 @@ namespace Hao.Snowflake.Redis
         private volatile ConnectionMultiplexer _connection;
         private readonly ConcurrentDictionary<int, IDatabase> _dataBases = new ConcurrentDictionary<int, IDatabase>();
 
-        public RedisClient( IOptions<RedisOptions> options)
+        public RedisClient(IOptions<RedisOptions> options)
         {
             _options = options.Value;
             _instance = _options.InstanceName;
@@ -55,8 +55,6 @@ namespace Hao.Snowflake.Redis
         }
 
 
-
-
         public void Dispose()
         {
             _connectionLock?.Dispose();
@@ -66,6 +64,7 @@ namespace Hao.Snowflake.Redis
                 _connection.Dispose();
             }
         }
+
         public async Task<long> IncrementAsync(string key, long num = 1, int db = -1)
         {
             if (key == null)
@@ -76,11 +75,14 @@ namespace Hao.Snowflake.Redis
             var value = await redis.StringIncrementAsync(GetKeyForRedis(key), num);
             return value;
         }
+
         public async Task<bool> SortedAddAsync(string key, string member, double score, int db)
         {
             var redis = await ConnectAsync(db);
             return await redis.SortedSetAddAsync(GetKeyForRedis(key), member, score);
         }
+
+
         public async Task<Dictionary<string, double>> SortedRangeByScoreWithScoresAsync(string key, double min, double max, long skip,
             long take, Order order, int db)
         {
@@ -93,6 +95,8 @@ namespace Hao.Snowflake.Redis
             }
             return dic;
         }
+
+
         public string GetKeyForRedis(string key)
         {
             return $"{_instance}{key}";

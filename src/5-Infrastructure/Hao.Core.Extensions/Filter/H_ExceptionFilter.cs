@@ -41,7 +41,7 @@ namespace Hao.Core.Extensions
             
             context.Result = new JsonResult(response);
 
-            H_Log.Error(ex, new LogConent()
+            H_Log.Error(ex, new LogNote()
             {
                 Location = context.HttpContext.Request.Path.Value,
                 TraceId = context.HttpContext.TraceIdentifier,

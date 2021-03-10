@@ -5,6 +5,7 @@ using Hao.Enum;
 using Hao.EventData;
 using Hao.Library;
 using Hao.Model;
+using Hao.Redis;
 using Hao.Utility;
 using Mapster;
 using Microsoft.Extensions.Options;
@@ -62,7 +63,7 @@ namespace Hao.AppService
             password = H_EncryptProvider.HMACSHA256(password, _appSettings.Key.Sha256Key);
 
             //根据账号密码查询用户
-            var user = await GetUserByLoginName(request.LoginName, password);
+            var user = await GetUserByAccountPwd(request.Account, password);
 
             return await Login(user, fromIP, request.IsRememberLogin);
         }
@@ -132,12 +133,12 @@ namespace Hao.AppService
         /// <summary>
         /// 登录获取用户
         /// </summary>
-        /// <param name="loginName"></param>
+        /// <param name="account"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        private async Task<SysUser> GetUserByLoginName(string loginName, string password)
+        private async Task<SysUser> GetUserByAccountPwd(string account, string password)
         {
-            var users = await _userRep.GetUserByLoginName(loginName, password);
+            var users = await _userRep.GetUserByAccountPwd(account, password);
 
             H_AssertEx.That(users.Count == 0, "账号或密码错误");
 

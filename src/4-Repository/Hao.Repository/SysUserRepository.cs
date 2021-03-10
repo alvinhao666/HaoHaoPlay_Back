@@ -14,10 +14,10 @@ namespace Hao.Repository
         /// <param name="loginName"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public async Task<List<SysUser>> GetUserByLoginName(string loginName, string password)
+        public async Task<List<SysUser>> GetUserByAccountPwd(string account, string password)
         {
             var result = await DbContext.Select<SysUser>()
-                                 .Where(a => a.LoginName == loginName)
+                                 .Where(a => a.Account == account)
                                  .Where(a => a.Password == password)
                                  .ToListAsync();
 

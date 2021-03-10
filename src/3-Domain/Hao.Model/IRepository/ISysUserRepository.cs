@@ -16,7 +16,7 @@ namespace Hao.Model
         /// <param name="loginName"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        Task<List<SysUser>> GetUserByLoginName(string loginName, string password);
+        Task<List<SysUser>> GetUserByAccountPwd(string loginName, string password);
 
         /// <summary>
         /// 更新角色权限

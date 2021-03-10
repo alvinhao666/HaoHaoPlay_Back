@@ -9,6 +9,7 @@ namespace Hao.Snowflake
         /// </summary>
         /// <returns></returns>
         Task<int> GetNextWorkId();
+
         /// <summary>
         /// 刷新机器id的存活状态
         /// </summary>

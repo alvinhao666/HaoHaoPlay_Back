@@ -11,9 +11,9 @@ namespace Hao.AppService
         public long? Id { get; set; }
 
         /// <summary>
-        /// 登录名
+        /// 账号
         /// </summary>
-        public string LoginName { get; set; }
+        public string Account { get; set; }
 
         /// <summary>
         /// 名字

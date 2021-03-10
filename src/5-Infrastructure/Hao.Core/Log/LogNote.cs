@@ -1,4 +1,4 @@
-using System.Text.Encodings.Web;
+﻿using System.Text.Encodings.Web;
 using System.Text.Json;
 
 namespace Hao.Core
@@ -6,7 +6,7 @@ namespace Hao.Core
     /// <summary>
     /// 日志信息
     /// </summary>
-    public class LogConent
+    public class LogNote
     {
         /// <summary>
         /// 记录当前位置，请求路径或者方法名称
@@ -22,7 +22,7 @@ namespace Hao.Core
         /// 客户端ip地址
         /// </summary>
         public string IP { get; set; }
-        
+
         /// <summary>
         /// 用户id
         /// </summary>
@@ -32,7 +32,7 @@ namespace Hao.Core
         /// 需记录的数据
         /// </summary>
         public object Data { get; set; }
-        
+
         /// <summary>
         /// 额外内容&描述
         /// </summary>

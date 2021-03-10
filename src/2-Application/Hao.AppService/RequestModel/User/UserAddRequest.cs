@@ -16,21 +16,22 @@ namespace Hao.AppService
         /// <summary>
         /// 账号
         /// </summary>
-        public string LoginName { get; set; }
+        public string Account { get; set; }
         /// <summary>
         /// 密码
         /// </summary>
         public string Password { get; set; }
-        
-        
+             
         /// <summary>
         /// 姓名
         /// </summary>
         public string Name { get; set; }
+
         /// <summary>
-        /// 年龄
+        /// 出生日期
         /// </summary>
-        public int?  Age { get; set; }
+        public DateTime? Birthday { get; set; }
+
         /// <summary>
         /// 性别
         /// </summary>
@@ -67,7 +68,7 @@ namespace Hao.AppService
     {
         public UserAddValidator()
         {
-            RuleFor(x => x.LoginName).MustHasValue("账号").Must(a => H_Validator.IsLetterOrDigit(a)).WithMessage("只能输入英文或者数字");
+            RuleFor(x => x.Account).MustHasValue("账号").Must(a => H_Validator.IsLetterOrDigit(a)).WithMessage("只能输入英文或者数字");
             
             RuleFor(x => x.Password).MustFixedLength("密码", 6, 16);
 
@@ -75,8 +76,8 @@ namespace Hao.AppService
             
             RuleFor(x => x.Gender).EnumMustHasValue("性别");
 
-            RuleFor(x => x.Age).MustHasValue("年龄");
-            
+            RuleFor(x => x.Birthday).MustHasValue("出生日期");
+
             RuleFor(x => x.Phone).MustHasValue("手机");
 
             RuleFor(x => x.RoleId).MustHasValue("角色Id");

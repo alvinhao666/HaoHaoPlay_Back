@@ -57,7 +57,7 @@ namespace Hao.Core.Extensions
 #endif
             if (string.IsNullOrWhiteSpace(response.ErrorMsg)) response.ErrorMsg = "系统异常";
 
-            H_Log.Error(ex, new LogConent()
+            H_Log.Error(ex, new LogNote()
             {
                 Location = context.Request.Path.Value,
                 TraceId = context.TraceIdentifier,

@@ -10,7 +10,7 @@ namespace Hao.AppService
         /// <summary>
         /// 账号
         /// </summary>
-        public string LoginName { get; set; }
+        public string Account { get; set; }
         /// <summary>
         /// 密码
         /// </summary>
@@ -32,7 +32,7 @@ namespace Hao.AppService
     {
         public LoginByAccountPwdValidator()
         {
-            RuleFor(x => x.LoginName).MustHasValue("账号");
+            RuleFor(x => x.Account).MustHasValue("账号");
 
             RuleFor(x => x.Password).MustHasValue("密码");
 

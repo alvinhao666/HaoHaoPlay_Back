@@ -61,6 +61,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.Word", "src\6-Common\Ha
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.Runtime", "src\5-Infrastructure\Hao.Runtime\Hao.Runtime.csproj", "{365D9F26-58D5-4EED-862C-4951E49A917E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hao.Redis", "src\6-Common\Hao.Redis\Hao.Redis.csproj", "{0D6A8391-D8A6-46A4-9750-D7937AB6A909}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -143,6 +145,10 @@ Global
 		{365D9F26-58D5-4EED-862C-4951E49A917E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{365D9F26-58D5-4EED-862C-4951E49A917E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{365D9F26-58D5-4EED-862C-4951E49A917E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D6A8391-D8A6-46A4-9750-D7937AB6A909}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D6A8391-D8A6-46A4-9750-D7937AB6A909}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D6A8391-D8A6-46A4-9750-D7937AB6A909}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D6A8391-D8A6-46A4-9750-D7937AB6A909}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -172,6 +178,7 @@ Global
 		{73D4FF4D-8F6A-4C37-8A28-B14245805241} = {094FBA78-1265-4B2A-A7C6-46B8AD420D1B}
 		{622AAC62-509A-4D23-A064-1FD10061A5EE} = {042FD3BE-DA74-462B-8F16-E6D1ADFC7454}
 		{365D9F26-58D5-4EED-862C-4951E49A917E} = {2F74256B-F2C2-494A-82AE-97722C2A4F4B}
+		{0D6A8391-D8A6-46A4-9750-D7937AB6A909} = {042FD3BE-DA74-462B-8F16-E6D1ADFC7454}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5BAAEA79-B086-4D1C-AC3A-B029DF5FA31A}

@@ -64,7 +64,7 @@ namespace Hao.AppService
         [DistributedLock("UserAppService_AddUser")]
         public async Task Add(UserAddRequest vm)
         {
-            var users = await _userRep.GetAllAsync(new UserQuery { LoginName = vm.LoginName });
+            var users = await _userRep.GetAllAsync(new UserQuery { Account = vm.Account });
 
             H_AssertEx.That(users.Count > 0, "账号已存在，请重新输入");
 
@@ -75,7 +75,7 @@ namespace Hao.AppService
             H_AssertEx.That(role.Level <= _currentUser.RoleLevel, "无法添加同级及高级角色用户");
 
             var user = vm.Adapt<SysUser>();
-            user.FirstNameSpell = WordsHelper.GetFirstPinyin(user.Name.Substring(0,1));
+            user.FirstNameInitial = WordsHelper.GetFirstPinyin(user.Name.Substring(0,1));
             user.PasswordLevel = (PasswordLevel)H_Util.CheckPasswordLevel(user.Password);
             user.Password = H_EncryptProvider.HMACSHA256(user.Password, _appSettings.Key.Sha256Key);
             user.Enabled = true;
@@ -181,17 +181,17 @@ namespace Hao.AppService
             user = vm.Adapt(user);
 
             await _userRep.UpdateAsync(user,
-                user => new { user.Name, user.Age, user.Gender, user.Phone, user.Email, user.WeChat, user.QQ, user.RoleId, user.RoleName });
+                user => new { user.Name, user.Birthday, user.Gender, user.Phone, user.Email, user.WeChat, user.QQ, user.RoleId, user.RoleName });
         }
 
         /// <summary>
         /// 是否存在账号
         /// </summary>
-        /// <param name="loginName"></param>
+        /// <param name="account"></param>
         /// <returns></returns>
-        public async Task<bool> IsExistLoginName(string loginName)
+        public async Task<bool> IsExistAccount(string account)
         {
-            var query = new UserQuery {LoginName = loginName};
+            var query = new UserQuery {Account = account };
             var users = await _userRep.GetListAsync(query);
             return users.Count > 0;
         }
@@ -210,7 +210,7 @@ namespace Hao.AppService
             var exportData = users.Select(a => new Dictionary<string, string>{
                 {"姓名",a.Name},
                 {"性别", a.Gender.ToDescription() },
-                {"年龄",a.Age.ToString()},
+                {"出生日期",a.Birthday.ToDateTimeString()},
                 {"手机号",a.Phone},
                 {"邮箱",a.Email},
                 {"微信",a.WeChat},
@@ -285,7 +285,7 @@ namespace Hao.AppService
                         {
                             var user = new SysUser();
                             user.Name = ws.Cells[i, colStart].Text;
-                            user.FirstNameSpell = WordsHelper.GetFirstPinyin(user.Name.Substring(0, 1));
+                            user.FirstNameInitial = WordsHelper.GetFirstPinyin(user.Name.Substring(0, 1));
                             user.Password = H_EncryptProvider.HMACSHA256("123456", _appSettings.Key.Sha256Key);
                             users.Add(user);
                         }
