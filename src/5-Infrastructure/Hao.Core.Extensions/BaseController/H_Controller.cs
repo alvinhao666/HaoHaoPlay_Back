@@ -14,6 +14,7 @@ using Mapster;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Hao.Redis;
 using Hao.Log;
+using Hao.Core.Extensions;
 
 namespace Hao.Core
 {
