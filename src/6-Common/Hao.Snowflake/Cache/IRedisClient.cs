@@ -8,6 +8,7 @@ namespace Hao.Snowflake.Redis
     public interface IRedisClient : IDisposable
     {
         Task<long> IncrementAsync(string key, long num = 1, int db = -1);
+
         string GetKeyForRedis(string key);
 
         Task<Dictionary<string, double>> SortedRangeByScoreWithScoresAsync(string key, double min = double.MinValue,
