@@ -7,7 +7,7 @@ using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Hao.Core
+namespace Hao.Swagger
 {
     /// <summary>
     /// swagger

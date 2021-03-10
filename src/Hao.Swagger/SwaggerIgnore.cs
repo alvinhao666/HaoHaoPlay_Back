@@ -1,6 +1,6 @@
 using System;
 
-namespace Hao.Core
+namespace Hao.Swagger
 {
     /// <summary>
     /// 用于忽略swagger文档请求实体的属性

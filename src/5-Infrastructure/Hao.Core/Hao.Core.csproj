@@ -1,36 +1,35 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>netstandard2.1</TargetFramework>
+	</PropertyGroup>
 
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <DocumentationFile>bin/Debug/Hao.Core.xml</DocumentationFile>
-  </PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+		<DocumentationFile>bin/Debug/Hao.Core.xml</DocumentationFile>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="AspectCore.Abstractions" Version="2.2.0" />
-    <PackageReference Include="DotNetCore.CAP" Version="3.1.2" />
-    <PackageReference Include="DotNetCore.CAP.PostgreSql" Version="3.1.2" />
-    <PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="3.1.2" />
-    <PackageReference Include="FluentValidation" Version="9.5.2" />
-    <PackageReference Include="FreeSql" Version="2.3.200" />
-    <PackageReference Include="FreeSql.Provider.PostgreSQL" Version="2.3.200" />
-    <PackageReference Include="Microsoft.AspNetCore.DataProtection.Extensions" Version="5.0.4" />
-    <PackageReference Include="Serilog.AspNetCore" Version="4.0.0" />
-    <PackageReference Include="Serilog.Settings.Configuration" Version="3.1.0" />
-    <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
-    <PackageReference Include="Serilog.Sinks.Elasticsearch" Version="8.4.1" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.0" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.8.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="AspectCore.Abstractions" Version="2.2.0" />
+		<PackageReference Include="DotNetCore.CAP" Version="3.1.2" />
+		<PackageReference Include="DotNetCore.CAP.PostgreSql" Version="3.1.2" />
+		<PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="3.1.2" />
+		<PackageReference Include="FluentValidation" Version="9.5.2" />
+		<PackageReference Include="FreeSql" Version="2.3.200" />
+		<PackageReference Include="FreeSql.Provider.PostgreSQL" Version="2.3.200" />
+		<PackageReference Include="Microsoft.AspNetCore.DataProtection.Extensions" Version="5.0.4" />
+		<PackageReference Include="Serilog.AspNetCore" Version="4.0.0" />
+		<PackageReference Include="Serilog.Settings.Configuration" Version="3.1.0" />
+		<PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
+		<PackageReference Include="Serilog.Sinks.Elasticsearch" Version="8.4.1" />
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.8.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\6-Common\Hao.Dependency\Hao.Dependency.csproj" />
-    <ProjectReference Include="..\..\6-Common\Hao.Redis\Hao.Redis.csproj" />
-    <ProjectReference Include="..\..\6-Common\Hao.Snowflake\Hao.Snowflake.csproj" />
-    <ProjectReference Include="..\..\6-Common\Hao.Utility\Hao.Utility.csproj" />
-    <ProjectReference Include="..\Hao.Runtime\Hao.Runtime.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\6-Common\Hao.Dependency\Hao.Dependency.csproj" />
+		<ProjectReference Include="..\..\6-Common\Hao.Redis\Hao.Redis.csproj" />
+		<ProjectReference Include="..\..\6-Common\Hao.Snowflake\Hao.Snowflake.csproj" />
+		<ProjectReference Include="..\..\6-Common\Hao.Utility\Hao.Utility.csproj" />
+		<ProjectReference Include="..\Hao.Runtime\Hao.Runtime.csproj" />
+	</ItemGroup>
 
 </Project>

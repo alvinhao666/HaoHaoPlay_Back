@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Hao.Core
+namespace Hao.Swagger
 {
     /// <summary>
     /// 属性忽略过滤器
@@ -19,7 +19,7 @@ namespace Hao.Core
         {
             if (context.ApiDescription == null || operation.Parameters == null)
                 return;
-        
+
             if (!context.ApiDescription.ParameterDescriptions.Any())
                 return;
 
@@ -57,7 +57,7 @@ namespace Hao.Core
         //     }
         // }
     }
-    
+
     /// <summary>
     /// 属性忽略过滤器
     /// </summary>
@@ -71,11 +71,11 @@ namespace Hao.Core
         public void Apply(OpenApiSchema schema, SchemaFilterContext context)
         {
             if (schema?.Properties == null || schema.Properties.Count == 0) return;
-            
+
             foreach (var property in context.Type.GetProperties())
             {
-                var ignoreAttributes = property.GetCustomAttributes(typeof(SwaggerIgnoreAttribute),true);
-    
+                var ignoreAttributes = property.GetCustomAttributes(typeof(SwaggerIgnoreAttribute), true);
+
                 if (ignoreAttributes.Any() && schema.Properties.ContainsKey(property.Name))
                 {
                     schema.Properties.Remove(property.Name);
