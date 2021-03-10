@@ -1,5 +1,5 @@
 ﻿using Hao.AppService;
-using Hao.Core.Extensions;
+using Hao.Core;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -26,7 +26,7 @@ namespace Hao.WebApi
         /// <returns></returns>
         [HttpPost]
         [AuthCode("App_Add_1_16384")]
-        public async Task Add([FromBody]ModuleAddRequest request) => await _moduleAppService.Add(request);
+        public async Task Add([FromBody] ModuleAddRequest request) => await _moduleAppService.Add(request);
 
         /// <summary>
         /// 获取模块树列表
@@ -53,7 +53,7 @@ namespace Hao.WebApi
         /// <returns></returns>
         [HttpPut("{id}")]
         [AuthCode("App_Update_1_32768")]
-        public async Task Update(long? id, [FromBody]ModuleUpdateRequest request) => await _moduleAppService.Update(id.Value, request);
+        public async Task Update(long? id, [FromBody] ModuleUpdateRequest request) => await _moduleAppService.Update(id.Value, request);
 
 
         /// <summary>

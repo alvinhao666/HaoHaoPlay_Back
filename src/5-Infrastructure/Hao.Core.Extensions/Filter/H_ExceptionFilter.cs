@@ -1,4 +1,5 @@
 using AspectCore.DynamicProxy;
+using Hao.Log;
 using Hao.Response;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -18,7 +19,7 @@ namespace Hao.Core.Extensions
         {
             var ex = context.Exception;
 
-            var response = new H_Response {Success = false};
+            var response = new H_Response { Success = false };
 
             if (ex is H_Exception exception)
             {
@@ -38,7 +39,7 @@ namespace Hao.Core.Extensions
 
 
             if (string.IsNullOrWhiteSpace(response.ErrorMsg)) response.ErrorMsg = "系统异常";
-            
+
             context.Result = new JsonResult(response);
 
             H_Log.Error(ex, new LogNote()
@@ -47,7 +48,7 @@ namespace Hao.Core.Extensions
                 TraceId = context.HttpContext.TraceIdentifier,
                 Extra = "系统异常信息"
             }); //异常信息，记录到日志中
-            
+
             base.OnException(context);  //返回结果 不会经过ResultFilter
         }
     }

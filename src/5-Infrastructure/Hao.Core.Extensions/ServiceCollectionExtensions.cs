@@ -18,6 +18,7 @@ using FreeSql;
 using FreeRedis;
 using MapsterMapper;
 using Hao.Redis;
+using Hao.Swagger;
 
 namespace Hao.Core.Extensions
 {
@@ -37,11 +38,11 @@ namespace Hao.Core.Extensions
                         Version = "v1",
                         Title = "接口文档"
                     });
-                    
+
                     c.SchemaFilter<EnumSchemaFilter>();
                     c.SchemaFilter<SwaggerIgnoreFilter>();
                     c.OperationFilter<IgnorePropertyFilter>();
-                    
+
                     foreach (var item in appSettings.Swagger.Xmls)
                     {
                         c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, item));
@@ -67,7 +68,7 @@ namespace Hao.Core.Extensions
 
 
             #region Mapper
-            
+
             TypeAdapterConfig.GlobalSettings.Scan(appSettings.MapperAssemblyNames.Select(Assembly.Load).ToArray());
 
             #endregion

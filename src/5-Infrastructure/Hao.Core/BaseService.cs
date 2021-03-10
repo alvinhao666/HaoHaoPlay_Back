@@ -4,6 +4,7 @@ using System;
 using System.Threading.Tasks;
 using DotNetCore.CAP;
 using Hao.Redis;
+using Hao.Log;
 
 namespace Hao.Core
 {
@@ -59,8 +60,8 @@ namespace Hao.Core
                 }
             }
         }
-        
-        
+
+
         /// <summary>
         /// 工作单元，事务，原子操作，包含发送消息数据库持久化操作，[CapUnitOfWork]必须作用于接口实现的方法上
         /// </summary>
@@ -78,7 +79,7 @@ namespace Hao.Core
                 var freeSql = context.ServiceProvider.GetService(typeof(IFreeSqlContext)) as IFreeSqlContext;
 
                 var capPublisher = context.ServiceProvider.GetService(typeof(ICapPublisher)) as ICapPublisher;
-                
+
                 try
                 {
 #if DEBUG

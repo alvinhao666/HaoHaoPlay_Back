@@ -1,5 +1,5 @@
 ﻿using Hao.AppService;
-using Hao.Core.Extensions;
+using Hao.Core;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -30,7 +30,7 @@ namespace Hao.WebApi
         /// <param name="request"></param>
         /// <returns></returns>
         [HttpPut]
-        public async Task UpdateHeadImg([FromBody]UpdateHeadImgRequest request) => await _currentUserAppService.UpdateHeadImg(request);
+        public async Task UpdateHeadImg([FromBody] UpdateHeadImgRequest request) => await _currentUserAppService.UpdateHeadImg(request);
 
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace Hao.WebApi
         /// </summary>
         /// <returns></returns>
         [HttpPut]
-        public async Task UpdateBaseInfo([FromBody]CurrentUserUpdateRequest request) => await _currentUserAppService.UpdateBaseInfo(request);
+        public async Task UpdateBaseInfo([FromBody] CurrentUserUpdateRequest request) => await _currentUserAppService.UpdateBaseInfo(request);
 
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace Hao.WebApi
         /// </summary>
         /// <returns></returns>
         [HttpPut]
-        public async Task UpdatePassword([FromBody]PwdUpdateRequest request) => await _currentUserAppService.UpdatePassword(request.OldPassword, request.NewPassword);
+        public async Task UpdatePassword([FromBody] PwdUpdateRequest request) => await _currentUserAppService.UpdatePassword(request.OldPassword, request.NewPassword);
 
         /// <summary>
         /// 注销登录

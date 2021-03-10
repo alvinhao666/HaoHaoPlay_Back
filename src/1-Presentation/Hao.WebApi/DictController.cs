@@ -1,5 +1,4 @@
 using Hao.AppService;
-using Hao.Core.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Hao.Core;
@@ -26,7 +25,7 @@ namespace Hao.WebApi
         /// <returns></returns>
         [HttpPost]
         [AuthCode("Dict_Add_1_2097152")]
-        public async Task AddDict([FromBody]DictAddRequest request) => await _dictAppService.Add(request);
+        public async Task AddDict([FromBody] DictAddRequest request) => await _dictAppService.Add(request);
 
         /// <summary>
         /// 查询字典
@@ -35,7 +34,7 @@ namespace Hao.WebApi
         /// <returns></returns>
         [HttpGet]
         [AuthCode("Dict_Search_1_1048576")]
-        public async Task<Paged<DictVM>> GetDictPagedList([FromQuery]DictQueryInput queryInput) => await _dictAppService.GetPaged(queryInput);
+        public async Task<Paged<DictVM>> GetDictPagedList([FromQuery] DictQueryInput queryInput) => await _dictAppService.GetPaged(queryInput);
 
         /// <summary>
         /// 修改字典
@@ -45,7 +44,7 @@ namespace Hao.WebApi
         /// <returns></returns>
         [HttpPut("{id}")]
         [AuthCode("Dict_Edit_1_4194304")]
-        public async Task UpdateDict(long? id, [FromBody]DictUpdateRequest request) => await _dictAppService.Update(id.Value, request);
+        public async Task UpdateDict(long? id, [FromBody] DictUpdateRequest request) => await _dictAppService.Update(id.Value, request);
 
         /// <summary>
         /// 删除字典
@@ -63,7 +62,7 @@ namespace Hao.WebApi
         /// <returns></returns>
         [HttpPost]
         [AuthCode("Dict_Add_1_2097152")]
-        public async Task AddDictItem([FromBody]DictItemAddRequest request) => await _dictAppService.AddDictItem(request);
+        public async Task AddDictItem([FromBody] DictItemAddRequest request) => await _dictAppService.AddDictItem(request);
 
         /// <summary>
         /// 查询字典数据项
@@ -71,7 +70,7 @@ namespace Hao.WebApi
         /// <returns></returns>
         [HttpGet]
         [AuthCode("Dict_Search_1_1048576")]
-        public async Task<Paged<DictItemVM>> GetDictItemPagedList([FromQuery]DictQueryInput queryInput) => await _dictAppService.GetDictItemPaged(queryInput);
+        public async Task<Paged<DictItemVM>> GetDictItemPagedList([FromQuery] DictQueryInput queryInput) => await _dictAppService.GetDictItemPaged(queryInput);
 
         /// <summary>
         /// 修改数据项
@@ -81,7 +80,7 @@ namespace Hao.WebApi
         /// <returns></returns>
         [HttpPut("{id}")]
         [AuthCode("Dict_Edit_1_4194304")]
-        public async Task UpdateDictItem(long? id, [FromBody]DictItemUpdateRequest request) => await _dictAppService.UpdateDictItem(id.Value, request);
+        public async Task UpdateDictItem(long? id, [FromBody] DictItemUpdateRequest request) => await _dictAppService.UpdateDictItem(id.Value, request);
 
         /// <summary>
         /// 删除数据项

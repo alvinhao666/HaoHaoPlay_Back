@@ -5,7 +5,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Hao.Core.Extensions
+namespace Hao.Core
 {
     /// <summary>
     /// 防止重复提交过滤器
