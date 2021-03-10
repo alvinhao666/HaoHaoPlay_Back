@@ -1,4 +1,5 @@
 ﻿using AspectCore.DynamicProxy;
+using Hao.Log;
 using Hao.Response;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
@@ -35,8 +36,8 @@ namespace Hao.Core.Extensions
         {
             context.Response.StatusCode = StatusCodes.Status200OK;
             context.Response.ContentType = "application/json";
-            
-            var response = new H_Response {Success = false};
+
+            var response = new H_Response { Success = false };
 
             var ex = context.Features.Get<IExceptionHandlerFeature>().Error;
 
@@ -45,7 +46,7 @@ namespace Hao.Core.Extensions
                 response.ErrorCode = exception.Code;
                 response.ErrorMsg = exception.Message;
             }
-            else if(ex is AspectInvocationException aspectException) 
+            else if (ex is AspectInvocationException aspectException)
             {
                 response.ErrorMsg = aspectException.InnerException?.Message;
             }

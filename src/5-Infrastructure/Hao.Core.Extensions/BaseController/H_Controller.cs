@@ -13,6 +13,7 @@ using Newtonsoft.Json;
 using Mapster;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Hao.Redis;
+using Hao.Log;
 
 namespace Hao.Core.Extensions
 {
@@ -32,13 +33,13 @@ namespace Hao.Core.Extensions
         /// <param name="context"></param>
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            
+
             var userId = User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sid)?.Value; //Security Identifiers安全标识符
 
             var jti = User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti)?.Value;
 
             var ip = context.HttpContext.GetIp();
-            
+
             var servicesParams = context.ActionDescriptor.Parameters.Where(a => a.BindingInfo.BindingSource == BindingSource.Services).Select(a => a.Name);
 
             H_Log.Info(new LogNote
@@ -56,7 +57,7 @@ namespace Hao.Core.Extensions
             //if (ip != cache.Ip) throw new H_Exception("请重新登录", nameof(H_Error.E100004).GetErrorCode());
 
             CheckAuth(context, cache.AuthNums);
-            
+
             var currentUser = context.HttpContext.RequestServices.GetService(typeof(ICurrentUser)) as CurrentUser;
 
             currentUser = cache.Adapt(currentUser);
@@ -190,30 +191,30 @@ namespace Hao.Core.Extensions
         }
 
 
-//        protected async Task<HttpResponseMessage> DownFile(string filePath, string fileName)
-//        {
-//            return await Task.Factory.StartNew(() =>
-//            {
-//                HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
-//#if DEBUG
+        //        protected async Task<HttpResponseMessage> DownFile(string filePath, string fileName)
+        //        {
+        //            return await Task.Factory.StartNew(() =>
+        //            {
+        //                HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
+        //#if DEBUG
 
-//                        Stream stream = new FileStream(filePath, FileMode.Open);
-//                response.Content = new StreamContent(stream);
-//#else
-//                                response.Content = new StringContent("");
-//#endif
-//                        response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
-//                response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
-//                response.Content.Headers.ContentDisposition.FileName = fileName;
+        //                        Stream stream = new FileStream(filePath, FileMode.Open);
+        //                response.Content = new StreamContent(stream);
+        //#else
+        //                                response.Content = new StringContent("");
+        //#endif
+        //                        response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+        //                response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
+        //                response.Content.Headers.ContentDisposition.FileName = fileName;
 
-//#if DEBUG
-//#else
-//                                response.Content.Headers.Add("X-Accel-Redirect", $"/Api/ExportExcel/{fileName}");
-//#endif
-//                        return response;
-//            });
+        //#if DEBUG
+        //#else
+        //                                response.Content.Headers.Add("X-Accel-Redirect", $"/Api/ExportExcel/{fileName}");
+        //#endif
+        //                        return response;
+        //            });
 
-//        }
+        //        }
 
 
         ///// <summary>
