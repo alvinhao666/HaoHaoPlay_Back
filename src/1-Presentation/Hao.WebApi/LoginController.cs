@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Hao.AppService;
-using Hao.Core;
+using Hao.Core.Extensions;
 using Hao.Log;
 using Microsoft.AspNetCore.Mvc;
 

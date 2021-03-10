@@ -1,5 +1,5 @@
 using Hao.AppService;
-using Hao.Core.Extensions;
+using Hao.Core;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -43,7 +43,7 @@ namespace Hao.WebApi
         /// <returns></returns>
         [HttpPut("{id}")]
         [AuthCode("Role_UpdateAuth_1_524288")]
-        public async Task UpdateRoleAuth(long? id, [FromBody]RoleUpdateRequest request) => await _roleAppService.UpdateRoleAuth(id.Value, request);
+        public async Task UpdateRoleAuth(long? id, [FromBody] RoleUpdateRequest request) => await _roleAppService.UpdateRoleAuth(id.Value, request);
 
         ///// <summary>
         ///// 添加角色

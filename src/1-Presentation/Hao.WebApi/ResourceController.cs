@@ -1,5 +1,5 @@
 ﻿using Hao.AppService;
-using Hao.Core.Extensions;
+using Hao.Core;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -26,7 +26,7 @@ namespace Hao.WebApi
         /// <returns></returns>
         [HttpPost]
         [AuthCode("App_Add_1_16384")]
-        public async Task Add([FromBody]ResourceAddRequest request) => await _moduleAppService.AddResource(request);
+        public async Task Add([FromBody] ResourceAddRequest request) => await _moduleAppService.AddResource(request);
 
         /// <summary>
         /// 删除资源
@@ -53,6 +53,6 @@ namespace Hao.WebApi
         /// <returns></returns>
         [HttpPut("{id}")]
         [AuthCode("App_Update_1_32768")]
-        public async Task Update(long? id, [FromBody]ResourceUpdateRequest request) => await _moduleAppService.UpdateResource(id.Value, request);
+        public async Task Update(long? id, [FromBody] ResourceUpdateRequest request) => await _moduleAppService.UpdateResource(id.Value, request);
     }
 }

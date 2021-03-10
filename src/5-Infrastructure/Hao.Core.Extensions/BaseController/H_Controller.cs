@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Hao.Redis;
 using Hao.Log;
 
-namespace Hao.Core.Extensions
+namespace Hao.Core
 {
     /// <summary>
     /// Controller基类
