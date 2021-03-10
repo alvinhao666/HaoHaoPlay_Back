@@ -25,7 +25,7 @@ namespace Hao.Core
 
             var enumValues = schema.Enum.ToArray();
             var enumNames = Enum.GetNames(context.Type).ToList();
-            
+
             var attribute = context.Type.GetCustomAttributes().FirstOrDefault(a => a.GetType() == typeof(H_EnumDescriptionAttribute));
 
             if (attribute != null) schema.Description = ((H_EnumDescriptionAttribute)attribute).Description;
@@ -33,20 +33,20 @@ namespace Hao.Core
             StringBuilder sb = new StringBuilder();
             sb.Append(" ");
 
-            var i = 0;      
+            var i = 0;
 
             foreach (var name in enumNames)
             {
-                var value = ((OpenApiPrimitive<int>) enumValues[i]).Value;
+                var value = ((OpenApiPrimitive<int>)enumValues[i]).Value;
                 var description = H_EnumDescription.GetDescription(context.Type, value);
 
-                sb.Append($"{value}£º{name}  {description}");
+                sb.Append($"{value}_{name}_{description}");
 
-                if (i < enumValues.Length - 1) sb.Append("£¬");
+                if (i < enumValues.Length - 1) sb.Append(",");
 
                 i++;
             }
-            
+
             schema.Format = sb.ToString();
             return;
         }
