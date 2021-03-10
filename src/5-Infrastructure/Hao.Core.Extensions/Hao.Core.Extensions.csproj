@@ -13,7 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\6-Common\Hao.Log\Hao.Log.csproj" />
     <ProjectReference Include="..\..\6-Common\Hao.Swagger\Hao.Swagger\Hao.Swagger.csproj" />
     <ProjectReference Include="..\Hao.Core\Hao.Core.csproj" />
     <ProjectReference Include="..\Hao.Library\Hao.Library.csproj" />
