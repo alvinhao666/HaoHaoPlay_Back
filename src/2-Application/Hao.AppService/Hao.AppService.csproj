@@ -14,6 +14,7 @@
     <ProjectReference Include="..\..\5-Infrastructure\Hao.Library\Hao.Library.csproj" />
     <ProjectReference Include="..\..\6-Common\Hao.Encrypt\Hao.Encrypt.csproj" />
     <ProjectReference Include="..\..\6-Common\Hao.Excel\Hao.Excel.csproj" />
+    <ProjectReference Include="..\..\6-Common\Hao.FluentValidation\Hao.FluentValidation.csproj" />
   </ItemGroup>
 
 
