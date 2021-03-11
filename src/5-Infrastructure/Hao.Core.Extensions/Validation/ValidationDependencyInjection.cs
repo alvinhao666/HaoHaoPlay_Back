@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
-    internal static class H_Validator
+    internal static class ValidationDependencyInjection
     {
         internal static IServiceCollection AddValidateModelService(this IServiceCollection services)
         {
