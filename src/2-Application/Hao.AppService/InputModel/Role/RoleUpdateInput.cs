@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Hao.AppService
 {
-    public class RoleUpdateRequest
+    public class RoleUpdateInput
     {
         public List<long> ModuleIds { get; set; }
     }

@@ -4,19 +4,19 @@ using Hao.Utility;
 namespace Hao.AppService
 {
     /// <summary>
-    /// 更新资源请求
+    /// 添加资源请求
     /// </summary>
-    public class ResourceUpdateRequest
+    public class ResourceAddInput
     {
         /// <summary>
-        /// 模块名称
+        /// 资源名称
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// 排序值
+        /// 父级id
         /// </summary>
-        public int? Sort { get; set; }
+        public long? ParentId { get; set; }
 
         /// <summary>
         /// 别名
@@ -27,13 +27,13 @@ namespace Hao.AppService
     /// <summary>
     /// 验证
     /// </summary>
-    public class ResourceUpdateValidator : AbstractValidator<ResourceUpdateRequest>
+    public class ResourceAddValidator : AbstractValidator<ResourceAddInput>
     {
-        public ResourceUpdateValidator()
+        public ResourceAddValidator()
         {
             RuleFor(x => x.Name).MustHasValue("资源名称");
 
-            RuleFor(x => x.Sort).MustHasValue("排序值");
+            RuleFor(x => x.ParentId).MustHasValue("父节点Id");
 
             RuleFor(x => x.Alias).MustHasValue("别名").Must(a => H_Validator.IsLetter(a)).WithMessage("别名只能输入英文");
         }

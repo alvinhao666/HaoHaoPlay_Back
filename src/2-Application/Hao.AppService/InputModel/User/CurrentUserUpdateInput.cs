@@ -10,7 +10,7 @@ namespace Hao.AppService
     /// <summary>
     /// 更新当前用户信息请求
     /// </summary>
-    public class CurrentUserUpdateRequest
+    public class CurrentUserUpdateInput
     {
         /// <summary>
         /// 手机号
@@ -42,7 +42,7 @@ namespace Hao.AppService
     /// <summary>
     /// 验证
     /// </summary>
-    public class CurrentUserUpdateValidator : AbstractValidator<CurrentUserUpdateRequest>
+    public class CurrentUserUpdateValidator : AbstractValidator<CurrentUserUpdateInput>
     {
         public CurrentUserUpdateValidator()
         {

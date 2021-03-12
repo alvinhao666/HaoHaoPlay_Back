@@ -17,16 +17,16 @@ namespace Hao.AppService
         /// <summary>
         /// 更新头像
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="input"></param>
         /// <returns></returns>
-        Task UpdateHeadImg(UpdateHeadImgRequest request);
+        Task UpdateHeadImg(UpdateHeadImgInput input);
 
         /// <summary>
         /// 更新当前用户基本信息
         /// </summary>
         /// <param name="vm"></param>
         /// <returns></returns>
-        Task UpdateBaseInfo(CurrentUserUpdateRequest vm);
+        Task UpdateBaseInfo(CurrentUserUpdateInput vm);
 
         /// <summary>
         /// 更新当前用户密码

@@ -5,7 +5,7 @@ namespace Hao.AppService
     /// <summary>
     /// 修改字典
     /// </summary>
-    public class DictUpdateRequest
+    public class DictUpdateInput
     {
         /// <summary>
         /// 字典名称
@@ -27,11 +27,11 @@ namespace Hao.AppService
         /// </summary>
         public int? Sort { get; set; }
     }
-    
+
     /// <summary>
     /// 验证
     /// </summary>
-    public class DictUpdateRequestValidator : AbstractValidator<DictUpdateRequest>
+    public class DictUpdateRequestValidator : AbstractValidator<DictUpdateInput>
     {
         public DictUpdateRequestValidator()
         {

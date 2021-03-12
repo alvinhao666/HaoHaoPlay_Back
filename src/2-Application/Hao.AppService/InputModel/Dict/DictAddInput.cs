@@ -5,7 +5,7 @@ namespace Hao.AppService
     /// <summary>
     /// 字典添加请求
     /// </summary>
-    public class DictAddRequest
+    public class DictAddInput
     {
         /// <summary>
         /// 字典名称
@@ -26,7 +26,7 @@ namespace Hao.AppService
     /// <summary>
     /// 验证
     /// </summary>
-    public class DictAddRequestValidator : AbstractValidator<DictAddRequest>
+    public class DictAddRequestValidator : AbstractValidator<DictAddInput>
     {
         public DictAddRequestValidator()
         {

@@ -7,7 +7,7 @@ namespace Hao.AppService
     /// <summary>
     /// 更新模块请求
     /// </summary>
-    public class ModuleUpdateRequest
+    public class ModuleUpdateInput
     {
         /// <summary>
         /// 模块名称
@@ -43,7 +43,7 @@ namespace Hao.AppService
     /// <summary>
     /// 验证
     /// </summary>
-    public class ModuleUpdateValidator : AbstractValidator<ModuleUpdateRequest>
+    public class ModuleUpdateValidator : AbstractValidator<ModuleUpdateInput>
     {
         public ModuleUpdateValidator()
         {

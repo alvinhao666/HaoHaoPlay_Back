@@ -8,7 +8,7 @@ namespace Hao.AppService
     /// <summary>
     /// 修改密码请求
     /// </summary>
-    public class PwdUpdateRequest
+    public class PwdUpdateInput
     {
         public string OldPassword { get; set; }
 
@@ -20,7 +20,7 @@ namespace Hao.AppService
     /// <summary>
     /// 验证
     /// </summary>
-    public class PwdUpdateValidator : AbstractValidator<PwdUpdateRequest>
+    public class PwdUpdateValidator : AbstractValidator<PwdUpdateInput>
     {
         public PwdUpdateValidator()
         {

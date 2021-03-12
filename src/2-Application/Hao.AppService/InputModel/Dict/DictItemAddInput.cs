@@ -1,8 +1,11 @@
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace Hao.AppService
 {
-    public class DictItemUpdateRequest
+    /// <summary>
+    /// 字典数据项添加请求
+    /// </summary>
+    public class DictItemAddInput
     {
         /// <summary>
         /// 数据项名称
@@ -15,6 +18,11 @@ namespace Hao.AppService
         public int? ItemValue { get; set; }
 
         /// <summary>
+        /// 父级 字典id
+        /// </summary>
+        public long? ParentId { get; set; }
+
+        /// <summary>
         /// 备注信息
         /// </summary>
         public string Remark { get; set; }
@@ -24,18 +32,19 @@ namespace Hao.AppService
         /// </summary>
         public int? Sort { get; set; }
     }
-    
+
     /// <summary>
     /// 验证
     /// </summary>
-    public class DictItemUpdateRequestValidator : AbstractValidator<DictItemUpdateRequest>
+    public class DictItemAddRequestValidator : AbstractValidator<DictItemAddInput>
     {
-        public DictItemUpdateRequestValidator()
+        public DictItemAddRequestValidator()
         {
             RuleFor(x => x.ItemName).MustHasValue("数据项名称");
 
             RuleFor(x => x.ItemValue).MustHasValue("数据项值");
 
+            RuleFor(x => x.ParentId).MustHasValue("字典id");
         }
     }
 }

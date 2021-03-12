@@ -12,9 +12,9 @@ namespace Hao.AppService
         /// <summary>
         /// 添加字典
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="input"></param>
         /// <returns></returns>
-        Task Add(DictAddRequest request);
+        Task Add(DictAddInput input);
 
         /// <summary>
         /// 查询字典
@@ -27,9 +27,9 @@ namespace Hao.AppService
         /// 修改字典
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="request"></param>
+        /// <param name="input"></param>
         /// <returns></returns>
-        Task Update(long id, DictUpdateRequest request);
+        Task Update(long id, DictUpdateInput input);
 
         /// <summary>
         /// 删除字典
@@ -46,9 +46,9 @@ namespace Hao.AppService
         /// <summary>
         /// 添加字典数据项
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="input"></param>
         /// <returns></returns>
-        Task AddDictItem(DictItemAddRequest request);
+        Task AddDictItem(DictItemAddInput input);
 
         /// <summary>
         /// 查询字典数据项
@@ -60,9 +60,9 @@ namespace Hao.AppService
         /// 更新数据项
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="request"></param>
+        /// <param name="input"></param>
         /// <returns></returns>
-        Task UpdateDictItem(long id, DictItemUpdateRequest request);
+        Task UpdateDictItem(long id, DictItemUpdateInput input);
 
         /// <summary>
         /// 删除数据项

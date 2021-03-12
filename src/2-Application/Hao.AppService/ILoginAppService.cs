@@ -10,9 +10,9 @@ namespace Hao.AppService
         /// <summary>
         /// 账号密码登录
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="input"></param>
         /// <param name="fromIP"></param>
         /// <returns></returns>
-        Task<LoginVM> LoginByAccountPwd(LoginByAccountPwdRequest request, string fromIP);
+        Task<LoginVM> LoginByAccountPwd(LoginByAccountPwdInput input, string fromIP);
     }
 }

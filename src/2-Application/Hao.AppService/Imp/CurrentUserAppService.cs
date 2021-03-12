@@ -48,11 +48,11 @@ namespace Hao.AppService
         // /// <summary>
         // /// 更新头像地址 (ImageSharp)
         // /// </summary>
-        // /// <param name="request"></param>
+        // /// <param name="input"></param>
         // /// <returns></returns>
-        // public async Task UpdateHeadImg(UpdateHeadImgRequest request)
+        // public async Task UpdateHeadImg(UpdateHeadImgRequest input)
         // {
-        //     string[] str = request.Base64Str.Split(','); //base64Str为base64完整的字符串，先处理一下得到我们所需要的字符串
+        //     string[] str = input.Base64Str.Split(','); //base64Str为base64完整的字符串，先处理一下得到我们所需要的字符串
         //     if (str.Length < 2) throw new H_Exception("图片格式不对");
         //     byte[] imageBytes = Convert.FromBase64String(str[1]);
         //
@@ -73,16 +73,16 @@ namespace Hao.AppService
         //         H_File.DeleteFile(Path.Combine(_appSettings.FilePath.AvatarPath, oldImgUrl));
         //     }
         // }
-        
+
         /// <summary>
         /// 更新头像地址 (腾讯COS)
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="input"></param>
         /// <returns></returns>
-        public async Task UpdateHeadImg(UpdateHeadImgRequest request)
+        public async Task UpdateHeadImg(UpdateHeadImgInput input)
         {
             var user = await _userRep.GetAsync(_currentUser.Id.Value);
-            user.HeadImgUrl = $"https://{request.HeadImageUrl}";
+            user.HeadImgUrl = $"https://{input.HeadImageUrl}";
             await _userRep.UpdateAsync(user, user => new { user.HeadImgUrl });
         }
 
@@ -91,7 +91,7 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="vm"></param>
         /// <returns></returns>
-        public async Task UpdateBaseInfo(CurrentUserUpdateRequest vm)
+        public async Task UpdateBaseInfo(CurrentUserUpdateInput vm)
         {
             var user = await _userRep.GetAsync(_currentUser.Id.Value);
             user.Phone = vm.Phone;

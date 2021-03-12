@@ -1,6 +1,6 @@
 namespace Hao.AppService
 {
-    public class RoleAddRequest
+    public class RoleAddInput
     {
         /// <summary>
         /// 权限名称

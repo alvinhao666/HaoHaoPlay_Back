@@ -22,11 +22,11 @@ namespace Hao.WebApi
         /// <summary>
         /// 添加模块
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="input"></param>
         /// <returns></returns>
         [HttpPost]
         [AuthCode("App_Add_1_16384")]
-        public async Task Add([FromBody] ModuleAddRequest request) => await _moduleAppService.Add(request);
+        public async Task Add([FromBody] ModuleAddInput input) => await _moduleAppService.Add(input);
 
         /// <summary>
         /// 获取模块树列表
@@ -49,11 +49,11 @@ namespace Hao.WebApi
         /// 更新模块信息
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="request"></param>
+        /// <param name="input"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
         [AuthCode("App_Update_1_32768")]
-        public async Task Update(long? id, [FromBody] ModuleUpdateRequest request) => await _moduleAppService.Update(id.Value, request);
+        public async Task Update(long? id, [FromBody] ModuleUpdateInput input) => await _moduleAppService.Update(id.Value, input);
 
 
         /// <summary>

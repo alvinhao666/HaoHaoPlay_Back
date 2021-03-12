@@ -30,7 +30,7 @@ namespace Hao.AppService
 
         private readonly ICurrentUser _currentUser;
 
-        public RoleAppService(ICurrentUser currentUser,ICapPublisher publisher,ISysRoleRepository roleRep, ISysModuleRepository moduleRep, ISysUserRepository userRep)
+        public RoleAppService(ICurrentUser currentUser, ICapPublisher publisher, ISysRoleRepository roleRep, ISysModuleRepository moduleRep, ISysUserRepository userRep)
         {
             _roleRep = roleRep;
             _moduleRep = moduleRep;
@@ -43,11 +43,11 @@ namespace Hao.AppService
         /// <summary>
         /// 添加角色
         /// </summary>
-        /// <param name="vm"></param>
+        /// <param name="input"></param>
         /// <returns></returns>
-        public async Task Add(RoleAddRequest vm)
+        public async Task Add(RoleAddInput input)
         {
-            var role = new SysRole() { Name = vm.Name };
+            var role = new SysRole() { Name = input.Name };
             try
             {
                 await _roleRep.InsertAsync(role);
@@ -65,7 +65,7 @@ namespace Hao.AppService
         public async Task<List<RoleVM>> GetList()
         {
             var query = new RoleQuery();
-            
+
             if (_currentUser.RoleLevel != (int)RoleLevelType.SuperAdministrator) //超级管理员能看见所有，其他用户只能看见比自己等级低的用户列表
             {
                 query.CurrentRoleLevel = _currentUser.RoleLevel;
@@ -88,9 +88,9 @@ namespace Hao.AppService
             {
                 CurrentRoleLevel = _currentUser.RoleLevel
             };
-            
-            query.OrderBy(a=>a.Level);
-            
+
+            query.OrderBy(a => a.Level);
+
             var roles = await _roleRep.GetListAsync(query);
 
             var result = roles.Adapt<List<RoleSelectVM>>();
@@ -101,16 +101,16 @@ namespace Hao.AppService
         /// 更新角色权限
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="vm"></param>
+        /// <param name="input"></param>
         /// <returns></returns>
         [CapUnitOfWork]
-        public async Task UpdateRoleAuth(long id, RoleUpdateRequest vm)
+        public async Task UpdateRoleAuth(long id, RoleUpdateInput input)
         {
             var role = await GetRoleDetail(id);
 
             if (role.Level != (int)RoleLevelType.SuperAdministrator && _currentUser.RoleLevel >= role.Level) throw new H_Exception("无法操作该角色的权限");
 
-            var modules = await _moduleRep.GetListAsync(vm.ModuleIds);
+            var modules = await _moduleRep.GetListAsync(input.ModuleIds);
             var maxLayer = modules.Max(a => a.Layer);
 
             var authNumbers = new List<long>();
@@ -209,10 +209,10 @@ namespace Hao.AppService
                     expanded = (int)item.Type.Value < (int)ModuleType.Sub,
                     children = new List<RoleModuleItemVM>()
                 };
- 
+
                 result.Add(node);
 
-                InitModuleTree(node.children, item.Id, sources, authNumbers,checkedKeys);
+                InitModuleTree(node.children, item.Id, sources, authNumbers, checkedKeys);
 
                 if (item.Type == ModuleType.Sub) node.isLeaf = node.children.Count == 0;
 
@@ -223,7 +223,7 @@ namespace Hao.AppService
                         checkedKeys.Add(node.key);
                     }
                 }
-                
+
                 if (item.Type == ModuleType.Main && node.children.Count < 1) result.Remove(node);
             }
         }

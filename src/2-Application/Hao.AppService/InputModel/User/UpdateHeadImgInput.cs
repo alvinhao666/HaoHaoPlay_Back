@@ -5,10 +5,10 @@ namespace Hao.AppService
     /// <summary>
     /// 更新头像请求
     /// </summary>
-    public class UpdateHeadImgRequest
+    public class UpdateHeadImgInput
     {
         // public string Base64Str { get; set; } 
-        
+
         /// <summary>
         /// 头像地址
         /// </summary>
@@ -18,7 +18,7 @@ namespace Hao.AppService
     /// <summary>
     /// ��֤
     /// </summary>
-    public class UpdateHeadImgValidator : AbstractValidator<UpdateHeadImgRequest>
+    public class UpdateHeadImgValidator : AbstractValidator<UpdateHeadImgInput>
     {
         public UpdateHeadImgValidator()
         {

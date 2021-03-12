@@ -11,9 +11,9 @@ namespace Hao.AppService
         /// <summary>
         /// 添加角色
         /// </summary>
-        /// <param name="vm"></param>
+        /// <param name="input"></param>
         /// <returns></returns>
-        Task Add(RoleAddRequest vm);
+        Task Add(RoleAddInput input);
 
         /// <summary>
         /// 获取所有角色列表
@@ -31,9 +31,9 @@ namespace Hao.AppService
         /// 更新角色权限
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="vm"></param>
+        /// <param name="input"></param>
         /// <returns></returns>
-        Task UpdateRoleAuth(long id, RoleUpdateRequest vm);
+        Task UpdateRoleAuth(long id, RoleUpdateInput input);
 
         /// <summary>
         /// 获取角色拥有的模块

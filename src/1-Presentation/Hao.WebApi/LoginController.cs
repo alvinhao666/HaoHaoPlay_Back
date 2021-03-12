@@ -25,23 +25,23 @@ namespace Hao.WebApi
         /// <summary>
         /// 账号密码登录 
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="input"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<LoginVM> LoginByAccountPwd(LoginByAccountPwdRequest request)
+        public async Task<LoginVM> LoginByAccountPwd(LoginByAccountPwdInput input)
         {
             string ip = HttpContext.GetIp();
 
             H_Log.Info(new LogNote()
             {
                 Location = "LoginByAccountPwd",
-                Data = request,
+                Data = input,
                 TraceId = HttpContext.TraceIdentifier,
                 IP = ip,
                 Extra = "登录请求"
             });
 
-            var result = await _loginAppService.LoginByAccountPwd(request, ip);
+            var result = await _loginAppService.LoginByAccountPwd(input, ip);
 
             H_Log.Info(new LogNote()
             {

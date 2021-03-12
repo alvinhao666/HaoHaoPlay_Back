@@ -7,7 +7,7 @@ namespace Hao.AppService
     /// <summary>
     /// 添加模块请求
     /// </summary>
-    public class ModuleAddRequest
+    public class ModuleAddInput
     {
         /// <summary>
         /// 模块名称
@@ -28,7 +28,7 @@ namespace Hao.AppService
         /// 父级id
         /// </summary>
         public long? ParentId { get; set; }
-        
+
         /// <summary>
         /// 模块类型
         /// </summary>
@@ -48,7 +48,7 @@ namespace Hao.AppService
     /// <summary>
     /// 验证
     /// </summary>
-    public class ModuleAddValidator : AbstractValidator<ModuleAddRequest>
+    public class ModuleAddValidator : AbstractValidator<ModuleAddInput>
     {
         public ModuleAddValidator()
         {
