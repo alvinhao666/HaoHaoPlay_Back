@@ -34,14 +34,14 @@ namespace Hao.AppService
         /// 获取模块列表
         /// </summary>
         /// <returns></returns>
-        Task<List<ModuleTreeVM>> GetTreeList();
+        Task<List<ModuleTreeOutput>> GetTreeList();
 
         /// <summary>
         /// 获取模块详情
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<ModuleDetailVM> Get(long id);
+        Task<ModuleDetailOutput> Get(long id);
 
         #region 资源
         /// <summary>
@@ -70,7 +70,7 @@ namespace Hao.AppService
         /// 获取资源列表
         /// </summary>
         /// <returns></returns>
-        Task<List<ResourceItemVM>> GetResourceList(long parentId);
+        Task<List<ResourceItemOutput>> GetResourceList(long parentId);
 
         #endregion
 

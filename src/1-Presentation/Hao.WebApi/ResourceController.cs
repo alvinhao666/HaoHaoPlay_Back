@@ -43,7 +43,7 @@ namespace Hao.WebApi
         /// <returns></returns>
         [HttpGet("{parentId}")]
         [AuthCode("App_Search_1_8192")]
-        public async Task<List<ResourceItemVM>> GetList(long? parentId) => await _moduleAppService.GetResourceList(parentId.Value);
+        public async Task<List<ResourceItemOutput>> GetList(long? parentId) => await _moduleAppService.GetResourceList(parentId.Value);
 
         /// <summary>
         /// 更新资源信息

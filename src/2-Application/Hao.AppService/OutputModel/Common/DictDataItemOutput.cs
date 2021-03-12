@@ -3,7 +3,7 @@
     /// <summary>
     /// 字典数据项
     /// </summary>
-    public class DictDataItemVM
+    public class DictDataItemOutput
     {
         public long? Id { get; set; }
 

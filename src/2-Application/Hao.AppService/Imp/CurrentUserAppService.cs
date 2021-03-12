@@ -39,10 +39,10 @@ namespace Hao.AppService
         /// 获取当前用户信息
         /// </summary>
         /// <returns></returns>
-        public async Task<CurrentUserVM> Get()
+        public async Task<CurrentUserOutput> Get()
         {
             var user = await _userRep.GetAsync(_currentUser.Id.Value);
-            return user.Adapt<CurrentUserVM>();
+            return user.Adapt<CurrentUserOutput>();
         }
 
         // /// <summary>
@@ -130,10 +130,10 @@ namespace Hao.AppService
         /// <summary>
         /// 当前用户安全信息
         /// </summary>
-        public async Task<UserSecurityVM> GetSecurityInfo()
+        public async Task<UserSecurityOutput> GetSecurityInfo()
         {
             var user = await _userRep.GetAsync(_currentUser.Id.Value);
-            var result = user.Adapt<UserSecurityVM>();
+            var result = user.Adapt<UserSecurityOutput>();
             return result;
         }
 

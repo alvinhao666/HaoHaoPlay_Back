@@ -34,7 +34,7 @@ namespace Hao.WebApi
         /// <returns></returns>
         [HttpGet]
         [AuthCode("Dict_Search_1_1048576")]
-        public async Task<Paged<DictVM>> GetDictPagedList([FromQuery] DictQueryInput queryInput) => await _dictAppService.GetPaged(queryInput);
+        public async Task<Paged<DictOutput>> GetDictPagedList([FromQuery] DictQueryInput queryInput) => await _dictAppService.GetPaged(queryInput);
 
         /// <summary>
         /// 修改字典
@@ -70,7 +70,7 @@ namespace Hao.WebApi
         /// <returns></returns>
         [HttpGet]
         [AuthCode("Dict_Search_1_1048576")]
-        public async Task<Paged<DictItemVM>> GetDictItemPagedList([FromQuery] DictQueryInput queryInput) => await _dictAppService.GetDictItemPaged(queryInput);
+        public async Task<Paged<DictItemOutput>> GetDictItemPagedList([FromQuery] DictQueryInput queryInput) => await _dictAppService.GetDictItemPaged(queryInput);
 
         /// <summary>
         /// 修改数据项

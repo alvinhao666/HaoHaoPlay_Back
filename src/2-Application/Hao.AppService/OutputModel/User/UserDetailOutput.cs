@@ -3,7 +3,7 @@ using System;
 
 namespace Hao.AppService
 {
-    public class UserDetailVM
+    public class UserDetailOutput
     {
         public long? Id { get; set; }
 

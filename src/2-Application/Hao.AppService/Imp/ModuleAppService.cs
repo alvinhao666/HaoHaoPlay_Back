@@ -64,10 +64,10 @@ namespace Hao.AppService
         /// 获取所有模块列表
         /// </summary>
         /// <returns></returns>
-        public async Task<List<ModuleTreeVM>> GetTreeList()
+        public async Task<List<ModuleTreeOutput>> GetTreeList()
         {
             var modules = await _moduleRep.GetListAsync(new ModuleQuery() { IncludeResource = false });
-            var result = new List<ModuleTreeVM>();
+            var result = new List<ModuleTreeOutput>();
             InitModuleTree(result, -1, modules);
             return result;
         }
@@ -77,10 +77,10 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<ModuleDetailVM> Get(long id)
+        public async Task<ModuleDetailOutput> Get(long id)
         {
             var module = await GetModuleDetail(id);
-            var result = module.Adapt<ModuleDetailVM>();
+            var result = module.Adapt<ModuleDetailOutput>();
 
             if (result.Type == ModuleType.Sub)
             {
@@ -90,7 +90,7 @@ namespace Hao.AppService
 
                 var resources = await _moduleRep.GetListAsync(query);
 
-                result.Resources = resources.Adapt<List<ResourceItemVM>>();
+                result.Resources = resources.Adapt<List<ResourceItemOutput>>();
             }
 
             return result;
@@ -196,19 +196,19 @@ namespace Hao.AppService
         /// <param name="result"></param>
         /// <param name="parentId"></param>
         /// <param name="sources"></param>
-        private void InitModuleTree(List<ModuleTreeVM> result, long parentId, List<SysModule> sources)
+        private void InitModuleTree(List<ModuleTreeOutput> result, long parentId, List<SysModule> sources)
         {
             //递归寻找子节点  
             var tempTree = sources.Where(item => item.ParentId == parentId).OrderBy(a => a.Sort);
             foreach (var item in tempTree)
             {
-                var node = new ModuleTreeVM()
+                var node = new ModuleTreeOutput()
                 {
                     key = item.Id.ToString(),
                     title = item.Name,
                     isLeaf = item.Type == ModuleType.Sub,
                     expanded = true,
-                    children = new List<ModuleTreeVM>()
+                    children = new List<ModuleTreeOutput>()
                 };
                 result.Add(node);
                 InitModuleTree(node.children, item.Id, sources);

@@ -2,7 +2,7 @@ using Hao.Enum;
 
 namespace Hao.AppService
 {
-    public class CurrentUserVM
+    public class CurrentUserOutput
     {
         /// <summary>
         /// 姓名

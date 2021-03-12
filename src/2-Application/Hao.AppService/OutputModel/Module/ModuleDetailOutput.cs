@@ -3,7 +3,7 @@ using Hao.Enum;
 
 namespace Hao.AppService
 {
-    public class ModuleDetailVM
+    public class ModuleDetailOutput
     {
         public string Id { get; set; }
 
@@ -31,17 +31,17 @@ namespace Hao.AppService
         /// 类型
         /// </summary>
         public ModuleType? Type { get; set; }
-        
+
         /// <summary>
         /// 排序值
         /// </summary>
         public int? Sort { get; set; }
-        
+
         /// <summary>
         /// 编码
         /// </summary>
         public string Code { get; set; }
-        
+
         /// <summary>
         /// 别名
         /// </summary>
@@ -50,6 +50,6 @@ namespace Hao.AppService
         /// <summary>
         /// 资源项
         /// </summary>
-        public List<ResourceItemVM> Resources { get; set; }
+        public List<ResourceItemOutput> Resources { get; set; }
     }
 }

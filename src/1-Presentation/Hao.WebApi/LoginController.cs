@@ -28,7 +28,7 @@ namespace Hao.WebApi
         /// <param name="input"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<LoginVM> LoginByAccountPwd(LoginByAccountPwdInput input)
+        public async Task<LoginOutput> LoginByAccountPwd(LoginByAccountPwdInput input)
         {
             string ip = HttpContext.GetIp();
 

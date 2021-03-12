@@ -12,7 +12,7 @@ namespace Hao.AppService
         /// 当前用户信息
         /// </summary>
         /// <returns></returns>
-        Task<CurrentUserVM> Get();
+        Task<CurrentUserOutput> Get();
 
         /// <summary>
         /// 更新头像
@@ -40,7 +40,7 @@ namespace Hao.AppService
         /// 当前用户的安全信息
         /// </summary>
         /// <returns></returns>
-        Task<UserSecurityVM> GetSecurityInfo();
+        Task<UserSecurityOutput> GetSecurityInfo();
 
         /// <summary>
         /// 注销登录

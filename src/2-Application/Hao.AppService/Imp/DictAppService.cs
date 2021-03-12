@@ -94,14 +94,14 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="queryInput"></param>
         /// <returns></returns>
-        public async Task<Paged<DictVM>> GetPaged(DictQueryInput queryInput)
+        public async Task<Paged<DictOutput>> GetPaged(DictQueryInput queryInput)
         {
             var query = queryInput.Adapt<DictQuery>();
             query.DictType = DictType.Main;
 
             var result = await _dictRep.GetDictPagedResult(query);
 
-            return result.Adapt<Paged<DictVM>>();
+            return result.Adapt<Paged<DictOutput>>();
 
         }
 
@@ -140,7 +140,7 @@ namespace Hao.AppService
         /// 获取字典数据
         /// </summary>
         /// <returns></returns>
-        public async Task<Paged<DictItemVM>> GetDictItemPaged(DictQueryInput queryInput)
+        public async Task<Paged<DictItemOutput>> GetDictItemPaged(DictQueryInput queryInput)
         {
             var query = queryInput.Adapt<DictQuery>();
 
@@ -148,7 +148,7 @@ namespace Hao.AppService
 
             var dicts = await _dictRep.GetPagedAsync(query);
 
-            return dicts.Adapt<Paged<DictItemVM>>();
+            return dicts.Adapt<Paged<DictItemOutput>>();
         }
 
         /// <summary>
@@ -194,7 +194,7 @@ namespace Hao.AppService
         /// <param name="dictCode"></param>
         /// <returns></returns>
 
-        public async Task<List<DictDataItemVM>> GetDictDataItem(string dictCode)
+        public async Task<List<DictDataItemOutput>> GetDictDataItem(string dictCode)
         {
             var query = new DictQuery
             {
@@ -206,7 +206,7 @@ namespace Hao.AppService
 
             var dictItems = await _dictRep.GetListAsync(query);
 
-            return dictItems.Adapt<List<DictDataItemVM>>();
+            return dictItems.Adapt<List<DictDataItemOutput>>();
         }
 
 

@@ -29,14 +29,14 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="queryInput"></param>
         /// <returns></returns>
-        Task<Paged<UserVM>> GetPaged(UserQueryInput queryInput);
+        Task<Paged<UserOutput>> GetPaged(UserQueryInput queryInput);
 
         /// <summary>
         /// 用户详情
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<UserDetailVM> Get(long id);
+        Task<UserDetailOutput> Get(long id);
 
         /// <summary>
         /// 删除用户
@@ -58,7 +58,7 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="queryInput"></param>
         /// <returns></returns>
-        Task<UserExcelVM> Export(UserQueryInput queryInput);
+        Task<UserExcelOutput> Export(UserQueryInput queryInput);
 
         /// <summary>
         /// 是否存在账号

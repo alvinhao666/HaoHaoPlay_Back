@@ -34,7 +34,7 @@ namespace Hao.WebApi
         /// <param name="dictAppService"></param>
         /// <returns></returns>
         [HttpGet("{dictCode}")]
-        public async Task<List<DictDataItemVM>> GetDictItemList(string dictCode,
+        public async Task<List<DictDataItemOutput>> GetDictItemList(string dictCode,
             [FromServices] IDictAppService dictAppService) => await dictAppService.GetDictDataItem(dictCode);
 
 

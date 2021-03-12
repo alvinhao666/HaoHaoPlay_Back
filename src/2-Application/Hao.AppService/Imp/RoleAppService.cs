@@ -62,7 +62,7 @@ namespace Hao.AppService
         /// 获取角色列表
         /// </summary>
         /// <returns></returns>
-        public async Task<List<RoleVM>> GetList()
+        public async Task<List<RoleOutput>> GetList()
         {
             var query = new RoleQuery();
 
@@ -73,7 +73,7 @@ namespace Hao.AppService
 
             var roles = await _roleRep.GetRoleList(query);
 
-            var result = roles.Adapt<List<RoleVM>>();
+            var result = roles.Adapt<List<RoleOutput>>();
 
             return result;
         }
@@ -82,7 +82,7 @@ namespace Hao.AppService
         /// 根据当前用户角色，获取可以操作得角色列表
         /// </summary>
         /// <returns></returns>
-        public async Task<List<RoleSelectVM>> GetRoleListByCurrentRole()
+        public async Task<List<RoleSelectOutput>> GetRoleListByCurrentRole()
         {
             var query = new RoleQuery()
             {
@@ -93,7 +93,7 @@ namespace Hao.AppService
 
             var roles = await _roleRep.GetListAsync(query);
 
-            var result = roles.Adapt<List<RoleSelectVM>>();
+            var result = roles.Adapt<List<RoleSelectOutput>>();
             return result;
         }
 
@@ -146,12 +146,12 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<RoleModuleVM> GetRoleModule(long id)
+        public async Task<RoleModuleOutput> GetRoleModule(long id)
         {
             var role = await GetRoleDetail(id);
             var authNumbers = string.IsNullOrWhiteSpace(role.AuthNumbers) ? null : JsonConvert.DeserializeObject<List<long>>(role.AuthNumbers);
             var modules = await _moduleRep.GetListAsync();
-            var result = new RoleModuleVM();
+            var result = new RoleModuleOutput();
             result.Nodes = new List<RoleModuleItemVM>();
             result.CheckedKeys = new List<string>();
             InitModuleTree(result.Nodes, -1, modules, authNumbers, result.CheckedKeys);

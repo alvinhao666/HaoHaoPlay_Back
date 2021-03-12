@@ -6,7 +6,7 @@ namespace Hao.AppService
     /// <summary>
     /// 用户-列表项
     /// </summary>
-    public class UserVM
+    public class UserOutput
     {
         public long? Id { get; set; }
 

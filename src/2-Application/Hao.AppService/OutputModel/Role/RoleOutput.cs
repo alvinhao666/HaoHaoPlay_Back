@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace Hao.AppService
 {
-    /// <summary>
-    /// 角色下拉框数据
-    /// </summary>
-    public class RoleSelectVM
+    public class RoleOutput
     {
         /// <summary>
         /// 角色id
@@ -18,5 +11,10 @@ namespace Hao.AppService
         /// 角色名称
         /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// 用户数量
+        /// </summary>
+        public int? UserCount { get; set; }
     }
 }

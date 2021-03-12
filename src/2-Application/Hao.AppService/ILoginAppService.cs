@@ -13,6 +13,6 @@ namespace Hao.AppService
         /// <param name="input"></param>
         /// <param name="fromIP"></param>
         /// <returns></returns>
-        Task<LoginVM> LoginByAccountPwd(LoginByAccountPwdInput input, string fromIP);
+        Task<LoginOutput> LoginByAccountPwd(LoginByAccountPwdInput input, string fromIP);
     }
 }

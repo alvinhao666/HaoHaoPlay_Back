@@ -1,6 +1,6 @@
 ﻿namespace Hao.AppService
 {
-    public class ResourceItemVM
+    public class ResourceItemOutput
     {
         /// <summary>
         /// 资源id
@@ -21,7 +21,7 @@
         /// 排序值
         /// </summary>
         public int? Sort { get; set; }
-        
+
         /// <summary>
         /// 别名
         /// </summary>

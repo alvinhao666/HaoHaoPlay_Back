@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Hao.AppService
 {
-    public class UserExcelVM
+    public class UserExcelOutput
     {
         /// <summary>
         /// 文件id

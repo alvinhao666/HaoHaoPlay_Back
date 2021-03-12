@@ -60,7 +60,7 @@ namespace Hao.AppService
         /// 资源列表
         /// </summary>
         /// <returns></returns>
-        public async Task<List<ResourceItemVM>> GetResourceList(long parentId)
+        public async Task<List<ResourceItemOutput>> GetResourceList(long parentId)
         {
             var query = new ModuleQuery { ParentId = parentId };
 
@@ -68,7 +68,7 @@ namespace Hao.AppService
 
             var resources = await _moduleRep.GetListAsync(query);
 
-            var result = resources.Adapt<List<ResourceItemVM>>();
+            var result = resources.Adapt<List<ResourceItemOutput>>();
             return result;
         }
 

@@ -34,7 +34,7 @@ namespace Hao.WebApi
         /// <returns></returns>
         [HttpGet]
         [AuthCode("App_Search_1_8192")]
-        public async Task<List<ModuleTreeVM>> GetTreeList() => await _moduleAppService.GetTreeList();
+        public async Task<List<ModuleTreeOutput>> GetTreeList() => await _moduleAppService.GetTreeList();
 
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace Hao.WebApi
         /// <returns></returns>
         [HttpGet("{id}")]
         [AuthCode("App_Delete_1_65536")]
-        public async Task<ModuleDetailVM> Get(long? id) => await _moduleAppService.Get(id.Value);
+        public async Task<ModuleDetailOutput> Get(long? id) => await _moduleAppService.Get(id.Value);
 
         /// <summary>
         /// 更新模块信息

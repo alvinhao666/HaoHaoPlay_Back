@@ -19,13 +19,13 @@ namespace Hao.AppService
         /// 获取所有角色列表
         /// </summary>
         /// <returns></returns>
-        Task<List<RoleVM>> GetList();
+        Task<List<RoleOutput>> GetList();
 
         /// <summary>
         /// 根据当前用户角色，获取可以操作得角色列表
         /// </summary>
         /// <returns></returns>
-        Task<List<RoleSelectVM>> GetRoleListByCurrentRole();
+        Task<List<RoleSelectOutput>> GetRoleListByCurrentRole();
 
         /// <summary>
         /// 更新角色权限
@@ -40,7 +40,7 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<RoleModuleVM> GetRoleModule(long id);
+        Task<RoleModuleOutput> GetRoleModule(long id);
 
         /// <summary>
         /// 删除角色

@@ -28,16 +28,16 @@ namespace Hao.AppService
         private void MapUser(TypeAdapterConfig config)
         {
 
-            config.ForType<SysUser, UserVM>()
+            config.ForType<SysUser, UserOutput>()
                 .Map(x => x.GenderString, a => a.Gender.ToDescription())
                 .Map(x => x.EnabledString, a => a.Enabled.IsTrue() ? "有效" : "注销")
                 .Map(x => x.Age, a => DateTime.Now.Year - a.Birthday.Value.Year);
 
-            config.ForType<SysUser, UserDetailVM>()
+            config.ForType<SysUser, UserDetailOutput>()
                .Map(x => x.GenderString, a => a.Gender.ToDescription())
                .Map(x => x.EnabledString, a => a.Enabled.IsTrue() ? "有效" : "注销");
 
-            config.ForType<SysUser, UserSecurityVM>()
+            config.ForType<SysUser, UserSecurityOutput>()
                .Map(x => x.PasswordLevel, a => a.PasswordLevel.ToDescription())
                .Map(x => x.Phone, a => H_Util.HidePhoneNumber(a.Phone))
                .Map(x => x.Email, a => H_Util.HideEmailNumber(a.Email));
@@ -51,10 +51,10 @@ namespace Hao.AppService
         /// </summary>
         private void MapModule(TypeAdapterConfig config)
         {
-            config.ForType<SysModule, ModuleDetailVM>()
+            config.ForType<SysModule, ModuleDetailOutput>()
                .Map(x => x.Code, a => $"{a.Alias}_{a.Layer}_{a.Number}");
 
-            config.ForType<SysModule, ResourceItemVM>()
+            config.ForType<SysModule, ResourceItemOutput>()
                .Map(x => x.ResourceCode, a => $"{a.ParentAlias}_{a.Alias}_{a.Layer}_{a.Number}");
         }
     }

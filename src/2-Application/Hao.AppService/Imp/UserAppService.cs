@@ -99,14 +99,14 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="queryInput"></param>
         /// <returns></returns>
-        public async Task<Paged<UserVM>> GetPaged(UserQueryInput queryInput)
+        public async Task<Paged<UserOutput>> GetPaged(UserQueryInput queryInput)
         {
             var query = queryInput.Adapt<UserQuery>();
 
             query.CurrentRoleLevel = _currentUser.RoleLevel;
 
             var users = await _userRep.GetPagedAsync(query);
-            var result = users.Adapt<Paged<UserVM>>();
+            var result = users.Adapt<Paged<UserOutput>>();
 
             return result;
         }
@@ -116,11 +116,11 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<UserDetailVM> Get(long id)
+        public async Task<UserDetailOutput> Get(long id)
         {
             var user = await GetUserDetail(id);
 
-            return user.Adapt<UserDetailVM>();
+            return user.Adapt<UserDetailOutput>();
         }
 
 
@@ -202,7 +202,7 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="queryInput"></param>
         /// <returns></returns>
-        public async Task<UserExcelVM> Export(UserQueryInput queryInput)
+        public async Task<UserExcelOutput> Export(UserQueryInput queryInput)
         {
             var query = queryInput.Adapt<UserQuery>();
             var users = await _userRep.GetListAsync(query);
@@ -227,7 +227,7 @@ namespace Hao.AppService
 
             await H_Excel.ExportByEPPlus(filePath, exportData);
 
-            return new UserExcelVM { FileName = fileName, FileId = _protector.Protect(fileName.Split('.')[0], TimeSpan.FromSeconds(5)) };
+            return new UserExcelOutput { FileName = fileName, FileId = _protector.Protect(fileName.Split('.')[0], TimeSpan.FromSeconds(5)) };
         }
 
         /// <summary>

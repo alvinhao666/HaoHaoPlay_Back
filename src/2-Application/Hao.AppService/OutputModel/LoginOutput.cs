@@ -2,7 +2,7 @@
 
 namespace Hao.AppService
 {
-    public class LoginVM
+    public class LoginOutput
     {
         /// <summary>
         /// 姓名

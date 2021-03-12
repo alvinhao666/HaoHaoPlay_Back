@@ -1,9 +1,17 @@
-﻿using Hao.Enum;
+﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Hao.AppService
 {
-    public class ModuleTreeVM
+    public class RoleModuleOutput
+    {
+        public List<RoleModuleItemVM> Nodes { get; set; }
+
+        public List<string> CheckedKeys { get; set; }
+    }
+
+    public class RoleModuleItemVM
     {
         public string key { get; set; }
 
@@ -30,10 +38,10 @@ namespace Hao.AppService
         /// <summary>
         /// 子模块
         /// </summary>
-        public List<ModuleTreeVM> children { get; set; }
+        public List<RoleModuleItemVM> children { get; set; }
 
         /// <summary>
-        /// 是否展开
+        /// 展开
         /// </summary>
         public bool expanded { get; set; }
 
@@ -41,5 +49,10 @@ namespace Hao.AppService
         /// 是否叶子节点
         /// </summary>
         public bool isLeaf { get; set; }
+
+        ///// <summary>
+        ///// 设置节点本身是否选中
+        ///// </summary>
+        //public bool @checked { get; set; }
     }
 }
