@@ -27,24 +27,24 @@ namespace Hao.AppService
         /// <summary>
         /// 添加模块
         /// </summary>
-        /// <param name="vm"></param>
+        /// <param name="input"></param>
         /// <returns></returns>
         [DistributedLock("ModuleAppService_AddModule")]
-        public async Task Add(ModuleAddRequest vm)
+        public async Task Add(ModuleAddInput input)
         {
-            var parentNode = await GetModuleDetail(vm.ParentId.Value);
+            var parentNode = await GetModuleDetail(input.ParentId.Value);
 
             H_AssertEx.That(parentNode.Type == ModuleType.Sub, "子菜单无法继续添加节点");
 
-            var isExistSameName = await _moduleRep.IsExistSameNameModule(vm.Name, vm.Type, vm.ParentId);
+            var isExistSameName = await _moduleRep.IsExistSameNameModule(input.Name, input.Type, input.ParentId);
 
             H_AssertEx.That(isExistSameName, "存在相同名称的模块，请重新输入");
 
-            var isExistSameAlias = await _moduleRep.IsExistSameAliasModule(vm.Alias, vm.Type, vm.ParentId);
+            var isExistSameAlias = await _moduleRep.IsExistSameAliasModule(input.Alias, input.Type, input.ParentId);
 
             H_AssertEx.That(isExistSameAlias, "存在相同别名的模块，请重新输入");
 
-            var module = vm.Adapt<SysModule>();
+            var module = input.Adapt<SysModule>();
 
             if (parentNode.Type == ModuleType.Sub)
             {
@@ -64,10 +64,10 @@ namespace Hao.AppService
         /// 获取所有模块列表
         /// </summary>
         /// <returns></returns>
-        public async Task<List<ModuleTreeVM>> GetTreeList()
+        public async Task<List<ModuleTreeOutput>> GetTreeList()
         {
             var modules = await _moduleRep.GetListAsync(new ModuleQuery() { IncludeResource = false });
-            var result = new List<ModuleTreeVM>();
+            var result = new List<ModuleTreeOutput>();
             InitModuleTree(result, -1, modules);
             return result;
         }
@@ -77,20 +77,20 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<ModuleDetailVM> Get(long id)
+        public async Task<ModuleDetailOutput> Get(long id)
         {
             var module = await GetModuleDetail(id);
-            var result = module.Adapt<ModuleDetailVM>();
+            var result = module.Adapt<ModuleDetailOutput>();
 
             if (result.Type == ModuleType.Sub)
             {
                 var query = new ModuleQuery { ParentId = id };
-                
-                query.OrderBy(a=>a.Sort).OrderBy(a=>a.CreateTime);
+
+                query.OrderBy(a => a.Sort).OrderBy(a => a.CreateTime);
 
                 var resources = await _moduleRep.GetListAsync(query);
 
-                result.Resources = resources.Adapt<List<ResourceItemVM>>();
+                result.Resources = resources.Adapt<List<ResourceItemOutput>>();
             }
 
             return result;
@@ -100,33 +100,33 @@ namespace Hao.AppService
         /// 更新模块信息
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="vm"></param>
+        /// <param name="input"></param>
         /// <returns></returns>
         [DistributedLock("ModuleAppService_UpdateModule")]
         [UnitOfWork]
-        public async Task Update(long id, ModuleUpdateRequest vm)
+        public async Task Update(long id, ModuleUpdateInput input)
         {
             H_AssertEx.That(id == 0, "无法操作系统根节点");
 
             var module = await GetModuleDetail(id);
 
-            var isExistSameName = await _moduleRep.IsExistSameNameModule(vm.Name, module.Type, module.ParentId, id);
+            var isExistSameName = await _moduleRep.IsExistSameNameModule(input.Name, module.Type, module.ParentId, id);
 
             H_AssertEx.That(isExistSameName, "存在相同名称的模块，请重新输入");
 
-            var isExistSameAlias = await _moduleRep.IsExistSameNameModule(vm.Alias, module.Type, module.ParentId, id);
+            var isExistSameAlias = await _moduleRep.IsExistSameNameModule(input.Alias, module.Type, module.ParentId, id);
 
             H_AssertEx.That(isExistSameAlias, "存在相同别名的模块，请重新输入");
 
-            if (module.Alias != vm.Alias)
+            if (module.Alias != input.Alias)
             {
                 var sons = await _moduleRep.GetListAsync(new ModuleQuery { ParentId = id });
-                sons.ForEach(a => a.ParentAlias = vm.Alias);
+                sons.ForEach(a => a.ParentAlias = input.Alias);
 
                 await _moduleRep.UpdateAsync(sons, a => new { a.ParentAlias });
             }
 
-            module = vm.Adapt(module);
+            module = input.Adapt(module);
 
             if (module.Type == ModuleType.Main)
             {
@@ -196,19 +196,19 @@ namespace Hao.AppService
         /// <param name="result"></param>
         /// <param name="parentId"></param>
         /// <param name="sources"></param>
-        private void InitModuleTree(List<ModuleTreeVM> result, long parentId, List<SysModule> sources)
+        private void InitModuleTree(List<ModuleTreeOutput> result, long parentId, List<SysModule> sources)
         {
             //递归寻找子节点  
             var tempTree = sources.Where(item => item.ParentId == parentId).OrderBy(a => a.Sort);
             foreach (var item in tempTree)
             {
-                var node = new ModuleTreeVM()
+                var node = new ModuleTreeOutput()
                 {
                     key = item.Id.ToString(),
                     title = item.Name,
                     isLeaf = item.Type == ModuleType.Sub,
                     expanded = true,
-                    children = new List<ModuleTreeVM>()
+                    children = new List<ModuleTreeOutput>()
                 };
                 result.Add(node);
                 InitModuleTree(node.children, item.Id, sources);

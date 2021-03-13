@@ -15,24 +15,24 @@ namespace Hao.AppService
         /// <summary>
         /// 添加资源
         /// </summary>
-        /// <param name="vm"></param>
+        /// <param name="input"></param>
         /// <returns></returns>
         [DistributedLock("ModuleAppService_AddResource")]
-        public async Task AddResource(ResourceAddRequest vm)
+        public async Task AddResource(ResourceAddInput input)
         {
-            var parentNode = await GetModuleDetail(vm.ParentId.Value);
+            var parentNode = await GetModuleDetail(input.ParentId.Value);
 
             H_AssertEx.That(parentNode.Type != ModuleType.Sub, "非子菜单无法添加资源");
 
-            var isExistSameName = await _moduleRep.IsExistSameNameModule(vm.Name, ModuleType.Resource, vm.ParentId);
+            var isExistSameName = await _moduleRep.IsExistSameNameModule(input.Name, ModuleType.Resource, input.ParentId);
 
             H_AssertEx.That(isExistSameName, "存在相同名称的资源，请重新输入");
 
-            var isExistSameAlias = await _moduleRep.IsExistSameAliasModule(vm.Alias, ModuleType.Resource, vm.ParentId);
+            var isExistSameAlias = await _moduleRep.IsExistSameAliasModule(input.Alias, ModuleType.Resource, input.ParentId);
 
             H_AssertEx.That(isExistSameAlias, "存在相同别名的资源，请重新输入");
 
-            var module = vm.Adapt<SysModule>();
+            var module = input.Adapt<SysModule>();
             module.Type = ModuleType.Resource;
             module.Sort = 0;
             module.ParentAlias = parentNode.Alias;
@@ -60,15 +60,15 @@ namespace Hao.AppService
         /// 资源列表
         /// </summary>
         /// <returns></returns>
-        public async Task<List<ResourceItemVM>> GetResourceList(long parentId)
+        public async Task<List<ResourceItemOutput>> GetResourceList(long parentId)
         {
             var query = new ModuleQuery { ParentId = parentId };
 
-            query.OrderBy(a=>a.Sort).OrderBy(a=>a.CreateTime);
+            query.OrderBy(a => a.Sort).OrderBy(a => a.CreateTime);
 
             var resources = await _moduleRep.GetListAsync(query);
 
-            var result = resources.Adapt<List<ResourceItemVM>>();
+            var result = resources.Adapt<List<ResourceItemOutput>>();
             return result;
         }
 
@@ -80,7 +80,7 @@ namespace Hao.AppService
         /// <returns></returns>
         [DistributedLock("ModuleAppService_UpdateResource")]
         [UnitOfWork]
-        public async Task UpdateResource(long id, ResourceUpdateRequest vm)
+        public async Task UpdateResource(long id, ResourceUpdateInput vm)
         {
             H_AssertEx.That(id == 0, "无法操作系统根节点");
 

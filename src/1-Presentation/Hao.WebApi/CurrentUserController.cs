@@ -22,15 +22,15 @@ namespace Hao.WebApi
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<CurrentUserVM> GetUser() => await _currentUserAppService.Get();
+        public async Task<CurrentUserOutput> GetUser() => await _currentUserAppService.Get();
 
         /// <summary>
         /// 更新当前用户头像
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="input"></param>
         /// <returns></returns>
         [HttpPut]
-        public async Task UpdateHeadImg([FromBody] UpdateHeadImgRequest request) => await _currentUserAppService.UpdateHeadImg(request);
+        public async Task UpdateHeadImg([FromBody] UpdateHeadImgInput input) => await _currentUserAppService.UpdateHeadImg(input);
 
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace Hao.WebApi
         /// </summary>
         /// <returns></returns>
         [HttpPut]
-        public async Task UpdateBaseInfo([FromBody] CurrentUserUpdateRequest request) => await _currentUserAppService.UpdateBaseInfo(request);
+        public async Task UpdateBaseInfo([FromBody] CurrentUserUpdateInput input) => await _currentUserAppService.UpdateBaseInfo(input);
 
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace Hao.WebApi
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<UserSecurityVM> SecurityInfo() => await _currentUserAppService.GetSecurityInfo();
+        public async Task<UserSecurityOutput> SecurityInfo() => await _currentUserAppService.GetSecurityInfo();
 
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace Hao.WebApi
         /// </summary>
         /// <returns></returns>
         [HttpPut]
-        public async Task UpdatePassword([FromBody] PwdUpdateRequest request) => await _currentUserAppService.UpdatePassword(request.OldPassword, request.NewPassword);
+        public async Task UpdatePassword([FromBody] PwdUpdateInput input) => await _currentUserAppService.UpdatePassword(input.OldPassword, input.NewPassword);
 
         /// <summary>
         /// 注销登录

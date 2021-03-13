@@ -22,11 +22,11 @@ namespace Hao.WebApi
         /// <summary>
         /// 添加资源
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="input"></param>
         /// <returns></returns>
         [HttpPost]
         [AuthCode("App_Add_1_16384")]
-        public async Task Add([FromBody] ResourceAddRequest request) => await _moduleAppService.AddResource(request);
+        public async Task Add([FromBody] ResourceAddInput input) => await _moduleAppService.AddResource(input);
 
         /// <summary>
         /// 删除资源
@@ -43,16 +43,16 @@ namespace Hao.WebApi
         /// <returns></returns>
         [HttpGet("{parentId}")]
         [AuthCode("App_Search_1_8192")]
-        public async Task<List<ResourceItemVM>> GetList(long? parentId) => await _moduleAppService.GetResourceList(parentId.Value);
+        public async Task<List<ResourceItemOutput>> GetList(long? parentId) => await _moduleAppService.GetResourceList(parentId.Value);
 
         /// <summary>
         /// 更新资源信息
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="request"></param>
+        /// <param name="input"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
         [AuthCode("App_Update_1_32768")]
-        public async Task Update(long? id, [FromBody] ResourceUpdateRequest request) => await _moduleAppService.UpdateResource(id.Value, request);
+        public async Task Update(long? id, [FromBody] ResourceUpdateInput input) => await _moduleAppService.UpdateResource(id.Value, input);
     }
 }

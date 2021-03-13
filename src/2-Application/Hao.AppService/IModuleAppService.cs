@@ -11,9 +11,9 @@ namespace Hao.AppService
         /// <summary>
         /// 添加模块
         /// </summary>
-        /// <param name="vm"></param>
+        /// <param name="input"></param>
         /// <returns></returns>
-        Task Add(ModuleAddRequest vm);
+        Task Add(ModuleAddInput input);
 
         /// <summary>
         /// 删除模块
@@ -26,22 +26,22 @@ namespace Hao.AppService
         /// 更新模块信息
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="vm"></param>
+        /// <param name="input"></param>
         /// <returns></returns>
-        Task Update(long id, ModuleUpdateRequest vm);
+        Task Update(long id, ModuleUpdateInput input);
 
         /// <summary>
         /// 获取模块列表
         /// </summary>
         /// <returns></returns>
-        Task<List<ModuleTreeVM>> GetTreeList();
+        Task<List<ModuleTreeOutput>> GetTreeList();
 
         /// <summary>
         /// 获取模块详情
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<ModuleDetailVM> Get(long id);
+        Task<ModuleDetailOutput> Get(long id);
 
         #region 资源
         /// <summary>
@@ -49,7 +49,7 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="vm"></param>
         /// <returns></returns>
-        Task AddResource(ResourceAddRequest vm);
+        Task AddResource(ResourceAddInput vm);
 
         /// <summary>
         /// 删除资源
@@ -64,13 +64,13 @@ namespace Hao.AppService
         /// <param name="id"></param>
         /// <param name="vm"></param>
         /// <returns></returns>
-        Task UpdateResource(long id, ResourceUpdateRequest vm);
+        Task UpdateResource(long id, ResourceUpdateInput vm);
 
         /// <summary>
         /// 获取资源列表
         /// </summary>
         /// <returns></returns>
-        Task<List<ResourceItemVM>> GetResourceList(long parentId);
+        Task<List<ResourceItemOutput>> GetResourceList(long parentId);
 
         #endregion
 

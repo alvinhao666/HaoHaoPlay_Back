@@ -42,7 +42,7 @@ namespace Hao.AppService
         private readonly ITimeLimitedDataProtector _protector;
 
         public UserAppService(ISysRoleRepository roleRep,
-            IOptionsSnapshot<H_AppSettings> appSettingsOptions, 
+            IOptionsSnapshot<H_AppSettings> appSettingsOptions,
             ISysUserRepository userRepository,
             ICurrentUser currentUser,
             ICapPublisher publisher,
@@ -59,23 +59,23 @@ namespace Hao.AppService
         /// <summary>
         /// 添加用户
         /// </summary>
-        /// <param name="vm"></param>
+        /// <param name="input"></param>
         /// <returns></returns>
         [DistributedLock("UserAppService_AddUser")]
-        public async Task Add(UserAddRequest vm)
+        public async Task Add(UserAddInput input)
         {
-            var users = await _userRep.GetAllAsync(new UserQuery { Account = vm.Account });
+            var users = await _userRep.GetAllAsync(new UserQuery { Account = input.Account });
 
             H_AssertEx.That(users.Count > 0, "账号已存在，请重新输入");
 
-            var role = await _roleRep.GetAsync(vm.RoleId.Value);
+            var role = await _roleRep.GetAsync(input.RoleId.Value);
             H_AssertEx.That(role == null, "角色不存在，请重新选择");
             H_AssertEx.That(role.IsDeleted, "角色已删除，请重新选择");
 
             H_AssertEx.That(role.Level <= _currentUser.RoleLevel, "无法添加同级及高级角色用户");
 
-            var user = vm.Adapt<SysUser>();
-            user.FirstNameInitial = WordsHelper.GetFirstPinyin(user.Name.Substring(0,1));
+            var user = input.Adapt<SysUser>();
+            user.FirstNameInitial = WordsHelper.GetFirstPinyin(user.Name.Substring(0, 1));
             user.PasswordLevel = (PasswordLevel)H_Util.CheckPasswordLevel(user.Password);
             user.Password = H_EncryptProvider.HMACSHA256(user.Password, _appSettings.Key.Sha256Key);
             user.Enabled = true;
@@ -99,14 +99,14 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="queryInput"></param>
         /// <returns></returns>
-        public async Task<Paged<UserVM>> GetPaged(UserQueryInput queryInput)
+        public async Task<Paged<UserOutput>> GetPaged(UserQueryInput queryInput)
         {
             var query = queryInput.Adapt<UserQuery>();
 
-            query.CurrentRoleLevel = _currentUser.RoleLevel; 
+            query.CurrentRoleLevel = _currentUser.RoleLevel;
 
             var users = await _userRep.GetPagedAsync(query);
-            var result = users.Adapt<Paged<UserVM>>();
+            var result = users.Adapt<Paged<UserOutput>>();
 
             return result;
         }
@@ -116,11 +116,11 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<UserDetailVM> Get(long id)
+        public async Task<UserDetailOutput> Get(long id)
         {
             var user = await GetUserDetail(id);
 
-            return user.Adapt<UserDetailVM>();
+            return user.Adapt<UserDetailOutput>();
         }
 
 
@@ -171,14 +171,14 @@ namespace Hao.AppService
         /// 更新编辑用户
         /// </summary>
         /// <param name="userId"></param>
-        /// <param name="vm"></param>
+        /// <param name="input"></param>
         /// <returns></returns>
-        public async Task Update(long userId, UserUpdateRequest vm)
+        public async Task Update(long userId, UserUpdateInput input)
         {
             CheckUser(userId);
             var user = await GetUserDetail(userId);
 
-            user = vm.Adapt(user);
+            user = input.Adapt(user);
 
             await _userRep.UpdateAsync(user,
                 user => new { user.Name, user.Birthday, user.Gender, user.Phone, user.Email, user.WeChat, user.QQ, user.RoleId, user.RoleName });
@@ -191,7 +191,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task<bool> IsExistAccount(string account)
         {
-            var query = new UserQuery {Account = account };
+            var query = new UserQuery { Account = account };
             var users = await _userRep.GetListAsync(query);
             return users.Count > 0;
         }
@@ -202,7 +202,7 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="queryInput"></param>
         /// <returns></returns>
-        public async Task<UserExcelVM> Export(UserQueryInput queryInput)
+        public async Task<UserExcelOutput> Export(UserQueryInput queryInput)
         {
             var query = queryInput.Adapt<UserQuery>();
             var users = await _userRep.GetListAsync(query);
@@ -227,7 +227,7 @@ namespace Hao.AppService
 
             await H_Excel.ExportByEPPlus(filePath, exportData);
 
-            return new UserExcelVM { FileName = fileName, FileId = _protector.Protect(fileName.Split('.')[0], TimeSpan.FromSeconds(5)) };
+            return new UserExcelOutput { FileName = fileName, FileId = _protector.Protect(fileName.Split('.')[0], TimeSpan.FromSeconds(5)) };
         }
 
         /// <summary>

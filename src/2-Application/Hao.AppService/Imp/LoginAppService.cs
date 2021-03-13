@@ -50,22 +50,22 @@ namespace Hao.AppService
         /// <summary>
         /// 账号密码登录
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="input"></param>
         /// <param name="fromIP"></param>
         /// <returns></returns>
         [CapUnitOfWork]
-        public async Task<LoginVM> LoginByAccountPwd(LoginByAccountPwdRequest request, string fromIP)
+        public async Task<LoginOutput> LoginByAccountPwd(LoginByAccountPwdInput input, string fromIP)
         {
             //rsa解密
-            var password = H_EncryptProvider.RsaDecrypt(_appSettings.Key.RsaPrivateKey, request.Password);
+            var password = H_EncryptProvider.RsaDecrypt(_appSettings.Key.RsaPrivateKey, input.Password);
 
             //sha256加密
             password = H_EncryptProvider.HMACSHA256(password, _appSettings.Key.Sha256Key);
 
             //根据账号密码查询用户
-            var user = await GetUserByAccountPwd(request.Account, password);
+            var user = await GetUserByAccountPwd(input.Account, password);
 
-            return await Login(user, fromIP, request.IsRememberLogin);
+            return await Login(user, fromIP, input.IsRememberLogin);
         }
 
 
@@ -76,7 +76,7 @@ namespace Hao.AppService
         /// <param name="fromIP"></param>
         /// <param name="isRememberLogin"></param>
         /// <returns></returns>
-        private async Task<LoginVM> Login(SysUser user, string fromIP, bool isRememberLogin)
+        private async Task<LoginOutput> Login(SysUser user, string fromIP, bool isRememberLogin)
         {
             var timeNow = DateTime.Now;
             var expireTime = timeNow.AddDays(isRememberLogin ? 3 : 1);
@@ -112,11 +112,11 @@ namespace Hao.AppService
             int expireSeconds = (int)expireTime.Subtract(timeNow).Duration().TotalSeconds + 1;
             RedisHelper.Set($"{_appSettings.RedisPrefix.Login}{user.Id}_{jti}", JsonConvert.SerializeObject(cacheUser), expireSeconds);
 
-            var result = user.Adapt<LoginVM>();
+            var result = user.Adapt<LoginOutput>();
             result.Jwt = jwt;
             result.AuthNums = authNums;
             result.Menus = menus;
-            
+
             await _publisher.PublishAsync(nameof(LoginEventData), new LoginEventData
             {
                 UserId = user.Id,

@@ -24,7 +24,7 @@ namespace Hao.WebApi
         /// <returns></returns>
         [HttpGet]
         [AuthCode("Role_Search_1_131072")]
-        public async Task<List<RoleVM>> GetRoleList() => await _roleAppService.GetList();
+        public async Task<List<RoleOutput>> GetRoleList() => await _roleAppService.GetList();
 
         /// <summary>
         /// 获取角色用户的模块
@@ -33,25 +33,25 @@ namespace Hao.WebApi
         /// <returns></returns>
         [HttpGet("{id}")]
         [AuthCode("Role_ViewAuth_1_262144")]
-        public async Task<RoleModuleVM> GetRoleModule(long? id) => await _roleAppService.GetRoleModule(id.Value);
+        public async Task<RoleModuleOutput> GetRoleModule(long? id) => await _roleAppService.GetRoleModule(id.Value);
 
         /// <summary>
         /// 更新角色权限
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="request"></param>
+        /// <param name="input"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
         [AuthCode("Role_UpdateAuth_1_524288")]
-        public async Task UpdateRoleAuth(long? id, [FromBody] RoleUpdateRequest request) => await _roleAppService.UpdateRoleAuth(id.Value, request);
+        public async Task UpdateRoleAuth(long? id, [FromBody] RoleUpdateInput input) => await _roleAppService.UpdateRoleAuth(id.Value, input);
 
         ///// <summary>
         ///// 添加角色
         ///// </summary>
-        ///// <param name="request"></param>
+        ///// <param name="input"></param>
         ///// <returns></returns>
         //[HttpPost]
-        //public async Task Add([FromBody] RoleAddRequest request) => await _roleAppService.AddRole(request);
+        //public async Task Add([FromBody] RoleAddinput input) => await _roleAppService.AddRole(input);
 
         ///// <summary>
         ///// 删除角色

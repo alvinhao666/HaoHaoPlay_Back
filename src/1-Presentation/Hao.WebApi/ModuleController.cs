@@ -22,11 +22,11 @@ namespace Hao.WebApi
         /// <summary>
         /// 添加模块
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="input"></param>
         /// <returns></returns>
         [HttpPost]
         [AuthCode("App_Add_1_16384")]
-        public async Task Add([FromBody] ModuleAddRequest request) => await _moduleAppService.Add(request);
+        public async Task Add([FromBody] ModuleAddInput input) => await _moduleAppService.Add(input);
 
         /// <summary>
         /// 获取模块树列表
@@ -34,7 +34,7 @@ namespace Hao.WebApi
         /// <returns></returns>
         [HttpGet]
         [AuthCode("App_Search_1_8192")]
-        public async Task<List<ModuleTreeVM>> GetTreeList() => await _moduleAppService.GetTreeList();
+        public async Task<List<ModuleTreeOutput>> GetTreeList() => await _moduleAppService.GetTreeList();
 
 
         /// <summary>
@@ -43,17 +43,17 @@ namespace Hao.WebApi
         /// <returns></returns>
         [HttpGet("{id}")]
         [AuthCode("App_Delete_1_65536")]
-        public async Task<ModuleDetailVM> Get(long? id) => await _moduleAppService.Get(id.Value);
+        public async Task<ModuleDetailOutput> Get(long? id) => await _moduleAppService.Get(id.Value);
 
         /// <summary>
         /// 更新模块信息
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="request"></param>
+        /// <param name="input"></param>
         /// <returns></returns>
         [HttpPut("{id}")]
         [AuthCode("App_Update_1_32768")]
-        public async Task Update(long? id, [FromBody] ModuleUpdateRequest request) => await _moduleAppService.Update(id.Value, request);
+        public async Task Update(long? id, [FromBody] ModuleUpdateInput input) => await _moduleAppService.Update(id.Value, input);
 
 
         /// <summary>

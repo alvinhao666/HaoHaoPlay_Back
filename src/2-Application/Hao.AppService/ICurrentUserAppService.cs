@@ -12,21 +12,21 @@ namespace Hao.AppService
         /// 当前用户信息
         /// </summary>
         /// <returns></returns>
-        Task<CurrentUserVM> Get();
+        Task<CurrentUserOutput> Get();
 
         /// <summary>
         /// 更新头像
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="input"></param>
         /// <returns></returns>
-        Task UpdateHeadImg(UpdateHeadImgRequest request);
+        Task UpdateHeadImg(UpdateHeadImgInput input);
 
         /// <summary>
         /// 更新当前用户基本信息
         /// </summary>
         /// <param name="vm"></param>
         /// <returns></returns>
-        Task UpdateBaseInfo(CurrentUserUpdateRequest vm);
+        Task UpdateBaseInfo(CurrentUserUpdateInput vm);
 
         /// <summary>
         /// 更新当前用户密码
@@ -40,7 +40,7 @@ namespace Hao.AppService
         /// 当前用户的安全信息
         /// </summary>
         /// <returns></returns>
-        Task<UserSecurityVM> GetSecurityInfo();
+        Task<UserSecurityOutput> GetSecurityInfo();
 
         /// <summary>
         /// 注销登录

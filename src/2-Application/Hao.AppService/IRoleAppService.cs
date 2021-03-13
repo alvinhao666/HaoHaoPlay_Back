@@ -11,36 +11,36 @@ namespace Hao.AppService
         /// <summary>
         /// 添加角色
         /// </summary>
-        /// <param name="vm"></param>
+        /// <param name="input"></param>
         /// <returns></returns>
-        Task Add(RoleAddRequest vm);
+        Task Add(RoleAddInput input);
 
         /// <summary>
         /// 获取所有角色列表
         /// </summary>
         /// <returns></returns>
-        Task<List<RoleVM>> GetList();
+        Task<List<RoleOutput>> GetList();
 
         /// <summary>
         /// 根据当前用户角色，获取可以操作得角色列表
         /// </summary>
         /// <returns></returns>
-        Task<List<RoleSelectVM>> GetRoleListByCurrentRole();
+        Task<List<RoleSelectOutput>> GetRoleListByCurrentRole();
 
         /// <summary>
         /// 更新角色权限
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="vm"></param>
+        /// <param name="input"></param>
         /// <returns></returns>
-        Task UpdateRoleAuth(long id, RoleUpdateRequest vm);
+        Task UpdateRoleAuth(long id, RoleUpdateInput input);
 
         /// <summary>
         /// 获取角色拥有的模块
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<RoleModuleVM> GetRoleModule(long id);
+        Task<RoleModuleOutput> GetRoleModule(long id);
 
         /// <summary>
         /// 删除角色

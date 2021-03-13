@@ -12,24 +12,24 @@ namespace Hao.AppService
         /// <summary>
         /// 添加字典
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="input"></param>
         /// <returns></returns>
-        Task Add(DictAddRequest request);
+        Task Add(DictAddInput input);
 
         /// <summary>
         /// 查询字典
         /// </summary>
         /// <param name="queryInput"></param>
         /// <returns></returns>
-        Task<Paged<DictVM>> GetPaged(DictQueryInput queryInput);
+        Task<Paged<DictOutput>> GetPaged(DictQueryInput queryInput);
 
         /// <summary>
         /// 修改字典
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="request"></param>
+        /// <param name="input"></param>
         /// <returns></returns>
-        Task Update(long id, DictUpdateRequest request);
+        Task Update(long id, DictUpdateInput input);
 
         /// <summary>
         /// 删除字典
@@ -46,23 +46,23 @@ namespace Hao.AppService
         /// <summary>
         /// 添加字典数据项
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="input"></param>
         /// <returns></returns>
-        Task AddDictItem(DictItemAddRequest request);
+        Task AddDictItem(DictItemAddInput input);
 
         /// <summary>
         /// 查询字典数据项
         /// </summary>
         /// <returns></returns>
-        Task<Paged<DictItemVM>> GetDictItemPaged(DictQueryInput queryInput);
+        Task<Paged<DictItemOutput>> GetDictItemPaged(DictQueryInput queryInput);
 
         /// <summary>
         /// 更新数据项
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="request"></param>
+        /// <param name="input"></param>
         /// <returns></returns>
-        Task UpdateDictItem(long id, DictItemUpdateRequest request);
+        Task UpdateDictItem(long id, DictItemUpdateInput input);
 
         /// <summary>
         /// 删除数据项
@@ -76,6 +76,6 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="dictCode"></param>
         /// <returns></returns>
-        Task<List<DictDataItemVM>> GetDictDataItem(string dictCode);
+        Task<List<DictDataItemOutput>> GetDictDataItem(string dictCode);
     }
 }

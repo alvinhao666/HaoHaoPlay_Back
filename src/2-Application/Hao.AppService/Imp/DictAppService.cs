@@ -24,20 +24,20 @@ namespace Hao.AppService
         /// <summary>
         /// 添加字典
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="input"></param>
         /// <returns></returns>
         [DistributedLock("DictAppService_AddDict")]
-        public async Task Add(DictAddRequest request)
+        public async Task Add(DictAddInput input)
         {
-            var sameItems = await _dictRep.GetListAsync(new DictQuery { DictName = request.DictName });
+            var sameItems = await _dictRep.GetListAsync(new DictQuery { DictName = input.DictName });
 
             H_AssertEx.That(sameItems.Count > 0, "字典名称已存在，请重新输入");
 
-            sameItems = await _dictRep.GetListAsync(new DictQuery { DictCode = request.DictCode });
+            sameItems = await _dictRep.GetListAsync(new DictQuery { DictCode = input.DictCode });
 
             H_AssertEx.That(sameItems.Count > 0, "字典编码已存在，请重新输入");
 
-            var dict = request.Adapt<SysDict>();
+            var dict = input.Adapt<SysDict>();
             dict.ParentId = -1;
             dict.Sort = 0;
             await _dictRep.InsertAsync(dict);
@@ -47,24 +47,24 @@ namespace Hao.AppService
         /// 修改字典
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="request"></param>
+        /// <param name="input"></param>
         /// <returns></returns>
         [DistributedLock("DictAppService_UpdateDict")]
-        public async Task Update(long id, DictUpdateRequest request)
+        public async Task Update(long id, DictUpdateInput input)
         {
-            var sameItems = await _dictRep.GetListAsync(new DictQuery { DictName = request.DictName });
+            var sameItems = await _dictRep.GetListAsync(new DictQuery { DictName = input.DictName });
 
             H_AssertEx.That(sameItems.Any(a => a.Id != id), "字典名称已存在，请重新输入");
 
-            sameItems = await _dictRep.GetListAsync(new DictQuery { DictCode = request.DictCode });
+            sameItems = await _dictRep.GetListAsync(new DictQuery { DictCode = input.DictCode });
 
             H_AssertEx.That(sameItems.Any(a => a.Id != id), "字典编码已存在，请重新输入");
 
             var dict = await _dictRep.GetAsync(id);
-            dict.DictCode = request.DictCode;
-            dict.DictName = request.DictName;
-            dict.Remark = request.Remark;
-            dict.Sort = request.Sort;
+            dict.DictCode = input.DictCode;
+            dict.DictName = input.DictName;
+            dict.Remark = input.Remark;
+            dict.Sort = input.Sort;
             await _dictRep.UpdateAsync(dict, a => new { a.DictCode, a.DictName, a.Remark, a.Sort });
         }
 
@@ -94,43 +94,43 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="queryInput"></param>
         /// <returns></returns>
-        public async Task<Paged<DictVM>> GetPaged(DictQueryInput queryInput)
+        public async Task<Paged<DictOutput>> GetPaged(DictQueryInput queryInput)
         {
             var query = queryInput.Adapt<DictQuery>();
             query.DictType = DictType.Main;
 
             var result = await _dictRep.GetDictPagedResult(query);
 
-            return result.Adapt<Paged<DictVM>>();
+            return result.Adapt<Paged<DictOutput>>();
 
         }
 
         /// <summary>
         /// 添加字典项
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="input"></param>
         /// <returns></returns>
         [DistributedLock("DictAppService_AddDictItem")]
-        public async Task AddDictItem(DictItemAddRequest request)
+        public async Task AddDictItem(DictItemAddInput input)
         {
-            var sameItems = await _dictRep.GetListAsync(new DictQuery { ParentId = request.ParentId, ItemName = request.ItemName });
+            var sameItems = await _dictRep.GetListAsync(new DictQuery { ParentId = input.ParentId, ItemName = input.ItemName });
 
             H_AssertEx.That(sameItems.Count > 0, "数据项名称已存在，请重新输入");
 
 
-            sameItems = await _dictRep.GetListAsync(new DictQuery { ParentId = request.ParentId, ItemValue = request.ItemValue });
+            sameItems = await _dictRep.GetListAsync(new DictQuery { ParentId = input.ParentId, ItemValue = input.ItemValue });
 
             H_AssertEx.That(sameItems.Count > 0, "数据项值已存在，请重新输入");
 
 
-            var parentDict = await GetAsync(request.ParentId.Value);
-            var dict = request.Adapt<SysDict>();
+            var parentDict = await GetAsync(input.ParentId.Value);
+            var dict = input.Adapt<SysDict>();
             dict.ParentId = parentDict.Id;
             dict.DictCode = parentDict.DictCode;
             dict.DictName = parentDict.DictName;
             if (!dict.Sort.HasValue)
             {
-                var dictItems = await _dictRep.GetListAsync(new DictQuery { ParentId = request.ParentId.Value });
+                var dictItems = await _dictRep.GetListAsync(new DictQuery { ParentId = input.ParentId.Value });
                 dict.Sort = dictItems.Count + 1;
             }
             await _dictRep.InsertAsync(dict);
@@ -140,40 +140,40 @@ namespace Hao.AppService
         /// 获取字典数据
         /// </summary>
         /// <returns></returns>
-        public async Task<Paged<DictItemVM>> GetDictItemPaged(DictQueryInput queryInput)
+        public async Task<Paged<DictItemOutput>> GetDictItemPaged(DictQueryInput queryInput)
         {
             var query = queryInput.Adapt<DictQuery>();
 
-            query.OrderBy(a=>a.Sort).OrderBy(a=>a.CreateTime);
+            query.OrderBy(a => a.Sort).OrderBy(a => a.CreateTime);
 
             var dicts = await _dictRep.GetPagedAsync(query);
 
-            return dicts.Adapt<Paged<DictItemVM>>();
+            return dicts.Adapt<Paged<DictItemOutput>>();
         }
 
         /// <summary>
         /// 更新数据项
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="request"></param>
+        /// <param name="input"></param>
         /// <returns></returns>
         [DistributedLock("DictAppService_UpdateDictItem")]
-        public async Task UpdateDictItem(long id, DictItemUpdateRequest request)
+        public async Task UpdateDictItem(long id, DictItemUpdateInput input)
         {
             var item = await _dictRep.GetAsync(id);
 
-            var sameItems = await _dictRep.GetListAsync(new DictQuery { ParentId = item.ParentId, ItemName = request.ItemName });
+            var sameItems = await _dictRep.GetListAsync(new DictQuery { ParentId = item.ParentId, ItemName = input.ItemName });
 
             H_AssertEx.That(sameItems.Any(a => a.Id != id), "数据项名称已存在，请重新输入");
 
-            sameItems = await _dictRep.GetListAsync(new DictQuery { ParentId = item.ParentId, ItemValue = request.ItemValue });
+            sameItems = await _dictRep.GetListAsync(new DictQuery { ParentId = item.ParentId, ItemValue = input.ItemValue });
 
             H_AssertEx.That(sameItems.Any(a => a.Id != id), "数据项值已存在，请重新输入");
 
-            item.ItemName = request.ItemName;
-            item.ItemValue = request.ItemValue;
-            item.Remark = request.Remark;
-            item.Sort = request.Sort;
+            item.ItemName = input.ItemName;
+            item.ItemValue = input.ItemValue;
+            item.Remark = input.Remark;
+            item.Sort = input.Sort;
             await _dictRep.UpdateAsync(item, a => new { a.ItemName, a.ItemValue, a.Remark, a.Sort });
         }
 
@@ -194,7 +194,7 @@ namespace Hao.AppService
         /// <param name="dictCode"></param>
         /// <returns></returns>
 
-        public async Task<List<DictDataItemVM>> GetDictDataItem(string dictCode)
+        public async Task<List<DictDataItemOutput>> GetDictDataItem(string dictCode)
         {
             var query = new DictQuery
             {
@@ -202,11 +202,11 @@ namespace Hao.AppService
                 DictType = DictType.Sub
             };
 
-            query.OrderBy(a=>a.Sort).OrderBy(a=>a.CreateTime);
+            query.OrderBy(a => a.Sort).OrderBy(a => a.CreateTime);
 
             var dictItems = await _dictRep.GetListAsync(query);
 
-            return dictItems.Adapt<List<DictDataItemVM>>();
+            return dictItems.Adapt<List<DictDataItemOutput>>();
         }
 
 
