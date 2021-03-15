@@ -67,7 +67,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.Swagger", "src\6-Common
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.Log", "src\6-Common\Hao.Log\Hao.Log.csproj", "{6FBACED6-0DC6-424C-A1E2-E3F2D6E752DE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hao.FluentValidation", "src\6-Common\Hao.FluentValidation\Hao.FluentValidation.csproj", "{27F5FEAE-65D4-43AF-B8A8-DEC4A6ACE914}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.FluentValidation", "src\6-Common\Hao.FluentValidation\Hao.FluentValidation.csproj", "{27F5FEAE-65D4-43AF-B8A8-DEC4A6ACE914}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hao.Host.Extensions", "Hao.Host.Extensions\Hao.Host.Extensions.csproj", "{122DA277-0CE9-4292-AEF4-6302482444A0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -167,6 +169,10 @@ Global
 		{27F5FEAE-65D4-43AF-B8A8-DEC4A6ACE914}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{27F5FEAE-65D4-43AF-B8A8-DEC4A6ACE914}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{27F5FEAE-65D4-43AF-B8A8-DEC4A6ACE914}.Release|Any CPU.Build.0 = Release|Any CPU
+		{122DA277-0CE9-4292-AEF4-6302482444A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{122DA277-0CE9-4292-AEF4-6302482444A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{122DA277-0CE9-4292-AEF4-6302482444A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{122DA277-0CE9-4292-AEF4-6302482444A0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -200,6 +206,7 @@ Global
 		{3B5B8ACB-F4F8-4A4D-8871-68752D81462D} = {042FD3BE-DA74-462B-8F16-E6D1ADFC7454}
 		{6FBACED6-0DC6-424C-A1E2-E3F2D6E752DE} = {042FD3BE-DA74-462B-8F16-E6D1ADFC7454}
 		{27F5FEAE-65D4-43AF-B8A8-DEC4A6ACE914} = {042FD3BE-DA74-462B-8F16-E6D1ADFC7454}
+		{122DA277-0CE9-4292-AEF4-6302482444A0} = {2F74256B-F2C2-494A-82AE-97722C2A4F4B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5BAAEA79-B086-4D1C-AC3A-B029DF5FA31A}
