@@ -128,6 +128,7 @@ namespace Hao.AppService
             dict.ParentId = parentDict.Id;
             dict.DictCode = parentDict.DictCode;
             dict.DictName = parentDict.DictName;
+            dict.DictType = DictType.Sub;
             if (!dict.Sort.HasValue)
             {
                 var dictItems = await _dictRep.GetListAsync(new DictQuery { ParentId = input.ParentId.Value });
