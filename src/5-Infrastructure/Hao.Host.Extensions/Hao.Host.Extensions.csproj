@@ -13,9 +13,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\5-Infrastructure\Hao.Core\Hao.Core.csproj" />
-    <ProjectReference Include="..\src\5-Infrastructure\Hao.Library\Hao.Library.csproj" />
-    <ProjectReference Include="..\src\6-Common\Hao.Swagger\Hao.Swagger.csproj" />
+    <ProjectReference Include="..\..\6-Common\Hao.Swagger\Hao.Swagger.csproj" />
+    <ProjectReference Include="..\Hao.Core\Hao.Core.csproj" />
+    <ProjectReference Include="..\Hao.Library\Hao.Library.csproj" />
   </ItemGroup>
 
 </Project>

@@ -70,7 +70,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.Log", "src\6-Common\Hao
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hao.FluentValidation", "src\6-Common\Hao.FluentValidation\Hao.FluentValidation.csproj", "{27F5FEAE-65D4-43AF-B8A8-DEC4A6ACE914}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hao.Host.Extensions", "Hao.Host.Extensions\Hao.Host.Extensions.csproj", "{122DA277-0CE9-4292-AEF4-6302482444A0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hao.Host.Extensions", "src\5-Infrastructure\Hao.Host.Extensions\Hao.Host.Extensions.csproj", "{122DA277-0CE9-4292-AEF4-6302482444A0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
