@@ -24,6 +24,7 @@
     <ProjectReference Include="..\1-Presentation\Hao.WebApi\Hao.WebApi.csproj" />
     <ProjectReference Include="..\3-Domain\Hao.EventBus\Hao.EventBus.csproj" />
     <ProjectReference Include="..\4-Repository\Hao.Repository\Hao.Repository.csproj" />
+    <ProjectReference Include="..\5-Infrastructure\Hao.Host.Extensions\Hao.Host.Extensions.csproj" />
   </ItemGroup>
 
   <ItemGroup>
