@@ -16,7 +16,7 @@
 		<PackageReference Include="FreeSql" Version="2.3.200" />
 		<PackageReference Include="FreeSql.Provider.PostgreSQL" Version="2.3.200" />
 		<PackageReference Include="Microsoft.AspNetCore.DataProtection.Extensions" Version="5.0.4" />
-		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.8.0" />
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.9.0" />
 	</ItemGroup>
 
 	<ItemGroup>
