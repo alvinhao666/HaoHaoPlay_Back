@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using System.Collections.Generic;
 using System.IO;
 using Serilog;
+using System;
 
 namespace Hao.Core.Extensions
 {
@@ -19,7 +20,7 @@ namespace Hao.Core.Extensions
         /// <param name="env"></param>
         /// <param name="appSettings"></param>
         /// <returns></returns>
-        internal static IApplicationBuilder Configure(this IApplicationBuilder app, IHostEnvironment env, H_AppSettings appSettings)
+        internal static IApplicationBuilder Configure(this IApplicationBuilder app, IHostEnvironment env, IServiceProvider serviceProvider, H_AppSettings appSettings)
         {
             #region DevEnvironment
 
@@ -50,9 +51,9 @@ namespace Hao.Core.Extensions
 
 
             #region 异常中间件
-            
+
             // app.UseExceptionMiddleware();
-            
+
             #endregion
 
 

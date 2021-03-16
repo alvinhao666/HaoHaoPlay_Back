@@ -21,10 +21,10 @@ namespace HaoHaoPlay_Back.Host
         public override void ConfigureServices(IServiceCollection services)
         {
             base.ConfigureServices(services);
-            
+
             var cosConfig = new TencentCosConfig();
             Configuration.GetSection("TencentCos").Bind(cosConfig);
-            
+
             services.AddSingleton<ITencentCosProvider>(o => new TencentCosProvider(cosConfig));
         }
 
@@ -32,7 +32,7 @@ namespace HaoHaoPlay_Back.Host
         ///// 用于配置中间件，以构建请求处理流水线
         ///// </summary>
         ///// <param name="app"></param>
-        //public override void Configure(IApplicationBuilder app)
+        //public override void Configure(IApplicationBuilder app, IServiceProvider serviceProvider)
         //{
         //    base.Configure(app);
         //}
