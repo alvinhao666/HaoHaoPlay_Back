@@ -10,6 +10,7 @@ namespace Hao.Core.Extensions
 {
     public class H_HostBuilder
     {
+
         /// <summary>
         /// 启动
         /// </summary>
@@ -17,9 +18,9 @@ namespace Hao.Core.Extensions
         /// <param name="args"></param>
         public void Run<TStartup>(string[] args) where TStartup : class
         {
-            Host.CreateDefaultBuilder(args)
+            var host = Host.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration(InitBuild)
-                .UseServiceContext()  //AspectCore di容器 [FromServiceContext] 属性注入
+                .UseServiceContext()
                 .UseSerilog((context, configure) =>
                 {
                     configure.ReadFrom.Configuration(context.Configuration);
@@ -28,8 +29,11 @@ namespace Hao.Core.Extensions
                 {
                     webBuilder.UseStartup<TStartup>();
                 })
-                .Build()
-                .Run();
+                .Build();
+
+            ServiceLocator.SetServiceProvider(host.Services);
+
+            host.Run();
         }
 
 

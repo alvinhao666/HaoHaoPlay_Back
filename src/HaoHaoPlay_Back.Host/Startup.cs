@@ -5,7 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Hao.Library;
 using Hao.TencentCloud.Cos;
-using Hao.Core;
 
 namespace HaoHaoPlay_Back.Host
 {
@@ -27,10 +26,6 @@ namespace HaoHaoPlay_Back.Host
             Configuration.GetSection("TencentCos").Bind(cosConfig);
 
             services.AddSingleton<ITencentCosProvider>(o => new TencentCosProvider(cosConfig));
-
-            var serviceProvider = AspectCoreContainer.Build(services);
-
-            ServiceLocator.SetServiceProvider(serviceProvider);
         }
 
         ///// <summary>
