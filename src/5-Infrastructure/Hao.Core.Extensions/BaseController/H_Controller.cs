@@ -97,14 +97,19 @@ namespace Hao.Core
 
             var userId = context.HttpContext.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Sid)?.Value;
 
-            H_Log.Info(new LogNote
+            var descriptor = context.ActionDescriptor as ControllerActionDescriptor;
+
+            if (!descriptor.MethodInfo.CustomAttributes.Any(x => x.AttributeType == typeof(IgnoreExcutedLogAttribute)))
             {
-                Location = HttpContext.Request.Path.Value,
-                Data = result,
-                TraceId = context.HttpContext.TraceIdentifier,
-                UserId = userId,
-                Extra = "响应结果"
-            });
+                H_Log.Info(new LogNote
+                {
+                    Location = HttpContext.Request.Path.Value,
+                    Data = result,
+                    TraceId = context.HttpContext.TraceIdentifier,
+                    UserId = userId,
+                    Extra = "响应结果"
+                });
+            }
 
             base.OnActionExecuted(context);
         }
@@ -189,6 +194,15 @@ namespace Hao.Core
             {
 
             }
+        }
+
+        /// <summary>
+        /// 忽略记录执行完成后的日志记录特性
+        /// </summary>
+        [AttributeUsage(AttributeTargets.Method)]
+        protected class IgnoreExcutedLogAttribute : Attribute
+        {
+
         }
 
 
