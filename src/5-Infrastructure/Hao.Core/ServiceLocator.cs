@@ -9,7 +9,7 @@ namespace Hao.Core
     /// </summary>
     public class ServiceLocator
     {
-        public static IServiceProvider ServiceProvider { get; private set; }
+        public static IServiceProvider ServiceProvider { get; private set; } //与aspectcore中scope对象不一样，需注意，single也不一样
 
         public static void SetServiceProvider(IServiceProvider serviceProvider)
         {
