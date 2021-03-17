@@ -14,18 +14,23 @@ namespace Hao.WebApi
     {
         private readonly IDictAppService _dictAppService;
 
-        public DictController(IDictAppService dictAppService, ICurrentUser currentUser)
+        public DictController(IDictAppService dictAppService)
         {
-            //Console.WriteLine(currentUser.GetHashCode());
-
-            //var user = ServiceLocator.Resolve<ICurrentUser>();
-
-            //Console.WriteLine(user.GetHashCode());
-
-            //Console.WriteLine(currentUser.Equals(user));
-
             _dictAppService = dictAppService;
         }
+
+        //public DictController(IDictAppService dictAppService, ICurrentUser currentUser)
+        //{
+        //    Console.WriteLine(currentUser.GetHashCode());
+
+        //    var user = ServiceLocator.Resolve<ICurrentUser>();
+
+        //    Console.WriteLine(user.GetHashCode());
+
+        //    Console.WriteLine(currentUser.Equals(user));
+
+        //    _dictAppService = dictAppService;
+        //}
 
 
         /// <summary>
