@@ -5,7 +5,7 @@ using System.Text;
 namespace Hao.Core
 {
     /// <summary>
-    /// 用于在静态/扩展类中使用某些服务类的对象实例，只适用于瞬时对象， SnowflakeIdMaker(单例唯一地方使用)
+    /// 用于在静态/扩展类中使用某些服务类的对象实例，只适用于瞬时对象， SnowflakeIdMaker(单例 且 在整个项目中 唯一 一个地方使用)
     /// </summary>
     public static class ServiceLocator
     {
