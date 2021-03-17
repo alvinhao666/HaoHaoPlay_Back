@@ -63,8 +63,6 @@ namespace Hao.Core.Extensions
         {
             //执行顺序 ConfigureContainer - Configure
             app.Configure(Env, serviceProvider, _appSettings);
-
-            ServiceLocator.SetServiceProvider(serviceProvider);
         }
 
 

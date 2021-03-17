@@ -10,6 +10,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="AspectCore.Abstractions" Version="2.2.0" />
+		<PackageReference Include="AspectCore.Extensions.DependencyInjection" Version="2.2.0" />
 		<PackageReference Include="DotNetCore.CAP" Version="3.1.2" />
 		<PackageReference Include="DotNetCore.CAP.PostgreSql" Version="3.1.2" />
 		<PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="3.1.2" />
