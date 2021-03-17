@@ -6,6 +6,8 @@ namespace Hao.Core
 {
     public static class ServiceLocator
     {
+        //https://www.cnblogs.com/Leo_wl/p/6111503.html  从两个不同的ServiceProvider说起
+
         public static IServiceProvider ServiceProvider { get; private set; }
 
 

@@ -15,7 +15,7 @@ namespace Hao.Core
         public static IServiceProvider Build(IServiceCollection services)
         {
             if (services == null) throw new ArgumentNullException(nameof(services));
-            services.AddAspectServiceContext();
+
             return resolver = services.ToServiceContext().Build();
         }
 
