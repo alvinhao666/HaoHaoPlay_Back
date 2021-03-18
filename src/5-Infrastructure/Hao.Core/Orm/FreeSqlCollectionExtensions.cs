@@ -33,7 +33,7 @@ namespace Microsoft.Extensions.DependencyInjection
             IFreeSql fsql = new FreeSqlBuilder()
                             .UseConnectionString(dbType, connectionString)
                             .UseSlave(slaveConnectionStrings)
-                            .UseNameConvert(NameConvertType.ToLower)
+                            .UseNameConvert(NameConvertType.ToLower) //NameConvertType.PascalCaseToUnderscoreWithLower
                             //.UseMonitorCommand(cmd => {
                             //     Console.ForegroundColor = ConsoleColor.DarkYellow;
                             //     Console.Write("SQL：");
