@@ -5,6 +5,8 @@ using System;
 using AspectCore.Extensions.Hosting;
 using System.IO;
 using Serilog;
+using System.Diagnostics;
+using Coldairarrow.Util;
 
 namespace Hao.Core.Extensions
 {
@@ -32,6 +34,13 @@ namespace Hao.Core.Extensions
                             .Build();
 
             ServiceLocator.Set(host.Services);
+
+
+            //var projectName = Process.GetCurrentProcess().ProcessName;
+
+            //new IdHelperBootstrapper()
+            //    //使用Zookeeper自动分配管理WorkerId,解决时间回退问题和自动分配问题
+            //    .UseZookeeper("127.0.0.1:2181", 200, projectName);
 
             host.Run();
         }

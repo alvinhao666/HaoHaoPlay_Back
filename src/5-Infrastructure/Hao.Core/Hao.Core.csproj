@@ -16,6 +16,7 @@
 		<PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="3.1.2" />
 		<PackageReference Include="FreeSql" Version="2.3.200" />
 		<PackageReference Include="FreeSql.Provider.PostgreSQL" Version="2.3.200" />
+		<PackageReference Include="IdHelper.Zookeeper" Version="1.5.1" />
 		<PackageReference Include="Microsoft.AspNetCore.DataProtection.Extensions" Version="5.0.4" />
 		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.9.0" />
 	</ItemGroup>
