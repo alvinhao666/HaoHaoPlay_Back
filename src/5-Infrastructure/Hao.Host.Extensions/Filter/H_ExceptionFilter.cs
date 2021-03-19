@@ -9,7 +9,7 @@ namespace Hao.Core.Extensions
     /// <summary>
     /// 异常过滤
     /// </summary>
-    public class H_ExceptionFilter : ExceptionFilterAttribute
+    internal class H_ExceptionFilter : ExceptionFilterAttribute
     {
         /// <summary>
         /// 异常处理，不会处理eventbus中的异常

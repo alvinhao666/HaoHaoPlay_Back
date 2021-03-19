@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace Hao.Core.Extensions
 {
-    public class StringJsonConvert : JsonConverter<string>
+    internal class StringJsonConvert : JsonConverter<string>
     {
         public override string Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {

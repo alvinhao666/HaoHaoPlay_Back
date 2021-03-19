@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Hao.Core.Extensions
 {
-    public class StringTrimModelBinderProvider : IModelBinderProvider
+    internal class StringTrimModelBinderProvider : IModelBinderProvider
     {
         //private readonly IList<IInputFormatter> _formatters;
 
@@ -40,7 +40,7 @@ namespace Hao.Core.Extensions
     }
 
 
-    public class QueryStringTrimModelBinder : IModelBinder
+    internal class QueryStringTrimModelBinder : IModelBinder
     {
 
         public Task BindModelAsync(ModelBindingContext bindingContext)
