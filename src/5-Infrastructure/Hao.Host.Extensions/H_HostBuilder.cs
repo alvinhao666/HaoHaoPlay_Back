@@ -19,19 +19,19 @@ namespace Hao.Core.Extensions
         public void Run<TStartup>(string[] args) where TStartup : class
         {
             var host = Host.CreateDefaultBuilder(args)
-                .ConfigureAppConfiguration(InitBuild)
-                .UseServiceContext()
-                .UseSerilog((context, configure) =>
-                {
-                    configure.ReadFrom.Configuration(context.Configuration);
-                })
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<TStartup>();
-                })
-                .Build();
+                            .ConfigureAppConfiguration(InitBuild)
+                            .UseServiceContext()
+                            .UseSerilog((context, configure) =>
+                            {
+                                configure.ReadFrom.Configuration(context.Configuration);
+                            })
+                            .ConfigureWebHostDefaults(webBuilder =>
+                            {
+                                webBuilder.UseStartup<TStartup>();
+                            })
+                            .Build();
 
-            ServiceLocator.SetServiceProvider(host.Services);
+            ServiceLocator.Set(host.Services);
 
             host.Run();
         }
