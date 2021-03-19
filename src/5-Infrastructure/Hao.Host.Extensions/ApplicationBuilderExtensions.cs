@@ -20,7 +20,7 @@ namespace Hao.Core.Extensions
         /// <param name="env"></param>
         /// <param name="appSettings"></param>
         /// <returns></returns>
-        internal static IApplicationBuilder Configure(this IApplicationBuilder app, IHostEnvironment env, IServiceProvider serviceProvider, H_AppSettings appSettings)
+        internal static IApplicationBuilder Configure(this IApplicationBuilder app, IHostEnvironment env, H_AppSettings appSettings)
         {
             #region DevEnvironment
 

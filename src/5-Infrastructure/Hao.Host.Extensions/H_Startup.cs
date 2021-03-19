@@ -62,7 +62,7 @@ namespace Hao.Core.Extensions
         public virtual void Configure(IApplicationBuilder app, IServiceProvider serviceProvider)
         {
             //执行顺序 ConfigureContainer - Configure
-            app.Configure(Env, serviceProvider, _appSettings);
+            app.Configure(Env, _appSettings);
         }
 
 
