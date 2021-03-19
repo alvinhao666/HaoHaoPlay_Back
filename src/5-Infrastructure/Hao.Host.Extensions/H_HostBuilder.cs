@@ -31,7 +31,7 @@ namespace Hao.Core.Extensions
                 })
                 .Build();
 
-            ServiceLocator.SetServiceProvider(host.Services);
+            ServiceLocator.Set(host.Services);
 
             host.Run();
         }

@@ -14,7 +14,7 @@ namespace Hao.Core
         public static IServiceProvider ServiceProvider { get; private set; }
 
 
-        public static void SetServiceProvider(IServiceProvider serviceProvider)
+        public static void Set(IServiceProvider serviceProvider)
         {
             ServiceProvider = serviceProvider;
         }
