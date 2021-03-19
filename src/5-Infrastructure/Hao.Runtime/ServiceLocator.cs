@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace Hao.Core
+namespace Hao.Runtime
 {
     /// <summary>
     /// 用于在静态/扩展类中使用某些服务类的对象实例，只适用于瞬时对象， SnowflakeIdMaker(单例 且 在整个项目中 唯一 一个地方使用)

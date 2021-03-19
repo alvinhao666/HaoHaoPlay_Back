@@ -7,6 +7,7 @@ using System.IO;
 using Serilog;
 using System.Diagnostics;
 using Coldairarrow.Util;
+using Hao.Runtime;
 
 namespace Hao.Core.Extensions
 {
