@@ -2,6 +2,8 @@ using Hao.AppService;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Hao.Core;
+using Hao.Runtime;
+using System;
 
 namespace Hao.WebApi
 {
@@ -16,6 +18,19 @@ namespace Hao.WebApi
         {
             _dictAppService = dictAppService;
         }
+
+        //public DictController(IDictAppService dictAppService, ICurrentUser currentUser)
+        //{
+        //    Console.WriteLine(currentUser.GetHashCode());
+
+        //    var user = ServiceLocator.Resolve<ICurrentUser>();
+
+        //    Console.WriteLine(user.GetHashCode());
+
+        //    Console.WriteLine(currentUser.Equals(user));
+
+        //    _dictAppService = dictAppService;
+        //}
 
 
         /// <summary>

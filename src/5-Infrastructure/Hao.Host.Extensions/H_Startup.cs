@@ -20,7 +20,7 @@ namespace Hao.Core.Extensions
         protected H_Startup(IHostEnvironment env, IConfiguration cfg)
         {
             var parentDir = new DirectoryInfo(AppContext.BaseDirectory).Parent;
-         
+
             //parentDir = currentDir?.Parent.Parent.Parent.Parent.Parent; 验证是null 而不是抛出异常
             if (parentDir == null) throw new Exception("项目安置路径有误，请检查");
 
@@ -41,7 +41,6 @@ namespace Hao.Core.Extensions
         /// <summary>
         /// 用于配置依赖注入以在运行时根据依赖关系创建对象
         /// </summary>
-        /// <param name="services"></param>
         public virtual void ConfigureServices(IServiceCollection services)
         {
             var filePathOption = Configuration.GetSection(nameof(H_AppSettings.FilePath));
@@ -60,18 +59,16 @@ namespace Hao.Core.Extensions
         /// <summary>
         /// 用于配置中间件，以构建请求处理流水线
         /// </summary>
-        /// <param name="app"></param>
-        public virtual void Configure(IApplicationBuilder app)
+        public virtual void Configure(IApplicationBuilder app, IServiceProvider serviceProvider)
         {
             //执行顺序 ConfigureContainer - Configure
-            app.Configure(Env, _appSettings);
+            app.Configure(Env, serviceProvider, _appSettings);
         }
 
 
         /// <summary>
         /// 检查配置
         /// </summary>
-        /// <param name="config"></param>
         public virtual void CheckAppSettings(H_AppSettings config)
         {
             var message = "配置异常：";

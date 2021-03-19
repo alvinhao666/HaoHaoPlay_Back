@@ -46,6 +46,6 @@ namespace Hao.Model
         /// <summary>
         /// 字典类型
         /// </summary>
-        public DictType DictType { get; set; }
+        public DictType? DictType { get; set; }
     }
 }
