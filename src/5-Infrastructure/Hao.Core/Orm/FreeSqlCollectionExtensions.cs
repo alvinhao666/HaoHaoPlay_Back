@@ -116,7 +116,8 @@ namespace Microsoft.Extensions.DependencyInjection
                     case "Id":
                         if (e.Column.CsType == H_Type.GuidType)
                         {
-                            e.Value = FreeUtil.NewMongodbId(); //生成有序不重复的id
+                            // e.Value = FreeUtil.NewMongodbId(); //生成有序不重复的id  多台机器是否存在重复情况未知
+                            e.Value = Guid.NewGuid();
                         }
                         else if (e.Column.CsType == H_Type.LongType)
                         {
