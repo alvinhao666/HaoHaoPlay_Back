@@ -6,6 +6,7 @@ using Hao.Snowflake;
 using Hao.Utility;
 using System;
 using System.Threading;
+using Coldairarrow.Util;
 using Hao.Runtime;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -121,6 +122,7 @@ namespace Microsoft.Extensions.DependencyInjection
                         }
                         else if (e.Column.CsType == H_Type.LongType)
                         {
+                            // e.Value = IdHelper.GetLongId(); // 雪花id zookeeper分布式
                             var idMaker = ServiceLocator.ServiceProvider.GetService<ISnowflakeIdMaker>();
                             e.Value = idMaker.NextId();
                         }
