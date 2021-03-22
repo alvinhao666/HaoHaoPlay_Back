@@ -8,6 +8,7 @@ using Serilog;
 using System.Diagnostics;
 using Coldairarrow.Util;
 using Hao.Runtime;
+using Hao.Log;
 
 namespace Hao.Core.Extensions
 {
@@ -41,7 +42,10 @@ namespace Hao.Core.Extensions
 
             //new IdHelperBootstrapper()
             //    //使用Zookeeper自动分配管理WorkerId,解决时间回退问题和自动分配问题
-            //    .UseZookeeper("127.0.0.1:2181", 200, projectName);
+            //    .UseZookeeper("192.168.3.56:2181", 200, projectName)
+            //    .Boot();
+
+            //H_Log.Info($"WorkId:{IdHelper.WorkerId}");
 
             host.Run();
         }
