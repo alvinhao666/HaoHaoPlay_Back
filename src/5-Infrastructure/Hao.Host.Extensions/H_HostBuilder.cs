@@ -5,10 +5,7 @@ using System;
 using AspectCore.Extensions.Hosting;
 using System.IO;
 using Serilog;
-using System.Diagnostics;
-using Coldairarrow.Util;
 using Hao.Runtime;
-using Hao.Log;
 
 namespace Hao.Core.Extensions
 {
@@ -36,16 +33,6 @@ namespace Hao.Core.Extensions
                             .Build();
 
             ServiceLocator.Set(host.Services);
-
-
-            //var projectName = Process.GetCurrentProcess().ProcessName;
-
-            ////使用Zookeeper自动分配管理WorkerId,解决时间回退问题和自动分配问题
-            //new IdHelperBootstrapper()
-            //    .UseZookeeper("192.168.3.56:2181", 200, projectName)
-            //    .Boot();
-
-            //H_Log.Info($"SnowflakeId_WorkId:{IdHelper.WorkerId},Time:{DateTime.Now}");
 
             host.Run();
         }

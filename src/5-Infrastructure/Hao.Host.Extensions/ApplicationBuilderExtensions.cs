@@ -8,6 +8,9 @@ using System.Collections.Generic;
 using System.IO;
 using Serilog;
 using System;
+using Coldairarrow.Util;
+using System.Diagnostics;
+using Hao.Log;
 
 namespace Hao.Core.Extensions
 {
@@ -110,6 +113,15 @@ namespace Hao.Core.Extensions
 
             #endregion
 
+
+            var projectName = Process.GetCurrentProcess().ProcessName;
+
+            //使用Zookeeper自动分配管理WorkerId,解决时间回退问题和自动分配问题
+            new IdHelperBootstrapper()
+                .UseZookeeper(appSettings.ZookeeperUrl, 200, projectName)
+                .Boot();
+
+            H_Log.Info($"SnowflakeIdInfo ---> WorkId:{IdHelper.WorkerId},WorkTime:{DateTime.Now}");
 
             return app;
         }
