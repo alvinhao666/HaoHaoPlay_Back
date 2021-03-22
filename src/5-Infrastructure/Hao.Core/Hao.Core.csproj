@@ -25,7 +25,6 @@
 		<ProjectReference Include="..\..\6-Common\Hao.Dependency\Hao.Dependency.csproj" />
 		<ProjectReference Include="..\..\6-Common\Hao.Log\Hao.Log.csproj" />
 		<ProjectReference Include="..\..\6-Common\Hao.Redis\Hao.Redis.csproj" />
-		<ProjectReference Include="..\..\6-Common\Hao.Snowflake\Hao.Snowflake.csproj" />
 		<ProjectReference Include="..\..\6-Common\Hao.Utility\Hao.Utility.csproj" />
 		<ProjectReference Include="..\Hao.Runtime\Hao.Runtime.csproj" />
 	</ItemGroup>

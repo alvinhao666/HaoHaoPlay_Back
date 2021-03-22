@@ -2,7 +2,6 @@
 using FreeSql.Aop;
 using FreeSql.Internal;
 using Hao.Core;
-using Hao.Snowflake;
 using Hao.Utility;
 using System;
 using System.Threading;
@@ -117,14 +116,13 @@ namespace Microsoft.Extensions.DependencyInjection
                     case "Id":
                         if (e.Column.CsType == H_Type.GuidType)
                         {
-                            // e.Value = FreeUtil.NewMongodbId(); //生成有序不重复的id  多台机器是否存在重复情况未知
+                            // e.Value = FreeUtil.NewMongodbId(); //生成有序不重复的id  多台机器顺序是否有序，是否重复的情况未知
                             e.Value = Guid.NewGuid();
                         }
                         else if (e.Column.CsType == H_Type.LongType)
                         {
-                            // e.Value = IdHelper.GetLongId(); // 雪花id zookeeper分布式
-                            var idMaker = ServiceLocator.ServiceProvider.GetService<ISnowflakeIdMaker>();
-                            e.Value = idMaker.NextId();
+                            e.Value = IdHelper.GetLongId(); // 雪花id zookeeper分布式协同系统
+                            //e.Value = ServiceLocator.ServiceProvider.GetService<ISnowflakeIdMaker>().NextId();
                         }
                         break;
 
