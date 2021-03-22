@@ -40,12 +40,12 @@ namespace Hao.Core.Extensions
 
             //var projectName = Process.GetCurrentProcess().ProcessName;
 
+            ////使用Zookeeper自动分配管理WorkerId,解决时间回退问题和自动分配问题
             //new IdHelperBootstrapper()
-            //    //使用Zookeeper自动分配管理WorkerId,解决时间回退问题和自动分配问题
             //    .UseZookeeper("192.168.3.56:2181", 200, projectName)
             //    .Boot();
 
-            //H_Log.Info($"WorkId:{IdHelper.WorkerId}");
+            //H_Log.Info($"SnowflakeId_WorkId:{IdHelper.WorkerId},Time:{DateTime.Now}");
 
             host.Run();
         }
