@@ -18,3 +18,9 @@ Mapster | 对象映射组件  | [https://github.com/MapsterMapper/Mapster](https
 FluentValidation | 模型验证器  | [https://github.com/FluentValidation/FluentValidation](https://github.com/FluentValidation/FluentValidation)
 Swagger | Api文档  | [https://github.com/domaindrivendev/Swashbuckle.AspNetCore](https://github.com/domaindrivendev/Swashbuckle.AspNetCore)
 ImageSharp | 跨平台图像处理框架  | [https://github.com/SixLabors/ImageSharp](https://github.com/SixLabors/ImageSharp)
+
+#### 前端:
+技术 | 名称 | 官网
+----|------|----
+Angular | 前端框架 | [https://angular.cn](https://angular.cn)
+NG-Zorro | UI 组件库 | [https://ng.ant.design/docs/introduce/zh](https://ng.ant.design/docs/introduce/zh)
