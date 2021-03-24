@@ -5,7 +5,7 @@
 
 ## 有什么
 #### 后端:
-技术名称 | 描述 | 官网
+技术名称 | 描述 | 链接
 ----|------|----
 PostgreSQL | 关系型数据库 | [https://www.postgresql.org](https://www.postgresql.org)
 Redis | NoSql数据库 | [https://redis.io](https://redis.io)
@@ -23,7 +23,7 @@ Swagger | API文档组件  | [https://github.com/domaindrivendev/Swashbuckle.Asp
 ImageSharp | 跨平台图像处理框架 | [https://github.com/SixLabors/ImageSharp](https://github.com/SixLabors/ImageSharp)
 
 #### 前端:
-技术 | 名称 | 官网
+技术名称 | 描述 | 链接
 ----|------|----
 Angular | 前端框架 | [https://angular.cn](https://angular.cn)
 NG-ZORRO | UI 组件库 | [https://ng.ant.design/docs/introduce/zh](https://ng.ant.design/docs/introduce/zh)
