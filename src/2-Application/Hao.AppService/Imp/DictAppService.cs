@@ -5,6 +5,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Mapster;
 using Hao.Enum;
+using Hao.Service;
 
 namespace Hao.AppService
 {
@@ -15,9 +16,12 @@ namespace Hao.AppService
     {
         private readonly IDictRepository _dictRep;
 
-        public DictAppService(IDictRepository dictRep)
+        private readonly IDictDomainService _dictDomainService;
+
+        public DictAppService(IDictRepository dictRep, IDictDomainService dictDomainService)
         {
             _dictRep = dictRep;
+            _dictDomainService = dictDomainService;
         }
 
 
@@ -123,7 +127,7 @@ namespace Hao.AppService
             H_AssertEx.That(sameItems.Count > 0, "数据项值已存在，请重新输入");
 
 
-            var parentDict = await GetAsync(input.ParentId.Value);
+            var parentDict = await _dictDomainService.Get(input.ParentId.Value);
             var dict = input.Adapt<SysDict>();
             dict.ParentId = parentDict.Id;
             dict.DictCode = parentDict.DictCode;
@@ -209,24 +213,5 @@ namespace Hao.AppService
 
             return dictItems.Adapt<List<DictDataItemOutput>>();
         }
-
-
-        #region private
-
-        /// <summary>
-        /// 字典详情
-        /// </summary>
-        /// <param name="dictId"></param>
-        /// <returns></returns>
-        private async Task<SysDict> GetAsync(long dictId)
-        {
-            var dict = await _dictRep.GetAsync(dictId);
-
-            H_AssertEx.That(dict == null, "字典数据不存在");
-            H_AssertEx.That(dict.IsDeleted, "字典数据已删除");
-
-            return dict;
-        }
-        #endregion
     }
 }

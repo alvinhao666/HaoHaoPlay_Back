@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Hao.Model;
+using System.Threading.Tasks;
 
 namespace Hao.Service
 {
@@ -9,5 +8,11 @@ namespace Hao.Service
     /// </summary>
     public interface IDictDomainService
     {
+        /// <summary>
+        /// 获取字典
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<SysDict> Get(long id);
     }
 }

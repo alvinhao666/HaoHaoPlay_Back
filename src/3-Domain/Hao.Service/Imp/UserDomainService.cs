@@ -44,9 +44,10 @@ namespace Hao.Service
         public async Task<SysUser> Get(long userId)
         {
             var user = await _userRep.GetAsync(userId);
-            if (user == null) throw new H_Exception("用户不存在");
-            if (user.IsDeleted) throw new H_Exception("用户已删除");
-            if (user.RoleLevel <= _currentUser.RoleLevel) throw new H_Exception("无法操作同级及高级角色用户");
+            H_AssertEx.That(user == null, "用户不存在");
+            H_AssertEx.That(user.IsDeleted, "用户已删除");
+            H_AssertEx.That(user.RoleLevel <= _currentUser.RoleLevel, "无法操作同级及高级角色用户");
+
             return user;
         }
 
@@ -57,8 +58,8 @@ namespace Hao.Service
         /// <returns></returns>
         public void CheckUser(long userId)
         {
-            if (userId == _currentUser.Id) throw new H_Exception("无法操作当前登录用户");
-            if (userId == -1) throw new H_Exception("无法操作系统管理员账户");
+            H_AssertEx.That(userId == _currentUser.Id, "无法操作当前登录用户");
+            H_AssertEx.That(userId == -1, "无法操作系统管理员账户");
         }
 
     }
