@@ -89,7 +89,7 @@ namespace Hao.AppService
 
             //查询用户菜单
             var modules = await _moduleRep.GetListAsync(new ModuleQuery { IncludeResource = false });
-            var menus = new List<MenuVM>();
+            var menus = new List<MenuOutput>();
 
             //找主菜单一级 parentId=0
             InitMenuTree(menus, 0, modules, authNums, user.Id);
@@ -191,7 +191,7 @@ namespace Hao.AppService
         /// <param name="sources"></param>
         /// <param name="authNums"></param>
         /// <param name="userId"></param>
-        private void InitMenuTree(List<MenuVM> result, long? parentId, List<SysModule> sources, List<long> authNums, long userId)
+        private void InitMenuTree(List<MenuOutput> result, long? parentId, List<SysModule> sources, List<long> authNums, long userId)
         {
             //递归寻找子节点  
             var tempTree = sources.Where(item => item.ParentId == parentId).OrderBy(a => a.Sort);
@@ -201,12 +201,12 @@ namespace Hao.AppService
 
                 if ((authNums[item.Layer.Value - 1] & item.Number) != item.Number) continue;
 
-                var node = new MenuVM()
+                var node = new MenuOutput()
                 {
                     Name = item.Name,
                     Icon = item.Icon,
                     RouterUrl = item.RouterUrl,
-                    ChildMenus = new List<MenuVM>()
+                    ChildMenus = new List<MenuOutput>()
                 };
                 result.Add(node);
                 InitMenuTree(node.ChildMenus, item.Id, sources, authNums, userId);

@@ -11,9 +11,9 @@
 	<ItemGroup>
 		<PackageReference Include="AspectCore.Abstractions" Version="2.2.0" />
 		<PackageReference Include="AspectCore.Extensions.DependencyInjection" Version="2.2.0" />
-		<PackageReference Include="DotNetCore.CAP" Version="3.1.2" />
-		<PackageReference Include="DotNetCore.CAP.PostgreSql" Version="3.1.2" />
-		<PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="3.1.2" />
+		<PackageReference Include="DotNetCore.CAP" Version="5.0.0" />
+		<PackageReference Include="DotNetCore.CAP.PostgreSql" Version="5.0.0" />
+		<PackageReference Include="DotNetCore.CAP.RabbitMQ" Version="5.0.0" />
 		<PackageReference Include="FreeSql" Version="2.3.200" />
 		<PackageReference Include="FreeSql.Provider.PostgreSQL" Version="2.3.200" />
 		<PackageReference Include="IdHelper.Zookeeper" Version="1.5.1" />

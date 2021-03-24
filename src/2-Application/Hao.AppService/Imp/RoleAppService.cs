@@ -152,7 +152,7 @@ namespace Hao.AppService
             var authNumbers = string.IsNullOrWhiteSpace(role.AuthNumbers) ? null : JsonConvert.DeserializeObject<List<long>>(role.AuthNumbers);
             var modules = await _moduleRep.GetListAsync();
             var result = new RoleModuleOutput();
-            result.Nodes = new List<RoleModuleItemVM>();
+            result.Nodes = new List<RoleModuleItemOutput>();
             result.CheckedKeys = new List<string>();
             InitModuleTree(result.Nodes, -1, modules, authNumbers, result.CheckedKeys);
             return result;
@@ -195,19 +195,19 @@ namespace Hao.AppService
         /// <param name="sources"></param>
         /// <param name="authNumbers"></param>
         /// <param name="checkedKeys"></param>
-        private void InitModuleTree(List<RoleModuleItemVM> result, long parentID, List<SysModule> sources, List<long> authNumbers, List<string> checkedKeys)
+        private void InitModuleTree(List<RoleModuleItemOutput> result, long parentID, List<SysModule> sources, List<long> authNumbers, List<string> checkedKeys)
         {
             //递归寻找子节点  
             var tempTree = sources.Where(item => item.ParentId == parentID).OrderBy(a => a.Sort).ToList();
             foreach (var item in tempTree)
             {
-                var node = new RoleModuleItemVM()
+                var node = new RoleModuleItemOutput()
                 {
                     key = item.Id.ToString(),
                     title = item.Name,
                     isLeaf = item.Type == ModuleType.Resource,
                     expanded = (int)item.Type.Value < (int)ModuleType.Sub,
-                    children = new List<RoleModuleItemVM>()
+                    children = new List<RoleModuleItemOutput>()
                 };
 
                 result.Add(node);
