@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using Hao.Runtime;
 using Mapster;
 using ToolGood.Words;
+using Hao.Service;
 
 namespace Hao.AppService
 {
@@ -41,12 +42,14 @@ namespace Hao.AppService
 
         private readonly ITimeLimitedDataProtector _protector;
 
+        private readonly IUserDomainService _userDomainService;
+
         public UserAppService(ISysRoleRepository roleRep,
             IOptionsSnapshot<H_AppSettings> appSettingsOptions,
             ISysUserRepository userRepository,
             ICurrentUser currentUser,
             ICapPublisher publisher,
-            IDataProtectionProvider provider)
+            IDataProtectionProvider provider, IUserDomainService userDomainService)
         {
             _userRep = userRepository;
             _appSettings = appSettingsOptions.Value;
@@ -54,6 +57,7 @@ namespace Hao.AppService
             _roleRep = roleRep;
             _protector = provider.CreateProtector(appSettingsOptions.Value.DataProtectorPurpose.FileDownload).ToTimeLimitedDataProtector();
             _publisher = publisher;
+            _userDomainService = userDomainService;
         }
 
         /// <summary>
@@ -84,14 +88,7 @@ namespace Hao.AppService
             user.AuthNumbers = role.AuthNumbers;
             user.RoleLevel = role.Level;
 
-            try
-            {
-                await _userRep.InsertAsync(user);
-            }
-            catch (PostgresException ex)
-            {
-                H_AssertEx.That(ex.SqlState == H_PostgresSqlState.E23505, "账号已存在，请重新输入");
-            }
+            await _userDomainService.Add(user);
         }
 
         /// <summary>
@@ -118,7 +115,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task<UserDetailOutput> Get(long id)
         {
-            var user = await GetUserDetail(id);
+            var user = await _userDomainService.Get(id);
 
             return user.Adapt<UserDetailOutput>();
         }
@@ -132,8 +129,8 @@ namespace Hao.AppService
         [CapUnitOfWork]
         public async Task Delete(long userId)
         {
-            CheckUser(userId);
-            var user = await GetUserDetail(userId);
+            _userDomainService.CheckUser(userId);
+            var user = await _userDomainService.Get(userId);
 
             await _userRep.DeleteAsync(user);
 
@@ -152,8 +149,8 @@ namespace Hao.AppService
         [CapUnitOfWork]
         public async Task UpdateStatus(long userId, bool enabled)
         {
-            CheckUser(userId);
-            var user = await GetUserDetail(userId);
+            _userDomainService.CheckUser(userId);
+            var user = await _userDomainService.Get(userId);
             user.Enabled = enabled;
             await _userRep.UpdateAsync(user, user => new { user.Enabled });
             // 注销用户，删除登录缓存
@@ -175,8 +172,8 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task Update(long userId, UserUpdateInput input)
         {
-            CheckUser(userId);
-            var user = await GetUserDetail(userId);
+            _userDomainService.CheckUser(userId);
+            var user = await _userDomainService.Get(userId);
 
             user = input.Adapt(user);
 
@@ -297,31 +294,5 @@ namespace Hao.AppService
 
             await _userRep.InsertAsync(users);
         }
-
-        #region private
-        /// <summary>
-        /// 检测用户
-        /// </summary>
-        /// <param name="userId"></param>
-        private void CheckUser(long userId)
-        {
-            if (userId == _currentUser.Id) throw new H_Exception("无法操作当前登录用户");
-            if (userId == -1) throw new H_Exception("无法操作系统管理员账户");
-        }
-
-        /// <summary>
-        /// 获取用户详情
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <returns></returns>
-        private async Task<SysUser> GetUserDetail(long userId)
-        {
-            var user = await _userRep.GetAsync(userId);
-            if (user == null) throw new H_Exception("用户不存在");
-            if (user.IsDeleted) throw new H_Exception("用户已删除");
-            if (user.RoleLevel <= _currentUser.RoleLevel) throw new H_Exception("无法操作同级及高级角色用户");
-            return user;
-        }
-        #endregion
     }
 }

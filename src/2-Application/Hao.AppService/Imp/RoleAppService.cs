@@ -28,16 +28,16 @@ namespace Hao.AppService
 
         private readonly ICurrentUser _currentUser;
 
-        private readonly IRoleService _roleService;
+        private readonly IRoleDomainService _roleDomainService;
 
-        public RoleAppService(ICurrentUser currentUser, ICapPublisher publisher, ISysRoleRepository roleRep, ISysModuleRepository moduleRep, ISysUserRepository userRep, IRoleService roleService)
+        public RoleAppService(ICurrentUser currentUser, ICapPublisher publisher, ISysRoleRepository roleRep, ISysModuleRepository moduleRep, ISysUserRepository userRep, IRoleDomainService roleDomainService)
         {
             _roleRep = roleRep;
             _moduleRep = moduleRep;
             _userRep = userRep;
             _publisher = publisher;
             _currentUser = currentUser;
-            _roleService = roleService;
+            _roleDomainService = roleDomainService;
         }
 
 
@@ -50,7 +50,7 @@ namespace Hao.AppService
         {
             var role = new SysRole() { Name = input.Name };
 
-            await _roleService.Add(role);
+            await _roleDomainService.Add(role);
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace Hao.AppService
         [CapUnitOfWork]
         public async Task UpdateRoleAuth(long id, RoleUpdateInput input)
         {
-            var role = await GetRoleDetail(id);
+            var role = await _roleDomainService.Get(id);
 
             if (role.Level != (int)RoleLevelType.SuperAdministrator && _currentUser.RoleLevel >= role.Level) throw new H_Exception("无法操作该角色的权限");
 
@@ -143,7 +143,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task<RoleModuleOutput> GetRoleModule(long id)
         {
-            var role = await GetRoleDetail(id);
+            var role = await _roleDomainService.Get(id);
             var authNumbers = string.IsNullOrWhiteSpace(role.AuthNumbers) ? null : JsonConvert.DeserializeObject<List<long>>(role.AuthNumbers);
             var modules = await _moduleRep.GetListAsync();
             var result = new RoleModuleOutput();
@@ -160,7 +160,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task Delete(long id)
         {
-            var role = await GetRoleDetail(id);
+            var role = await _roleDomainService.Get(id);
             var users = await _userRep.GetListAsync(new UserQuery() { RoleLevel = role.Level });
 
             H_AssertEx.That(users.Count > 0, "该角色下存在用户，暂时无法删除");
@@ -169,18 +169,6 @@ namespace Hao.AppService
 
 
         #region private
-        /// <summary>
-        /// 角色详情
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <returns></returns>
-        private async Task<SysRole> GetRoleDetail(long userId)
-        {
-            var item = await _roleRep.GetAsync(userId);
-            if (item == null) throw new H_Exception("角色不存在");
-            if (item.IsDeleted) throw new H_Exception("角色已删除");
-            return item;
-        }
 
         /// <summary>
         /// 递归初始化模块树

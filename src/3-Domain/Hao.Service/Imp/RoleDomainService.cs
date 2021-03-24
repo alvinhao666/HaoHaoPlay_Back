@@ -9,11 +9,11 @@ namespace Hao.Service
     /// <summary>
     /// 角色领域服务
     /// </summary>
-    public class RoleService : DomainService, IRoleService
+    public class RoleDomainService : DomainService, IRoleDomainService
     {
         private readonly ISysRoleRepository _roleRep;
 
-        public RoleService(ISysRoleRepository roleRep)
+        public RoleDomainService(ISysRoleRepository roleRep)
         {
             _roleRep = roleRep;
         }
@@ -33,6 +33,21 @@ namespace Hao.Service
             {
                 H_AssertEx.That(ex.SqlState == H_PostgresSqlState.E23505, "角色名称已存在，请重新输入");//违反唯一键
             }
+        }
+
+        /// <summary>
+        /// 获取角色
+        /// </summary>
+        /// <param name="roleId"></param>
+        /// <returns></returns>
+        public async Task<SysRole> Get(long roleId)
+        {
+            var item = await _roleRep.GetAsync(roleId);
+
+            H_AssertEx.That(item == null, "角色不存在");
+            H_AssertEx.That(item.IsDeleted, "角色已删除");
+
+            return item;
         }
     }
 }
