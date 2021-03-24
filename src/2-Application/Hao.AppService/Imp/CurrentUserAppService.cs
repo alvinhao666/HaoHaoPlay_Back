@@ -24,11 +24,11 @@ namespace Hao.AppService
 
         private readonly ICurrentUser _currentUser;
 
-        private readonly H_AppSettings _appSettings;
+        private readonly AppSettings _appSettings;
 
 
         public CurrentUserAppService(IUserRepository userRepository, ICurrentUser currentUser,
-            IOptionsSnapshot<H_AppSettings> appSettingsOptions)
+            IOptionsSnapshot<AppSettings> appSettingsOptions)
         {
             _userRep = userRepository;
             _currentUser = currentUser;

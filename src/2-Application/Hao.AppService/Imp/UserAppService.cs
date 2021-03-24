@@ -29,7 +29,7 @@ namespace Hao.AppService
     public class UserAppService : ApplicationService, IUserAppService
     {
 
-        private readonly H_AppSettings _appSettings;
+        private readonly AppSettings _appSettings;
 
         private readonly IUserRepository _userRep;
 
@@ -44,7 +44,7 @@ namespace Hao.AppService
         private readonly IUserDomainService _userDomainService;
 
         public UserAppService(IRoleRepository roleRep,
-            IOptionsSnapshot<H_AppSettings> appSettingsOptions,
+            IOptionsSnapshot<AppSettings> appSettingsOptions,
             IUserRepository userRepository,
             ICurrentUser currentUser,
             ICapPublisher publisher,

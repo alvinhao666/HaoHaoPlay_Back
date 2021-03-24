@@ -1,4 +1,5 @@
 ﻿using Hao.Core.Extensions;
+using Hao.Library;
 
 namespace HaoHaoPlay_Back.Host
 {
