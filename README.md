@@ -14,7 +14,7 @@ AspectCore | 容器（IOC及AOP的实现）| [https://github.com/dotnetcore/Aspe
 FreeSql | ORM框架 | [https://github.com/dotnetcore/FreeSql](https://github.com/dotnetcore/FreeSql)
 FreeRedis | redis应用框架 | [https://github.com/2881099/FreeRedis](https://github.com/2881099/FreeRedis)
 CAP | 消息中间件应用框架 | [https://github.com/dotnetcore/CAP](https://github.com/dotnetcore/CAP)
-IdHelper | 雪花id生成器 | [https://github.com/Coldairarrow/IdHelper](https://github.com/Coldairarrow/IdHelper)
+IdHelper | 分布式雪花id生成器 | [https://github.com/Coldairarrow/IdHelper](https://github.com/Coldairarrow/IdHelper)
 ZooKeeper | 分布式协调服务 | [http://zookeeper.apache.org](http://zookeeper.apache.org)
 Serilog | 结构化日志组件 | [https://github.com/serilog/serilog](https://github.com/serilog/serilog)
 Mapster | 对象映射组件  | [https://github.com/MapsterMapper/Mapster](https://github.com/MapsterMapper/Mapster)
