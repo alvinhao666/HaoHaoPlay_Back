@@ -6,7 +6,9 @@
 #### 后端:
 技术 | 名称 | 官网
 ----|------|----
-PostgreSQL | 数据库 | [https://www.postgresql.org](https://www.postgresql.org)
+PostgreSQL | 关系型数据库 | [https://www.postgresql.org](https://www.postgresql.org)
+Redis | NoSql数据库 | [https://redis.io](https://redis.io)
+RabbitMQ | 消息中间件 | [https://www.rabbitmq.com](https://www.rabbitmq.com)
 AspectCore | 容器（IOC及AOP的实现）  | [https://github.com/dotnetcore/AspectCore-Framework](https://github.com/dotnetcore/AspectCore-Framework)
 FreeSql | ORM框架  | [https://github.com/dotnetcore/FreeSql](https://github.com/dotnetcore/FreeSql)
 FreeRedis | 缓存框架  | [https://github.com/2881099/FreeRedis](https://github.com/2881099/FreeRedis)
