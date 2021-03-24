@@ -5,13 +5,11 @@ using DotNetCore.CAP;
 using Hao.Core;
 using Hao.Enum;
 using Hao.EventData;
-using Hao.Library;
 using Hao.Model;
 using Hao.Runtime;
-using Hao.Utility;
+using Hao.Service;
 using Mapster;
 using Newtonsoft.Json;
-using Npgsql;
 
 namespace Hao.AppService
 {
@@ -30,13 +28,16 @@ namespace Hao.AppService
 
         private readonly ICurrentUser _currentUser;
 
-        public RoleAppService(ICurrentUser currentUser, ICapPublisher publisher, ISysRoleRepository roleRep, ISysModuleRepository moduleRep, ISysUserRepository userRep)
+        private readonly IRoleService _roleService;
+
+        public RoleAppService(ICurrentUser currentUser, ICapPublisher publisher, ISysRoleRepository roleRep, ISysModuleRepository moduleRep, ISysUserRepository userRep, IRoleService roleService)
         {
             _roleRep = roleRep;
             _moduleRep = moduleRep;
             _userRep = userRep;
             _publisher = publisher;
             _currentUser = currentUser;
+            _roleService = roleService;
         }
 
 
@@ -48,14 +49,8 @@ namespace Hao.AppService
         public async Task Add(RoleAddInput input)
         {
             var role = new SysRole() { Name = input.Name };
-            try
-            {
-                await _roleRep.InsertAsync(role);
-            }
-            catch (PostgresException ex)
-            {
-                H_AssertEx.That(ex.SqlState == H_PostgresSqlState.E23505, "角色名称已存在，请重新输入");//违反唯一键
-            }
+
+            await _roleService.Add(role);
         }
 
         /// <summary>
