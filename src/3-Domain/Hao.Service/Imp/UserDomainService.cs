@@ -9,11 +9,11 @@ namespace Hao.Service
 {
     public class UserDomainService : DomainService, IUserDomainService
     {
-        private readonly ISysUserRepository _userRep;
+        private readonly IUserRepository _userRep;
 
         private readonly ICurrentUser _currentUser;
 
-        public UserDomainService(ISysUserRepository userRep, ICurrentUser currentUser)
+        public UserDomainService(IUserRepository userRep, ICurrentUser currentUser)
         {
             _userRep = userRep;
             _currentUser = currentUser;

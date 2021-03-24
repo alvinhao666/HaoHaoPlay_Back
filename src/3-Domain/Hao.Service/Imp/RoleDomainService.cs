@@ -11,9 +11,9 @@ namespace Hao.Service
     /// </summary>
     public class RoleDomainService : DomainService, IRoleDomainService
     {
-        private readonly ISysRoleRepository _roleRep;
+        private readonly IRoleRepository _roleRep;
 
-        public RoleDomainService(ISysRoleRepository roleRep)
+        public RoleDomainService(IRoleRepository roleRep)
         {
             _roleRep = roleRep;
         }

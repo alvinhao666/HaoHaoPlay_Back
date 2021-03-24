@@ -26,17 +26,17 @@ namespace Hao.AppService
     /// </summary>
     public class LoginAppService : ApplicationService, ILoginAppService
     {
-        private readonly ISysUserRepository _userRep;
+        private readonly IUserRepository _userRep;
 
-        private readonly ISysModuleRepository _moduleRep;
+        private readonly IModuleRepository _moduleRep;
 
         private readonly ICapPublisher _publisher;
 
         private readonly H_AppSettings _appSettings;
 
         public LoginAppService(
-            ISysUserRepository userRep,
-            ISysModuleRepository moduleRep,
+            IUserRepository userRep,
+            IModuleRepository moduleRep,
             ICapPublisher publisher,
             IOptionsSnapshot<H_AppSettings> appSettingsOptions)
         {

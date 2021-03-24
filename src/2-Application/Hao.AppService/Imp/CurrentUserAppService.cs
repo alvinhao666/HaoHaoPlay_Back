@@ -20,14 +20,14 @@ namespace Hao.AppService
     /// </summary>
     public class CurrentUserAppService : ApplicationService, ICurrentUserAppService
     {
-        private readonly ISysUserRepository _userRep;
+        private readonly IUserRepository _userRep;
 
         private readonly ICurrentUser _currentUser;
 
         private readonly H_AppSettings _appSettings;
 
 
-        public CurrentUserAppService(ISysUserRepository userRepository, ICurrentUser currentUser,
+        public CurrentUserAppService(IUserRepository userRepository, ICurrentUser currentUser,
             IOptionsSnapshot<H_AppSettings> appSettingsOptions)
         {
             _userRep = userRepository;

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Hao.Repository
 {
-    public class SysModuleRepository : Repository<SysModule, long>, ISysModuleRepository
+    public class ModuleRepository : Repository<SysModule, long>, IModuleRepository
     {
         /// <summary>
         /// 获取每一层的数量，包括已删除的，最多31个 0~30

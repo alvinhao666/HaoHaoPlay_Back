@@ -18,11 +18,11 @@ namespace Hao.AppService
     /// </summary>
     public class RoleAppService : ApplicationService, IRoleAppService
     {
-        private readonly ISysRoleRepository _roleRep;
+        private readonly IRoleRepository _roleRep;
 
-        private readonly ISysModuleRepository _moduleRep;
+        private readonly IModuleRepository _moduleRep;
 
-        private readonly ISysUserRepository _userRep;
+        private readonly IUserRepository _userRep;
 
         private readonly ICapPublisher _publisher;
 
@@ -30,7 +30,7 @@ namespace Hao.AppService
 
         private readonly IRoleDomainService _roleDomainService;
 
-        public RoleAppService(ICurrentUser currentUser, ICapPublisher publisher, ISysRoleRepository roleRep, ISysModuleRepository moduleRep, ISysUserRepository userRep, IRoleDomainService roleDomainService)
+        public RoleAppService(ICurrentUser currentUser, ICapPublisher publisher, IRoleRepository roleRep, IModuleRepository moduleRep, IUserRepository userRep, IRoleDomainService roleDomainService)
         {
             _roleRep = roleRep;
             _moduleRep = moduleRep;

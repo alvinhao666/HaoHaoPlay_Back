@@ -20,7 +20,7 @@ namespace Hao.AppService
         [DistributedLock("ModuleAppService_AddResource")]
         public async Task AddResource(ResourceAddInput input)
         {
-            var parentNode = await GetModuleDetail(input.ParentId.Value);
+            var parentNode = await _moduleDomainService.Get(input.ParentId.Value);
 
             H_AssertEx.That(parentNode.Type != ModuleType.Sub, "非子菜单无法添加资源");
 
@@ -37,7 +37,7 @@ namespace Hao.AppService
             module.Sort = 0;
             module.ParentAlias = parentNode.Alias;
 
-            await AddModule(module);
+            await _moduleDomainService.Add(module);
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace Hao.AppService
         {
             H_AssertEx.That(id == 0, "无法操作系统根节点");
 
-            var node = await GetModuleDetail(id);
+            var node = await _moduleDomainService.Get(id);
 
             H_AssertEx.That(node.Type != ModuleType.Resource, "非资源项无法删除");
 
@@ -84,7 +84,7 @@ namespace Hao.AppService
         {
             H_AssertEx.That(id == 0, "无法操作系统根节点");
 
-            var module = await GetModuleDetail(id);
+            var module = await _moduleDomainService.Get(id);
 
             H_AssertEx.That(module.Type != ModuleType.Resource, "非资源项无法更新");
 

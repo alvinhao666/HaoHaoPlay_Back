@@ -1,13 +1,11 @@
 ﻿using Hao.Core;
 using Hao.Model;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Hao.Enum;
-using Npgsql;
-using Hao.Library;
 using Mapster;
+using Hao.Service;
 
 namespace Hao.AppService
 {
@@ -16,11 +14,14 @@ namespace Hao.AppService
     /// </summary>
     public partial class ModuleAppService : ApplicationService, IModuleAppService
     {
-        private readonly ISysModuleRepository _moduleRep;
+        private readonly IModuleRepository _moduleRep;
 
-        public ModuleAppService(ISysModuleRepository moduleRep)
+        private readonly IModuleDomainService _moduleDomainService;
+
+        public ModuleAppService(IModuleRepository moduleRep, IModuleDomainService moduleDomainService)
         {
             _moduleRep = moduleRep;
+            _moduleDomainService = moduleDomainService;
         }
 
 
@@ -32,7 +33,7 @@ namespace Hao.AppService
         [DistributedLock("ModuleAppService_AddModule")]
         public async Task Add(ModuleAddInput input)
         {
-            var parentNode = await GetModuleDetail(input.ParentId.Value);
+            var parentNode = await _moduleDomainService.Get(input.ParentId.Value);
 
             H_AssertEx.That(parentNode.Type == ModuleType.Sub, "子菜单无法继续添加节点");
 
@@ -57,7 +58,7 @@ namespace Hao.AppService
 
             module.ParentAlias = parentNode.Alias;
 
-            await AddModule(module);
+            await _moduleDomainService.Add(module);
         }
 
         /// <summary>
@@ -79,7 +80,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task<ModuleDetailOutput> Get(long id)
         {
-            var module = await GetModuleDetail(id);
+            var module = await _moduleDomainService.Get(id);
             var result = module.Adapt<ModuleDetailOutput>();
 
             if (result.Type == ModuleType.Sub)
@@ -108,7 +109,7 @@ namespace Hao.AppService
         {
             H_AssertEx.That(id == 0, "无法操作系统根节点");
 
-            var module = await GetModuleDetail(id);
+            var module = await _moduleDomainService.Get(id);
 
             var isExistSameName = await _moduleRep.IsExistSameNameModule(input.Name, module.Type, module.ParentId, id);
 
@@ -162,34 +163,6 @@ namespace Hao.AppService
 
         #region private
 
-        private async Task AddModule(SysModule module)
-        {
-            var max = await _moduleRep.GetLayerCount();
-            if (max.Count < 31)
-            {
-                module.Layer = max.Layer;
-                module.Number = Convert.ToInt64(Math.Pow(2, max.Count.Value));
-            }
-            else if (max.Count == 31) //0次方 到 30次方 共31个数              js语言的限制 导致  位运算 32位  
-            {
-                module.Layer = ++max.Layer;
-                module.Number = 1;
-            }
-            else
-            {
-                throw new H_Exception("数据库数据异常，请检查");
-            }
-
-            try
-            {
-                await _moduleRep.InsertAsync(module);
-            }
-            catch (PostgresException ex)
-            {
-                H_AssertEx.That(ex.SqlState == H_PostgresSqlState.E23505, "添加失败，请重新添加");
-            }
-        }
-
         /// <summary>
         /// 递归初始化模块树
         /// </summary>
@@ -213,21 +186,6 @@ namespace Hao.AppService
                 result.Add(node);
                 InitModuleTree(node.children, item.Id, sources);
             }
-        }
-
-        /// <summary>
-        /// 获取模块详情
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        private async Task<SysModule> GetModuleDetail(long id)
-        {
-            var module = await _moduleRep.GetAsync(id);
-
-            H_AssertEx.That(module == null, "节点不存在");
-            H_AssertEx.That(module.IsDeleted, "节点已删除");
-
-            return module;
         }
 
         #endregion

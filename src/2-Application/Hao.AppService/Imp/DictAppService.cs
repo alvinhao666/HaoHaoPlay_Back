@@ -13,9 +13,9 @@ namespace Hao.AppService
     /// </summary>
     public class DictAppService : ApplicationService, IDictAppService
     {
-        private readonly ISysDictRepository _dictRep;
+        private readonly IDictRepository _dictRep;
 
-        public DictAppService(ISysDictRepository dictRep)
+        public DictAppService(IDictRepository dictRep)
         {
             _dictRep = dictRep;
         }

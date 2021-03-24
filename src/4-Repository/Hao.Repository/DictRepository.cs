@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Hao.Repository
 {
-    public class SysDictRepository: Repository<SysDict, long>, ISysDictRepository
+    public class DictRepository: Repository<SysDict, long>, IDictRepository
     {
 
         public async Task<Paged<DictDto>> GetDictPagedResult(DictQuery query)

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Hao.Model
 {
-    public interface ISysLoginRecordRepository: IRepository<SysLoginRecord,long>
+    public interface ILoginRecordRepository: IRepository<SysLoginRecord,long>
     {
         /// <summary>
         /// 获取登录记录

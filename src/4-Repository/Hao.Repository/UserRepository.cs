@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Hao.Repository
 {
-    public class SysUserRepository : Repository<SysUser, long>, ISysUserRepository
+    public class UserRepository : Repository<SysUser, long>, IUserRepository
     {
 
         /// <summary>

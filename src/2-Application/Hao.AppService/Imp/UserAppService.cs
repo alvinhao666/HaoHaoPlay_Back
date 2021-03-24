@@ -10,7 +10,6 @@ using Hao.Utility;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
-using Npgsql;
 using OfficeOpenXml;
 using System;
 using System.Collections.Generic;
@@ -32,9 +31,9 @@ namespace Hao.AppService
 
         private readonly H_AppSettings _appSettings;
 
-        private readonly ISysUserRepository _userRep;
+        private readonly IUserRepository _userRep;
 
-        private readonly ISysRoleRepository _roleRep;
+        private readonly IRoleRepository _roleRep;
 
         private readonly ICurrentUser _currentUser;
 
@@ -44,9 +43,9 @@ namespace Hao.AppService
 
         private readonly IUserDomainService _userDomainService;
 
-        public UserAppService(ISysRoleRepository roleRep,
+        public UserAppService(IRoleRepository roleRep,
             IOptionsSnapshot<H_AppSettings> appSettingsOptions,
-            ISysUserRepository userRepository,
+            IUserRepository userRepository,
             ICurrentUser currentUser,
             ICapPublisher publisher,
             IDataProtectionProvider provider, IUserDomainService userDomainService)
