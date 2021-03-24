@@ -13,7 +13,7 @@ CAP | 消息中间件框架  | [https://github.com/dotnetcore/CAP](https://githu
 IdHelper | 雪花id生成器 | [https://github.com/Coldairarrow/IdHelper](https://github.com/Coldairarrow/IdHelper)
 ZooKeeper | 分布式协调服务  | [http://zookeeper.apache.org](http://zookeeper.apache.org)
 Serilog | 日志框架  | [https://github.com/serilog/serilog](https://github.com/serilog/serilog)
-Mapster | Mapper组件  | [https://github.com/MapsterMapper/Mapster](https://github.com/MapsterMapper/Mapster)
+Mapster | 对象映射组件  | [https://github.com/MapsterMapper/Mapster](https://github.com/MapsterMapper/Mapster)
 FluentValidation | 模型验证器  | [https://github.com/FluentValidation/FluentValidation](https://github.com/FluentValidation/FluentValidation)
 Swagger | Api文档  | [https://github.com/domaindrivendev/Swashbuckle.AspNetCore](https://github.com/domaindrivendev/Swashbuckle.AspNetCore)
 ImageSharp | 跨平台图像处理框架  | [https://github.com/SixLabors/ImageSharp](https://github.com/SixLabors/ImageSharp)
