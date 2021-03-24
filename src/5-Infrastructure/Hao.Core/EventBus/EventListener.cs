@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using AspectCore.DependencyInjection;
 using DotNetCore.CAP;
 using Hao.Runtime;
+using Hao.Utility;
 using Mapster;
 
 namespace Hao.Core
@@ -33,7 +34,7 @@ namespace Hao.Core
         /// <param name="eventData"></param>
         protected void InitCurrentUser(T eventData)
         {
-            if (eventData?.PublishUser == null) return;
+            if (eventData?.PublishUser == null) H_Check.Argument.NotNull(eventData?.PublishUser, "PublishUser");
 
             var user = CurrentUser as CurrentUser;
 
