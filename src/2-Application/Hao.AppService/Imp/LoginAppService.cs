@@ -169,7 +169,6 @@ namespace Hao.AppService
         /// <param name="parentId"></param>
         /// <param name="sources"></param>
         /// <param name="authNums"></param>
-        /// <param name="userId"></param>
         private void InitMenuTree(List<MenuOutput> result, long? parentId, List<SysModule> sources, List<long> authNums)
         {
             //递归寻找子节点  
