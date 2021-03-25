@@ -28,5 +28,13 @@ namespace Hao.Service
         /// <param name="userId"></param>
         /// <returns></returns>
         void CheckUser(long userId);
+
+        /// <summary>
+        /// 根据账号密码获取用户
+        /// </summary>
+        /// <param name="account"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        Task<SysUser> GetUserByAccountPwd(string account, string password);
     }
 }

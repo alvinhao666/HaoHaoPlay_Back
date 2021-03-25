@@ -3,6 +3,7 @@ using Hao.Library;
 using Hao.Model;
 using Hao.Runtime;
 using Npgsql;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Hao.Service
@@ -62,5 +63,26 @@ namespace Hao.Service
             H_AssertEx.That(userId == -1, "无法操作系统管理员账户");
         }
 
+
+        /// <summary>
+        /// 根据账号密码获取用户
+        /// </summary>
+        /// <param name="account"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public async Task<SysUser> GetUserByAccountPwd(string account, string password)
+        {
+            var users = await _userRep.GetUserByAccountPwd(account, password);
+
+            H_AssertEx.That(users.Count == 0, "账号或密码错误");
+
+            H_AssertEx.That(users.Count > 1, "用户数据异常，存在相同用户");
+
+            var user = users.First();
+
+            H_AssertEx.That(!user.Enabled.Value, "用户已注销");
+
+            return user;
+        }
     }
 }
