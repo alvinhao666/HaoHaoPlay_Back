@@ -24,13 +24,9 @@ namespace Hao.AppService
 
             H_AssertEx.That(parentNode.Type != ModuleType.Sub, "非子菜单无法添加资源");
 
-            var isExistSameName = await _moduleRep.IsExistSameNameModule(input.Name, ModuleType.Resource, input.ParentId);
+            await _moduleDomainService.IsExistSameName(input.Name, ModuleType.Resource, input.ParentId);
 
-            H_AssertEx.That(isExistSameName, "存在相同名称的资源，请重新输入");
-
-            var isExistSameAlias = await _moduleRep.IsExistSameAliasModule(input.Alias, ModuleType.Resource, input.ParentId);
-
-            H_AssertEx.That(isExistSameAlias, "存在相同别名的资源，请重新输入");
+            await _moduleDomainService.IsExistSameAlias(input.Alias, ModuleType.Resource, input.ParentId);
 
             var module = input.Adapt<SysModule>();
             module.Type = ModuleType.Resource;
@@ -88,13 +84,9 @@ namespace Hao.AppService
 
             H_AssertEx.That(module.Type != ModuleType.Resource, "非资源项无法更新");
 
-            var isExistSameName = await _moduleRep.IsExistSameNameModule(vm.Name, ModuleType.Resource, module.ParentId, id);
+            await _moduleDomainService.IsExistSameName(vm.Name, ModuleType.Resource, module.ParentId, id);
 
-            H_AssertEx.That(isExistSameName, "存在相同名称的资源，请重新输入");
-
-            var isExistSameAlias = await _moduleRep.IsExistSameAliasModule(vm.Alias, ModuleType.Resource, module.ParentId, id);
-
-            H_AssertEx.That(isExistSameAlias, "存在相同别名的资源，请重新输入");
+            await _moduleDomainService.IsExistSameAlias(vm.Alias, ModuleType.Resource, module.ParentId, id);
 
             module = vm.Adapt(module);
             await _moduleRep.UpdateAsync(module, a => new { a.Name, a.Sort, a.Alias });

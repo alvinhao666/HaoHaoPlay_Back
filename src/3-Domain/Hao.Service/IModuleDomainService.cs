@@ -1,4 +1,5 @@
-﻿using Hao.Model;
+﻿using Hao.Enum;
+using Hao.Model;
 using System.Threading.Tasks;
 
 namespace Hao.Service
@@ -22,5 +23,15 @@ namespace Hao.Service
         /// <param name="id"></param>
         /// <returns></returns>
         Task<SysModule> Get(long id);
+
+        /// <summary>
+        /// 是否存在相同名字的模块
+        /// </summary>
+        Task IsExistSameName(string name, ModuleType? moduleType, long? parentId, long? id = null);
+
+        /// <summary>
+        /// 是否存在相同别名的模块
+        /// </summary>
+        Task IsExistSameAlias(string alias, ModuleType? moduleType, long? parentId, long? id = null);
     }
 }

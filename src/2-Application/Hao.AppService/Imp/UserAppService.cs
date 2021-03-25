@@ -43,12 +43,14 @@ namespace Hao.AppService
 
         private readonly IUserDomainService _userDomainService;
 
+        private readonly IRoleDomainService _roleDomainService;
+
         public UserAppService(IRoleRepository roleRep,
             IOptionsSnapshot<AppSettings> appSettingsOptions,
             IUserRepository userRepository,
             ICurrentUser currentUser,
             ICapPublisher publisher,
-            IDataProtectionProvider provider, IUserDomainService userDomainService)
+            IDataProtectionProvider provider, IUserDomainService userDomainService, IRoleDomainService roleDomainService)
         {
             _userRep = userRepository;
             _appSettings = appSettingsOptions.Value;
@@ -57,6 +59,7 @@ namespace Hao.AppService
             _protector = provider.CreateProtector(appSettingsOptions.Value.DataProtectorPurpose.FileDownload).ToTimeLimitedDataProtector();
             _publisher = publisher;
             _userDomainService = userDomainService;
+            _roleDomainService = roleDomainService;
         }
 
         /// <summary>
@@ -71,9 +74,7 @@ namespace Hao.AppService
 
             H_AssertEx.That(users.Count > 0, "账号已存在，请重新输入");
 
-            var role = await _roleRep.GetAsync(input.RoleId.Value);
-            H_AssertEx.That(role == null, "角色不存在，请重新选择");
-            H_AssertEx.That(role.IsDeleted, "角色已删除，请重新选择");
+            var role = await _roleDomainService.Get(input.RoleId.Value);
 
             H_AssertEx.That(role.Level <= _currentUser.RoleLevel, "无法添加同级及高级角色用户");
 

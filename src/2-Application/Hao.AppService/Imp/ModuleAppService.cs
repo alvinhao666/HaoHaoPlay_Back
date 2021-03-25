@@ -37,13 +37,9 @@ namespace Hao.AppService
 
             H_AssertEx.That(parentNode.Type == ModuleType.Sub, "子菜单无法继续添加节点");
 
-            var isExistSameName = await _moduleRep.IsExistSameNameModule(input.Name, input.Type, input.ParentId);
+            await _moduleDomainService.IsExistSameName(input.Name, input.Type, input.ParentId);
 
-            H_AssertEx.That(isExistSameName, "存在相同名称的模块，请重新输入");
-
-            var isExistSameAlias = await _moduleRep.IsExistSameAliasModule(input.Alias, input.Type, input.ParentId);
-
-            H_AssertEx.That(isExistSameAlias, "存在相同别名的模块，请重新输入");
+            await _moduleDomainService.IsExistSameAlias(input.Alias, input.Type, input.ParentId);
 
             var module = input.Adapt<SysModule>();
 
@@ -111,13 +107,9 @@ namespace Hao.AppService
 
             var module = await _moduleDomainService.Get(id);
 
-            var isExistSameName = await _moduleRep.IsExistSameNameModule(input.Name, module.Type, module.ParentId, id);
+            await _moduleDomainService.IsExistSameName(input.Name, module.Type, module.ParentId, id);
 
-            H_AssertEx.That(isExistSameName, "存在相同名称的模块，请重新输入");
-
-            var isExistSameAlias = await _moduleRep.IsExistSameNameModule(input.Alias, module.Type, module.ParentId, id);
-
-            H_AssertEx.That(isExistSameAlias, "存在相同别名的模块，请重新输入");
+            await _moduleDomainService.IsExistSameName(input.Alias, module.Type, module.ParentId, id);
 
             if (module.Alias != input.Alias)
             {

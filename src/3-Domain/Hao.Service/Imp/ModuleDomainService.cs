@@ -1,4 +1,5 @@
 ﻿using Hao.Core;
+using Hao.Enum;
 using Hao.Library;
 using Hao.Model;
 using Npgsql;
@@ -58,10 +59,31 @@ namespace Hao.Service
         {
             var module = await _moduleRep.GetAsync(id);
 
-            H_AssertEx.That(module == null, "节点不存在");
-            H_AssertEx.That(module.IsDeleted, "节点已删除");
+            H_AssertEx.That(module == null, "模块或资源不存在");
+            H_AssertEx.That(module.IsDeleted, "模块或资源已删除");
 
             return module;
+        }
+
+        /// <summary>
+        /// 是否存在相同名字的模块
+        /// </summary>
+        public async Task IsExistSameName(string name, ModuleType? moduleType, long? parentId, long? id = null)
+        {
+            var modules = await _moduleRep.GetSameName(name, moduleType, parentId, id);
+
+            H_AssertEx.That(modules.Count > 0, "存在相同名称的模块或资源");
+
+        }
+
+        /// <summary>
+        /// 是否存在相同别名的模块
+        /// </summary>
+        public async Task IsExistSameAlias(string alias, ModuleType? moduleType, long? parentId, long? id = null)
+        {
+            var modules = await _moduleRep.GetSameAlias(alias, moduleType, parentId, id);
+
+            H_AssertEx.That(modules.Count > 0, "存在相同别名的模块或资源");
         }
     }
 }
