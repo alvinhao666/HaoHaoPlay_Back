@@ -1,5 +1,6 @@
 ﻿using Hao.Enum;
 using Hao.Model;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Hao.Service
@@ -33,5 +34,13 @@ namespace Hao.Service
         /// 是否存在相同别名的模块
         /// </summary>
         Task IsExistSameAlias(string alias, ModuleType? moduleType, long? parentId, long? id = null);
+
+
+        /// <summary>
+        /// 获取权限数组值对应的应用菜单树
+        /// </summary>
+        /// <param name="authNums"></param>
+        /// <returns></returns>
+        Task<List<MenuTreeDto>> GetMenuTree(List<long> authNums);
     }
 }

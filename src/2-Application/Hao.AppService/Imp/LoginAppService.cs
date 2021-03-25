@@ -35,15 +35,19 @@ namespace Hao.AppService
 
         private readonly IUserDomainService _userDomainService;
 
+        private readonly IModuleDomainService _moduleDomainService;
+
         public LoginAppService(
             IModuleRepository moduleRep,
             ICapPublisher publisher,
-            IOptionsSnapshot<AppSettings> appSettingsOptions, IUserDomainService userDomainService)
+            IOptionsSnapshot<AppSettings> appSettingsOptions, IUserDomainService userDomainService,
+            IModuleDomainService moduleDomainService)
         {
             _appSettings = appSettingsOptions.Value; //IOptionsSnapshot动态获取配置
             _publisher = publisher;
             _moduleRep = moduleRep;
             _userDomainService = userDomainService;
+            _moduleDomainService = moduleDomainService;
         }
 
 
@@ -88,13 +92,9 @@ namespace Hao.AppService
             H_AssertEx.That(authNums.Count == 0, "没有系统权限，暂时无法登录，请联系管理员");
 
             //查询用户菜单
-            var modules = await _moduleRep.GetListAsync(new ModuleQuery { IncludeResource = false });
-            var menus = new List<MenuOutput>();
+            var modules = await _moduleDomainService.GetMenuTree(authNums);
 
-            //找主菜单一级 parentId=0
-            InitMenuTree(menus, 0, modules, authNums);
-
-            H_AssertEx.That(menus.Count == 0, "没有系统权限，暂时无法登录，请联系管理员");
+            H_AssertEx.That(modules.Count == 0, "没有系统权限，暂时无法登录，请联系管理员");
 
             //jwt的唯一身份标识，避免重复
             var jti = Guid.NewGuid();
@@ -115,7 +115,7 @@ namespace Hao.AppService
             var result = user.Adapt<LoginOutput>();
             result.Jwt = jwt;
             result.AuthNums = authNums;
-            result.Menus = menus;
+            result.Menus = modules.Adapt<List<MenuOutput>>();
 
             await _publisher.PublishAsync(nameof(LoginEventData), new LoginEventData
             {
@@ -160,36 +160,6 @@ namespace Hao.AppService
             ));
 
             return jwt;
-        }
-
-        /// <summary>
-        /// 递归初始化菜单树
-        /// </summary>
-        /// <param name="result"></param>
-        /// <param name="parentId"></param>
-        /// <param name="sources"></param>
-        /// <param name="authNums"></param>
-        private void InitMenuTree(List<MenuOutput> result, long? parentId, List<SysModule> sources, List<long> authNums)
-        {
-            //递归寻找子节点  
-            var tempTree = sources.Where(item => item.ParentId == parentId).OrderBy(a => a.Sort);
-            foreach (var item in tempTree)
-            {
-                if (authNums?.Count < 1 || item.Layer.Value > authNums.Count) continue;
-
-                if ((authNums[item.Layer.Value - 1] & item.Number) != item.Number) continue;
-
-                var node = new MenuOutput()
-                {
-                    Name = item.Name,
-                    Icon = item.Icon,
-                    RouterUrl = item.RouterUrl,
-                    ChildMenus = new List<MenuOutput>()
-                };
-                result.Add(node);
-                InitMenuTree(node.ChildMenus, item.Id, sources, authNums);
-                if (item.Type == ModuleType.Main && node.ChildMenus.Count < 1) result.Remove(node);
-            }
         }
     }
 }

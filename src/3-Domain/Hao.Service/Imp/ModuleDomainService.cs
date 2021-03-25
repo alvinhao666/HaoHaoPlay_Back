@@ -2,8 +2,11 @@
 using Hao.Enum;
 using Hao.Library;
 using Hao.Model;
+using Mapster;
 using Npgsql;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Hao.Service
@@ -84,6 +87,50 @@ namespace Hao.Service
             var modules = await _moduleRep.GetSameAlias(alias, moduleType, parentId, id);
 
             H_AssertEx.That(modules.Count > 0, "存在相同别名的模块或资源");
+        }
+
+        /// <summary>
+        /// 获取权限数组值对应的应用菜单树
+        /// </summary>
+        /// <param name="authNums"></param>
+        /// <returns></returns>
+        public async Task<List<MenuTreeDto>> GetMenuTree(List<long> authNums)
+        {
+            var modules = await _moduleRep.GetListAsync(new ModuleQuery { IncludeResource = false });
+
+            var menus = new List<MenuTreeDto>();
+
+            //找主菜单一级 parentId=0
+            GetMenuTree(menus, 0, modules, authNums);
+
+            return menus;
+        }
+
+
+        /// <summary>
+        /// 获取权限数组值对应的应用菜单树
+        /// </summary>
+        /// <param name="result"></param>
+        /// <param name="parentId"></param>
+        /// <param name="sources"></param>
+        /// <param name="authNums"></param>
+        private void GetMenuTree(List<MenuTreeDto> result, long? parentId, List<SysModule> sources, List<long> authNums)
+        {
+            //递归寻找子节点  
+            var tempTree = sources.Where(item => item.ParentId == parentId).OrderBy(a => a.Sort);
+            foreach (var item in tempTree)
+            {
+                if (authNums?.Count < 1 || item.Layer.Value > authNums.Count) continue;
+
+                if ((authNums[item.Layer.Value - 1] & item.Number) != item.Number) continue;
+
+                var node = item.Adapt<MenuTreeDto>();
+                node.ChildMenus = new List<MenuTreeDto>();
+
+                result.Add(node);
+                GetMenuTree(node.ChildMenus, item.Id, sources, authNums);
+                if (item.Type == ModuleType.Main && node.ChildMenus.Count < 1) result.Remove(node);
+            }
         }
     }
 }
