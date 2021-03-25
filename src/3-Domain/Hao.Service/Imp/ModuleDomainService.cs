@@ -11,6 +11,9 @@ using System.Threading.Tasks;
 
 namespace Hao.Service
 {
+    /// <summary>
+    /// 菜单模块领域服务
+    /// </summary>
     public class ModuleDomainService : DomainService, IModuleDomainService
     {
         private readonly IModuleRepository _moduleRep;

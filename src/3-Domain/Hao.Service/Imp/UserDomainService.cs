@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace Hao.Service
 {
+    /// <summary>
+    /// 用户领域服务
+    /// </summary>
     public class UserDomainService : DomainService, IUserDomainService
     {
         private readonly IUserRepository _userRep;

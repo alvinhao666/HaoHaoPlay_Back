@@ -4,6 +4,9 @@ using System.Threading.Tasks;
 
 namespace Hao.Service
 {
+    /// <summary>
+    /// 字典领域服务
+    /// </summary>
     public class DictDomainService : DomainService, IDictDomainService
     {
         private readonly IDictRepository _dictRep;

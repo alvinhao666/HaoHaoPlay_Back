@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 namespace Hao.Service
 {
     /// <summary>
-    /// 用户领域服务
+    /// 用户领域服务接口
     /// </summary>
     public interface IUserDomainService
     {

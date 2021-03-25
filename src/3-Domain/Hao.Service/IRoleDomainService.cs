@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 namespace Hao.Service
 {
     /// <summary>
-    /// 角色领域服务
+    /// 角色领域服务接口
     /// </summary>
     public interface IRoleDomainService
     {

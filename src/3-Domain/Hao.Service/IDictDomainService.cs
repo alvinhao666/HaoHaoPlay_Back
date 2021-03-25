@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 namespace Hao.Service
 {
     /// <summary>
-    /// 字典领域服务
+    /// 字典领域服务接口
     /// </summary>
     public interface IDictDomainService
     {
