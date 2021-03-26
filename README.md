@@ -22,7 +22,17 @@ Swagger | API文档组件  | [https://github.com/domaindrivendev/Swashbuckle.Asp
 ImageSharp | 跨平台图像处理框架 | [https://github.com/SixLabors/ImageSharp](https://github.com/SixLabors/ImageSharp)
 
 #### 前端:
+###### 代码仓库地址: https://github.com/rongguohao/HaoHaoPlay_WebBack
 名称 | 描述 | 链接
 ----|------|----
 Angular 11 | 前端框架 | [https://angular.cn](https://angular.cn)
 NG-ZORRO | UI 组件库 | [https://ng.ant.design/docs/introduce/zh](https://ng.ant.design/docs/introduce/zh)
+
+## 🍟 做了什么
+
+## 🍖 怎么用
+
+#### 开发环境
+
+
+#### 部署环境

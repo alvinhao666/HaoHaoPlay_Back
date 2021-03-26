@@ -27,8 +27,6 @@ namespace Hao.AppService
     /// </summary>
     public class LoginAppService : ApplicationService, ILoginAppService
     {
-        private readonly IModuleRepository _moduleRep;
-
         private readonly ICapPublisher _publisher;
 
         private readonly AppSettings _appSettings;
@@ -38,14 +36,12 @@ namespace Hao.AppService
         private readonly IModuleDomainService _moduleDomainService;
 
         public LoginAppService(
-            IModuleRepository moduleRep,
             ICapPublisher publisher,
             IOptionsSnapshot<AppSettings> appSettingsOptions, IUserDomainService userDomainService,
             IModuleDomainService moduleDomainService)
         {
             _appSettings = appSettingsOptions.Value; //IOptionsSnapshot动态获取配置
             _publisher = publisher;
-            _moduleRep = moduleRep;
             _userDomainService = userDomainService;
             _moduleDomainService = moduleDomainService;
         }
