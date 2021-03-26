@@ -24,5 +24,5 @@ ImageSharp | 跨平台图像处理框架 | [https://github.com/SixLabors/ImageSh
 #### 前端:
 名称 | 描述 | 链接
 ----|------|----
-Angular11 | 前端框架 | [https://angular.cn](https://angular.cn)
+Angular 11 | 前端框架 | [https://angular.cn](https://angular.cn)
 NG-ZORRO | UI 组件库 | [https://ng.ant.design/docs/introduce/zh](https://ng.ant.design/docs/introduce/zh)
