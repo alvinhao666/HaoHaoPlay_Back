@@ -1,6 +1,6 @@
 ## 是什么
 
-基于.Net 5平台的快速开发解决方案，目前系统包含功能有登录，用户管理，应用菜单管理，权限管理，字典管理，退出登录。通过这些基础功能的实现，分享自己对ddd设计的理解，对系统功能设计的理解，方便大家学习使用.net core，也存在不足之处，还望指出。
+基于.Net 5平台的快速开发解决方案，目前系统包含功能有登录，用户管理，应用菜单管理，权限管理，字典管理，退出登录。通过这些基础功能的实现，分享自己对系统框架设计的理解，对ddd设计的理解，希望多多少少对大家学习使用.net core有帮助，也存在不足之处，还望指出。
 
 ## 有什么
 #### 后端:
@@ -24,5 +24,5 @@ ImageSharp | 跨平台图像处理框架 | [https://github.com/SixLabors/ImageSh
 #### 前端:
 名称 | 描述 | 链接
 ----|------|----
-Angular | 前端框架 | [https://angular.cn](https://angular.cn)
+Angular11 | 前端框架 | [https://angular.cn](https://angular.cn)
 NG-ZORRO | UI 组件库 | [https://ng.ant.design/docs/introduce/zh](https://ng.ant.design/docs/introduce/zh)
