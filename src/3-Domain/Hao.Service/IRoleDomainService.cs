@@ -9,13 +9,6 @@ namespace Hao.Service
     public interface IRoleDomainService
     {
         /// <summary>
-        /// 添加角色
-        /// </summary>
-        /// <param name="role"></param>
-        /// <returns></returns>
-        Task Add(SysRole role);
-
-        /// <summary>
         /// 获取角色
         /// </summary>
         /// <param name="roleId"></param>

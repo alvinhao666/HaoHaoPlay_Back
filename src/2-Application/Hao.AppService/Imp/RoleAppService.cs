@@ -42,18 +42,6 @@ namespace Hao.AppService
 
 
         /// <summary>
-        /// 添加角色
-        /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
-        public async Task Add(RoleAddInput input)
-        {
-            var role = new SysRole() { Name = input.Name };
-
-            await _roleDomainService.Add(role);
-        }
-
-        /// <summary>
         /// 获取角色列表
         /// </summary>
         /// <returns></returns>
@@ -61,7 +49,7 @@ namespace Hao.AppService
         {
             var query = new RoleQuery();
 
-            if (_currentUser.RoleLevel != (int)RoleLevelType.SuperAdministrator) //超级管理员能看见所有，其他用户只能看见比自己等级低的用户列表
+            if (_currentUser.RoleLevel != (int)RoleLevel.SuperAdministrator) //超级管理员能看见所有，其他用户只能看见比自己等级低的用户列表
             {
                 query.CurrentRoleLevel = _currentUser.RoleLevel;
             }
@@ -99,11 +87,11 @@ namespace Hao.AppService
         /// <param name="input"></param>
         /// <returns></returns>
         [CapUnitOfWork]
-        public async Task UpdateRoleAuth(long id, RoleUpdateInput input)
+        public async Task UpdateRoleAuth(long id, RoleUpdateAuthInput input)
         {
             var role = await _roleDomainService.Get(id);
 
-            if (role.Level != (int)RoleLevelType.SuperAdministrator && _currentUser.RoleLevel >= role.Level) throw new H_Exception("无法操作该角色的权限");
+            if (role.Level != (int)RoleLevel.SuperAdministrator && _currentUser.RoleLevel >= role.Level) throw new H_Exception("无法操作该角色的权限");
 
             var modules = await _moduleRep.GetListAsync(input.ModuleIds);
             var maxLayer = modules.Max(a => a.Layer);
@@ -152,21 +140,6 @@ namespace Hao.AppService
             InitModuleTree(result.Nodes, -1, modules, authNumbers, result.CheckedKeys);
             return result;
         }
-
-        /// <summary>
-        /// 删除角色
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public async Task Delete(long id)
-        {
-            var role = await _roleDomainService.Get(id);
-            var users = await _userRep.GetListAsync(new UserQuery() { RoleLevel = role.Level });
-
-            H_AssertEx.That(users.Count > 0, "该角色下存在用户，暂时无法删除");
-            await _roleRep.DeleteAsync(role);
-        }
-
 
         #region private
 
