@@ -33,7 +33,7 @@ namespace Hao.AppService
         [DistributedLock("DictAppService_AddDict")]
         public async Task Add(DictAddInput input)
         {
-            await _dictDomainService.CheckNameOrCode(input.DictName, input.DictCode);
+            await _dictDomainService.CheckNameCode(input.DictName, input.DictCode);
 
             var dict = input.Adapt<SysDict>();
             dict.ParentId = -1;
@@ -50,7 +50,7 @@ namespace Hao.AppService
         [DistributedLock("DictAppService_UpdateDict")]
         public async Task Update(long id, DictUpdateInput input)
         {
-            await _dictDomainService.CheckNameOrCode(input.DictName, input.DictCode);
+            await _dictDomainService.CheckNameCode(input.DictName, input.DictCode);
 
             var dict = await _dictRep.GetAsync(id);
             dict.DictCode = input.DictCode;
@@ -105,7 +105,7 @@ namespace Hao.AppService
         [DistributedLock("DictAppService_AddDictItem")]
         public async Task AddDictItem(DictItemAddInput input)
         {
-            await _dictDomainService.CheckItemNameOrValue(input.ItemName, input.ItemValue.Value, input.ParentId.Value);
+            await _dictDomainService.CheckItemNameValue(input.ItemName, input.ItemValue.Value, input.ParentId.Value);
 
             var parentDict = await _dictDomainService.Get(input.ParentId.Value);
             var dict = input.Adapt<SysDict>();
@@ -147,7 +147,7 @@ namespace Hao.AppService
         {
             var item = await _dictDomainService.Get(id);
 
-            await _dictDomainService.CheckItemNameOrValue(input.ItemName, input.ItemValue.Value, item.ParentId.Value);
+            await _dictDomainService.CheckItemNameValue(input.ItemName, input.ItemValue.Value, item.ParentId.Value);
 
             item.ItemName = input.ItemName;
             item.ItemValue = input.ItemValue;

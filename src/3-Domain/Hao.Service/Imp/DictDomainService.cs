@@ -36,7 +36,7 @@ namespace Hao.Service
         /// 检查是否存在相同名字or相同编码
         /// </summary>
         /// <returns></returns>
-        public async Task CheckNameOrCode(string name, string code)
+        public async Task CheckNameCode(string name, string code)
         {
             var sameItems = await _dictRep.GetListAsync(new DictQuery { DictName = name });
 
@@ -54,7 +54,7 @@ namespace Hao.Service
         /// <param name="value"></param>
         /// <param name="parentId"></param>
         /// <returns></returns>
-        public async Task CheckItemNameOrValue(string name, int value, long parentId)
+        public async Task CheckItemNameValue(string name, int value, long parentId)
         {
             var sameItems = await _dictRep.GetListAsync(new DictQuery { ParentId = parentId, ItemName = name });
 

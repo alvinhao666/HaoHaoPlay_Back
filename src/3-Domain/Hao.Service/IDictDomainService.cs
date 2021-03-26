@@ -19,7 +19,7 @@ namespace Hao.Service
         /// 检查字典是否存在相同名字
         /// </summary>
         /// <returns></returns>
-        Task CheckNameOrCode(string name, string code);
+        Task CheckNameCode(string name, string code);
 
         /// <summary>
         /// 检查字典数据项是否存在相同名字or相同值
@@ -28,6 +28,6 @@ namespace Hao.Service
         /// <param name="value"></param>
         /// <param name="parentId"></param>
         /// <returns></returns>
-        Task CheckItemNameOrValue(string name, int value, long parentId);
+        Task CheckItemNameValue(string name, int value, long parentId);
     }
 }
