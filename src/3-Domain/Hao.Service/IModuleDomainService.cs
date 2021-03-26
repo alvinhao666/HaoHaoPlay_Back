@@ -17,7 +17,6 @@ namespace Hao.Service
         /// <returns></returns>
         Task Add(SysModule module);
 
-
         /// <summary>
         /// 获取菜单模块
         /// </summary>
@@ -26,15 +25,14 @@ namespace Hao.Service
         Task<SysModule> Get(long id);
 
         /// <summary>
-        /// 是否存在相同名字的模块
+        /// 检查是否存在相同名字的模块
         /// </summary>
-        Task IsExistSameName(string name, ModuleType? moduleType, long? parentId, long? id = null);
+        Task CheckName(string name, ModuleType? moduleType, long? parentId, long? id = null);
 
         /// <summary>
-        /// 是否存在相同别名的模块
+        /// 检查是否存在相同别名的模块
         /// </summary>
-        Task IsExistSameAlias(string alias, ModuleType? moduleType, long? parentId, long? id = null);
-
+        Task CheckAlias(string alias, ModuleType? moduleType, long? parentId, long? id = null);
 
         /// <summary>
         /// 获取权限数组值对应的应用菜单树
@@ -42,5 +40,13 @@ namespace Hao.Service
         /// <param name="authNums"></param>
         /// <returns></returns>
         Task<List<MenuTreeDto>> GetMenuTree(List<long> authNums);
+
+
+        /// <summary>
+        /// 删除模块
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task Delete(long id);
     }
 }

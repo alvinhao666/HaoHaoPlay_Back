@@ -74,7 +74,7 @@ namespace Hao.Service
         /// <summary>
         /// 是否存在相同名字的模块
         /// </summary>
-        public async Task IsExistSameName(string name, ModuleType? moduleType, long? parentId, long? id = null)
+        public async Task CheckName(string name, ModuleType? moduleType, long? parentId, long? id = null)
         {
             var modules = await _moduleRep.GetSameName(name, moduleType, parentId, id);
 
@@ -85,7 +85,7 @@ namespace Hao.Service
         /// <summary>
         /// 是否存在相同别名的模块
         /// </summary>
-        public async Task IsExistSameAlias(string alias, ModuleType? moduleType, long? parentId, long? id = null)
+        public async Task CheckAlias(string alias, ModuleType? moduleType, long? parentId, long? id = null)
         {
             var modules = await _moduleRep.GetSameAlias(alias, moduleType, parentId, id);
 
@@ -134,6 +134,27 @@ namespace Hao.Service
                 GetMenuTree(node.ChildMenus, item.Id, sources, authNums);
                 if (item.Type == ModuleType.Main && node.ChildMenus.Count < 1) result.Remove(node);
             }
+        }
+
+        /// <summary>
+        /// 删除模块
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task Delete(long id)
+        {
+            H_AssertEx.That(id == 0, "无法操作系统根节点");
+
+            var module = await Get(id);
+
+            var childs = await _moduleRep.GetListAsync(new ModuleQuery()
+            {
+                ParentId = module.Id
+            });
+
+            H_AssertEx.That(childs != null && childs.Count > 0, "存在子节点无法删除");
+
+            await _moduleRep.DeleteAsync(module);
         }
     }
 }

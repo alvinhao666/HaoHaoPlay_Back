@@ -24,9 +24,9 @@ namespace Hao.AppService
 
             H_AssertEx.That(parentNode.Type != ModuleType.Sub, "非子菜单无法添加资源");
 
-            await _moduleDomainService.IsExistSameName(input.Name, ModuleType.Resource, input.ParentId);
+            await _moduleDomainService.CheckName(input.Name, ModuleType.Resource, input.ParentId);
 
-            await _moduleDomainService.IsExistSameAlias(input.Alias, ModuleType.Resource, input.ParentId);
+            await _moduleDomainService.CheckAlias(input.Alias, ModuleType.Resource, input.ParentId);
 
             var module = input.Adapt<SysModule>();
             module.Type = ModuleType.Resource;
@@ -84,9 +84,9 @@ namespace Hao.AppService
 
             H_AssertEx.That(module.Type != ModuleType.Resource, "非资源项无法更新");
 
-            await _moduleDomainService.IsExistSameName(vm.Name, ModuleType.Resource, module.ParentId, id);
+            await _moduleDomainService.CheckName(vm.Name, ModuleType.Resource, module.ParentId, id);
 
-            await _moduleDomainService.IsExistSameAlias(vm.Alias, ModuleType.Resource, module.ParentId, id);
+            await _moduleDomainService.CheckAlias(vm.Alias, ModuleType.Resource, module.ParentId, id);
 
             module = vm.Adapt(module);
             await _moduleRep.UpdateAsync(module, a => new { a.Name, a.Sort, a.Alias });

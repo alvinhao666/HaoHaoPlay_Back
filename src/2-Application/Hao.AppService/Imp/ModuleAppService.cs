@@ -37,9 +37,9 @@ namespace Hao.AppService
 
             H_AssertEx.That(parentNode.Type == ModuleType.Sub, "子菜单无法继续添加节点");
 
-            await _moduleDomainService.IsExistSameName(input.Name, input.Type, input.ParentId);
+            await _moduleDomainService.CheckName(input.Name, input.Type, input.ParentId);
 
-            await _moduleDomainService.IsExistSameAlias(input.Alias, input.Type, input.ParentId);
+            await _moduleDomainService.CheckAlias(input.Alias, input.Type, input.ParentId);
 
             var module = input.Adapt<SysModule>();
 
@@ -107,9 +107,9 @@ namespace Hao.AppService
 
             var module = await _moduleDomainService.Get(id);
 
-            await _moduleDomainService.IsExistSameName(input.Name, module.Type, module.ParentId, id);
+            await _moduleDomainService.CheckName(input.Name, module.Type, module.ParentId, id);
 
-            await _moduleDomainService.IsExistSameName(input.Alias, module.Type, module.ParentId, id);
+            await _moduleDomainService.CheckName(input.Alias, module.Type, module.ParentId, id);
 
             if (module.Alias != input.Alias)
             {
@@ -136,21 +136,7 @@ namespace Hao.AppService
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task Delete(long id)
-        {
-            H_AssertEx.That(id == 0, "无法操作系统根节点");
-
-            var module = await _moduleRep.GetAsync(id);
-
-            var childs = await _moduleRep.GetListAsync(new ModuleQuery()
-            {
-                ParentId = module.Id
-            });
-
-            H_AssertEx.That(childs != null && childs.Count > 0, "存在子节点无法删除");
-
-            await _moduleRep.DeleteAsync(module);
-        }
+        public async Task Delete(long id) => await _moduleDomainService.Delete(id);
 
 
         #region private
