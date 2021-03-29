@@ -55,7 +55,7 @@ NG-ZORRO | UI 组件库 | [https://ng.ant.design/docs/introduce/zh](https://ng.a
 #### 开发环境
 > 开发工具
 >
-> > [Visual Studio 2019+](https://visualstudio.microsoft.com/zh-hans/downloads/)、[JetBrains Rider](https://www.jetbrains.com/rider/)
+> > Visual Studio 2019、JetBrains Rider
 
 #### 部署运行环境
 > 系统版本
@@ -64,6 +64,6 @@ NG-ZORRO | UI 组件库 | [https://ng.ant.design/docs/introduce/zh](https://ng.a
 
 > 部署工具  
 >
-> > [Jenkins](https://visualstudio.microsoft.com/zh-hans/downloads/)、[Docker](https://www.jetbrains.com/rider/)
+> > Jenkins、Docker
 
 ## 💐 捐赠
