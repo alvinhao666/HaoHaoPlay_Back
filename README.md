@@ -25,7 +25,7 @@ IdHelper | 分布式雪花id生成器 | [https://github.com/Coldairarrow/IdHelpe
 ZooKeeper | 分布式协调服务 | [http://zookeeper.apache.org](http://zookeeper.apache.org)
 Serilog | 结构化日志组件 | [https://github.com/serilog/serilog](https://github.com/serilog/serilog)
 Mapster | 高性能对象映射组件 | [https://github.com/MapsterMapper/Mapster](https://github.com/MapsterMapper/Mapster)
-FluentValidation | 模型验证器 | [https://github.com/FluentValidation/FluentValidation](https://github.com/FluentValidation/FluentValidation)
+FluentValidation | 接口模型验证器 | [https://github.com/FluentValidation/FluentValidation](https://github.com/FluentValidation/FluentValidation)
 Swagger | API文档组件 | [https://github.com/domaindrivendev/Swashbuckle.AspNetCore](https://github.com/domaindrivendev/Swashbuckle.AspNetCore)
 ImageSharp | 跨平台图像处理框架 | [https://github.com/SixLabors/ImageSharp](https://github.com/SixLabors/ImageSharp)
 
