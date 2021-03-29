@@ -37,7 +37,7 @@ Angular 11 | 前端框架 | [https://angular.cn](https://angular.cn)
 NG-ZORRO | UI 组件库 | [https://ng.ant.design/docs/introduce/zh](https://ng.ant.design/docs/introduce/zh)
 
 ## ⚡ 做了什么
-- [x] 仓储层基类封装
+- [x] 仓储层基类封装 (增删改简洁方便)
 - [x] 可视化sql语句输出
 - [x] 公用工具类库封装
 - [x] 统一接口返回模型及异常处理返回模型
@@ -45,6 +45,9 @@ NG-ZORRO | UI 组件库 | [https://ng.ant.design/docs/introduce/zh](https://ng.a
 - [x] 工作单元UnitOfWork (Attribute)
 - [x] 分布式锁 (Attribute)
 - [x] 防重提交 (Attribute)
+- [x] 统一全局配置类AppSettings
+- [x] 将当前请求的用户信息封装至ICurrentUser，通过Scope方式注入使用
+- [x] Swagger优化枚举中文描述的显示及隐藏忽略属性
 
 ## 🍖 怎么用
 
