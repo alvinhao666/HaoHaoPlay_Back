@@ -48,6 +48,7 @@ NG-ZORRO | UI 组件库 | [https://ng.ant.design/docs/introduce/zh](https://ng.a
 - [x] 统一全局配置类AppSettings
 - [x] 将当前请求的用户信息封装至ICurrentUser，通过Scope方式注入使用
 - [x] Swagger优化枚举中文描述的显示及隐藏忽略属性
+- [x] 更多请查看代码......
 
 ## 🍖 怎么用
 
