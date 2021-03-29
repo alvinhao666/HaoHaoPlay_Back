@@ -41,7 +41,7 @@ NG-ZORRO | UI 组件库 | [https://ng.ant.design/docs/introduce/zh](https://ng.a
 - [x] 可视化sql语句输出
 - [x] 公用工具类库封装
 - [x] 统一接口返回模型及异常处理返回模型
-- [x] 过滤请求字段的首尾空字符串  
+- [x] 去除请求所包含字段的首尾空字符串  
 - [x] 工作单元UnitOfWork (Attribute)
 - [x] 分布式锁 (Attribute)
 - [x] 防重提交 (Attribute)
