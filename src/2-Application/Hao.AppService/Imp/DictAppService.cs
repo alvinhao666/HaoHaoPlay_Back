@@ -52,11 +52,10 @@ namespace Hao.AppService
         {
             await _dictDomainService.CheckNameCode(input.DictName, input.DictCode);
 
-            var dict = await _dictRep.GetAsync(id);
-            dict.DictCode = input.DictCode;
-            dict.DictName = input.DictName;
-            dict.Remark = input.Remark;
-            dict.Sort = input.Sort;
+            var dict = await _dictDomainService.Get(id);
+
+            dict = input.Adapt(dict);
+
             await _dictRep.UpdateAsync(dict, a => new { a.DictCode, a.DictName, a.Remark, a.Sort });
         }
 
@@ -68,7 +67,7 @@ namespace Hao.AppService
         [UnitOfWork]
         public async Task Delete(long id)
         {
-            var dict = await _dictRep.GetAsync(id);
+            var dict = await _dictDomainService.Get(id);
 
             var dictItems = await _dictRep.GetListAsync(new DictQuery { ParentId = id });
 
@@ -149,10 +148,8 @@ namespace Hao.AppService
 
             await _dictDomainService.CheckItemNameValue(input.ItemName, input.ItemValue.Value, item.ParentId.Value);
 
-            item.ItemName = input.ItemName;
-            item.ItemValue = input.ItemValue;
-            item.Remark = input.Remark;
-            item.Sort = input.Sort;
+            item = input.Adapt(item);
+
             await _dictRep.UpdateAsync(item, a => new { a.ItemName, a.ItemValue, a.Remark, a.Sort });
         }
 
@@ -163,7 +160,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task DeleteDictItem(long id)
         {
-            var dict = await _dictRep.GetAsync(id);
+            var dict = await _dictDomainService.Get(id);
             await _dictRep.DeleteAsync(dict);
         }
 

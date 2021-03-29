@@ -89,15 +89,14 @@ namespace Hao.AppService
         /// <summary>
         /// 更新当前用户基本信息
         /// </summary>
-        /// <param name="vm"></param>
+        /// <param name="input"></param>
         /// <returns></returns>
-        public async Task UpdateBaseInfo(CurrentUserUpdateInput vm)
+        public async Task UpdateBaseInfo(CurrentUserUpdateInput input)
         {
             var user = await _userRep.GetAsync(_currentUser.Id.Value);
-            user.Phone = vm.Phone;
-            user.WeChat = vm.WeChat;
-            user.Profile = vm.Profile;
-            user.HomeAddress = vm.HomeAddress;
+
+            user = input.Adapt(user);
+
             await _userRep.UpdateAsync(user,
                 user => new
                 {

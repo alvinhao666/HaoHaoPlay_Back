@@ -22,11 +22,6 @@ namespace Hao.AppService
         /// </summary>
         public string WeChat { get; set; }
 
-        // /// <summary>
-        // /// 昵称
-        // /// </summary>
-        // public string NickName { get; set; }
-
         /// <summary>
         /// 个人简介
         /// </summary>
@@ -47,8 +42,6 @@ namespace Hao.AppService
         public CurrentUserUpdateValidator()
         {
             RuleFor(x => x.Phone).MustHasValue("手机").Must(x => H_Validator.IsMobile(x)).WithMessage("手机号格式有误");
-
-            // RuleFor(x => x.Gender).EnumMustHasValue("性别");
         }
     }
 }
