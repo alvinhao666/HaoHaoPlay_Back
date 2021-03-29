@@ -66,6 +66,6 @@ NG-ZORRO | UI 组件库 | [https://ng.ant.design/docs/introduce/zh](https://ng.a
 
 > 部署工具  
 >
-> > Jenkins、Docker
+> > Docker、Jenkins、Nginx
 
 ## 💐 捐赠
