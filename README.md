@@ -59,7 +59,7 @@ NG-ZORRO | UI 组件库 | [https://ng.ant.design/docs/introduce/zh](https://ng.a
 >
 > > Visual Studio 2019、JetBrains Rider
 
-#### 部署运行环境
+#### 部署环境
 > 系统版本
 >
 > > CentOS 7.5  
