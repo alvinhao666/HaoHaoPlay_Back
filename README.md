@@ -1,7 +1,7 @@
 ## 🍄 是什么
 
 基于.Net 5平台的快速开发解决方案。  
-目前系统包含功能有登录，用户管理，应用菜单管理，权限管理，字典管理，退出登录。  
+目前系统包含功能有登录，用户管理，应用菜单管理，权限管理，字典管理，退出登录，也方便多租户的使用。  
 通过这些基础功能的实现，分享自己对系统框架设计的理解，对ddd设计的理解，希望多多少少对大家学习使用.net core有帮助，也存在不足之处，还望指出。
 
 ## 🍿 在线体验
@@ -36,7 +36,15 @@ ImageSharp | 跨平台图像处理框架 | [https://github.com/SixLabors/ImageSh
 Angular 11 | 前端框架 | [https://angular.cn](https://angular.cn)
 NG-ZORRO | UI 组件库 | [https://ng.ant.design/docs/introduce/zh](https://ng.ant.design/docs/introduce/zh)
 
-## 🍟 做了什么
+## ⚡ 做了什么
+- [x] 仓储层基类封装
+- [x] 可视化sql语句输出
+- [x] 公用工具类库封装
+- [x] 统一接口返回模型及异常处理返回模型
+- [x] 过滤请求字段的首尾空字符串  
+- [x] 工作单元UnitOfWork (Attribute)
+- [x] 分布式锁 (Attribute)
+- [x] 防重提交 (Attribute)
 
 ## 🍖 怎么用
 
@@ -44,3 +52,5 @@ NG-ZORRO | UI 组件库 | [https://ng.ant.design/docs/introduce/zh](https://ng.a
 
 
 #### 部署环境
+
+## 💐 捐赠
