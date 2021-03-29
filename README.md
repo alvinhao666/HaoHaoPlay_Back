@@ -50,7 +50,7 @@ NG-ZORRO | UI 组件库 | [https://ng.ant.design/docs/introduce/zh](https://ng.a
 - [x] Swagger优化枚举中文描述的显示及隐藏忽略属性
 - [x] 更多请查看代码......
 
-## 🍖 怎么用
+## 🥪 怎么用
 
 #### 开发环境
 > 开发工具
