@@ -61,6 +61,7 @@ NG-ZORRO | UI 组件库 | [https://ng.ant.design/docs/introduce/zh](https://ng.a
 > 系统版本
 >
 > > CentOS 7.5  
+
 > 部署工具  
 >
 > > [Jenkins](https://visualstudio.microsoft.com/zh-hans/downloads/)、[Docker](https://www.jetbrains.com/rider/)
