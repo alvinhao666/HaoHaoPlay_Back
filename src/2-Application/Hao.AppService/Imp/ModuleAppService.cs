@@ -99,8 +99,8 @@ namespace Hao.AppService
         /// <param name="id"></param>
         /// <param name="input"></param>
         /// <returns></returns>
-        [DistributedLock("ModuleAppService_UpdateModule")]
-        [UnitOfWork]
+        [DistributedLock("ModuleAppService_UpdateModule", Order = 1)]
+        [UnitOfWork(Order = 2)]
         public async Task Update(long id, ModuleUpdateInput input)
         {
             H_AssertEx.That(id == 0, "无法操作系统根节点");

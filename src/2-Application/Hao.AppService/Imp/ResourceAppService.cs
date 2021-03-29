@@ -74,8 +74,8 @@ namespace Hao.AppService
         /// <param name="id"></param>
         /// <param name="vm"></param>
         /// <returns></returns>
-        [DistributedLock("ModuleAppService_UpdateResource")]
-        [UnitOfWork]
+        [DistributedLock("ModuleAppService_UpdateResource",Order = 1)]
+        [UnitOfWork(Order = 2)]
         public async Task UpdateResource(long id, ResourceUpdateInput vm)
         {
             H_AssertEx.That(id == 0, "无法操作系统根节点");
