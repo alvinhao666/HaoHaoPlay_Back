@@ -1,7 +1,7 @@
 ## 🍄 是什么
 
 基于.Net 5平台的快速开发解决方案。  
-目前系统包含功能有登录，用户管理，应用菜单管理，权限管理，字典管理，退出登录，也方便多租户的使用。  
+目前系统包含功能有登录，用户管理，应用菜单管理，权限管理，字典管理，退出登录，也方便扩展多租户使用。  
 通过这些基础功能的实现，分享自己对系统框架设计的理解，对ddd设计的理解，希望多多少少对大家学习使用.net core有帮助，也存在不足之处，还望指出。
 
 ## 🍿 在线体验
@@ -25,7 +25,7 @@ IdHelper | 分布式雪花id生成器 | [https://github.com/Coldairarrow/IdHelpe
 ZooKeeper | 分布式协调服务 | [http://zookeeper.apache.org](http://zookeeper.apache.org)
 Serilog | 结构化日志组件 | [https://github.com/serilog/serilog](https://github.com/serilog/serilog)
 Mapster | 高性能对象映射组件 | [https://github.com/MapsterMapper/Mapster](https://github.com/MapsterMapper/Mapster)
-FluentValidation | 模型验证器 | [https://github.com/FluentValidation/FluentValidation](https://github.com/FluentValidation/FluentValidation)
+FluentValidation | 接口模型验证器 | [https://github.com/FluentValidation/FluentValidation](https://github.com/FluentValidation/FluentValidation)
 Swagger | API文档组件 | [https://github.com/domaindrivendev/Swashbuckle.AspNetCore](https://github.com/domaindrivendev/Swashbuckle.AspNetCore)
 ImageSharp | 跨平台图像处理框架 | [https://github.com/SixLabors/ImageSharp](https://github.com/SixLabors/ImageSharp)
 
@@ -48,13 +48,23 @@ NG-ZORRO | UI 组件库 | [https://ng.ant.design/docs/introduce/zh](https://ng.a
 - [x] 统一全局配置类AppSettings
 - [x] 将当前请求的用户信息封装至ICurrentUser，通过Scope方式注入使用
 - [x] Swagger优化枚举中文描述的显示及隐藏忽略属性
-- [x] 更多请查看代码......
+- [x] JWT身份验证
+- [x] 位运算实现菜单权限控制管理，提高效率
+- [x] 更多详见代码...
 
-## 🍖 怎么用
+## 🥪 环境
 
 #### 开发环境
-
+> 开发工具
+>
+> > Visual Studio 2019、JetBrains Rider
 
 #### 部署环境
+> 系统版本
+>
+> > CentOS 7.5  
 
-## 💐 捐赠
+> 部署工具  
+>
+> > Docker、Jenkins、Nginx
+
