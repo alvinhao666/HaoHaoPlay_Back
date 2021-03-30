@@ -2,7 +2,9 @@
 using Hao.Library;
 using Hao.Model;
 using Hao.Runtime;
+using Newtonsoft.Json;
 using Npgsql;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -68,12 +70,12 @@ namespace Hao.Service
 
 
         /// <summary>
-        /// 根据账号密码获取用户
+        /// 根据账号密码登录
         /// </summary>
         /// <param name="account"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public async Task<SysUser> GetUserByAccountPwd(string account, string password)
+        public async Task<SysUser> LoginByAccountPwd(string account, string password)
         {
             var users = await _userRep.GetUserByAccountPwd(account, password);
 
@@ -84,6 +86,12 @@ namespace Hao.Service
             var user = users.First();
 
             H_AssertEx.That(!user.Enabled.Value, "用户已注销");
+
+            H_AssertEx.That(string.IsNullOrWhiteSpace(user.AuthNumbers), "没有系统权限，暂时无法登录，请联系管理员");
+
+            var authNums = JsonConvert.DeserializeObject<List<long>>(user.AuthNumbers);
+
+            H_AssertEx.That(authNums.Count == 0, "没有系统权限，暂时无法登录，请联系管理员");
 
             return user;
         }

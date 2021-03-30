@@ -143,7 +143,7 @@ namespace Hao.Service
         /// <returns></returns>
         public async Task Delete(long id)
         {
-            H_AssertEx.That(id == 0, "无法操作系统根节点");
+            MustNotRoot(id);
 
             var module = await Get(id);
 
@@ -155,6 +155,16 @@ namespace Hao.Service
             H_AssertEx.That(childs != null && childs.Count > 0, "存在子节点无法删除");
 
             await _moduleRep.DeleteAsync(module);
+        }
+
+        /// <summary>
+        /// 检测必须不是根节点方可继续操作
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public void MustNotRoot(long id)
+        {
+            H_AssertEx.That(id == 0, "无法操作系统根节点");
         }
     }
 }

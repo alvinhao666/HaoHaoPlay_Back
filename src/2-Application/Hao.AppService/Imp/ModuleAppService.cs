@@ -35,22 +35,13 @@ namespace Hao.AppService
         {
             var parentNode = await _moduleDomainService.Get(input.ParentId.Value);
 
-            H_AssertEx.That(parentNode.Type == ModuleType.Sub, "子菜单无法继续添加节点");
+            if (parentNode.Type != ModuleType.Main || parentNode.Type != ModuleType.System) return;
 
             await _moduleDomainService.CheckName(input.Name, input.Type, input.ParentId);
 
             await _moduleDomainService.CheckAlias(input.Alias, input.Type, input.ParentId);
 
             var module = input.Adapt<SysModule>();
-
-            if (parentNode.Type == ModuleType.Sub)
-            {
-                module.Alias = $"{parentNode.Alias}_{module.Alias}";
-            }
-            else if (parentNode.Type == ModuleType.Main)
-            {
-                module.ParentId = 0;
-            }
 
             module.ParentAlias = parentNode.Alias;
 
@@ -103,7 +94,7 @@ namespace Hao.AppService
         [UnitOfWork(Order = 2)]
         public async Task Update(long id, ModuleUpdateInput input)
         {
-            H_AssertEx.That(id == 0, "无法操作系统根节点");
+            _moduleDomainService.MustNotRoot(id);
 
             var module = await _moduleDomainService.Get(id);
 

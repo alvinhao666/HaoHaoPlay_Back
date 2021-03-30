@@ -62,8 +62,8 @@ namespace Hao.AppService
             //sha256加密
             password = H_EncryptProvider.HMACSHA256(password, _appSettings.Key.Sha256Key);
 
-            //根据账号密码查询用户
-            var user = await _userDomainService.GetUserByAccountPwd(input.Account, password);
+            //根据账号密码登录
+            var user = await _userDomainService.LoginByAccountPwd(input.Account, password);
 
             return await Login(user, fromIP, input.IsRememberLogin);
         }
@@ -81,16 +81,10 @@ namespace Hao.AppService
             var timeNow = DateTime.Now;
             var expireTime = timeNow.AddDays(isRememberLogin ? 3 : 1);
 
-            H_AssertEx.That(string.IsNullOrWhiteSpace(user.AuthNumbers), "没有系统权限，暂时无法登录，请联系管理员");
-
             var authNums = JsonConvert.DeserializeObject<List<long>>(user.AuthNumbers);
-
-            H_AssertEx.That(authNums.Count == 0, "没有系统权限，暂时无法登录，请联系管理员");
 
             //查询用户菜单
             var modules = await _moduleDomainService.GetMenuTree(authNums);
-
-            H_AssertEx.That(modules.Count == 0, "没有系统权限，暂时无法登录，请联系管理员");
 
             //jwt的唯一身份标识，避免重复
             var jti = Guid.NewGuid();

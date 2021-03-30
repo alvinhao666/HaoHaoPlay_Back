@@ -30,11 +30,11 @@ namespace Hao.Service
         void CheckUser(long userId);
 
         /// <summary>
-        /// 根据账号密码获取用户
+        /// 根据账号密码登录
         /// </summary>
         /// <param name="account"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        Task<SysUser> GetUserByAccountPwd(string account, string password);
+        Task<SysUser> LoginByAccountPwd(string account, string password);
     }
 }

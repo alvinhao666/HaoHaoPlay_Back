@@ -41,12 +41,18 @@ namespace Hao.Service
         /// <returns></returns>
         Task<List<MenuTreeDto>> GetMenuTree(List<long> authNums);
 
-
         /// <summary>
         /// 删除模块
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         Task Delete(long id);
+
+        /// <summary>
+        /// 检测必须不是根节点方可继续操作
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        void MustNotRoot(long id);
     }
 }

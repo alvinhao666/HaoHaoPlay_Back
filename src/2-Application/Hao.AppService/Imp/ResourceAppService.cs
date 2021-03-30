@@ -22,7 +22,7 @@ namespace Hao.AppService
         {
             var parentNode = await _moduleDomainService.Get(input.ParentId.Value);
 
-            H_AssertEx.That(parentNode.Type != ModuleType.Sub, "非子菜单无法添加资源");
+            if (parentNode.Type != ModuleType.Sub) return;
 
             await _moduleDomainService.CheckName(input.Name, ModuleType.Resource, input.ParentId);
 
@@ -43,11 +43,11 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task DeleteResource(long id)
         {
-            H_AssertEx.That(id == 0, "无法操作系统根节点");
+            _moduleDomainService.MustNotRoot(id);
 
             var node = await _moduleDomainService.Get(id);
 
-            H_AssertEx.That(node.Type != ModuleType.Resource, "非资源项无法删除");
+            if (node.Type != ModuleType.Resource) return;
 
             await _moduleRep.DeleteAsync(node);
         }
@@ -78,11 +78,11 @@ namespace Hao.AppService
         [UnitOfWork(Order = 2)]
         public async Task UpdateResource(long id, ResourceUpdateInput vm)
         {
-            H_AssertEx.That(id == 0, "无法操作系统根节点");
+            _moduleDomainService.MustNotRoot(id);
 
             var module = await _moduleDomainService.Get(id);
 
-            H_AssertEx.That(module.Type != ModuleType.Resource, "非资源项无法更新");
+            if (module.Type != ModuleType.Resource) return;
 
             await _moduleDomainService.CheckName(vm.Name, ModuleType.Resource, module.ParentId, id);
 
