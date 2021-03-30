@@ -81,7 +81,7 @@ namespace Hao.Service
 
             H_AssertEx.That(users.Count == 0, "账号或密码错误");
 
-            H_AssertEx.That(users.Count > 1, "用户数据异常，存在相同用户");
+            H_AssertEx.That(users.Count > 1, "用户数据异常");
 
             var user = users.First();
 
