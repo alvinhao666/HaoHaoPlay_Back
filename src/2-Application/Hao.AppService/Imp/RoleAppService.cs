@@ -91,8 +91,6 @@ namespace Hao.AppService
         {
             var role = await _roleDomainService.Get(id);
 
-            if (role.Level != (int)RoleLevel.SuperAdministrator && _currentUser.RoleLevel >= role.Level) throw new H_Exception("无法操作该角色的权限");
-
             var modules = await _moduleRep.GetListAsync(input.ModuleIds);
             var maxLayer = modules.Max(a => a.Layer);
 
@@ -112,12 +110,13 @@ namespace Hao.AppService
             var users = await _userRep.GetListAsync(new UserQuery() { RoleLevel = role.Level });
             var ids = users.Where(a => a.AuthNumbers != role.AuthNumbers).Select(a => a.Id).ToList();
 
-            await _roleRep.UpdateAsync(role, a => new { a.AuthNumbers });
+            await _roleDomainService.UpdateRoleAuth(role);
+
             await _userRep.UpdateAuth(role.Id, role.AuthNumbers);
 
             //注销该角色下用户的登录信息
-
             if (ids.Count < 1) return;
+
             await _publisher.PublishAsync(nameof(LogoutForUpdateAuthEventData), new LogoutForUpdateAuthEventData
             {
                 UserIds = ids

@@ -70,13 +70,13 @@ namespace Hao.AppService
         [DistributedLock("UserAppService_AddUser")]
         public async Task Add(UserAddInput input)
         {
-            var role = await _roleDomainService.Get(input.RoleId.Value);
-
             var user = input.Adapt<SysUser>();
             user.FirstNameInitial = WordsHelper.GetFirstPinyin(user.Name.Substring(0, 1));
             user.PasswordLevel = (PasswordLevel)H_Util.CheckPasswordLevel(user.Password);
             user.Password = H_EncryptProvider.HMACSHA256(user.Password, _appSettings.Key.Sha256Key);
             user.Enabled = true;
+
+            var role = await _roleDomainService.Get(input.RoleId.Value);
             user.RoleId = role.Id;
             user.RoleName = role.Name;
             user.AuthNumbers = role.AuthNumbers;
