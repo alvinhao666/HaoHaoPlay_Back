@@ -68,8 +68,6 @@ namespace Hao.Service
             var user = await _userRep.GetAsync(userId);
             H_AssertEx.That(user == null, "用户不存在");
             H_AssertEx.That(user.IsDeleted, "用户已删除");
-            H_AssertEx.That(user.RoleLevel <= _currentUser.RoleLevel, "无法操作同级及高级角色用户");
-
             return user;
         }
 
