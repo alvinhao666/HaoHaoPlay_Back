@@ -41,9 +41,9 @@ namespace Hao.Service
         /// 更新用户密码
         /// </summary>
         /// <param name="userId"></param>
-        /// <param name="oldPassword"></param>
-        /// <param name="newPassword"></param>
+        /// <param name="oldPwd"></param>
+        /// <param name="newPwd"></param>
         /// <returns></returns>
-        Task UpdatePwd(long userId, string oldPassword, string newPassword);
+        Task UpdatePwd(long userId, string oldPwd, string newPwd);
     }
 }

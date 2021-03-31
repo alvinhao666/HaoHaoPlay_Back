@@ -116,19 +116,19 @@ namespace Hao.Service
         /// 更新用户密码
         /// </summary>
         /// <param name="userId"></param>
-        /// <param name="oldPassword"></param>
-        /// <param name="newPassword"></param>
+        /// <param name="oldPwd"></param>
+        /// <param name="newPwd"></param>
         /// <returns></returns>
-        public async Task UpdatePwd(long userId, string oldPassword, string newPassword)
+        public async Task UpdatePwd(long userId, string oldPwd, string newPwd)
         {
-            var user = await _userRep.GetAsync(userId);
-            oldPassword = H_EncryptProvider.HMACSHA256(oldPassword, _appSettings.Key.Sha256Key);
+            var user = await Get(userId);
+            oldPwd = H_EncryptProvider.HMACSHA256(oldPwd, _appSettings.Key.Sha256Key);
 
-            H_AssertEx.That(user.Password != oldPassword, "原密码错误");
+            H_AssertEx.That(user.Password != oldPwd, "原密码错误");
 
-            user.PasswordLevel = (PasswordLevel)H_Util.CheckPasswordLevel(newPassword);
-            newPassword = H_EncryptProvider.HMACSHA256(newPassword, _appSettings.Key.Sha256Key);
-            user.Password = newPassword;
+            user.PasswordLevel = (PasswordLevel)H_Util.CheckPasswordLevel(newPwd);
+            user.Password = H_EncryptProvider.HMACSHA256(newPwd, _appSettings.Key.Sha256Key);
+
             await _userRep.UpdateAsync(user, user => new { user.Password, user.PasswordLevel });
         }
     }

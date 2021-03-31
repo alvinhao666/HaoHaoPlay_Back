@@ -100,7 +100,7 @@ namespace Hao.AppService
 
             await _moduleDomainService.CheckName(input.Name, module.Type, module.ParentId, id);
 
-            await _moduleDomainService.CheckName(input.Alias, module.Type, module.ParentId, id);
+            await _moduleDomainService.CheckAlias(input.Alias, module.Type, module.ParentId, id);
 
             if (module.Alias != input.Alias)
             {
