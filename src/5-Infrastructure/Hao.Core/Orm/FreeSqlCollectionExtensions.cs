@@ -2,10 +2,10 @@
 using FreeSql.Aop;
 using FreeSql.Internal;
 using Hao.Core;
-using Hao.Snowflake;
 using Hao.Utility;
 using System;
 using System.Threading;
+using Coldairarrow.Util;
 using Hao.Runtime;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -114,15 +114,16 @@ namespace Microsoft.Extensions.DependencyInjection
                 switch (e.Property.Name)
                 {
                     case "Id":
-                        if (e.Column.CsType == H_Type.GuidType)
+                        if (e.Column.CsType == H_Type.LongType)
                         {
-                            e.Value = FreeUtil.NewMongodbId(); //生成有序不重复的id
+                            e.Value = IdHelper.GetLongId(); // 雪花id zookeeper分布式协同系统
+                            //e.Value = ServiceLocator.ServiceProvider.GetService<ISnowflakeIdMaker>().NextId();
                         }
-                        else if (e.Column.CsType == H_Type.LongType)
+                        else if (e.Column.CsType == H_Type.GuidType)
                         {
-                            var idMaker = ServiceLocator.ServiceProvider.GetService<ISnowflakeIdMaker>();
-                            e.Value = idMaker.NextId();
-                        }
+                            // e.Value = FreeUtil.NewMongodbId(); //生成有序不重复的id  多台机器顺序是否有序，是否重复的情况未知
+                            e.Value = Guid.NewGuid();
+                        }    
                         break;
 
                     case nameof(IsCreateAudited.CreatorId):

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Mapster;
 using Hao.Enum;
+using Hao.Service;
 
 namespace Hao.AppService
 {
@@ -13,11 +14,14 @@ namespace Hao.AppService
     /// </summary>
     public class DictAppService : ApplicationService, IDictAppService
     {
-        private readonly ISysDictRepository _dictRep;
+        private readonly IDictRepository _dictRep;
 
-        public DictAppService(ISysDictRepository dictRep)
+        private readonly IDictDomainService _dictDomainService;
+
+        public DictAppService(IDictRepository dictRep, IDictDomainService dictDomainService)
         {
             _dictRep = dictRep;
+            _dictDomainService = dictDomainService;
         }
 
 
@@ -29,13 +33,7 @@ namespace Hao.AppService
         [DistributedLock("DictAppService_AddDict")]
         public async Task Add(DictAddInput input)
         {
-            var sameItems = await _dictRep.GetListAsync(new DictQuery { DictName = input.DictName });
-
-            H_AssertEx.That(sameItems.Count > 0, "字典名称已存在，请重新输入");
-
-            sameItems = await _dictRep.GetListAsync(new DictQuery { DictCode = input.DictCode });
-
-            H_AssertEx.That(sameItems.Count > 0, "字典编码已存在，请重新输入");
+            await _dictDomainService.CheckNameCode(input.DictName, input.DictCode);
 
             var dict = input.Adapt<SysDict>();
             dict.ParentId = -1;
@@ -52,19 +50,12 @@ namespace Hao.AppService
         [DistributedLock("DictAppService_UpdateDict")]
         public async Task Update(long id, DictUpdateInput input)
         {
-            var sameItems = await _dictRep.GetListAsync(new DictQuery { DictName = input.DictName });
+            await _dictDomainService.CheckNameCode(input.DictName, input.DictCode);
 
-            H_AssertEx.That(sameItems.Any(a => a.Id != id), "字典名称已存在，请重新输入");
+            var dict = await _dictDomainService.Get(id);
 
-            sameItems = await _dictRep.GetListAsync(new DictQuery { DictCode = input.DictCode });
+            dict = input.Adapt(dict);
 
-            H_AssertEx.That(sameItems.Any(a => a.Id != id), "字典编码已存在，请重新输入");
-
-            var dict = await _dictRep.GetAsync(id);
-            dict.DictCode = input.DictCode;
-            dict.DictName = input.DictName;
-            dict.Remark = input.Remark;
-            dict.Sort = input.Sort;
             await _dictRep.UpdateAsync(dict, a => new { a.DictCode, a.DictName, a.Remark, a.Sort });
         }
 
@@ -76,7 +67,7 @@ namespace Hao.AppService
         [UnitOfWork]
         public async Task Delete(long id)
         {
-            var dict = await _dictRep.GetAsync(id);
+            var dict = await _dictDomainService.Get(id);
 
             var dictItems = await _dictRep.GetListAsync(new DictQuery { ParentId = id });
 
@@ -113,17 +104,9 @@ namespace Hao.AppService
         [DistributedLock("DictAppService_AddDictItem")]
         public async Task AddDictItem(DictItemAddInput input)
         {
-            var sameItems = await _dictRep.GetListAsync(new DictQuery { ParentId = input.ParentId, ItemName = input.ItemName });
+            await _dictDomainService.CheckItemNameValue(input.ItemName, input.ItemValue.Value, input.ParentId.Value);
 
-            H_AssertEx.That(sameItems.Count > 0, "数据项名称已存在，请重新输入");
-
-
-            sameItems = await _dictRep.GetListAsync(new DictQuery { ParentId = input.ParentId, ItemValue = input.ItemValue });
-
-            H_AssertEx.That(sameItems.Count > 0, "数据项值已存在，请重新输入");
-
-
-            var parentDict = await GetAsync(input.ParentId.Value);
+            var parentDict = await _dictDomainService.Get(input.ParentId.Value);
             var dict = input.Adapt<SysDict>();
             dict.ParentId = parentDict.Id;
             dict.DictCode = parentDict.DictCode;
@@ -161,20 +144,12 @@ namespace Hao.AppService
         [DistributedLock("DictAppService_UpdateDictItem")]
         public async Task UpdateDictItem(long id, DictItemUpdateInput input)
         {
-            var item = await _dictRep.GetAsync(id);
+            var item = await _dictDomainService.Get(id);
 
-            var sameItems = await _dictRep.GetListAsync(new DictQuery { ParentId = item.ParentId, ItemName = input.ItemName });
+            await _dictDomainService.CheckItemNameValue(input.ItemName, input.ItemValue.Value, item.ParentId.Value);
 
-            H_AssertEx.That(sameItems.Any(a => a.Id != id), "数据项名称已存在，请重新输入");
+            item = input.Adapt(item);
 
-            sameItems = await _dictRep.GetListAsync(new DictQuery { ParentId = item.ParentId, ItemValue = input.ItemValue });
-
-            H_AssertEx.That(sameItems.Any(a => a.Id != id), "数据项值已存在，请重新输入");
-
-            item.ItemName = input.ItemName;
-            item.ItemValue = input.ItemValue;
-            item.Remark = input.Remark;
-            item.Sort = input.Sort;
             await _dictRep.UpdateAsync(item, a => new { a.ItemName, a.ItemValue, a.Remark, a.Sort });
         }
 
@@ -185,7 +160,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task DeleteDictItem(long id)
         {
-            var dict = await _dictRep.GetAsync(id);
+            var dict = await _dictDomainService.Get(id);
             await _dictRep.DeleteAsync(dict);
         }
 
@@ -209,24 +184,5 @@ namespace Hao.AppService
 
             return dictItems.Adapt<List<DictDataItemOutput>>();
         }
-
-
-        #region private
-
-        /// <summary>
-        /// 字典详情
-        /// </summary>
-        /// <param name="dictId"></param>
-        /// <returns></returns>
-        private async Task<SysDict> GetAsync(long dictId)
-        {
-            var dict = await _dictRep.GetAsync(dictId);
-
-            H_AssertEx.That(dict == null, "字典数据不存在");
-            H_AssertEx.That(dict.IsDeleted, "字典数据已删除");
-
-            return dict;
-        }
-        #endregion
     }
 }

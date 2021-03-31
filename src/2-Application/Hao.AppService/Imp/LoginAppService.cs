@@ -6,6 +6,7 @@ using Hao.EventData;
 using Hao.Library;
 using Hao.Model;
 using Hao.Redis;
+using Hao.Service;
 using Hao.Utility;
 using Mapster;
 using Microsoft.Extensions.Options;
@@ -26,24 +27,23 @@ namespace Hao.AppService
     /// </summary>
     public class LoginAppService : ApplicationService, ILoginAppService
     {
-        private readonly ISysUserRepository _userRep;
-
-        private readonly ISysModuleRepository _moduleRep;
-
         private readonly ICapPublisher _publisher;
 
-        private readonly H_AppSettings _appSettings;
+        private readonly AppSettings _appSettings;
+
+        private readonly IUserDomainService _userDomainService;
+
+        private readonly IModuleDomainService _moduleDomainService;
 
         public LoginAppService(
-            ISysUserRepository userRep,
-            ISysModuleRepository moduleRep,
             ICapPublisher publisher,
-            IOptionsSnapshot<H_AppSettings> appSettingsOptions)
+            IOptionsSnapshot<AppSettings> appSettingsOptions, IUserDomainService userDomainService,
+            IModuleDomainService moduleDomainService)
         {
-            _userRep = userRep;
             _appSettings = appSettingsOptions.Value; //IOptionsSnapshot动态获取配置
             _publisher = publisher;
-            _moduleRep = moduleRep;
+            _userDomainService = userDomainService;
+            _moduleDomainService = moduleDomainService;
         }
 
 
@@ -62,8 +62,8 @@ namespace Hao.AppService
             //sha256加密
             password = H_EncryptProvider.HMACSHA256(password, _appSettings.Key.Sha256Key);
 
-            //根据账号密码查询用户
-            var user = await GetUserByAccountPwd(input.Account, password);
+            //根据账号密码登录
+            var user = await _userDomainService.LoginByAccountPwd(input.Account, password);
 
             return await Login(user, fromIP, input.IsRememberLogin);
         }
@@ -81,20 +81,10 @@ namespace Hao.AppService
             var timeNow = DateTime.Now;
             var expireTime = timeNow.AddDays(isRememberLogin ? 3 : 1);
 
-            H_AssertEx.That(string.IsNullOrWhiteSpace(user.AuthNumbers), "没有系统权限，暂时无法登录，请联系管理员");
-
             var authNums = JsonConvert.DeserializeObject<List<long>>(user.AuthNumbers);
 
-            H_AssertEx.That(authNums.Count == 0, "没有系统权限，暂时无法登录，请联系管理员");
-
             //查询用户菜单
-            var modules = await _moduleRep.GetListAsync(new ModuleQuery { IncludeResource = false });
-            var menus = new List<MenuVM>();
-
-            //找主菜单一级 parentId=0
-            InitMenuTree(menus, 0, modules, authNums, user.Id);
-
-            H_AssertEx.That(menus.Count == 0, "没有系统权限，暂时无法登录，请联系管理员");
+            var modules = await _moduleDomainService.GetMenuTree(authNums);
 
             //jwt的唯一身份标识，避免重复
             var jti = Guid.NewGuid();
@@ -115,7 +105,7 @@ namespace Hao.AppService
             var result = user.Adapt<LoginOutput>();
             result.Jwt = jwt;
             result.AuthNums = authNums;
-            result.Menus = menus;
+            result.Menus = modules.Adapt<List<MenuOutput>>();
 
             await _publisher.PublishAsync(nameof(LoginEventData), new LoginEventData
             {
@@ -129,27 +119,6 @@ namespace Hao.AppService
             return result;
         }
 
-
-        /// <summary>
-        /// 登录获取用户
-        /// </summary>
-        /// <param name="account"></param>
-        /// <param name="password"></param>
-        /// <returns></returns>
-        private async Task<SysUser> GetUserByAccountPwd(string account, string password)
-        {
-            var users = await _userRep.GetUserByAccountPwd(account, password);
-
-            H_AssertEx.That(users.Count == 0, "账号或密码错误");
-
-            H_AssertEx.That(users.Count > 1, "用户数据异常，存在相同用户");
-
-            var user = users.First();
-
-            H_AssertEx.That(!user.Enabled.Value, "用户已注销");
-
-            return user;
-        }
 
         /// <summary>
         /// 生成Jwt
@@ -181,37 +150,6 @@ namespace Hao.AppService
             ));
 
             return jwt;
-        }
-
-        /// <summary>
-        /// 递归初始化菜单树
-        /// </summary>
-        /// <param name="result"></param>
-        /// <param name="parentId"></param>
-        /// <param name="sources"></param>
-        /// <param name="authNums"></param>
-        /// <param name="userId"></param>
-        private void InitMenuTree(List<MenuVM> result, long? parentId, List<SysModule> sources, List<long> authNums, long userId)
-        {
-            //递归寻找子节点  
-            var tempTree = sources.Where(item => item.ParentId == parentId).OrderBy(a => a.Sort);
-            foreach (var item in tempTree)
-            {
-                if (authNums?.Count < 1 || item.Layer.Value > authNums.Count) continue;
-
-                if ((authNums[item.Layer.Value - 1] & item.Number) != item.Number) continue;
-
-                var node = new MenuVM()
-                {
-                    Name = item.Name,
-                    Icon = item.Icon,
-                    RouterUrl = item.RouterUrl,
-                    ChildMenus = new List<MenuVM>()
-                };
-                result.Add(node);
-                InitMenuTree(node.ChildMenus, item.Id, sources, authNums, userId);
-                if (item.Type == ModuleType.Main && node.ChildMenus.Count < 1) result.Remove(node);
-            }
         }
     }
 }

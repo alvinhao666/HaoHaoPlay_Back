@@ -1,6 +1,4 @@
 ﻿using Hao.Core;
-using Hao.Encrypt;
-using Hao.Enum;
 using Hao.Library;
 using Hao.Model;
 using Hao.Utility;
@@ -12,6 +10,7 @@ using System.Threading.Tasks;
 using Hao.Runtime;
 using Mapster;
 using Hao.Redis;
+using Hao.Service;
 
 namespace Hao.AppService
 {
@@ -20,18 +19,21 @@ namespace Hao.AppService
     /// </summary>
     public class CurrentUserAppService : ApplicationService, ICurrentUserAppService
     {
-        private readonly ISysUserRepository _userRep;
+        private readonly IUserRepository _userRep;
 
         private readonly ICurrentUser _currentUser;
 
-        private readonly H_AppSettings _appSettings;
+        private readonly IUserDomainService _userDomainService;
+
+        private readonly AppSettings _appSettings;
 
 
-        public CurrentUserAppService(ISysUserRepository userRepository, ICurrentUser currentUser,
-            IOptionsSnapshot<H_AppSettings> appSettingsOptions)
+        public CurrentUserAppService(IUserRepository userRepository, ICurrentUser currentUser, IUserDomainService userDomainService,
+            IOptionsSnapshot<AppSettings> appSettingsOptions)
         {
             _userRep = userRepository;
             _currentUser = currentUser;
+            _userDomainService = userDomainService;
             _appSettings = appSettingsOptions.Value;
         }
 
@@ -41,7 +43,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task<CurrentUserOutput> Get()
         {
-            var user = await _userRep.GetAsync(_currentUser.Id.Value);
+            var user = await _userDomainService.Get(_currentUser.Id.Value);
             return user.Adapt<CurrentUserOutput>();
         }
 
@@ -81,7 +83,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task UpdateHeadImg(UpdateHeadImgInput input)
         {
-            var user = await _userRep.GetAsync(_currentUser.Id.Value);
+            var user = await _userDomainService.Get(_currentUser.Id.Value);
             user.HeadImgUrl = $"https://{input.HeadImageUrl}";
             await _userRep.UpdateAsync(user, user => new { user.HeadImgUrl });
         }
@@ -89,15 +91,14 @@ namespace Hao.AppService
         /// <summary>
         /// 更新当前用户基本信息
         /// </summary>
-        /// <param name="vm"></param>
+        /// <param name="input"></param>
         /// <returns></returns>
-        public async Task UpdateBaseInfo(CurrentUserUpdateInput vm)
+        public async Task UpdateBaseInfo(CurrentUserUpdateInput input)
         {
-            var user = await _userRep.GetAsync(_currentUser.Id.Value);
-            user.Phone = vm.Phone;
-            user.WeChat = vm.WeChat;
-            user.Profile = vm.Profile;
-            user.HomeAddress = vm.HomeAddress;
+            var user = await _userDomainService.Get(_currentUser.Id.Value);
+
+            user = input.Adapt(user);
+
             await _userRep.UpdateAsync(user,
                 user => new
                 {
@@ -116,15 +117,7 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task UpdatePassword(string oldPassword, string newPassword)
         {
-            var user = await _userRep.GetAsync(_currentUser.Id.Value);
-            oldPassword = H_EncryptProvider.HMACSHA256(oldPassword, _appSettings.Key.Sha256Key);
-
-            H_AssertEx.That(user.Password != oldPassword, "原密码错误");
-
-            user.PasswordLevel = (PasswordLevel)H_Util.CheckPasswordLevel(newPassword);
-            newPassword = H_EncryptProvider.HMACSHA256(newPassword, _appSettings.Key.Sha256Key);
-            user.Password = newPassword;
-            await _userRep.UpdateAsync(user, user => new { user.Password, user.PasswordLevel });
+            await _userDomainService.UpdatePwd(_currentUser.Id.Value, oldPassword, newPassword);
         }
 
         /// <summary>
@@ -132,7 +125,7 @@ namespace Hao.AppService
         /// </summary>
         public async Task<UserSecurityOutput> GetSecurityInfo()
         {
-            var user = await _userRep.GetAsync(_currentUser.Id.Value);
+            var user = await _userDomainService.Get(_currentUser.Id.Value);
             var result = user.Adapt<UserSecurityOutput>();
             return result;
         }

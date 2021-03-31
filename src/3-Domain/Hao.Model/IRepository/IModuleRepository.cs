@@ -1,10 +1,11 @@
 ﻿using Hao.Core;
 using Hao.Enum;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Hao.Model
 {
-    public interface ISysModuleRepository : IRepository<SysModule, long>
+    public interface IModuleRepository : IRepository<SysModule, long>
     {
         /// <summary>
         /// 获取每一层的数量，包括已删除的，最多31个 0~30
@@ -19,7 +20,7 @@ namespace Hao.Model
         /// <param name="name"></param>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<bool> IsExistSameNameModule(string name, ModuleType? moduleType, long? parentId, long? id = null);
+        Task<List<SysModule>> GetSameName(string name, ModuleType? moduleType, long? parentId, long? id = null);
 
         /// <summary>
         /// 是否存在相同别名的模块
@@ -29,6 +30,6 @@ namespace Hao.Model
         /// <param name="parentId"></param>
         /// <param name="id"></param>
         /// <returns></returns>
-        Task<bool> IsExistSameAliasModule(string alias, ModuleType? moduleType, long? parentId, long? id = null);
+        Task<List<SysModule>> GetSameAlias(string alias, ModuleType? moduleType, long? parentId, long? id = null);
     }
 }

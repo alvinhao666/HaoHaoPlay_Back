@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Hao.Model
 {
-    public interface ISysRoleRepository: IRepository<SysRole, long>
+    public interface IRoleRepository: IRepository<SysRole, long>
     {
         Task<List<RoleDto>> GetRoleList(RoleQuery query);
     }

@@ -24,9 +24,9 @@ namespace Hao.AppService
         /// <summary>
         /// 更新当前用户基本信息
         /// </summary>
-        /// <param name="vm"></param>
+        /// <param name="input"></param>
         /// <returns></returns>
-        Task UpdateBaseInfo(CurrentUserUpdateInput vm);
+        Task UpdateBaseInfo(CurrentUserUpdateInput input);
 
         /// <summary>
         /// 更新当前用户密码

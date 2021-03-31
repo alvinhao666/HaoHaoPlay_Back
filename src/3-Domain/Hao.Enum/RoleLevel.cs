@@ -5,7 +5,7 @@ namespace Hao.Enum
     /// <summary>
     /// 角色等级
     /// </summary>
-    public enum RoleLevelType
+    public enum RoleLevel
     {
         /// <summary>
         /// 超级管理员

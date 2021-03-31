@@ -33,7 +33,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 //相反，如果消费者都位于不同的消费者组，则所有的消费者都会被执行。
 
                 //相同的实例中，你可以通过下面的方式来指定他们位于不同的消费者组。
-                x.DefaultGroup = config.DefaultGroup;
+                x.DefaultGroupName = config.DefaultGroupName;
 
                 x.FailedRetryCount = 10; //失败重试机会，默认50次
                 x.FailedRetryInterval = 30; //每60秒重试一次   50次*60秒  50分钟后放弃失败重试

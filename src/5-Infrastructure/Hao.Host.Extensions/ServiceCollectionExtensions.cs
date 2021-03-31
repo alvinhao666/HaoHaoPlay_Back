@@ -89,14 +89,6 @@ namespace Hao.Core.Extensions
             ////雪花id
             //services.AddSingleton(new IdWorker(appSettings.SnowflakeId.WorkerId, appSettings.SnowflakeId.DataCenterId));
 
-            services.AddSnowflakeWithRedis(opt =>
-            {
-                opt.Database = 15;
-                opt.InstanceName = "Snowflake:";
-                opt.ConnectionString = appSettings.ConnectionString.Redis;
-                opt.RefreshAliveInterval = TimeSpan.FromHours(1);
-            });
-
             //orm
             services.AddOrmService(DataType.PostgreSQL, appSettings.ConnectionString.Master, appSettings.ConnectionString.Slave.Select(a => a.Connection).ToArray());
             #endregion

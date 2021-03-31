@@ -32,13 +32,13 @@ namespace Hao.AppService
         /// <summary>
         /// 拥有菜单集合
         /// </summary>
-        public List<MenuVM> Menus { get; set; }
+        public List<MenuOutput> Menus { get; set; }
     }
 
     /// <summary>
     /// 应用菜单
     /// </summary>
-    public class MenuVM
+    public class MenuOutput
     {
         /// <summary>
         /// 名称
@@ -58,6 +58,6 @@ namespace Hao.AppService
         /// <summary>
         /// 子应用菜单
         /// </summary>
-        public List<MenuVM> ChildMenus { get; set; }
+        public List<MenuOutput> ChildMenus { get; set; }
     }
 }

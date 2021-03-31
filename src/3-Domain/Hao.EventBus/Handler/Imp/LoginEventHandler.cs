@@ -11,11 +11,11 @@ namespace Hao.EventBus
     /// </summary>
     public class LoginEventHandler : EventHandler, ILoginEventHandler
     {
-        private readonly ISysUserRepository _userRep;
+        private readonly IUserRepository _userRep;
 
-        private readonly ISysLoginRecordRepository _recordRep;
+        private readonly ILoginRecordRepository _recordRep;
 
-        public LoginEventHandler(ISysUserRepository userRep, ISysLoginRecordRepository recordRep)
+        public LoginEventHandler(IUserRepository userRep, ILoginRecordRepository recordRep)
         {
             _userRep = userRep;
             _recordRep = recordRep;

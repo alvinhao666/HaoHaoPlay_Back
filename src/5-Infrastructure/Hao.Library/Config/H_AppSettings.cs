@@ -30,6 +30,10 @@ namespace Hao.Library
         public RabbitMQConfig RabbitMQ { get; set; }
 
         /// <summary>
+        /// ZookeeperUrl
+        /// </summary>
+        public string ZookeeperUrl { get; set; }
+        /// <summary>
         /// 密钥信息
         /// </summary>
         public KeyConfig Key { get; set; }

@@ -24,7 +24,7 @@ namespace Hao.Core
         public string GlobalLockKey { get; set; }
 
         /// <summary>
-        /// 再次提交时间间隔，（时间间隔内请求处理完成，可以继续提交，请求未处理完成，则不允重复提交）
+        /// 再次提交时间间隔
         /// </summary>
         public int Interval { get; set; }
 
@@ -32,6 +32,11 @@ namespace Hao.Core
         /// 提示信息
         /// </summary>
         public string Message { get; set; }
+
+        /// <summary>
+        /// 是否自动解锁，默认false (true:时间间隔内请求处理完成，可以继续提交)
+        /// </summary>
+        public bool AutoUnLock { get; set; } = false;
 
         /// <summary>
         /// 执行
@@ -60,7 +65,7 @@ namespace Hao.Core
             }
             finally
             {
-                if (isSuccess) UnLock(cacheKey);
+                if (isSuccess && AutoUnLock) UnLock(cacheKey);
             }
         }
 
@@ -95,7 +100,6 @@ namespace Hao.Core
         /// 锁定，成功锁定返回true，false代表之前已被锁定
         /// </summary>
         /// <param name="key">锁定标识</param>
-        /// <param name="expiration">锁定时间间隔</param>
         private bool Lock(string key)
         {
             if (RedisHelper.Exists(key)) return false;

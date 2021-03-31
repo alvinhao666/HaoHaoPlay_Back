@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace Hao.Core.Extensions
 {
-    public class LongJsonConvert : JsonConverter<long>  // 包括了 long? 
+    internal class LongJsonConvert : JsonConverter<long>  // 包括了 long? 
     {
         public override long Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {

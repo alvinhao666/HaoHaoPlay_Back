@@ -1,12 +1,13 @@
 ﻿using Hao.Core;
 using Hao.Enum;
 using Hao.Model;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Hao.Repository
 {
-    public class SysModuleRepository : Repository<SysModule, long>, ISysModuleRepository
+    public class ModuleRepository : Repository<SysModule, long>, IModuleRepository
     {
         /// <summary>
         /// 获取每一层的数量，包括已删除的，最多31个 0~30
@@ -37,7 +38,7 @@ namespace Hao.Repository
         /// <param name="parentId"></param>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<bool> IsExistSameNameModule(string name, ModuleType? moduleType, long? parentId, long? id = null)
+        public async Task<List<SysModule>> GetSameName(string name, ModuleType? moduleType, long? parentId, long? id = null)
         {
             var modules = await DbContext.Select<SysModule>()
                                             .Where(a => a.Name == name)
@@ -46,7 +47,7 @@ namespace Hao.Repository
                                             .WhereIf(id.HasValue, a => a.Id != id)
                                             .ToListAsync();
 
-            return modules.Count > 0;
+            return modules;
         }
 
         /// <summary>
@@ -57,7 +58,7 @@ namespace Hao.Repository
         /// <param name="parentId"></param>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<bool> IsExistSameAliasModule(string alias, ModuleType? moduleType, long? parentId, long? id = null)
+        public async Task<List<SysModule>> GetSameAlias(string alias, ModuleType? moduleType, long? parentId, long? id = null)
         {
             var modules = await DbContext.Select<SysModule>()
                                             .Where(a => a.Alias == alias)
@@ -66,7 +67,7 @@ namespace Hao.Repository
                                             .WhereIf(id.HasValue, a => a.Id != id)
                                             .ToListAsync();
 
-            return modules.Count > 0;
+            return modules;
         }
     }
 }

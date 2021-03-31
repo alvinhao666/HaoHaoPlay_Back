@@ -5,6 +5,7 @@ using System;
 using AspectCore.Extensions.Hosting;
 using System.IO;
 using Serilog;
+using Hao.Runtime;
 
 namespace Hao.Core.Extensions
 {

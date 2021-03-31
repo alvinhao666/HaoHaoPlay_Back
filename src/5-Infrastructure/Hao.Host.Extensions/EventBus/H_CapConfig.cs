@@ -14,6 +14,6 @@
 
         public string Password { get; set; }
 
-        public string DefaultGroup { get; set; }
+        public string DefaultGroupName { get; set; }
     }
 }

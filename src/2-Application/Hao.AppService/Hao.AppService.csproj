@@ -11,6 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\3-Domain\Hao.EventData\Hao.EventData.csproj" />
     <ProjectReference Include="..\..\3-Domain\Hao.Model\Hao.Model.csproj" />
+    <ProjectReference Include="..\..\3-Domain\Hao.Service\Hao.Service.csproj" />
     <ProjectReference Include="..\..\5-Infrastructure\Hao.Library\Hao.Library.csproj" />
     <ProjectReference Include="..\..\6-Common\Hao.Encrypt\Hao.Encrypt.csproj" />
     <ProjectReference Include="..\..\6-Common\Hao.Excel\Hao.Excel.csproj" />

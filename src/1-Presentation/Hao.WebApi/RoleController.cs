@@ -43,22 +43,7 @@ namespace Hao.WebApi
         /// <returns></returns>
         [HttpPut("{id}")]
         [AuthCode("Role_UpdateAuth_1_524288")]
-        public async Task UpdateRoleAuth(long? id, [FromBody] RoleUpdateInput input) => await _roleAppService.UpdateRoleAuth(id.Value, input);
+        public async Task UpdateRoleAuth(long? id, [FromBody] RoleUpdateAuthInput input) => await _roleAppService.UpdateRoleAuth(id.Value, input);
 
-        ///// <summary>
-        ///// 添加角色
-        ///// </summary>
-        ///// <param name="input"></param>
-        ///// <returns></returns>
-        //[HttpPost]
-        //public async Task Add([FromBody] RoleAddinput input) => await _roleAppService.AddRole(input);
-
-        ///// <summary>
-        ///// 删除角色
-        ///// </summary>
-        ///// <param name="id"></param>
-        ///// <returns></returns>
-        //[HttpDelete("{id}")]
-        //public async Task DeleteRole(long id) => await _roleAppService.DeleteRole(id);
     }
 }

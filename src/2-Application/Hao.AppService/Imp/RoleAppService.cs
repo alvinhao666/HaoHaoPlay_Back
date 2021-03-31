@@ -5,13 +5,11 @@ using DotNetCore.CAP;
 using Hao.Core;
 using Hao.Enum;
 using Hao.EventData;
-using Hao.Library;
 using Hao.Model;
 using Hao.Runtime;
-using Hao.Utility;
+using Hao.Service;
 using Mapster;
 using Newtonsoft.Json;
-using Npgsql;
 
 namespace Hao.AppService
 {
@@ -20,43 +18,28 @@ namespace Hao.AppService
     /// </summary>
     public class RoleAppService : ApplicationService, IRoleAppService
     {
-        private readonly ISysRoleRepository _roleRep;
+        private readonly IRoleRepository _roleRep;
 
-        private readonly ISysModuleRepository _moduleRep;
+        private readonly IModuleRepository _moduleRep;
 
-        private readonly ISysUserRepository _userRep;
+        private readonly IUserRepository _userRep;
 
         private readonly ICapPublisher _publisher;
 
         private readonly ICurrentUser _currentUser;
 
-        public RoleAppService(ICurrentUser currentUser, ICapPublisher publisher, ISysRoleRepository roleRep, ISysModuleRepository moduleRep, ISysUserRepository userRep)
+        private readonly IRoleDomainService _roleDomainService;
+
+        public RoleAppService(ICurrentUser currentUser, ICapPublisher publisher, IRoleRepository roleRep, IModuleRepository moduleRep, IUserRepository userRep, IRoleDomainService roleDomainService)
         {
             _roleRep = roleRep;
             _moduleRep = moduleRep;
             _userRep = userRep;
             _publisher = publisher;
             _currentUser = currentUser;
+            _roleDomainService = roleDomainService;
         }
 
-
-        /// <summary>
-        /// 添加角色
-        /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
-        public async Task Add(RoleAddInput input)
-        {
-            var role = new SysRole() { Name = input.Name };
-            try
-            {
-                await _roleRep.InsertAsync(role);
-            }
-            catch (PostgresException ex)
-            {
-                H_AssertEx.That(ex.SqlState == H_PostgresSqlState.E23505, "角色名称已存在，请重新输入");//违反唯一键
-            }
-        }
 
         /// <summary>
         /// 获取角色列表
@@ -66,7 +49,7 @@ namespace Hao.AppService
         {
             var query = new RoleQuery();
 
-            if (_currentUser.RoleLevel != (int)RoleLevelType.SuperAdministrator) //超级管理员能看见所有，其他用户只能看见比自己等级低的用户列表
+            if (_currentUser.RoleLevel != (int)RoleLevel.SuperAdministrator) //超级管理员能看见所有，其他用户只能看见比自己等级低的用户列表
             {
                 query.CurrentRoleLevel = _currentUser.RoleLevel;
             }
@@ -104,11 +87,9 @@ namespace Hao.AppService
         /// <param name="input"></param>
         /// <returns></returns>
         [CapUnitOfWork]
-        public async Task UpdateRoleAuth(long id, RoleUpdateInput input)
+        public async Task UpdateRoleAuth(long id, RoleUpdateAuthInput input)
         {
-            var role = await GetRoleDetail(id);
-
-            if (role.Level != (int)RoleLevelType.SuperAdministrator && _currentUser.RoleLevel >= role.Level) throw new H_Exception("无法操作该角色的权限");
+            var role = await _roleDomainService.Get(id);
 
             var modules = await _moduleRep.GetListAsync(input.ModuleIds);
             var maxLayer = modules.Max(a => a.Layer);
@@ -129,12 +110,13 @@ namespace Hao.AppService
             var users = await _userRep.GetListAsync(new UserQuery() { RoleLevel = role.Level });
             var ids = users.Where(a => a.AuthNumbers != role.AuthNumbers).Select(a => a.Id).ToList();
 
-            await _roleRep.UpdateAsync(role, a => new { a.AuthNumbers });
+            await _roleDomainService.UpdateRoleAuth(role);
+
             await _userRep.UpdateAuth(role.Id, role.AuthNumbers);
 
             //注销该角色下用户的登录信息
-
             if (ids.Count < 1) return;
+
             await _publisher.PublishAsync(nameof(LogoutForUpdateAuthEventData), new LogoutForUpdateAuthEventData
             {
                 UserIds = ids
@@ -148,44 +130,17 @@ namespace Hao.AppService
         /// <returns></returns>
         public async Task<RoleModuleOutput> GetRoleModule(long id)
         {
-            var role = await GetRoleDetail(id);
+            var role = await _roleDomainService.Get(id);
             var authNumbers = string.IsNullOrWhiteSpace(role.AuthNumbers) ? null : JsonConvert.DeserializeObject<List<long>>(role.AuthNumbers);
             var modules = await _moduleRep.GetListAsync();
             var result = new RoleModuleOutput();
-            result.Nodes = new List<RoleModuleItemVM>();
+            result.Nodes = new List<RoleModuleItemOutput>();
             result.CheckedKeys = new List<string>();
             InitModuleTree(result.Nodes, -1, modules, authNumbers, result.CheckedKeys);
             return result;
         }
 
-        /// <summary>
-        /// 删除角色
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public async Task Delete(long id)
-        {
-            var role = await GetRoleDetail(id);
-            var users = await _userRep.GetListAsync(new UserQuery() { RoleLevel = role.Level });
-
-            H_AssertEx.That(users.Count > 0, "该角色下存在用户，暂时无法删除");
-            await _roleRep.DeleteAsync(role);
-        }
-
-
         #region private
-        /// <summary>
-        /// 角色详情
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <returns></returns>
-        private async Task<SysRole> GetRoleDetail(long userId)
-        {
-            var item = await _roleRep.GetAsync(userId);
-            if (item == null) throw new H_Exception("角色不存在");
-            if (item.IsDeleted) throw new H_Exception("角色已删除");
-            return item;
-        }
 
         /// <summary>
         /// 递归初始化模块树
@@ -195,19 +150,19 @@ namespace Hao.AppService
         /// <param name="sources"></param>
         /// <param name="authNumbers"></param>
         /// <param name="checkedKeys"></param>
-        private void InitModuleTree(List<RoleModuleItemVM> result, long parentID, List<SysModule> sources, List<long> authNumbers, List<string> checkedKeys)
+        private void InitModuleTree(List<RoleModuleItemOutput> result, long parentID, List<SysModule> sources, List<long> authNumbers, List<string> checkedKeys)
         {
             //递归寻找子节点  
             var tempTree = sources.Where(item => item.ParentId == parentID).OrderBy(a => a.Sort).ToList();
             foreach (var item in tempTree)
             {
-                var node = new RoleModuleItemVM()
+                var node = new RoleModuleItemOutput()
                 {
                     key = item.Id.ToString(),
                     title = item.Name,
                     isLeaf = item.Type == ModuleType.Resource,
                     expanded = (int)item.Type.Value < (int)ModuleType.Sub,
-                    children = new List<RoleModuleItemVM>()
+                    children = new List<RoleModuleItemOutput>()
                 };
 
                 result.Add(node);

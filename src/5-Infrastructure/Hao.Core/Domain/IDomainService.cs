@@ -3,9 +3,9 @@
 namespace Hao.Core
 {
     /// <summary>
-    /// 应用服务接口 
+    /// 领域服务接口 
     /// </summary>
-    public interface IApplicationService : ITransientDependency
+    public interface IDomainService : ITransientDependency
     {
 
     }

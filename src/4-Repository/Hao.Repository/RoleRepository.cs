@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Hao.Repository
 {
-    public class SysRoleRepository : Repository<SysRole, long>, ISysRoleRepository
+    public class RoleRepository : Repository<SysRole, long>, IRoleRepository
     {
         public async Task<List<RoleDto>> GetRoleList(RoleQuery query)
         {

@@ -6,12 +6,12 @@ namespace Hao.AppService
 {
     public class RoleModuleOutput
     {
-        public List<RoleModuleItemVM> Nodes { get; set; }
+        public List<RoleModuleItemOutput> Nodes { get; set; }
 
         public List<string> CheckedKeys { get; set; }
     }
 
-    public class RoleModuleItemVM
+    public class RoleModuleItemOutput
     {
         public string key { get; set; }
 
@@ -38,7 +38,7 @@ namespace Hao.AppService
         /// <summary>
         /// 子模块
         /// </summary>
-        public List<RoleModuleItemVM> children { get; set; }
+        public List<RoleModuleItemOutput> children { get; set; }
 
         /// <summary>
         /// 展开

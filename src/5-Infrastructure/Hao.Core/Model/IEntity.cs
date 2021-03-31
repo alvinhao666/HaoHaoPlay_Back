@@ -6,7 +6,7 @@
     public interface IEntity<TKey> where TKey : struct
     {
         /// <summary>
-        /// 主键id。
+        /// 主键id
         /// </summary>
         TKey Id { get; set; }
     }

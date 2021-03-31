@@ -59,10 +59,10 @@ namespace Hao.Core.Extensions
         /// <summary>
         /// 用于配置中间件，以构建请求处理流水线
         /// </summary>
-        public virtual void Configure(IApplicationBuilder app, IServiceProvider serviceProvider)
+        public virtual void Configure(IApplicationBuilder app)
         {
             //执行顺序 ConfigureContainer - Configure
-            app.Configure(Env, serviceProvider, _appSettings);
+            app.Configure(Env, _appSettings);
         }
 
 
