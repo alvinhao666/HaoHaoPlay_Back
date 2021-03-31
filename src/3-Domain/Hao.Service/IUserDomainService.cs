@@ -36,5 +36,14 @@ namespace Hao.Service
         /// <param name="password"></param>
         /// <returns></returns>
         Task<SysUser> LoginByAccountPwd(string account, string password);
+
+        /// <summary>
+        /// 更新用户密码
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="oldPassword"></param>
+        /// <param name="newPassword"></param>
+        /// <returns></returns>
+        Task UpdatePwd(long userId, string oldPassword, string newPassword);
     }
 }

@@ -1,7 +1,11 @@
 ﻿using Hao.Core;
+using Hao.Encrypt;
+using Hao.Enum;
 using Hao.Library;
 using Hao.Model;
 using Hao.Runtime;
+using Hao.Utility;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Npgsql;
 using System.Collections.Generic;
@@ -19,11 +23,16 @@ namespace Hao.Service
 
         private readonly ICurrentUser _currentUser;
 
-        public UserDomainService(IUserRepository userRep, ICurrentUser currentUser)
+        private readonly AppSettings _appSettings;
+
+
+        public UserDomainService(IUserRepository userRep, ICurrentUser currentUser, IOptionsSnapshot<AppSettings> appSettingsOptions)
         {
             _userRep = userRep;
             _currentUser = currentUser;
+            _appSettings = appSettingsOptions.Value;
         }
+
 
         /// <summary>
         /// 添加用户
@@ -34,11 +43,18 @@ namespace Hao.Service
         {
             try
             {
+                var users = await _userRep.GetAllAsync(new UserQuery { Account = user.Account });
+
+                H_AssertEx.That(users.Count > 0, "账号已存在");
+
+
+                H_AssertEx.That(user.RoleLevel <= _currentUser.RoleLevel, "无法添加同级及高级角色用户");
+
                 await _userRep.InsertAsync(user);
             }
             catch (PostgresException ex)
             {
-                H_AssertEx.That(ex.SqlState == H_PostgresSqlState.E23505, "账号已存在，请重新输入");
+                H_AssertEx.That(ex.SqlState == H_PostgresSqlState.E23505, "账号已存在");
             }
         }
 
@@ -94,6 +110,26 @@ namespace Hao.Service
             H_AssertEx.That(authNums.Count == 0, "没有系统权限，暂时无法登录，请联系管理员");
 
             return user;
+        }
+
+        /// <summary>
+        /// 更新用户密码
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="oldPassword"></param>
+        /// <param name="newPassword"></param>
+        /// <returns></returns>
+        public async Task UpdatePwd(long userId, string oldPassword, string newPassword)
+        {
+            var user = await _userRep.GetAsync(userId);
+            oldPassword = H_EncryptProvider.HMACSHA256(oldPassword, _appSettings.Key.Sha256Key);
+
+            H_AssertEx.That(user.Password != oldPassword, "原密码错误");
+
+            user.PasswordLevel = (PasswordLevel)H_Util.CheckPasswordLevel(newPassword);
+            newPassword = H_EncryptProvider.HMACSHA256(newPassword, _appSettings.Key.Sha256Key);
+            user.Password = newPassword;
+            await _userRep.UpdateAsync(user, user => new { user.Password, user.PasswordLevel });
         }
     }
 }

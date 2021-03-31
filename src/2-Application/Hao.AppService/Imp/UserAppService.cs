@@ -70,13 +70,7 @@ namespace Hao.AppService
         [DistributedLock("UserAppService_AddUser")]
         public async Task Add(UserAddInput input)
         {
-            var users = await _userRep.GetAllAsync(new UserQuery { Account = input.Account });
-
-            H_AssertEx.That(users.Count > 0, "账号已存在，请重新输入");
-
             var role = await _roleDomainService.Get(input.RoleId.Value);
-
-            H_AssertEx.That(role.Level <= _currentUser.RoleLevel, "无法添加同级及高级角色用户");
 
             var user = input.Adapt<SysUser>();
             user.FirstNameInitial = WordsHelper.GetFirstPinyin(user.Name.Substring(0, 1));
