@@ -37,7 +37,7 @@ Angular 11 | 前端框架 | [https://angular.cn](https://angular.cn)
 NG-ZORRO | UI 组件库 | [https://ng.ant.design/docs/introduce/zh](https://ng.ant.design/docs/introduce/zh)
 
 ## ⚡ 做了什么
-- [x] 仓储层基类封装 (增删改简洁方便)
+- [x] 仓储层封装 (增删改简洁方便)
 - [x] 可视化sql语句输出
 - [x] 公用工具类库封装
 - [x] 统一接口返回模型及异常处理返回模型
