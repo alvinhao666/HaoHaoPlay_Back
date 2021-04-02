@@ -38,6 +38,7 @@ namespace Hao.AppService
             var dict = input.Adapt<SysDict>();
             dict.ParentId = -1;
             dict.Sort = 0;
+            dict.DictType = DictType.Main;
             await _dictRep.InsertAsync(dict);
         }
 
