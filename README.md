@@ -37,20 +37,20 @@ Angular 11 | 前端框架 | [https://angular.cn](https://angular.cn)
 NG-ZORRO | UI 组件库 | [https://ng.ant.design/docs/introduce/zh](https://ng.ant.design/docs/introduce/zh)
 
 ## ⚡ 做了什么
-<font color="green">✔</font> 仓储层基类封装  
-<font color="green">✔</font> 可视化sql语句输出  
-<font color="green">✔</font> 公用工具类库封装  
-<font color="green">✔</font> 统一接口返回模型及异常处理返回模型  
-<font color="green">✔</font> 去除请求所包含字段的首尾空字符串  
-<font color="green">✔</font> 工作单元UnitOfWork (Attribute)  
-<font color="green">✔</font> 分布式锁 (Attribute)  
-<font color="green">✔</font> 防重提交 (Attribute)  
-<font color="green">✔</font> 统一全局配置类AppSettings  
-<font color="green">✔</font> 将当前请求的用户信息封装至ICurrentUser，通过Scope方式注入使用  
-<font color="green">✔</font> Swagger优化枚举中文描述的显示及隐藏忽略属性  
-<font color="green">✔</font> JWT身份验证  
-<font color="green">✔</font> 位运算实现菜单权限及按钮权限控制管理，提高效率  
-<font color="green">✔</font> 更多详见代码...  
+<font style="color:green">✔</font> 仓储层基类封装  
+<font style="color:green">✔</font> 可视化sql语句输出  
+<font style="color:green">✔</font> 公用工具类库封装  
+<font style="color:green">✔</font> 统一接口返回模型及异常处理返回模型  
+<font style="color:green">✔</font> 去除请求所包含字段的首尾空字符串  
+<font style="color:green">✔</font> 工作单元UnitOfWork (Attribute)  
+<font style="color:green">✔</font> 分布式锁 (Attribute)  
+<font style="color:green">✔</font> 防重提交 (Attribute)  
+<font style="color:green">✔</font> 统一全局配置类AppSettings  
+<font style="color:green">✔</font> 将当前请求的用户信息封装至ICurrentUser，通过Scope方式注入使用  
+<font style="color:green">✔</font> Swagger优化枚举中文描述的显示及隐藏忽略属性  
+<font style="color:green">✔</font> JWT身份验证  
+<font style="color:green">✔</font> 位运算实现菜单权限及按钮权限控制管理，提高效率  
+<font style="color:green">✔</font> 更多详见代码...  
 
 ## 🥪 环境
 
