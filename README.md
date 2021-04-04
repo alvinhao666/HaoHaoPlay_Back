@@ -61,7 +61,7 @@ NG-ZORRO | UI 组件库 | [https://ng.ant.design/docs/introduce/zh](https://ng.a
 > > 
 > 开发工具
 >
-> > Visual Studio 2019、JetBrains Rider
+> > Visual Studio 2019、JetBrains Rider 2020.3.4
 
 #### 部署环境
 > 系统版本
