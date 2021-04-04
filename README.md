@@ -57,7 +57,7 @@ NG-ZORRO | UI 组件库 | [https://ng.ant.design/docs/introduce/zh](https://ng.a
 #### 开发环境
 > 系统版本
 >
-> > Windows 10、MacOS Big Sur 11.2.3
+> > Windows 10、MacOS Big Sur
 > > 
 > 开发工具
 >
