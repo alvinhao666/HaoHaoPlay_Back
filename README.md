@@ -12,7 +12,7 @@
 ## 🥗 有什么
 #### 后端:
 名称 | 描述 | 链接
-----|------|----
+----|-----------|----------------------
 PostgreSQL | 关系型数据库 | [https://www.postgresql.org](https://www.postgresql.org)
 Redis | NoSql数据库 | [https://redis.io](https://redis.io)
 RabbitMQ | 消息中间件 | [https://www.rabbitmq.com](https://www.rabbitmq.com)
