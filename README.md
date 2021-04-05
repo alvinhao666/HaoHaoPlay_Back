@@ -14,7 +14,7 @@
 名称 | 描述 | 链接
 ----|----|----
 PostgreSQL | 关系型数据库 | [https://www.postgresql.org](https://www.postgresql.org)
-Redis | NoSql数据库 | [https://redis.io](https://redis.io)
+Redis | key-value数据库 | [https://redis.io](https://redis.io)
 RabbitMQ | 消息中间件 | [https://www.rabbitmq.com](https://www.rabbitmq.com)
 ELK | 日志收集分析平台 | [https://www.elastic.co/cn](https://www.elastic.co/cn/)
 AspectCore | 容器，IOC及AOP的实现| [https://github.com/dotnetcore/AspectCore-Framework](https://github.com/dotnetcore/AspectCore-Framework)
