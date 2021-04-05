@@ -66,8 +66,8 @@ NG-ZORRO | UI 组件库 | [https://ng.ant.design/docs/introduce/zh](https://ng.a
 #### 部署环境
 > 系统版本
 >
-> > CentOS 7.5  
+> > CentOS 7.6  
 
 > 部署工具  
 >
-> > Docker、Jenkins、Nginx. 
+> > Docker、Jenkins、Nginx  
