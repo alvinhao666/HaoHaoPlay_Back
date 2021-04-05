@@ -90,23 +90,28 @@ namespace Hao.AppService
         public async Task UpdateRoleAuth(long id, RoleUpdateAuthInput input)
         {
             var role = await _roleDomainService.Get(id);
-
-            var modules = await _moduleRep.GetListAsync(input.ModuleIds);
-            var maxLayer = modules.Max(a => a.Layer);
-
-            var authNumbers = new List<long>();
-            for (int i = 1; i <= maxLayer; i++)
+            role.AuthNumbers = null;
+            
+            if (input.ModuleIds?.Count > 0)
             {
-                var authNumber = 0L;
-                var items = modules.Where(a => a.Layer == i);
-                foreach (var x in items)
+                var modules = await _moduleRep.GetListAsync(input.ModuleIds);
+                var maxLayer = modules.Max(a => a.Layer);
+
+                var authNumbers = new List<long>();
+                for (int i = 1; i <= maxLayer; i++)
                 {
-                    authNumber = authNumber | x.Number.Value;
+                    var authNumber = 0L;
+                    var items = modules.Where(a => a.Layer == i);
+                    foreach (var x in items)
+                    {
+                        authNumber = authNumber | x.Number.Value;
+                    }
+                    authNumbers.Add(authNumber);
                 }
-                authNumbers.Add(authNumber);
+
+                role.AuthNumbers = JsonConvert.SerializeObject(authNumbers);
             }
 
-            role.AuthNumbers = JsonConvert.SerializeObject(authNumbers);
             var users = await _userRep.GetListAsync(new UserQuery() { RoleLevel = role.Level });
             var ids = users.Where(a => a.AuthNumbers != role.AuthNumbers).Select(a => a.Id).ToList();
 
