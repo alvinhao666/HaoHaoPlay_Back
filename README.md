@@ -5,9 +5,9 @@
 通过这些基础功能的实现，分享自己对系统框架设计的理解，对ddd设计的理解，希望多多少少对大家学习使用.net core有帮助，少踩一些坑，当然也会存在不足之处，还望指出。
 
 ## 🍿 在线体验
-地址:[https://back.haohaoplay.com](https://back.haohaoplay.com)  
-账号:guest  
-密码:123456  
+地址: [https://back.haohaoplay.com](https://back.haohaoplay.com)  
+账号: guest  
+密码: 123456  
 
 ## 🥗 有什么
 #### 后端:
