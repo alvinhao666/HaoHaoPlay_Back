@@ -46,7 +46,7 @@ NG-ZORRO | UI 组件库 | [https://ng.ant.design/docs/introduce/zh](https://ng.a
 <font style="color:green">✔</font> 分布式锁 (Attribute)  
 <font style="color:green">✔</font> 防重提交 (Attribute)  
 <font style="color:green">✔</font> 统一全局配置类AppSettings  
-<font style="color:green">✔</font> 将当前请求的用户信息封装至ICurrentUser，通过Scope方式注入使用  
+<font style="color:green">✔</font> ICurrentUser记录当前请求的用户信息，通过Scope方式注入使用  
 <font style="color:green">✔</font> Swagger优化枚举中文描述的显示及隐藏忽略属性  
 <font style="color:green">✔</font> JWT身份验证  
 <font style="color:green">✔</font> 位运算实现菜单权限及按钮权限控制管理  
