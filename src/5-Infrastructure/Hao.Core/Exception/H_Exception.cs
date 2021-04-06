@@ -12,7 +12,7 @@ namespace Hao.Core
         /// 异常代码
         /// </summary>
         public int? Code { get; private set; }
-        
+
         /// <summary>
         /// 异常
         /// </summary>
@@ -40,11 +40,11 @@ namespace Hao.Core
         /// <param name="condition"></param>
         /// <param name="msg"></param>
         /// <exception cref="H_Exception"></exception>
-        public static void That(bool condition, string msg) 
+        public static void That(bool condition, string msg)
         {
             if (condition)
             {
-               throw new H_Exception(msg);
+                throw new H_Exception(msg);
             }
         }
     }

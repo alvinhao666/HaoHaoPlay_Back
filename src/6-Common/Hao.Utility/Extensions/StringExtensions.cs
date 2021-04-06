@@ -9,7 +9,7 @@ namespace Hao.Utility
     /// <summary>
     /// string扩展方法
     /// </summary>
-    public static  class StringExtensions
+    public static class StringExtensions
     {
         /// <summary>
         /// 安全转换为字符串，去除两端空格，当值为null时返回""

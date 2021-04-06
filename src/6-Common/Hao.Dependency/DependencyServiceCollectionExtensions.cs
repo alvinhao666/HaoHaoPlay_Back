@@ -17,12 +17,12 @@ namespace Microsoft.Extensions.DependencyInjection
                     .AddClasses(x => x.AssignableTo(typeof(ITransientDependency))) //直接或间接实现了ITransientDependency
                     .AsImplementedInterfaces()
                     .WithTransientLifetime())
-                
+
                 .Scan(scan => scan.FromAssemblies(assemblies)
                     .AddClasses(x => x.AssignableTo(typeof(IScopeDependency)))
                     .AsImplementedInterfaces()
                     .WithScopedLifetime())
-                
+
                 .Scan(scan => scan.FromAssemblies(assemblies)
                     .AddClasses(x => x.AssignableTo(typeof(ISingletonDependency)))
                     .AsImplementedInterfaces()

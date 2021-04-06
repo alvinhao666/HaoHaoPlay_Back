@@ -30,7 +30,7 @@ namespace Hao.Utility
         /// 当前操作系统
         /// </summary>
         public static string System => IsWindows ? "Windows" : IsLinux ? "Linux" : IsOsx ? "OSX" : string.Empty;
-        
+
 
         /// <summary>
         /// 获取类型

@@ -34,14 +34,14 @@ namespace Microsoft.Extensions.DependencyInjection
                             .UseConnectionString(dbType, connectionString)
                             .UseSlave(slaveConnectionStrings)
                             .UseNameConvert(NameConvertType.ToLower) //NameConvertType.PascalCaseToUnderscoreWithLower
-                            //.UseMonitorCommand(cmd => {
-                            //     Console.ForegroundColor = ConsoleColor.DarkYellow;
-                            //     Console.Write("SQL：");
-                            //     Console.ForegroundColor = ConsoleColor.Cyan;
-                            //     Console.WriteLine(cmd.CommandText);
-                            //     Console.ForegroundColor = ConsoleColor.White;
-                            // })
-                            //.UseNoneCommandParameter(true)
+                                                                     //.UseMonitorCommand(cmd => {
+                                                                     //     Console.ForegroundColor = ConsoleColor.DarkYellow;
+                                                                     //     Console.Write("SQL：");
+                                                                     //     Console.ForegroundColor = ConsoleColor.Cyan;
+                                                                     //     Console.WriteLine(cmd.CommandText);
+                                                                     //     Console.ForegroundColor = ConsoleColor.White;
+                                                                     // })
+                                                                     //.UseNoneCommandParameter(true)
                             .Build();
 
             fsql.GlobalFilter
@@ -123,7 +123,7 @@ namespace Microsoft.Extensions.DependencyInjection
                         {
                             // e.Value = FreeUtil.NewMongodbId(); //生成有序不重复的id  多台机器顺序是否有序，是否重复的情况未知
                             e.Value = Guid.NewGuid();
-                        }    
+                        }
                         break;
 
                     case nameof(IsCreateAudited.CreatorId):

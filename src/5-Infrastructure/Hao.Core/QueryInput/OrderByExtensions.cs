@@ -47,13 +47,13 @@ namespace Hao.Core
         public static List<OrderByInfo> ToOrderByConditions<T>(this T?[] sortFields, SortType?[] orderByTypes) where T : struct, Enum
         {
             List<OrderByInfo> list = new List<OrderByInfo>();
-            
+
             if (orderByTypes == null || sortFields == null) return list;
 
             if (orderByTypes.Length == 0 || sortFields.Length == 0) return list;
 
             if (orderByTypes.Length != sortFields.Length) return list;
-            
+
             for (int i = 0; i < sortFields.Length; i++)
             {
                 if (!sortFields[i].HasValue || !orderByTypes[i].HasValue) continue;

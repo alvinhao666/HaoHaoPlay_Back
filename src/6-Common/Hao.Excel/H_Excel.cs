@@ -28,8 +28,8 @@ namespace Hao.Excel
                     {
                         ExcelWorksheet ws = package.Workbook.Worksheets.Add(string.IsNullOrWhiteSpace(tableTitle) ? "Sheet0" : tableTitle);
 
-                        var keys = exportData.FirstOrDefault().Keys;   
-                        
+                        var keys = exportData.FirstOrDefault().Keys;
+
                         int colIndex = 1;
                         foreach (var colName in keys)
                         {
@@ -107,7 +107,7 @@ namespace Hao.Excel
                     cellStyle.SetFont(cellFontStyle);
 
                     int count = 1;
-                    foreach(var item in exportData)
+                    foreach (var item in exportData)
                     {
                         IRow childRow = sheet.CreateRow(count++);
                         int cellNum = 0;
