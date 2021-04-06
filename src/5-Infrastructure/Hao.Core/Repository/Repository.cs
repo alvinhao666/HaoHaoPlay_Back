@@ -20,7 +20,7 @@ namespace Hao.Core
         /// </summary>
         [FromServiceContext] public IFreeSqlContext DbContext { get; internal set; }
 
-        
+
         /// <summary>
         /// 根据主键查询单条数据
         /// </summary>s
@@ -63,7 +63,7 @@ namespace Hao.Core
             H_Check.Argument.NotNull(query, nameof(query));
 
             var select = DbContext.Select<T>();
-            
+
             if (query.QueryExpressions?.Count > 0)
             {
                 foreach (var item in query.QueryExpressions)
@@ -136,7 +136,7 @@ namespace Hao.Core
 
             if (query.OrderByConditions?.Count > 0)
             {
-                foreach(var item in query.OrderByConditions)
+                foreach (var item in query.OrderByConditions)
                 {
                     if (item == null) continue;
                     select.OrderByPropertyName(item.FieldName, item.IsAsc);
@@ -146,7 +146,7 @@ namespace Hao.Core
             {
                 select.OrderByDescending(a => a.CreateTime);
             }
-            
+
             var items = await select.Count(out var totalCount)
                                     .Page(query.PageIndex, query.PageSize)
                                     .ToListAsync();
@@ -197,7 +197,7 @@ namespace Hao.Core
             {
                 select.OrderByDescending(a => a.CreateTime);
             }
-            
+
             return await select.DisableGlobalFilter(nameof(IsSoftDelete))
                                 .ToListAsync();
         }
@@ -212,7 +212,7 @@ namespace Hao.Core
             H_Check.Argument.NotNull(entity, nameof(entity));
 
             var obj = await DbContext.Insert(entity).ExecuteInsertedAsync();
-            
+
             return obj?.FirstOrDefault();
         }
 

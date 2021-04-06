@@ -50,7 +50,7 @@ namespace Hao.WebApi
         /// <returns></returns>
         [HttpGet]
         [AuthCode("User_Search_1_64")]
-        //[AntiDuplicateRequest(GlobalLockKey = "UserGetPagedList", Interval = 5, Type = LockType.User)]
+        //[AntiDuplicateRequest(GlobalLockKey = "User_GetPagedList", Interval = 5, Type = LockType.User)]
         public async Task<Paged<UserOutput>> GetPagedList([FromQuery] UserQueryInput queryInput) => await _userAppService.GetPaged(queryInput);
 
         /// <summary>

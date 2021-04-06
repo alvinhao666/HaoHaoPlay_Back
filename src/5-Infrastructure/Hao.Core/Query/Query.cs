@@ -25,7 +25,7 @@ namespace Hao.Core
         /// </summary>
         /// <param name="column"></param>
         /// <returns></returns>
-        public Query<T> OrderBy<TMember>(Expression<Func<T,TMember>> column)
+        public Query<T> OrderBy<TMember>(Expression<Func<T, TMember>> column)
         {
             var body = column.Body as MemberExpression;
 

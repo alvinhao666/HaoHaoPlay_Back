@@ -20,7 +20,7 @@ namespace Hao.Core
         /// </summary>
         [FromServiceContext] public IFreeSqlContext DbContext { get; internal set; }
 
-        
+
         /// <summary>
         /// 根据主键值查询单条数据
         /// </summary>s
@@ -140,9 +140,9 @@ namespace Hao.Core
 
             return items.ToPaged(query, totalCount);
         }
-        
-        
-        
+
+
+
         /// <summary>
         /// 查询所有数据
         /// </summary>

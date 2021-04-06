@@ -18,7 +18,7 @@ namespace Hao.Utility
             if (value.IsNullOrWhiteSpace()) return false;
             return Regex.IsMatch(value, "^[a-zA-Z]+$");
         }
-        
+
         /// <summary>
         /// 验证是否是字母或者数字
         /// </summary>
@@ -198,7 +198,7 @@ namespace Hao.Utility
         {
             if (value.IsNullOrWhiteSpace()) return false;
             value = value.ToLower();
-            return  new string[]
+            return new string[]
             {
                 ".jpeg",
                 ".jpg",

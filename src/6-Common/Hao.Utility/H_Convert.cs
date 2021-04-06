@@ -9,7 +9,7 @@ namespace Hao.Utility
         {
             if (int.TryParse(value.ToSafeString(), out var result)) return result;
 
-            return null;     
+            return null;
         }
 
         public static int ToInt(this object value)
@@ -71,7 +71,7 @@ namespace Hao.Utility
             switch (value.ToSafeString().ToLower())
             {
                 case "0":
-                    outPut=false;
+                    outPut = false;
                     break;
                 case "否":
                     outPut = false;
