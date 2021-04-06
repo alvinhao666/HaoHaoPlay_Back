@@ -50,7 +50,7 @@ NG-ZORRO | UI 组件库 | [https://ng.ant.design/docs/introduce/zh](https://ng.a
 <font style="color:green">✔</font> Swagger优化枚举中文描述的显示及隐藏忽略属性  
 <font style="color:green">✔</font> JWT身份验证  
 <font style="color:green">✔</font> 位运算实现菜单权限及按钮权限控制管理  
-<font style="color:green">✔</font> 更多详见代码...  
+<font style="color:green">more</font> 更多详见代码...  
 
 ## 🥪 环境
 
