@@ -1,17 +1,17 @@
 namespace Hao.Core
 {
     /// <summary>
-    /// ·ÖÒ³²éÑ¯³éÏóÀà
+    /// åˆ†é¡µæŸ¥è¯¢æŠ½è±¡ç±»
     /// </summary>
     public abstract class PagedQuery : IPagedQuery
     {
         /// <summary>
-        /// Ò³Âë£¬Ä¬ÈÏµÚ1Ò³
+        /// é¡µç ï¼Œé»˜è®¤ç¬¬1é¡µ
         /// </summary>
         public virtual int PageIndex { get; set; } = 1;
 
         /// <summary>
-        /// Ã¿Ò³ÊıÁ¿£¬Ä¬ÈÏÃ¿Ò³10ÌõÊı¾İ
+        /// æ¯é¡µæ•°é‡ï¼Œé»˜è®¤æ¯é¡µ10æ¡æ•°æ®
         /// </summary>
         public virtual int PageSize { get; set; } = 10;
     }
