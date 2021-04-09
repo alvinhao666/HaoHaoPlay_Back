@@ -10,9 +10,9 @@ namespace Hao.EventBus
     /// </summary>
     public class LogoutForUpdateAuthEventListener : EventListener<LogoutForUpdateAuthEventData>
     {
-        private readonly ILogoutEventHandler _handler;
+        private readonly ILogoutEventSolver _handler;
 
-        public LogoutForUpdateAuthEventListener(ILogoutEventHandler handler)
+        public LogoutForUpdateAuthEventListener(ILogoutEventSolver handler)
         {
             _handler = handler;
         }

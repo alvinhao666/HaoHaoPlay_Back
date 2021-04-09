@@ -13,13 +13,13 @@ namespace Hao.EventBus
     /// <summary>
     /// 注销
     /// </summary>
-    public class LogoutEventHandler : EventHandler, ILogoutEventHandler
+    public class LogoutEventSolver : EventSolver, ILogoutEventSolver
     {
         private readonly ILoginRecordRepository _loginRecordRep;
 
         private readonly AppSettings _appSettings;
 
-        public LogoutEventHandler(IOptionsSnapshot<AppSettings> appSettingsOptions, ILoginRecordRepository loginRecordRep)
+        public LogoutEventSolver(IOptionsSnapshot<AppSettings> appSettingsOptions, ILoginRecordRepository loginRecordRep)
         {
             _appSettings = appSettingsOptions.Value;
             _loginRecordRep = loginRecordRep;
