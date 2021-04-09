@@ -1,21 +1,20 @@
-﻿using System;
+﻿using Hao.Core;
 using Hao.EventData;
 using Hao.Model;
 using System.Threading.Tasks;
-using EventHandler = Hao.Core.EventHandler;
 
 namespace Hao.EventBus
 {
     /// <summary>
     /// 登录
     /// </summary>
-    public class LoginEventHandler : EventHandler, ILoginEventHandler
+    public class LoginEventSolver : EventSolver, ILoginEventSolver
     {
         private readonly IUserRepository _userRep;
 
         private readonly ILoginRecordRepository _recordRep;
 
-        public LoginEventHandler(IUserRepository userRep, ILoginRecordRepository recordRep)
+        public LoginEventSolver(IUserRepository userRep, ILoginRecordRepository recordRep)
         {
             _userRep = userRep;
             _recordRep = recordRep;

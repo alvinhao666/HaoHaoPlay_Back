@@ -10,10 +10,10 @@ namespace Hao.EventBus
     /// </summary>
     public class LogoutEventListener : EventListener<LogoutEventData>
     {
-        private readonly ILogoutEventHandler _handler;
+        private readonly ILogoutEventSolver _handler;
 
 
-        public LogoutEventListener(ILogoutEventHandler handler)
+        public LogoutEventListener(ILogoutEventSolver handler)
         {
             _handler = handler;
         }

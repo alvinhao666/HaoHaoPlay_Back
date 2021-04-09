@@ -10,9 +10,9 @@ namespace Hao.EventBus
     /// </summary>
     public class LoginEventListener : EventListener<LoginEventData>
     {
-        private readonly ILoginEventHandler _handler;
+        private readonly ILoginEventSolver _handler;
 
-        public LoginEventListener(ILoginEventHandler handler)
+        public LoginEventListener(ILoginEventSolver handler)
         {
             _handler = handler;
         }
