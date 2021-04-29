@@ -27,7 +27,7 @@ namespace Hao.Utility
         public static bool IsLetterOrDigit(string value)
         {
             if (value.IsNullOrWhiteSpace()) return false;
-            return Regex.IsMatch(value, "^[a-zA-Z]+$");
+            return Regex.IsMatch(value, "^[a-zA-Z0-9]+$");
         }
 
         /// <summary>
