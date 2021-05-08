@@ -65,12 +65,11 @@ namespace Hao.Core
 
             if (currentUser.Id == 2)
             {
-                var method = context.HttpContext.Request.Method.ToLower();
-
                 var isLogout = context.HttpContext.Request.Path.Value == "/CurrentUser/Logout";
-
                 if (!isLogout)
                 {
+                    var method = context.HttpContext.Request.Method.ToLower();
+
                     if (method.Equals("post") || method.Equals("put") || method.Equals("delete")) throw new H_Exception("游客账户，无法进行数据操作");
                 }
             }
