@@ -6,9 +6,9 @@
 
 	<ItemGroup>
 		<PackageReference Include="AspectCore.Extensions.Hosting" Version="2.2.0" />
-		<PackageReference Include="DotNetCore.CAP.Dashboard" Version="5.1.0" />
-		<PackageReference Include="FluentValidation.AspNetCore" Version="10.2.3" />
-		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.7" />
+		<PackageReference Include="DotNetCore.CAP.Dashboard" Version="5.1.1" />
+		<PackageReference Include="FluentValidation.AspNetCore" Version="10.3.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.8" />
 	</ItemGroup>
 
 	<ItemGroup>
