@@ -53,6 +53,10 @@ namespace Hao.Core
                 Extra = "请求信息"
             });
 
+            //var descriptor = context.ActionDescriptor as ControllerActionDescriptor;
+
+            //if (descriptor.MethodInfo.CustomAttributes.Any(x => x.AttributeType == typeof(AllowAnonymousAttribute))) return;
+
             var cache = GetCacheUser(userId, jti);
 
             //if (ip != cache.Ip) throw new H_Exception("请重新登录", nameof(H_Error.E100004).GetErrorCode());
