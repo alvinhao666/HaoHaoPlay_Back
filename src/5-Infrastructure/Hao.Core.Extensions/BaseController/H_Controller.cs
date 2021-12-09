@@ -130,7 +130,7 @@ namespace Hao.Core
 
             var prefix = config["RedisPrefix:Login"];
 
-            var value = RedisHelper.Get($"{prefix}{userId}_{jti}");
+            var value = RedisHelper.Cli.Get($"{prefix}{userId}_{jti}");
 
             if (string.IsNullOrWhiteSpace(value)) throw new H_Exception(H_Error.E100002);
 

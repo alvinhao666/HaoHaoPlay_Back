@@ -100,7 +100,7 @@ namespace Hao.AppService
 
 
             int expireSeconds = (int)expireTime.Subtract(timeNow).Duration().TotalSeconds + 1;
-            RedisHelper.Set($"{_appSettings.RedisPrefix.Login}{user.Id}_{jti}", JsonConvert.SerializeObject(cacheUser), expireSeconds);
+            RedisHelper.Cli.Set($"{_appSettings.RedisPrefix.Login}{user.Id}_{jti}", JsonConvert.SerializeObject(cacheUser), expireSeconds);
 
             var result = user.Adapt<LoginOutput>();
             result.Jwt = jwt;

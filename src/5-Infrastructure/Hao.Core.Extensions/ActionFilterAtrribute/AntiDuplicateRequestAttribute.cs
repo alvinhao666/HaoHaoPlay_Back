@@ -102,9 +102,9 @@ namespace Hao.Core
         /// <param name="key">锁定标识</param>
         private bool Lock(string key)
         {
-            if (RedisHelper.Exists(key)) return false;
+            if (RedisHelper.Cli.Exists(key)) return false;
 
-            RedisHelper.Set(key, 1, Interval);
+            RedisHelper.Cli.Set(key, 1, Interval);
 
             return true;
         }
@@ -114,9 +114,9 @@ namespace Hao.Core
         /// </summary>
         private void UnLock(string key)
         {
-            if (!RedisHelper.Exists(key)) return;
+            if (!RedisHelper.Cli.Exists(key)) return;
 
-            RedisHelper.Del(key);
+            RedisHelper.Cli.Del(key);
         }
     }
 
