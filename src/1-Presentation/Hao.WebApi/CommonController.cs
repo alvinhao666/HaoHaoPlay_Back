@@ -65,12 +65,12 @@ namespace Hao.WebApi
 
             GetFederationTokenResponse result;
 
-            var tokenCache = RedisHelper.Get(key);
+            var tokenCache = RedisHelper.Cli.Get(key);
 
             if (tokenCache.IsNullOrWhiteSpace())
             {
                 result = tencentCosProvider.GetFederationToken();
-                RedisHelper.Set(key, JsonConvert.SerializeObject(result), 7200);
+                RedisHelper.Cli.Set(key, JsonConvert.SerializeObject(result), 7200);
             }
             else
             {

@@ -152,7 +152,7 @@ namespace Hao.Core
 
                 if (string.IsNullOrWhiteSpace(prefix)) throw new H_Exception("请配置分布式锁名称的前缀字符");
 
-                using (var redisLock = RedisHelper.Lock(prefix + _lockName, _timeoutSeconds, _autoDelay))
+                using (var redisLock = RedisHelper.Cli.Lock(prefix + _lockName, _timeoutSeconds, _autoDelay))
                 {
                     if (redisLock == null)
                     {

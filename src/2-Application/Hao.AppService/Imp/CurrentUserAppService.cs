@@ -139,9 +139,9 @@ namespace Hao.AppService
         {
             var key = $"{_appSettings.RedisPrefix.Login}{_currentUser.Id.Value}_{_currentUser.Jti}";
 
-            var value = RedisHelper.Get(key);
+            var value = RedisHelper.Cli.Get(key);
 
-            if (value.HasValue()) RedisHelper.Del(key);
+            if (value.HasValue()) RedisHelper.Cli.Del(key);
         }
     }
 }

@@ -53,6 +53,10 @@ namespace Hao.Core
                 Extra = "请求信息"
             });
 
+            //var descriptor = context.ActionDescriptor as ControllerActionDescriptor;
+
+            //if (descriptor.MethodInfo.CustomAttributes.Any(x => x.AttributeType == typeof(AllowAnonymousAttribute))) return;
+
             var cache = GetCacheUser(userId, jti);
 
             //if (ip != cache.Ip) throw new H_Exception("请重新登录", nameof(H_Error.E100004).GetErrorCode());
@@ -126,7 +130,7 @@ namespace Hao.Core
 
             var prefix = config["RedisPrefix:Login"];
 
-            var value = RedisHelper.Get($"{prefix}{userId}_{jti}");
+            var value = RedisHelper.Cli.Get($"{prefix}{userId}_{jti}");
 
             if (string.IsNullOrWhiteSpace(value)) throw new H_Exception(H_Error.E100002);
 
