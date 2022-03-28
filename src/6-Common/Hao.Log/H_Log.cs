@@ -12,78 +12,80 @@ namespace Hao.Log
         /// </summary>
         private const string _defaultTemplate = "{@Log}";
 
-        /// <summary>
-        /// Verbose
-        /// </summary>
-        /// <param name="note">日志内容</param>
-        public static void Verbose(string note) => Serilog.Log.Verbose(note);
+        private const string _templateString = "{Log}";
 
         /// <summary>
         /// Verbose
         /// </summary>
-        /// <param name="note">日志内容</param>
-        public static void Verbose(LogNote note) => Serilog.Log.Verbose(_defaultTemplate, note);
+        /// <param name="log">日志内容</param>
+        public static void Verbose(string log) => Serilog.Log.Verbose(_templateString, log);
+
+        /// <summary>
+        /// Verbose
+        /// </summary>
+        /// <param name="log">日志内容</param>
+        public static void Verbose<T>(T log) => Serilog.Log.Verbose(_defaultTemplate, log);
 
         /// <summary>
         /// Debug
         /// </summary>
-        /// <param name="note">日志内容</param>
-        public static void Debug(string note) => Serilog.Log.Debug(note);
+        /// <param name="log">日志内容</param>
+        public static void Debug(string log) => Serilog.Log.Debug(_templateString, log);
 
         /// <summary>
         /// Debug
         /// </summary>
-        /// <param name="note">日志内容</param>
-        public static void Debug(LogNote note) => Serilog.Log.Debug(_defaultTemplate, note);
+        /// <param name="log">日志内容</param>
+        public static void Debug<T>(T log) => Serilog.Log.Debug(_defaultTemplate, log);
 
         /// <summary>
         /// Info
         /// </summary>
-        /// <param name="note">日志内容</param>
-        public static void Info(string note) => Serilog.Log.Information(note);
+        /// <param name="log">日志内容</param>
+        public static void Info(string log) => Serilog.Log.Information(_templateString, log);
 
         /// <summary>
         /// Info
         /// </summary>
-        /// <param name="note">日志内容</param>
-        public static void Info(LogNote note) => Serilog.Log.Information(_defaultTemplate, note);
+        /// <param name="log">日志内容</param>
+        public static void Info<T>(T log) => Serilog.Log.Information(_defaultTemplate, log);
 
 
         /// <summary>
         /// Warn
         /// </summary>
-        /// <param name="note">日志内容</param>
-        public static void Warn(string note) => Serilog.Log.Warning(note);
+        /// <param name="log">日志内容</param>
+        public static void Warn(string log) => Serilog.Log.Warning(_templateString, log);
 
         /// <summary>
         /// Warn
         /// </summary>
-        /// <param name="note">日志内容</param>
-        public static void Warn(LogNote note) => Serilog.Log.Warning(_defaultTemplate, note);
+        /// <param name="log">日志内容</param>
+        public static void Warn<T>(T log) => Serilog.Log.Warning(_defaultTemplate, log);
 
         /// <summary>
         /// Error
         /// </summary>
-        /// <param name="note">日志内容</param>
-        public static void Error(string note) => Serilog.Log.Error(note);
+        /// <param name="log">日志内容</param>
+        public static void Error(string log) => Serilog.Log.Error(_templateString, log);
 
         /// <summary>
         /// Error
         /// </summary>
         /// <param name="ex">异常</param>
-        /// <param name="note">日志内容</param>
-        public static void Error(Exception ex, LogNote note) => Serilog.Log.Error(ex, _defaultTemplate, note);
+        /// <param name="log">日志内容</param>
+        public static void Error<T>(Exception ex, T log) => Serilog.Log.Error(ex, _defaultTemplate, log);
 
         /// <summary>
         /// Fatal
         /// </summary>
-        /// <param name="note">日志内容</param>
-        public static void Fatal(string note) => Serilog.Log.Fatal(note);
+        /// <param name="log">日志内容</param>
+        public static void Fatal(string log) => Serilog.Log.Fatal(_templateString, log);
 
         /// <summary>
         /// Fatal
         /// </summary>
-        /// <param name="note">日志内容</param>
-        public static void Fatal(LogNote note) => Serilog.Log.Fatal(_defaultTemplate, note);
+        /// <param name="log">日志内容</param>
+        public static void Fatal<T>(T log) => Serilog.Log.Fatal(_defaultTemplate, log);
     }
 }
