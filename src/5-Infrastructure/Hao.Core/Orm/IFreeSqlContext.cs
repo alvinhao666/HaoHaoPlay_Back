@@ -76,7 +76,6 @@ namespace Hao.Core
 
         public ISelect<T1> Select<T1>(object dyWhere) where T1 : class
         {
-            InitAsyncLocalCurrentUser();
             return Select<T1>().WhereDynamic(dyWhere);
         }
 
@@ -88,7 +87,6 @@ namespace Hao.Core
 
         public IDelete<T1> Delete<T1>(object dyWhere) where T1 : class
         {
-            InitAsyncLocalCurrentUser();
             return Delete<T1>().WhereDynamic(dyWhere);
         }
 
@@ -100,7 +98,6 @@ namespace Hao.Core
 
         public IUpdate<T1> Update<T1>(object dyWhere) where T1 : class
         {
-            InitAsyncLocalCurrentUser();
             return Update<T1>().WhereDynamic(dyWhere);
         }
 
@@ -112,25 +109,21 @@ namespace Hao.Core
 
         public IInsert<T1> Insert<T1>(T1 source) where T1 : class
         {
-            InitAsyncLocalCurrentUser();
             return Insert<T1>().AppendData(source);
         }
 
         public IInsert<T1> Insert<T1>(T1[] source) where T1 : class
         {
-            InitAsyncLocalCurrentUser();
             return Insert<T1>().AppendData(source);
         }
 
         public IInsert<T1> Insert<T1>(List<T1> source) where T1 : class
         {
-            InitAsyncLocalCurrentUser();
             return Insert<T1>().AppendData(source);
         }
 
         public IInsert<T1> Insert<T1>(IEnumerable<T1> source) where T1 : class
         {
-            InitAsyncLocalCurrentUser();
             return Insert<T1>().AppendData(source);
         }
 
