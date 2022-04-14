@@ -181,6 +181,7 @@ namespace Hao.Core
         {
             if (_transaction == null) return;
             _transactionCount--;
+            if (_transactionCount > 0) return; //内层事务，跳过
             try
             {
                 if (isCommit == false) _transaction.Rollback();
