@@ -168,7 +168,7 @@ namespace Hao.Core
                     _capPublisher = capPublisher;
                 }
 
-                _transactionCount = 0;
+                _transactionCount = 1;
             }
             catch
             {
